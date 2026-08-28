@@ -4,8 +4,10 @@ import { Handle, Position, type NodeProps, type NodeTypes } from '@xyflow/react'
 
 import { API_BASE } from './workbench-api';
 import {
+  NODE_TYPE_LABELS,
   STATUS_LABELS,
   apiAssetUrl,
+  displayNodeSummary,
   type NodeStatus,
   type PosterConfig,
   type WorkbenchNode,
@@ -51,11 +53,11 @@ function NodeFrame({
       {target ? <Handle type="target" position={Position.Left} /> : null}
       <header className="flow-node__header">
         <div>
-          <p>{data.eyebrow}</p>
+          <p>{NODE_TYPE_LABELS[node.type]}</p>
           <h3>{data.title}</h3>
         </div>
         <div className="flow-node__state-stack">
-          {data.decisionVersion ? <span className="node-human-tag">HUMAN v{String(data.decisionVersion)}</span> : null}
+          {data.decisionVersion ? <span className="node-human-tag">人工 v{String(data.decisionVersion)}</span> : null}
           <StatusBadge status={data.status} />
         </div>
       </header>
@@ -69,7 +71,7 @@ function NodeFrame({
             emitNodeAction(node.id, 'open');
           }}
         >
-          查看展示页 ↗
+          打开详情 ↗
         </button>
         <button
           className="nodrag"
@@ -79,7 +81,7 @@ function NodeFrame({
             emitNodeAction(node.id, 'run');
           }}
         >
-          {data.status === 'idle' ? 'Run' : 'Re-run'}
+          {data.status === 'idle' ? '运行' : '重新运行'}
         </button>
         <button
           className="nodrag"
@@ -89,7 +91,7 @@ function NodeFrame({
             emitNodeAction(node.id, 'run-from-here');
           }}
         >
-          Run from here
+          从此运行
         </button>
       </footer>
       {source ? <Handle type="source" position={Position.Right} /> : null}
@@ -184,7 +186,7 @@ function DesignBriefNode(props: NodeProps<WorkbenchNode>) {
         <span>产品形态</span>
         <strong>{brief?.productType ?? '—'}</strong>
       </div>
-      <div className="node-version">VERSION {props.data.version ?? 1}</div>
+      <div className="node-version">任务书 v{props.data.version ?? 1}</div>
     </NodeFrame>
   );
 }
@@ -195,7 +197,7 @@ function VisualGenerationNode(props: NodeProps<WorkbenchNode>) {
     | undefined;
   return (
     <NodeFrame node={props} selected={props.selected} wide>
-      <p className="node-summary">{props.data.summary}</p>
+      <p className="node-summary">{displayNodeSummary('VisualGenerationNode', props.data.summary)}</p>
       <div className="visual-slots">
         {['A', 'B', 'C'].map((label) => (
           <div key={label}>
@@ -206,7 +208,7 @@ function VisualGenerationNode(props: NodeProps<WorkbenchNode>) {
       </div>
       <div className="provider-line">
         <i className={provider?.configured ? 'is-ready' : ''} />
-        <span>{provider?.configured ? provider.model : 'IMAGE PROVIDER 未配置'}</span>
+        <span>{provider?.configured ? provider.model : '图像服务未配置'}</span>
       </div>
     </NodeFrame>
   );
@@ -234,7 +236,7 @@ function ConceptNode(props: NodeProps<WorkbenchNode>) {
             等待生成
           </span>
         )}
-        {props.data.active ? <em>ACTIVE</em> : <em>USE</em>}
+        {props.data.active ? <em>当前</em> : <em>采用</em>}
       </button>
       <p className="concept-direction">{String(props.data.direction ?? props.data.summary)}</p>
       <div className="concept-meta">
@@ -256,7 +258,7 @@ function PosterBoardNode(props: NodeProps<WorkbenchNode>) {
           <img src={image} alt="QianCraft 当前概念海报" />
         ) : null}
         <div>
-          <span>QIANCRAFT / CONCEPT</span>
+          <span>QianCraft · 概念提案</span>
           <strong>{poster?.title ?? props.data.title}</strong>
           <p>{poster?.subtitle ?? props.data.summary}</p>
         </div>

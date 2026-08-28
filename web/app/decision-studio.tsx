@@ -54,6 +54,19 @@ const THEME_LABELS = {
   exhibition: ['展陈海报', '成品视觉与文化故事优先'],
 } as const;
 
+function verificationLabel(value: string): string {
+  if (value === 'verified') return '已核验';
+  if (value === 'warning') return '待复核';
+  if (value === 'rejected') return '已排除';
+  return value;
+}
+
+function rightsLabel(value: string): string {
+  if (value === 'reference_only') return '仅作研究参考';
+  if (value === 'public_source') return '公开来源';
+  return value;
+}
+
 const STAGES: Array<{ id: DecisionStage; index: string; label: string; note: string }> = [
   { id: 'culture', index: '01', label: '文化选材', note: '选择可进入本轮的文化记录' },
   { id: 'market', index: '02', label: '市场范围', note: '平台与产品形态自由组合' },
@@ -208,9 +221,8 @@ export function DecisionStudio({
       >
         <header className="decision-studio__header">
           <div>
-            <span>HUMAN-IN-THE-LOOP / DECISION PROFILE v{profile.version}</span>
             <h2>人工决策工作台</h2>
-            <p>原始证据保持只读；这里保存的是人的取舍、权重与设计意图。</p>
+            <p>第 {profile.version} 版选择；原始证据保持只读。</p>
           </div>
           <div className="decision-mode-switch" aria-label="决策模式">
             <button aria-pressed={draft.mode === 'guided'} className={draft.mode === 'guided' ? 'is-active' : ''} type="button" onClick={applyRecommendation}>系统建议</button>
@@ -222,9 +234,9 @@ export function DecisionStudio({
         <div className="decision-studio__layout">
           <nav className="decision-stage-nav" aria-label="人工决策阶段">
             {STAGES.map((item) => (
-              <button aria-current={stage === item.id ? 'step' : undefined} className={stage === item.id ? 'is-active' : ''} key={item.id} ref={stage === item.id ? initialFocusRef : undefined} type="button" onClick={() => setStage(item.id)}>
+              <button aria-current={stage === item.id ? 'step' : undefined} className={stage === item.id ? 'is-active' : ''} key={item.id} ref={stage === item.id ? initialFocusRef : undefined} title={item.note} type="button" onClick={() => setStage(item.id)}>
                 <b>{item.index}</b>
-                <span><strong>{item.label}</strong><small>{item.note}</small></span>
+                <span><strong>{item.label}</strong></span>
                 <em>{countForStage(item.id, draft)}</em>
               </button>
             ))}
@@ -233,12 +245,12 @@ export function DecisionStudio({
           <div className="decision-stage-content">
             {stage === 'culture' ? (
               <section className="decision-panel">
-                <header><span>01 / CULTURE SCOPE</span><h3>这一次，哪些文化记录真正进入设计？</h3><p>可多选；地域、工艺和文化边界仍来自原知识图谱，不能在这里改写。</p></header>
+                <header><h3>哪些文化记录进入本轮设计？</h3><p>可多选；地域、工艺与文化边界仍由知识图谱锁定。</p></header>
                 <label className="decision-search"><Search aria-hidden="true" size={15} /><input value={cultureQuery} onChange={(event) => setCultureQuery(event.target.value)} placeholder="搜索地域、工艺、记录名称…" /><em>{draft.cultureRecordIds.length} / {catalog.cultureRecords.length} 已选</em></label>
                 <div className="decision-culture-grid">
                   {filteredCulture.map((item) => {
                     const selected = draft.cultureRecordIds.includes(item.id);
-                    return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', cultureRecordIds: toggleDecisionSelection(draft.cultureRecordIds, item.id, 22) })}><span><code>{item.id}</code><i>{item.sourceRefs.length} refs</i></span><strong>{item.name}</strong><p>{[...item.region.slice(0, 2), ...item.crafts.slice(0, 2)].join(' · ')}</p><em>{selected ? '已进入本轮' : '加入本轮'}</em></button>;
+                    return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', cultureRecordIds: toggleDecisionSelection(draft.cultureRecordIds, item.id, 22) })}><span><code>{item.id}</code><i>{item.sourceRefs.length} 条引用</i></span><strong>{item.name}</strong><p>{[...item.region.slice(0, 2), ...item.crafts.slice(0, 2)].join(' · ')}</p><em>{selected ? '本轮使用' : '加入本轮'}</em></button>;
                   })}
                 </div>
               </section>
@@ -246,12 +258,12 @@ export function DecisionStudio({
 
             {stage === 'market' ? (
               <section className="decision-panel">
-                <header><span>02 / MARKET SCOPE</span><h3>选择平台，也选择要观察的产品形态</h3><p>平台数据仍按实际状态显示；历史快照不会因为被选中而变成实时数据。</p></header>
+                <header><h3>选择平台与要观察的产品形态</h3><p>平台状态保持原样；历史快照不会因被选中而变成实时数据。</p></header>
                 <h4>平台范围</h4>
                 <div className="decision-platform-grid">
                   {catalog.marketPlatforms.map((item) => {
                     const selected = draft.marketPlatforms.includes(item.id);
-                    return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', marketPlatforms: toggleDecisionSelection(draft.marketPlatforms, item.id, 4) })}><span>{PLATFORM_LABELS[item.id] ?? item.id}</span><strong>{item.sampleSize}</strong><em>{item.status === 'live' ? 'LIVE' : 'SNAPSHOT'}</em><i>{selected ? '使用中' : '选择'}</i></button>;
+                    return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', marketPlatforms: toggleDecisionSelection(draft.marketPlatforms, item.id, 4) })}><span>{PLATFORM_LABELS[item.id] ?? item.id}</span><strong>{item.sampleSize}</strong><em>{item.status === 'live' ? '实时' : '历史快照'}</em><i>{selected ? '使用中' : '选择'}</i></button>;
                   })}
                 </div>
                 <h4>产品形态</h4>
@@ -266,7 +278,7 @@ export function DecisionStudio({
 
             {stage === 'score' ? (
               <section className="decision-panel decision-panel--score">
-                <header><span>03 / SCORING PROFILE</span><h3>你来决定“好机会”意味着什么</h3><p>拖动权重会即时重排；系统原始分数保留，人工分数单独记录。</p></header>
+                <header><h3>你来定义“好机会”</h3><p>调整权重会即时重排；系统分与人工分分别保留。</p></header>
                 <div className="decision-score-layout">
                   <div className="decision-weight-editor">
                     {DECISION_SCORE_FIELDS.map((field) => <label key={field}><span><strong>{SCORE_LABELS[field]}</strong><span className="decision-weight-number"><input aria-label={`${SCORE_LABELS[field]}权重百分比`} min="0" max="40" step="1" type="number" value={Math.round(draft.scoreWeights[field] * 100)} onChange={(event) => setDraft({ ...draft, mode: 'manual', scoreWeights: { ...draft.scoreWeights, [field]: Math.min(40, Math.max(0, Number(event.target.value))) / 100 } })} /><em>%</em></span></span><input min="0" max="40" step="1" type="range" value={Math.round(draft.scoreWeights[field] * 100)} onChange={(event) => setDraft({ ...draft, mode: 'manual', scoreWeights: { ...draft.scoreWeights, [field]: Number(event.target.value) / 100 } })} /></label>)}
@@ -277,7 +289,7 @@ export function DecisionStudio({
                     {manualRanking.map((item, index) => {
                       const selected = draft.opportunityIds.includes(item.id);
                       const limitReached = draft.opportunityIds.length >= 3 && !selected;
-                      return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} disabled={limitReached} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', opportunityIds: toggleDecisionSelection(draft.opportunityIds, item.id, 3) })}><b>{String(index + 1).padStart(2, '0')}</b><span><code>{item.id} · {item.verification}</code><strong>{item.cultureElement}</strong><small>{item.trendElement}</small></span><div><em>人工 {item.manualScore}</em><small>系统 {item.systemScore}</small></div></button>;
+                      return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} disabled={limitReached} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', opportunityIds: toggleDecisionSelection(draft.opportunityIds, item.id, 3) })}><b>{String(index + 1).padStart(2, '0')}</b><span><code>{item.id} · {verificationLabel(item.verification)}</code><strong>{item.cultureElement}</strong><small>{item.trendElement}</small></span><div><em>人工 {item.manualScore}</em><small>系统 {item.systemScore}</small></div></button>;
                     })}
                   </div>
                 </div>
@@ -286,7 +298,7 @@ export function DecisionStudio({
 
             {stage === 'brief' ? (
               <section className="decision-panel">
-                <header><span>04 / DESIGN INTENT</span><h3>把设计目标从“系统默认”改成你的项目意图</h3><p>保存后写入任务书新版本，并只把后续视觉与海报标记为待重跑。</p></header>
+                <header><h3>明确这次项目的设计意图</h3><p>保存后形成任务书新版本，后续视觉与海报标记为待更新。</p></header>
                 <div className="decision-form-grid">
                   <label><span>目标人群</span><input value={draft.designIntent.targetAudience} onChange={(event) => setDraft({ ...draft, mode: 'manual', designIntent: { ...draft.designIntent, targetAudience: event.target.value } })} /></label>
                   <label><span>目标价格带</span><input value={draft.designIntent.priceBand} onChange={(event) => setDraft({ ...draft, mode: 'manual', designIntent: { ...draft.designIntent, priceBand: event.target.value } })} /></label>
@@ -299,11 +311,11 @@ export function DecisionStudio({
 
             {stage === 'visual' ? (
               <section className="decision-panel">
-                <header><span>05 / VISUAL DIRECTION</span><h3>选择研究参照，但不复制馆藏像素</h3><p>这里的选择只进入结构、节奏、材料和风格文字输入；`reference_only` 图像不会成为生成贴图。</p></header>
+                <header><h3>选择研究参照，不复制馆藏像素</h3><p>参照只提供结构、节奏、材料与风格文字；图片不会进入生成贴图。</p></header>
                 <div className="decision-reference-grid">
                   {catalog.visualReferences.map((item) => {
                     const selected = draft.visualDirection.referenceIds.includes(item.id);
-                    return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', visualDirection: { ...draft.visualDirection, referenceIds: toggleDecisionSelection(draft.visualDirection.referenceIds, item.id, 8) } })}><span><code>{item.id}</code><em>{item.rightsStatus}</em></span><strong>{item.title}</strong><p>{Array.isArray(item.region) ? item.region.join(' · ') : item.region} · {item.subjectType}</p></button>;
+                    return <button aria-pressed={selected} className={selected ? 'is-selected' : ''} key={item.id} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', visualDirection: { ...draft.visualDirection, referenceIds: toggleDecisionSelection(draft.visualDirection.referenceIds, item.id, 8) } })}><span><code>{item.id}</code><em title={item.rightsStatus}>{rightsLabel(item.rightsStatus)}</em></span><strong>{item.title}</strong><p>{Array.isArray(item.region) ? item.region.join(' · ') : item.region} · {item.subjectType}</p></button>;
                   })}
                 </div>
                 <div className="decision-form-grid decision-form-grid--visual">
@@ -316,7 +328,7 @@ export function DecisionStudio({
 
             {stage === 'concept' ? (
               <section className="decision-panel">
-                <header><span>06 / CONCEPT COMPARISON</span><h3>决定比较哪些方案，以及最终使用哪一个</h3><p>视觉生成只处理加入比较组的方向；当前采用方向继续驱动海报。</p></header>
+                <header><h3>选择比较组与当前采用方案</h3><p>只生成比较组中的方向；当前采用方案继续驱动海报。</p></header>
                 <div className="decision-concept-grid">
                   {catalog.concepts.map((item) => {
                     const compare = draft.conceptCompareIds.includes(item.id);
@@ -330,7 +342,7 @@ export function DecisionStudio({
 
             {stage === 'poster' ? (
               <section className="decision-panel">
-                <header><span>07 / POSTER PRESENTATION</span><h3>最后决定它以什么方式被看见</h3><p>主题改变信息优先级；板块可以自由显隐，仍保留概念与首样边界。</p></header>
+                <header><h3>决定它最终如何被看见</h3><p>主题调整信息优先级；板块可显隐，概念与首样边界保持不变。</p></header>
                 <div className="decision-theme-grid">
                   {catalog.posterThemes.map((theme) => <button aria-pressed={draft.posterTheme === theme} className={draft.posterTheme === theme ? 'is-selected' : ''} key={theme} type="button" onClick={() => setDraft({ ...draft, mode: 'manual', posterTheme: theme })}><span>{THEME_LABELS[theme][0]}</span><p>{THEME_LABELS[theme][1]}</p><em>{draft.posterTheme === theme ? '当前主题' : '选择主题'}</em></button>)}
                 </div>
@@ -343,7 +355,7 @@ export function DecisionStudio({
 
         <footer className="decision-studio__footer">
           <div><span>当前将保存</span><strong>{draft.cultureRecordIds.length} 文化 / {draft.marketPlatforms.length} 平台 / {draft.opportunityIds.length} 机会 / {draft.conceptCompareIds.length} 概念</strong></div>
-          {!canSave ? <p>每个关键阶段至少选择一项，机会最多 3 项，评分权重不能全部为 0。</p> : <p>保存后建立新决策版本；文化与市场事实本身不会被修改。</p>}
+          {!canSave ? <p>每个关键阶段至少选择一项，机会最多 3 项，评分权重不能全部为 0。</p> : null}
           <button className="decision-secondary" type="button" onClick={applyRecommendation}>恢复系统建议</button>
           <button className="decision-secondary" type="button" onClick={onClose}>取消</button>
           <button className="decision-primary" disabled={busy || !canSave} type="button" onClick={() => onSave({ ...draft, mode: draft.mode === 'guided' ? 'guided' : 'manual' })}>{busy ? '正在保存…' : '保存人工决策并更新链路'}</button>

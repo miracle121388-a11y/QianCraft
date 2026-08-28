@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-29T01:41:05.1362634+08:00",
+  "generatedAt": "2026-08-29T02:50:46.0701251+08:00",
   "title": "Design System: QianCraft",
   "extensions": {
     "colorMeta": {
@@ -248,6 +248,7 @@
       { "name": "The Semantic Radius Rule", "body": "8/12/16/24/pill 分别对应字段、图像、容器、暖面卡和动作/徽章，不按视觉心情混用。", "section": "shapes" },
       { "name": "The Purposeful Pill Rule", "body": "Pill 只属于按钮、徽章、工具轨控件和短状态；长文本容器、证据卡和节点不能胶囊化。", "section": "shapes" },
       { "name": "The Context-before-Density Rule", "body": "默认只显示完成当前任务所需的信息；详情、历史和人工配置通过一跳进入，而不是永久挤压主画布。", "section": "components" },
+      { "name": "The One Label Rule", "body": "同一栏目只保留一个面向用户的中文名称；不追加装饰性英文对照，机器字段、运行 ID 与原始 JSON 只在确有核查需要时按需展开。", "section": "components" },
       { "name": "The Provenance-before-Imagery Rule", "body": "一张图只有在来源、用途和权利边界可说明时才进入界面；缺图必须显示诚实空态，不能用参考图或 invented thumbnail 补位。", "section": "components" }
     ],
     "dos": [

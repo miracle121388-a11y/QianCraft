@@ -9557,3 +9557,750 @@ a {
     box-shadow: inset 0 -2px var(--lovable-indigo-accent);
   }
 }
+
+/* QianCraft 0.7.2 — information distillation and layer discipline -------- */
+
+.workbench-shell--instrument,
+.node-detail-page {
+  --layer-rail: 20;
+  --layer-dock: 30;
+  --layer-inspector: 40;
+  --layer-header: 60;
+  --layer-dialog: 100;
+}
+
+.workbench-shell--instrument .app-bar,
+.detail-topbar {
+  z-index: var(--layer-header);
+}
+
+.workbench-shell--instrument .tool-rail {
+  z-index: var(--layer-rail);
+}
+
+.workbench-shell--instrument .tool-dock {
+  z-index: var(--layer-dock);
+}
+
+.workbench-shell--instrument .inspector-slot {
+  z-index: var(--layer-inspector);
+}
+
+.decision-backdrop {
+  z-index: var(--layer-dialog);
+  isolation: isolate;
+  background: rgba(28, 28, 28, 0.54);
+}
+
+.decision-studio {
+  position: relative;
+  z-index: 1;
+  width: min(1408px, calc(100vw - 24px));
+  height: min(876px, calc(100vh - 24px));
+}
+
+/* Workbench: fewer labels, readable metadata, one quiet hierarchy. */
+
+.tool-dock .panel-heading {
+  min-height: 74px;
+  padding: 14px 16px;
+}
+
+.tool-dock .panel-heading h2,
+.dock-heading h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 520;
+  letter-spacing: -0.02em;
+}
+
+.tool-dock .panel-heading__actions b,
+.dock-heading > b {
+  font-size: 13px;
+}
+
+.tool-dock .panel-heading__actions button,
+.tool-dock .section-title-row button,
+.tool-dock .section-title-actions button {
+  min-height: 32px;
+  font-size: 12px;
+}
+
+.tool-dock .section-title-row > div > span,
+.asset-dock__list strong,
+.history-dock__subject strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.tool-dock .platform-grid span,
+.tool-dock .market-total span,
+.tool-dock .market-ranking > div,
+.tool-dock .culture-list article > div,
+.tool-dock .culture-list p,
+.dock-intro,
+.dock-empty,
+.history-dock__list time,
+.asset-dock__list small,
+.asset-dock__list em {
+  font-size: 12px;
+}
+
+.tool-dock .culture-list article {
+  padding: 12px;
+}
+
+.tool-dock .culture-list article h3 {
+  font-size: 14px;
+}
+
+.workbench-shell--instrument .flow-node__header p {
+  font-size: 11px;
+  font-weight: 560;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.workbench-shell--instrument .node-human-tag,
+.workbench-shell--instrument .node-status,
+.workbench-shell--instrument .node-version {
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.workbench-shell--instrument .flow-node__footer button {
+  min-height: 36px;
+  font-size: 12px;
+}
+
+.workbench-shell--instrument .canvas-context,
+.workbench-shell--instrument .canvas-legend {
+  font-size: 12px;
+}
+
+.inspector-slot__toolbar {
+  min-height: 42px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 560;
+  letter-spacing: 0;
+}
+
+.inspector-slot .inspector__header {
+  min-height: 96px;
+}
+
+.inspector-slot .inspector__header span {
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.inspector-slot .inspector__header h2 {
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.inspector-status-label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 6px;
+  color: var(--lovable-dim-gray);
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.inspector-status-label::before {
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #6f8498;
+  content: "";
+}
+
+.inspector-status-label.is-success::before {
+  background: #45a17b;
+}
+
+.inspector-status-label.is-warning::before,
+.inspector-status-label.is-stale::before {
+  background: var(--warning);
+}
+
+.inspector-status-label.is-error::before {
+  background: var(--danger);
+}
+
+.inspector-slot .inspector-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.inspector-slot .inspector-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.inspector-slot .inspector-tabs button {
+  min-width: 42px;
+  min-height: 40px;
+  flex: 1 1 42px;
+  font-size: 12px;
+}
+
+.inspector-slot .inspector-section > span,
+.inspector-slot .inspector-form > label > span {
+  font-size: 12px;
+  font-weight: 560;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.inspector-slot .inspector-section--summary {
+  padding-top: 4px;
+  border-top: 0;
+}
+
+.inspector-slot .inspector-section--summary > p,
+.inspector-slot .inspector-section > p {
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.inspector-slot .inspector__content {
+  padding: 16px;
+}
+
+/* Decision Studio: the stage label already carries the sequence. */
+
+.decision-studio__header {
+  min-height: 88px;
+  padding: 16px 22px;
+}
+
+.decision-studio__header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 520;
+}
+
+.decision-studio__header p {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.decision-studio__layout {
+  grid-template-columns: 184px minmax(0, 1fr);
+}
+
+.decision-stage-nav > button {
+  min-height: 58px;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  padding: 10px 12px;
+  gap: 9px;
+}
+
+.decision-stage-nav > button > b {
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+}
+
+.decision-stage-nav > button strong {
+  font-size: 13px;
+  font-weight: 560;
+}
+
+.decision-stage-nav > button em {
+  min-width: 24px;
+  font-size: 11px;
+}
+
+.decision-stage-content {
+  padding: 30px 36px 36px;
+}
+
+.decision-studio__footer > div span,
+.decision-studio__footer > p,
+.decision-studio__footer > button {
+  font-size: 12px;
+}
+
+.decision-panel > header {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+}
+
+.decision-panel > header h3 {
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(28px, 2.4vw, 34px);
+  font-weight: 520;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+}
+
+.decision-panel > header p {
+  max-width: 72ch;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.decision-culture-grid > button code,
+.decision-culture-grid > button i,
+.decision-reference-grid > button code,
+.decision-reference-grid > button em,
+.decision-platform-grid > button em,
+.decision-platform-grid > button i,
+.decision-opportunity-list code,
+.decision-opportunity-list small {
+  font-size: 11px;
+}
+
+.decision-culture-grid > button strong,
+.decision-reference-grid > button strong,
+.decision-theme-grid > button span {
+  font-size: 13px;
+}
+
+/* Node detail: keep the proof, hide run metadata until it is requested. */
+
+.detail-hero {
+  min-height: 196px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  padding: 32px 0 26px;
+  gap: 18px;
+}
+
+.detail-hero h1 {
+  max-width: 980px;
+  margin: 0 0 8px;
+  font-size: clamp(32px, 3.5vw, 46px);
+  font-weight: 520;
+  letter-spacing: -0.035em;
+}
+
+.detail-hero > div:nth-child(2) > p {
+  max-width: 76ch;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.hero-meta {
+  margin-top: 16px;
+  gap: 7px;
+}
+
+.hero-meta > * {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.hero-run-details {
+  position: relative;
+}
+
+.hero-run-details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.hero-run-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.hero-run-details[open] {
+  border-radius: 12px;
+}
+
+.hero-run-details > div {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% + 8px);
+  left: 0;
+  display: grid;
+  width: max-content;
+  max-width: min(420px, 80vw);
+  padding: 12px 14px;
+  border: 1px solid var(--lovable-linen-border);
+  border-radius: 10px;
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: 0 12px 28px rgba(28, 28, 28, 0.11);
+  gap: 5px;
+  line-height: 1.5;
+}
+
+.detail-related {
+  min-height: 64px;
+  font-size: 12px;
+}
+
+.detail-related > span,
+.detail-related a small {
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.detail-related a strong {
+  font-size: 13px;
+}
+
+.detail-content {
+  gap: 18px;
+}
+
+.detail-section-heading {
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.detail-section-heading h2,
+.detail-editor header h2,
+.brief-context h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 520;
+  letter-spacing: -0.025em;
+}
+
+.detail-section-heading > p,
+.detail-editor header p,
+.market-method-card > p {
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.market-method-card h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 520;
+}
+
+.market-method-card > p {
+  margin: 0 0 14px;
+  color: var(--lovable-dim-gray);
+}
+
+.market-method-card details {
+  border-top: 1px solid var(--lovable-linen-border);
+  border-bottom: 1px solid var(--lovable-linen-border);
+}
+
+.market-method-card summary {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  color: var(--lovable-indigo-accent);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 560;
+}
+
+.market-method-card details pre {
+  max-height: 280px;
+  padding: 0 0 14px;
+  font-size: 12px;
+}
+
+.json-facts dt,
+.record-block h3,
+.opportunity-detail-card section h3,
+.brief-context h3 {
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.json-facts dd,
+.detail-editor label > span,
+.detail-editor input,
+.detail-editor textarea,
+.detail-primary,
+.detail-download,
+.detail-action-grid button {
+  font-size: 13px;
+}
+
+.concept-gallery article.is-active::before {
+  content: "当前";
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.concept-detail-image > span {
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+@media (max-width: 760px) {
+  .decision-studio {
+    width: 100%;
+    height: 100%;
+  }
+
+  .decision-studio__layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 54px minmax(0, 1fr);
+  }
+
+  .workbench-shell--instrument .tool-dock {
+    z-index: var(--layer-dock);
+  }
+
+  .workbench-shell--instrument .inspector-slot {
+    z-index: var(--layer-inspector);
+  }
+
+  .tool-dock .panel-heading {
+    min-height: 68px;
+  }
+
+  .workbench-shell--instrument .flow-node__footer button {
+    min-height: 52px;
+    font-size: 12px;
+  }
+
+  .inspector-slot .inspector-tabs button {
+    min-width: 54px;
+    flex: 0 0 54px;
+  }
+
+  .decision-studio__header {
+    min-height: 122px;
+    padding: 14px 16px 8px;
+  }
+
+  .decision-studio__header h2 {
+    font-size: 22px;
+  }
+
+  .decision-studio__header p {
+    display: none;
+  }
+
+  .decision-stage-nav {
+    grid-auto-columns: 72px;
+  }
+
+  .decision-stage-nav > button {
+    min-height: 54px;
+    grid-template-columns: 20px 1fr;
+    padding: 7px 6px;
+    gap: 4px;
+  }
+
+  .decision-stage-nav > button > b {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .decision-stage-nav > button strong {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .decision-stage-nav > button em {
+    display: none;
+  }
+
+  .decision-stage-content {
+    padding: 22px 14px 128px;
+  }
+
+  .decision-panel > header {
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+  }
+
+  .decision-panel > header h3 {
+    font-size: 24px;
+    line-height: 1.22;
+  }
+
+  .decision-panel > header p {
+    font-size: 13px;
+  }
+
+  .detail-hero {
+    grid-template-columns: 44px minmax(0, 1fr);
+    padding: 22px 0 18px;
+    gap: 14px;
+  }
+
+  .detail-hero h1 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .detail-hero > div:nth-child(2) > p {
+    font-size: 14px;
+  }
+
+  .hero-meta > * {
+    min-height: 34px;
+    font-size: 12px;
+  }
+
+  .hero-run-details > div {
+    right: 0;
+    left: auto;
+  }
+
+  .detail-related {
+    scroll-snap-type: x proximity;
+  }
+
+  .detail-related > span {
+    min-width: 76px;
+  }
+
+  .detail-related a {
+    min-width: 180px;
+    scroll-snap-align: start;
+  }
+
+  .brief-detail-layout,
+  .concept-detail-hero,
+  .poster-detail-layout,
+  .culture-detail-layout,
+  .market-detail-grid,
+  .strategy-detail-layout {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail-editor,
+  .brief-context,
+  .concept-gallery,
+  .visual-provider-hero,
+  .poster-artboard,
+  .concept-detail-image {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .culture-detail-layout {
+    display: flex;
+    min-height: 0;
+    overflow: visible;
+    flex-direction: column;
+  }
+
+  .culture-graph-board {
+    min-height: 0;
+    overflow: visible;
+    padding: 12px;
+    background: var(--lovable-warm-sand);
+  }
+
+  .culture-graph-board svg,
+  .culture-graph-core {
+    display: none;
+  }
+
+  .culture-node-grid {
+    position: static;
+    height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    padding: 0;
+    gap: 8px;
+  }
+
+  .culture-node-grid button {
+    width: 100%;
+    min-width: 0;
+    min-height: 78px;
+  }
+
+  .culture-record-panel {
+    padding: 20px;
+    border-top: 1px solid var(--lovable-linen-border);
+    border-left: 0;
+  }
+
+  .detail-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .detail-section-heading h2,
+  .detail-editor header h2,
+  .brief-context h2 {
+    font-size: 21px;
+  }
+
+  .market-method-card {
+    position: static;
+  }
+
+  .bom-table {
+    overflow: visible;
+  }
+
+  .bom-row--head {
+    display: none;
+  }
+
+  .bom-row:not(.bom-row--head) {
+    min-width: 0;
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: start;
+    padding: 15px;
+    gap: 7px 10px;
+  }
+
+  .bom-row:not(.bom-row--head) > code {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+  }
+
+  .bom-row:not(.bom-row--head) > strong,
+  .bom-row:not(.bom-row--head) > span,
+  .bom-row:not(.bom-row--head) > small {
+    grid-column: 2;
+  }
+
+  .bom-row:not(.bom-row--head) > span,
+  .bom-row:not(.bom-row--head) > small {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .bom-row:not(.bom-row--head) > span::before,
+  .bom-row:not(.bom-row--head) > small::before {
+    display: inline-block;
+    min-width: 42px;
+    margin-right: 7px;
+    color: var(--lovable-dim-gray);
+    font-size: 11px;
+  }
+
+  .bom-row:not(.bom-row--head) > span:nth-of-type(1)::before {
+    content: "材料";
+  }
+
+  .bom-row:not(.bom-row--head) > span:nth-of-type(2)::before {
+    content: "工艺";
+  }
+
+  .bom-row:not(.bom-row--head) > small::before {
+    content: "验收";
+  }
+
+  .poster-artboard::after {
+    display: none;
+  }
+}

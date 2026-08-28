@@ -10,3 +10,4 @@
 - Approved comp: `.impeccable/mocks/workbench-creative-instrument.png` (choice delegated by the user after rejecting both over-dense and showcase-minimal rounds).
 - Keep non-literal: do not reproduce invented node names, dates, thumbnails or reference imagery from the comp; use QianCraft's real nodes, data and existing product asset.
 - Responsive behavior: ship the evidence dock open on desktop for recognisable tool context; at 760px and below, collapse both peripheral panels, center the selected node and open docks/Inspector as reversible overlays.
+- Information discipline: show one user-facing Chinese label per concept, never a decorative Chinese/English pair; keep status and summary singular, and progressively disclose run IDs, raw fields and methodology JSON.

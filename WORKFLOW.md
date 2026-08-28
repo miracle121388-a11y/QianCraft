@@ -1,7 +1,7 @@
 # QianCraft 工作流程与持续更新记录
 
 > 文档性质：项目级唯一工作流说明、当前状态快照与追加式更新台账  
-> 当前版本：0.7.1
+> 当前版本：0.7.2
 > 最后维护：2026-08-29
 > 维护状态：强制持续维护
 
@@ -33,7 +33,7 @@
 |---|---|
 | 产品名称 | QianCraft Creative Intelligence Workbench｜文化文创智能工作台 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
-| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py`；暖纸色 Creative Instrument 工具骨架由 56px 五阶段导航、64px 工具轨、按需 248px 证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 组成，手机端把 Dock/Inspector 变为可逆覆盖层；默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio 贯通文化、市场、机会/量分、任务书、视觉、概念与海报；每个节点均有专用展示页、引用台账、独立 Run / Run from here / 编辑保存 / JSON 导出。0.7.1 已把用户提供的 Parchment / Warm Sand / Linen / Stone / Dim Gray / Charcoal / Interaction Indigo 关系锁定到工作台、决策面板与节点详情全部 chrome；纯白和冷灰不再作为产品中性色，主动作保持 Charcoal，Indigo 只承担链接、选择、路径与焦点。Camera Plain 保留为设计字体栈命名，实际中文由自托管 Noto Sans SC / Noto Serif SC 覆盖。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
+| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py`；暖纸色 Creative Instrument 工具骨架由 56px 五阶段导航、64px 工具轨、按需 248px 证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 组成，手机端把 Dock/Inspector 变为可逆覆盖层；默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio 贯通文化、市场、机会/量分、任务书、视觉、概念与海报；每个节点均有专用展示页、引用台账、独立运行/从此运行/编辑保存/JSON 导出。0.7.2 在既有暖纸色系统上完成全页面信息降噪：同一概念只显示一个中文栏目名，重复状态/摘要/节点 ID 删除，运行 ID、机器字段和方法 JSON 按需展开；Inspector、Decision Studio 与九个详情页统一可读字号和层级。390px 下文化图谱为双列触控卡，编辑器为单列，BOM 为分组记录，人工决策表单完整占宽。Camera Plain 保留为设计字体栈命名，实际中文由自托管 Noto Sans SC / Noto Serif SC 覆盖。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
 | GitHub 展示 | 项目 README 包含原创横版 SVG 首屏、真实状态徽章、在线实例、成果海报、A/B/C 三方向视觉、Workbench 快速开始、Mermaid 架构、可信边界、路线图与许可证说明 |
 | 默认主题 | 贵州苗绣 |
 | 默认目标市场 | 18–30 岁年轻消费者 |
@@ -52,10 +52,10 @@
 | Workbench Workspace | 默认 `guizhou-miao-demo` 绑定运行 `20260828T060200Z-e44240e3`，Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept A、任务书 v1、A/B/C 三套概念视觉、可版本化 `DecisionProfile` 与机器/人工并列的 `decision_output`；New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；旧工作区读取时兼容迁移，线上运行态目录由持久卷承载，镜像中的证据基线不被覆盖 |
 | 图像生成适配 | Concept A 使用项目原创主视觉；Concept B/C 已通过内置图像生成能力制作、目视复核、SHA-256 登记并存入项目。独立 OpenAI-compatible Images API 自动化边界仍未配置，因此 Visual Generation 与单概念重生成继续诚实返回 `warning`，不会把内置资产冒充为 DeepSeek 新调用 |
 | API | 本机与 Zeabur 服务端 LLM Key 均通过私密环境变量配置且不回显；探针确认 DeepSeek 可达、返回 3 个模型且 `deepseek-v4-flash` 可用；完整 `auto` 链路已真实调用并成功。对同一服务的 `/images/generations` 实测为 HTTP 404，确认该密钥只承担文本模型链路 |
-| 线上发布 | 0.7.1 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；部署 `6a91d1a613d3d467215e74b8` 已为 `RUNNING`，Nginx 统一 Basic Auth，`/healthz` 免鉴权，Vinext 与 Tool API 仅监听容器回环地址，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.7.1 认证后页面/API 保留待凭证复验；0.6.0 已完成的认证公网业务验收仍有记录 |
+| 线上发布 | 0.7.2 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；部署 `6a91d9ffdb37f2e6ddbc152e` 已为 `RUNNING`，远端日志确认 `qiancraft-0.7.2` 与 Vinext 五阶段构建完成。Nginx 统一 Basic Auth，`/healthz` 免鉴权，Vinext 与 Tool API 仅监听容器回环地址，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.7.2 认证后页面/API 保留待凭证复验；0.6.0 已完成的认证公网业务验收仍有记录 |
 | MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb 等平台；四平台原始 JSONL 与历史快照存在。最新 `auto` 实机运行没有重新访问平台，后续仍须按当轮实际结果标记 `live/cache/unavailable` |
 | 自动测试 | Python 37/37、Workbench TypeScript 5/5 通过 |
-| 静态检查 | `ruff check app tests`、Web typecheck、ESLint、Vinext 五阶段 production build 与 `git diff --check` 通过；0.7.1 最终隔离发布包为 87 个文件、5,694,056 字节，敏感路径与长 `sk-` 模式均为 0 命中；1440 × 900 / 390 × 844 工作台、Human Decision Studio 与节点详情完成 Impeccable 实机复核 |
+| 静态检查 | `ruff check app tests`、Web typecheck、ESLint、Vinext 五阶段 production build、`uv lock --check`、JSON 解析与 `git diff --check` 通过；0.7.2 隔离发布包为 71 个文件、8,893,000 字节，敏感文件名与长 `sk-` 模式均为 0 命中；1440 × 900 / 390 × 844 工作台、Human Decision Studio 与全部九个节点详情完成真实浏览器复核。Impeccable 只留下 React Flow 实际画布网格这一条 advisory，无阻断项 |
 | 凭证检查 | 交付目录未发现 `sk-` 密钥泄漏 |
 
 当前正式产物：
@@ -133,9 +133,9 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
        │
        └→ Tool API：Bootstrap + Workspace JSON + 节点详情 + 节点动作
                   │
-                  ├→ Knowledge Center：22 条文化记录 / 32 来源 / 四平台 378 快照 / Top 10
+                  ├→ 证据中心：22 条文化记录 / 32 来源 / 四平台 378 快照 / Top 10
                   ├→ React Flow：Culture + Market → Strategy → Brief → Visual → A/B/C → Poster
-                  ├→ Inspector：Info / Inputs / Parameters / Outputs / Sources / History / Actions
+                  ├→ Inspector：概览 / 输入 / 配置 / 结果 / 证据 / 记录 / 操作
                   ├→ Node Detail：9 个独立展示页 + 引用解析 + 相邻节点 + 独立运行/保存/导出
                   ├→ Human Decision Studio：文化选择 → 平台/品类 → 机会 → 权重/风险 → 任务书 → 视觉/概念 → 海报
                   │          ├→ Guided 保留系统推荐；Manual 保存人的选择与版本
@@ -354,7 +354,7 @@ uv run ruff check app tests
 
 ```powershell
 # 本地存在 Docker 时可先构建同一生产镜像
-docker build -t qiancraft:0.7.1 .
+docker build -t qiancraft:0.7.2 .
 
 # Zeabur CLI 在已选择项目/环境/服务后上传精简发布目录
 npx --yes zeabur@latest deploy --service-id <service-id> --environment-id <environment-id> --interactive=false
@@ -385,6 +385,39 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-08-29｜0.7.2｜全页面信息降噪、移动端修复与逐页实机收口
+
+变更：
+
+- 按工作台、人工决策与九个节点详情逐页实图检查，删除 `Knowledge Center`、`CULTURE DNA`、`MARKET RADAR`、`INSPECTOR`、`STATUS`、`SUMMARY`、`NODE ID` 等装饰性中英重复或机器眉题；节点操作、Inspector 七个页签、证据/资产/历史 Dock、生成动作和加载态统一为单一中文表达。持久卷中旧版视觉节点摘要即使仍含 `Concept A / B / C` 或 `Images API`，展示层也会稳定归一为中文，不强行改写用户工作区 JSON。
+- 重构信息层级：Inspector 只保留一次状态和一次摘要，运行 ID 从默认页脚移除；节点详情把工作区/运行编号收进“运行信息”，市场方法 JSON 收进“字段说明”，视觉服务不再默认暴露环境变量缺项。Decision Studio 删除七段重复说明与英文眉题，桌面弹窗扩大到安全边距并建立明确 dialog 层，背景 Inspector 不再穿透形成双关闭按钮。
+- 完成 390px 真实布局修复：Decision Studio 从错误的 184px+内容双栏改为水平阶段条加全宽表单；文化关系图转换为双列触控卡；任务书与概念编辑器收回容器宽度；三套概念 BOM 从 900px 固定表格改为带字段标签的分组记录；海报不再在已有成品图上重复叠标题。主要控件与正文提高到可读字号，11px 以下只剩画布归因等不可替代内容。
+- 保留 Parchment / Warm Sand / Linen / Charcoal 的暖纸仪器台账视觉，不增加渐变、装饰卡片或虚构缩略图。版本统一升级为 0.7.2，并同步设计宪法、Impeccable 机器规范、工作台简报、排版专题、README、实机与部署文档。
+
+原因：
+
+- 用户在真实页面中指出界面仍存在文字过多、不必要中英对照、小字、弹层层级和“太 AI / 太 Demo”的问题，并要求逐页用实图模型检查。本轮以“单一标签、任务优先、机器信息渐进披露、手机真实可操作”为收口标准，不再仅凭组件代码判断完成。
+
+验证：
+
+- `uv run pytest -q` 37/37、`uv run ruff check app tests`、`pnpm test` 5/5、`pnpm typecheck`、`pnpm lint`、Vinext 五阶段 `pnpm build`、`uv lock --check`、JSON 解析与 `git diff --check` 通过。
+- 1440 × 900 实测工作台、人工决策和文化/市场/策略/任务书/视觉/A/B/C/海报九个详情页；九页均无视口外内容，人工决策 dialog 为 1408 × 876 且背景 Inspector 控件不可穿透。390 × 844 再测同一范围，九页文档 `scrollWidth` 均为 390px；文化图谱、任务书编辑器、三套 BOM 和海报容器都在可视宽度内，Decision Studio 内容宽度为完整 390px。
+- Impeccable 最终检测无阻断项；唯一 advisory 是 `globals.css` 中的双轴网格背景，该网格仅用于实际 React Flow/关系画布，符合检测器给出的保留边界。
+- 隔离发布副本为 71 个文件、8,893,000 字节，敏感文件名与长 `sk-` 模式均为 0 命中；只在副本中压缩 6 张发布 PNG，源高清资产未修改。Zeabur 部署 `6a91d9ffdb37f2e6ddbc152e` 为 `RUNNING`，远端确认 `qiancraft-0.7.2` 与 Vinext 构建完成；公网 `/healthz` 为 200，匿名 `/` 为 401。
+
+边界：
+
+- 本轮没有修改 22 条文化事实、32 个来源、378 条历史平台快照、机会评分、文化风险或 `reference_only` 像素边界；只调整界面表达与默认视觉节点摘要。项目仍停在概念视觉、工厂询价/首样简报与展示海报阶段，不代表商业图稿批准、工厂下单、量产工程或合规就绪。
+- 当前会话没有站点 Basic Auth 凭证，因此没有声称完成 0.7.2 认证后公网页面/API 复验；完整页面、交互与响应式验收来自本地真实 HTTP 服务，线上只确认远端构建、运行状态、免鉴权健康检查与匿名门禁。
+- 独立图像自动化服务仍未配置；已有 A/B/C 项目视觉可展示，重新生成继续诚实提示需要独立服务，不把旧图或项目内置资产冒充为一次新调用。
+
+涉及文件：
+
+- `web/app/workbench.tsx`、`web/app/workbench-nodes.tsx`、`web/app/workbench-model.ts`、`web/app/decision-studio.tsx`、`web/app/node-detail.tsx`、`web/app/globals.css`、`web/package.json`
+- `app/__init__.py`、`app/workbench.py`、`data/workbench/workspaces/guizhou-miao-demo.json`
+- `DESIGN.md`、`.impeccable/design.json`、`.impeccable/workbench-brief.md`、`docs/typography_system.md`
+- `README.md`、`docs/real_machine_test.md`、`docs/deployment_zeabur.md`、`pyproject.toml`、`uv.lock`、`qiancraft.egg-info/PKG-INFO`、`WORKFLOW.md`
 
 ### 2026-08-29｜0.7.1｜全表面暖纸色关系锁定
 

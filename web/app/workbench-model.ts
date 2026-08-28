@@ -400,6 +400,16 @@ export const NODE_TYPE_LABELS: Record<WorkbenchNodeType, string> = {
   PosterBoardNode: '概念海报',
 };
 
+export function displayNodeSummary(type: WorkbenchNodeType, summary: string): string {
+  if (
+    type === 'VisualGenerationNode'
+    && (summary.includes('Concept A / B / C') || summary.includes('Images API'))
+  ) {
+    return '三套概念方向已具备可展示视觉；文本链路已经实机验证，重新生成仍需配置独立图像服务。';
+  }
+  return summary;
+}
+
 export function downstreamNodeIds(
   edges: WorkbenchEdge[],
   startId: string,

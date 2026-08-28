@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.7.1-3451b2?style=flat-square" alt="Version 0.7.1">
+  <img src="https://img.shields.io/badge/version-0.7.2-3451b2?style=flat-square" alt="Version 0.7.2">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
   <img src="https://img.shields.io/badge/tests-42%20passed-2f7358?style=flat-square" alt="42 tests passed">
   <img src="https://img.shields.io/badge/status-deployed%20prototype-d08b32?style=flat-square" alt="Deployed prototype">

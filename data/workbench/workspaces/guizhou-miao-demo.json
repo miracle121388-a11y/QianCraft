@@ -428,7 +428,7 @@
         "label": "视觉生成",
         "eyebrow": "VISUAL GENERATION",
         "title": "概念方向 A / B / C",
-        "summary": "Concept A / B / C 已具备可展示视觉；DeepSeek 实机文本链路已通过，一键图像重生成仍需独立 Images API。",
+        "summary": "三套概念方向已具备可展示视觉；文本链路已经实机验证，重新生成仍需配置独立图像服务。",
         "status": "warning",
         "provider": {
           "provider": "unconfigured",

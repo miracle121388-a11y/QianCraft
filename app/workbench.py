@@ -649,7 +649,7 @@ def default_workspace() -> dict[str, Any]:
                     "图像服务已就绪，可生成三个可追溯方向。"
                     if adapter_status["configured"]
                     else (
-                        "Concept A / B / C 已具备可展示视觉；一键图像重生成仍需独立 Images API。"
+                        "三套概念方向已具备可展示视觉；重新生成仍需配置独立图像服务。"
                         if concept_b_asset and concept_c_asset
                         else "已保留当前项目概念图；新图像服务尚未配置。"
                     )

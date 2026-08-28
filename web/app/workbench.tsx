@@ -48,6 +48,7 @@ import {
   NODE_TYPE_LABELS,
   STATUS_LABELS,
   apiAssetUrl,
+  displayNodeSummary,
   markNodeStatus,
   orderedRunNodeIds,
   updatePosterSection,
@@ -235,7 +236,7 @@ async function exportPosterPng(
   context.fillText('QIANCRAFT / CULTURAL PRODUCT CONCEPT', 1270, 90);
   context.fillStyle = '#aab5be';
   context.font = '400 17px Arial, sans-serif';
-  context.fillText('EDITABLE POSTER BOARD · CONCEPT STAGE', 1270, 130);
+  context.fillText('可编辑概念海报 · 首样沟通阶段', 1270, 130);
 
   const visibleSections = poster.sections.filter(
     (section) => !poster.hiddenSections.includes(section),
@@ -413,7 +414,6 @@ function KnowledgeCenter({
     <aside className="knowledge-center">
       <div className="panel-heading">
         <div>
-          <span>KNOWLEDGE CENTER</span>
           <h2>证据中心</h2>
         </div>
         <div className="panel-heading__actions"><b>{knowledge.culture.recordCount + knowledge.market.ranking.length}</b><button type="button" onClick={() => onOpenDecisions('culture')}>人工选材</button></div>
@@ -422,7 +422,6 @@ function KnowledgeCenter({
       <section className="knowledge-section">
         <div className="section-title-row">
           <div>
-            <i className="section-icon section-icon--market">M</i>
             <span>市场雷达</span>
           </div>
           <button type="button" onClick={() => onOpenDecisions('market')}>调整范围</button>
@@ -468,7 +467,6 @@ function KnowledgeCenter({
       <section className="knowledge-section knowledge-section--culture">
         <div className="section-title-row">
           <div>
-            <i className="section-icon section-icon--culture">C</i>
             <span>贵州在地文化</span>
           </div>
           <div className="section-title-actions"><button type="button" onClick={onOpenGraph}>展开图谱</button><button type="button" onClick={() => onOpenDecisions('culture')}>选择记录</button></div>
@@ -497,7 +495,7 @@ function KnowledgeCenter({
             >
               <div>
                 <span>{record.category || '在地文化'}</span>
-                <small>{record.sourceRefs.length} refs</small>
+                <small>{record.sourceRefs.length} 条引用</small>
               </div>
               <h3>{record.name}</h3>
               <p>{record.region.slice(0, 2).join(' · ')}</p>
@@ -528,10 +526,10 @@ function AssetDock({
   return (
     <aside className="asset-dock">
       <header className="dock-heading">
-        <div><span>ASSET LIBRARY</span><h2>方案资产</h2></div>
+        <div><h2>方案资产</h2></div>
         <b>{assets.length}</b>
       </header>
-      <p className="dock-intro">比较概念方向与当前海报。点击资产会在画布中定位并打开对应 Inspector。</p>
+      <p className="dock-intro">比较概念方向与当前海报，点击即可定位。</p>
       <div className="asset-dock__list">
         {assets.map((node) => {
           const imageUrl = String(node.data.imageUrl ?? '');
@@ -553,7 +551,7 @@ function HistoryDock({ node }: { node: WorkbenchNode | undefined }) {
   return (
     <aside className="history-dock">
       <header className="dock-heading">
-        <div><span>ACTIVITY</span><h2>节点历史</h2></div>
+        <div><h2>节点历史</h2></div>
         <b>{history.length}</b>
       </header>
       {node ? (
@@ -583,7 +581,6 @@ function CultureGraphOverlay({
     <div className="graph-overlay" role="dialog" aria-modal="true" aria-label="贵州文化图谱">
       <header>
         <div>
-          <span>CULTURAL EVIDENCE GRAPH</span>
           <h2>贵州文化知识图谱</h2>
           <p>地域、工艺、纹样与使用边界保持证据引用，不把支系差异压扁成一种风格。</p>
         </div>
@@ -723,10 +720,10 @@ function InspectorPanel({
   const tabs: Array<[InspectorTab, string]> = [
     ['info', '概览'],
     ['inputs', '输入'],
-    ['parameters', '参数'],
-    ['outputs', '输出'],
-    ['sources', '来源'],
-    ['history', '历史'],
+    ['parameters', '配置'],
+    ['outputs', '结果'],
+    ['sources', '证据'],
+    ['history', '记录'],
     ['actions', '操作'],
   ];
   const isBrief = node.type === 'DesignBriefNode';
@@ -743,6 +740,7 @@ function InspectorPanel({
         <div>
           <span>{NODE_TYPE_LABELS[node.type]}</span>
           <h2>{node.data.title}</h2>
+          <small className={`inspector-status-label is-${node.data.status}`}>{STATUS_LABELS[node.data.status]}</small>
         </div>
         <i className={`inspector-state inspector-state--${node.data.status}`} />
       </header>
@@ -756,16 +754,8 @@ function InspectorPanel({
       <div className="inspector__content">
         {tab === 'info' ? (
           <>
-            <section className="inspector-section">
-              <span>STATUS</span>
-              <div className="inspector-status-row">
-                <strong>{STATUS_LABELS[node.data.status]}</strong>
-                <em>{node.data.status}</em>
-              </div>
-            </section>
-            <section className="inspector-section">
-              <span>SUMMARY</span>
-              <p>{node.data.summary}</p>
+            <section className="inspector-section inspector-section--summary">
+              <p>{displayNodeSummary(node.type, node.data.summary)}</p>
             </section>
             {node.data.stats?.length ? (
               <section className="inspector-metrics">
@@ -777,10 +767,10 @@ function InspectorPanel({
             {node.type === 'VisualGenerationNode' ? (
               <section className="provider-card">
                 <div><i className={provider.configured ? 'is-ready' : ''} /><strong>{provider.configured ? '图像服务已就绪' : '图像服务未配置'}</strong></div>
-                <p>{provider.detail}</p>
+                <p>{provider.configured ? '服务已连接，可按当前任务书继续生成。' : '当前展示视觉可用；重新生成前需配置独立图像服务。'}</p>
                 <dl>
-                  <div><dt>Provider</dt><dd>{provider.provider}</dd></div>
-                  <div><dt>Model</dt><dd>{provider.model || '—'}</dd></div>
+                  <div><dt>服务</dt><dd>{provider.provider === 'unconfigured' ? '未配置' : provider.provider}</dd></div>
+                  <div><dt>模型</dt><dd>{provider.model || '—'}</dd></div>
                 </dl>
               </section>
             ) : null}
@@ -789,7 +779,7 @@ function InspectorPanel({
 
         {tab === 'inputs' ? (
           <section className="inspector-section">
-            <span>UPSTREAM NODES</span>
+            <span>上游输入</span>
             {upstream.length ? (
               <div className="input-list">
                 {upstream.map((item) => (
@@ -850,16 +840,16 @@ function InspectorPanel({
             <button className="primary-button" disabled={busy} type="submit">保存概念编辑</button>
             <div className="concept-parameter-actions">
               <button className="secondary-button" type="button" onClick={() => onActivateConcept(node.id)}>{node.data.active ? '当前采用方向' : '设为当前方向'}</button>
-              <button className="secondary-button" type="button" onClick={() => onDuplicateConcept(node.id)}>Duplicate</button>
-              <button className="secondary-button" disabled={busy} type="button" onClick={() => onRegenerateConcept(node.id)}>Regenerate</button>
-              <button className="secondary-button" disabled={busy} type="button" onClick={() => onGenerateMoreConcept(node.id)}>Generate More</button>
+              <button className="secondary-button" type="button" onClick={() => onDuplicateConcept(node.id)}>复制方向</button>
+              <button className="secondary-button" disabled={busy} type="button" onClick={() => onRegenerateConcept(node.id)}>重新生成</button>
+              <button className="secondary-button" disabled={busy} type="button" onClick={() => onGenerateMoreConcept(node.id)}>生成新方向</button>
             </div>
           </form>
         ) : null}
 
         {tab === 'parameters' && !isBrief && !isPoster && !isConcept ? (
           <section className="inspector-section">
-            <span>PARAMETERS</span>
+            <span>运行参数</span>
             <dl className="parameter-list">
               <div><dt>状态</dt><dd>{node.data.status}</dd></div>
               <div><dt>节点类型</dt><dd>{node.type}</dd></div>
@@ -870,7 +860,7 @@ function InspectorPanel({
 
         {tab === 'outputs' ? (
           <section className="inspector-section">
-            <span>NODE OUTPUT</span>
+            <span>节点输出</span>
             <pre>{JSON.stringify(node.data.outputs ?? node.data.brief ?? node.data.poster ?? { title: node.data.title, summary: node.data.summary, status: node.data.status, imageUrl: node.data.imageUrl }, null, 2)}</pre>
             <button className="secondary-button" type="button" onClick={onDownloadPackage}>下载 DesignPackage JSON</button>
           </section>
@@ -878,14 +868,14 @@ function InspectorPanel({
 
         {tab === 'sources' ? (
           <section className="inspector-section">
-            <span>EVIDENCE SOURCES</span>
+            <span>证据来源</span>
             <div className="source-list">{(node.data.sourceRefs ?? []).length ? node.data.sourceRefs?.map((source) => <code key={source}>{source}</code>) : <p>该节点没有独立来源，读取上游输出。</p>}</div>
           </section>
         ) : null}
 
         {tab === 'history' ? (
           <section className="inspector-section">
-            <span>VERSION HISTORY</span>
+            <span>版本记录</span>
             <div className="history-list">
               {(node.data.history ?? []).map((item, index) => (
                 <div key={`${item.at}-${index}`}><i /><p>{item.event}</p><time>{new Date(item.at).toLocaleString('zh-CN')}</time></div>
@@ -896,17 +886,16 @@ function InspectorPanel({
 
         {tab === 'actions' ? (
           <section className="inspector-actions">
-            <button disabled={busy} type="button" onClick={() => onRun(node.id)}><span>▶</span><p><strong>{node.data.status === 'idle' ? 'Run node' : 'Re-run node'}</strong><small>仅运行当前节点</small></p></button>
-            <button disabled={busy} type="button" onClick={() => onRunFromHere(node.id)}><span>↳</span><p><strong>Run from here</strong><small>按依赖顺序运行当前节点与下游</small></p></button>
-            {isConcept ? <button disabled={busy} type="button" onClick={() => onActivateConcept(node.id)}><span>◎</span><p><strong>Use this concept</strong><small>设为海报当前概念</small></p></button> : null}
-            {isConcept ? <button disabled={busy} type="button" onClick={() => onDuplicateConcept(node.id)}><span>⧉</span><p><strong>Duplicate concept</strong><small>保留当前版本并创建独立分支</small></p></button> : null}
-            {isConcept ? <button disabled={busy} type="button" onClick={() => onRegenerateConcept(node.id)}><span>↻</span><p><strong>Regenerate</strong><small>只重生成当前方向；需真实图像服务</small></p></button> : null}
-            {isConcept ? <button disabled={busy} type="button" onClick={() => onGenerateMoreConcept(node.id)}><span>＋</span><p><strong>Generate more</strong><small>建立新方向；服务就绪时立即生成</small></p></button> : null}
-            {isPoster ? <button type="button" onClick={onExportPoster}><span>⇩</span><p><strong>Export PNG</strong><small>按当前板块配置输出 1800 × 2400</small></p></button> : null}
+            <button disabled={busy} type="button" onClick={() => onRun(node.id)}><span>▶</span><p><strong>{node.data.status === 'idle' ? '运行节点' : '重新运行'}</strong><small>仅运行当前节点</small></p></button>
+            <button disabled={busy} type="button" onClick={() => onRunFromHere(node.id)}><span>↳</span><p><strong>从此处运行</strong><small>按依赖顺序运行当前节点与下游</small></p></button>
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onActivateConcept(node.id)}><span>◎</span><p><strong>采用此方案</strong><small>设为海报当前概念</small></p></button> : null}
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onDuplicateConcept(node.id)}><span>⧉</span><p><strong>复制方案</strong><small>保留当前版本并创建独立分支</small></p></button> : null}
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onRegenerateConcept(node.id)}><span>↻</span><p><strong>重新生成</strong><small>只重生成当前方向；需真实图像服务</small></p></button> : null}
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onGenerateMoreConcept(node.id)}><span>＋</span><p><strong>生成新方向</strong><small>服务就绪时建立独立方向</small></p></button> : null}
+            {isPoster ? <button type="button" onClick={onExportPoster}><span>⇩</span><p><strong>导出 PNG</strong><small>按当前配置输出 1800 × 2400</small></p></button> : null}
           </section>
         ) : null}
       </div>
-      <footer className="inspector__footer"><span>NODE ID</span><code>{node.id}</code></footer>
     </aside>
   );
 }
@@ -915,7 +904,7 @@ function LoadingScreen({ error, onRetry }: { error: string; onRetry: () => void 
   return (
     <main className="loading-screen">
       <div className="loading-mark">Q</div>
-      <span>QIANCRAFT CREATIVE INTELLIGENCE</span>
+      <span>黔艺造物 · 文化创意工作台</span>
       {error ? (
         <><h1>工作台 API 尚未连接</h1><p>{error}</p><code>python -m app.tool_api --port 8787</code><button type="button" onClick={onRetry}>重新连接</button></>
       ) : (
@@ -1478,7 +1467,7 @@ export function Workbench() {
         <div aria-label="节点 Inspector" className={`inspector-slot ${showInspector ? 'is-open' : ''}`} ref={inspectorPanelRef} role="region" tabIndex={-1}>
           {showInspector ? (
             <>
-              <div className="inspector-slot__toolbar"><span>INSPECTOR</span><button aria-label="收起 Inspector" type="button" onClick={() => setShowInspector(false)}><X aria-hidden="true" size={17} /></button></div>
+              <div className="inspector-slot__toolbar"><span>节点信息</span><button aria-label="收起 Inspector" type="button" onClick={() => setShowInspector(false)}><X aria-hidden="true" size={17} /></button></div>
               <InspectorPanel
                 key={`${selectedNode?.id ?? 'empty'}-${selectedNode?.data.version ?? workspace.updated_at}`}
                 node={selectedNode}

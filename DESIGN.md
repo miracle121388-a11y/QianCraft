@@ -153,6 +153,8 @@ QianCraft 是把文化证据、市场观察、人工决策和设计节点放到�
 
 0.7.1 将这套色彩关系锁定到全部产品表面：页面、顶栏、Dock、画布、节点、Inspector、Human Decision Studio 与九类详情内容不再混用纯白或冷灰；`faint-text` 与 Dim Gray 共用 `#5f5f5d`，确保 14px 以下辅助文字在 Parchment / Warm Sand 上仍达到 WCAG AA。Interaction Indigo 只标记链接、焦点、选择和当前路径，主动作继续使用 Charcoal。
 
+0.7.2 进一步执行“任务优先的信息纪律”：界面默认只出现当前任务、证据边界与下一步动作；同一概念不再同时显示中英文栏目名，原始字段、运行标识与方法 JSON 退到按需展开层。Inspector 删除重复状态、摘要与节点 ID，Decision Studio 删除阶段说明噪声；手机端知识图谱、任务书、BOM 与决策表单全部改为真实单列或双列触控布局。11px 以下只允许画布归因或不可替代的极短代码，不再承载说明和操作。
+
 **Key Characteristics:**
 
 - 羊皮纸画布、温砂表面、亚麻边线和炭黑文字构成低噪声暖色工作环境。
@@ -198,6 +200,8 @@ QianCraft 是把文化证据、市场观察、人工决策和设计节点放到�
 **The Functional Indigo Rule.** Interaction Indigo 只用于可操作、已选择、主路径和键盘焦点；同一视口不以 Indigo 装饰非交互内容。
 
 **The Culture Stays in Content Rule.** 靛青、锈色、青绿和紫罗兰只进入文化记录、节点身份、状态或概念素材，不染色全局导航与工作台底色。
+
+**The One Label Rule.** 同一栏目只保留一个面向用户的名称；中文工作流不追加装饰性英文对照，机器字段、运行 ID 与原始 JSON 只在确有核查需要时按需展开。
 
 **The State Is Evidence Rule.** 成功、缓存、待更新、警告与错误必须保留各自的语义色和文字标签，不能只靠颜色传达。
 
