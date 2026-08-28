@@ -155,6 +155,8 @@ QianCraft 是把文化证据、市场观察、人工决策和设计节点放到�
 
 0.7.2 进一步执行“任务优先的信息纪律”：界面默认只出现当前任务、证据边界与下一步动作；同一概念不再同时显示中英文栏目名，原始字段、运行标识与方法 JSON 退到按需展开层。Inspector 删除重复状态、摘要与节点 ID，Decision Studio 删除阶段说明噪声；手机端知识图谱、任务书、BOM 与决策表单全部改为真实单列或双列触控布局。11px 以下只允许画布归因或不可替代的极短代码，不再承载说明和操作。
 
+0.7.3 把画布重新定义为“稳定流程索引”而不是节点卡片展板：九个实例在 Rest / Selected 间保持完全相同的横向几何尺寸与位置，选择只用 Indigo keyline、3% 纸面色差和 Inspector 绑定表达。摘要、字段和操作统一进入 Inspector 或独立详情页，避免点击时节点从约 63px 突增到约 265px 并打断关系线阅读。
+
 **Key Characteristics:**
 
 - 羊皮纸画布、温砂表面、亚麻边线和炭黑文字构成低噪声暖色工作环境。
@@ -234,7 +236,7 @@ QianCraft 是把文化证据、市场观察、人工决策和设计节点放到�
 
 桌面工作台保持四列仪器框架：顶部 56px 命令栏，下方依次为 64px 工具轨、可选 248px 情境 Dock、弹性主画布和可选 320px Inspector。证据、资产与历史共享同一 Dock 插槽，任何时刻只显示一个。1280px 以下同时开启两侧面板时，Dock 收至 230px、Inspector 收至 306px，主画布仍保有弹性宽度。
 
-主画布以 24px 点阵和细关系线组织节点；非选中节点只保留 68px 头部，选中节点展开正文与动作并上移 4px。300px 是标准节点宽度，320px 用于视觉生成和概念节点。画布上下文位于左上，控件左下，图例与小地图靠右下，均不得遮挡选中节点的主操作。
+主画布以 24px 点阵和细关系线组织节点；所有节点始终保持 68px 横向索引条，选择只改变 Indigo keyline、纸面色差和 Inspector 绑定，不改变节点宽高或位置。300px 是标准节点宽度，320px 用于视觉生成和概念节点。摘要、字段与动作统一进入 Inspector 或节点详情页；画布上下文位于左上，控件左下，图例与小地图靠右下，均不得遮挡当前路径。
 
 Decision Studio 在宽屏上是居中的最大 1380px × 900px 覆盖层，左侧 218px 阶段导航、右侧滚动内容、底部持久操作栏；980px 以下占满视口，680px 以下阶段导航改为 54px 高的水平可滚动条，内容改单列，主保存动作固定在底部。节点详情页最大内容宽度 1280px，主内容、关联节点和页脚沿同一轴对齐。
 
@@ -248,7 +250,7 @@ Decision Studio 在宽屏上是居中的最大 1380px × 900px 覆盖层，左�
 
 ## Elevation & Depth
 
-普通表面没有 drop shadow。羊皮纸节点、温砂卡、输入、工具栏和 Decision Studio 使用 0.5px inset edge，把边界压入材质而不是让对象漂浮；主层级来自纸色差、边线和留白。选中节点仍可上移 4px，但只切换 Indigo 边与较强 inset edge，不增加投影。Decision Studio 依靠半透明 charcoal backdrop 说明阻塞关系。
+普通表面没有 drop shadow。羊皮纸节点、温砂卡、输入、工具栏和 Decision Studio 使用 0.5px inset edge，把边界压入材质而不是让对象漂浮；主层级来自纸色差、边线和留白。选中节点保持原位与原尺寸，只切换 Indigo 边、极浅选择底色与较强 inset edge。Decision Studio 依靠半透明 charcoal backdrop 说明阻塞关系。
 
 真正覆盖画布的移动端 Dock 与 Inspector 可以保留单向、低强度 drop shadow，帮助用户理解它们来自哪一侧；该例外只属于可逆 viewport overlay，不能复用到普通卡片、节点、按钮或桌面对话框。节点选择以 160ms `ease` 变化，列宽以 180ms `ease` 变化；`prefers-reduced-motion: reduce` 时布局和节点过渡关闭，运行状态脉冲改为静态语义标记。
 
@@ -297,8 +299,8 @@ Decision Studio 在宽屏上是居中的最大 1380px × 900px 覆盖层，左�
 
 ### Flow Nodes
 
-- **Rest:** 标准宽 300px、16px 容器圆角、parchment 底、亚麻边与 soft inset edge；未选中时折叠正文与动作，只保留节点身份、标题、人工版本和文字状态。
-- **Selected:** Indigo 边、strong inset edge、上移 4px并展开摘要/字段/动作；不增加 drop shadow。
+- **Rest:** 标准宽 300px、固定 68px 高、16px 容器圆角、parchment 底、亚麻边与 soft inset edge；只保留节点身份、标题、人工版本和文字状态。
+- **Selected:** 保持与 Rest 完全相同的几何尺寸和画布位置，只切换 Indigo 边、3% Indigo 纸面色差与 strong inset edge；摘要、字段、动作由绑定 Inspector 或节点详情页承接。
 - **States:** `success`、`cached`、`warning/stale`、`error`、`running` 同时显示状态点和中文标签；运行脉冲在减少动态偏好下静止。
 
 ### Buttons & Badges

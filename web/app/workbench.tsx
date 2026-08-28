@@ -17,6 +17,7 @@ import {
 } from '@xyflow/react';
 import {
   ChevronDown,
+  ExternalLink,
   History,
   Images,
   Library,
@@ -655,6 +656,7 @@ function InspectorPanel({
   provider,
   decisionProfile,
   busy,
+  onOpenDetail,
   onRun,
   onRunFromHere,
   onSaveBrief,
@@ -674,6 +676,7 @@ function InspectorPanel({
   provider: ImageProviderStatus;
   decisionProfile: DecisionProfile;
   busy: boolean;
+  onOpenDetail: (nodeId: string) => void;
   onRun: (nodeId: string) => void;
   onRunFromHere: (nodeId: string) => void;
   onSaveBrief: (brief: DesignBrief) => void;
@@ -886,6 +889,7 @@ function InspectorPanel({
 
         {tab === 'actions' ? (
           <section className="inspector-actions">
+            <button type="button" onClick={() => onOpenDetail(node.id)}><span><ExternalLink aria-hidden="true" size={16} /></span><p><strong>打开完整页面</strong><small>查看该节点的独立展示与引用信息</small></p></button>
             <button disabled={busy} type="button" onClick={() => onRun(node.id)}><span>▶</span><p><strong>{node.data.status === 'idle' ? '运行节点' : '重新运行'}</strong><small>仅运行当前节点</small></p></button>
             <button disabled={busy} type="button" onClick={() => onRunFromHere(node.id)}><span>↳</span><p><strong>从此处运行</strong><small>按依赖顺序运行当前节点与下游</small></p></button>
             {isConcept ? <button disabled={busy} type="button" onClick={() => onActivateConcept(node.id)}><span>◎</span><p><strong>采用此方案</strong><small>设为海报当前概念</small></p></button> : null}
@@ -1476,6 +1480,7 @@ export function Workbench() {
                 provider={provider}
                 decisionProfile={workspace.metadata.decision_profile}
                 busy={busy}
+                onOpenDetail={(nodeId) => window.location.assign(`/nodes/${encodeURIComponent(nodeId)}?workspace=${encodeURIComponent(workspace.workspace_id)}`)}
                 onRun={(nodeId) => void runSequence(nodeId, false)}
                 onRunFromHere={(nodeId) => void runSequence(nodeId, true)}
                 onSaveBrief={(brief) => void handleSaveBrief(brief)}

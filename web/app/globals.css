@@ -2298,11 +2298,7 @@ select:focus-visible {
   height: 100dvh;
   overflow-x: hidden;
   overflow-y: auto;
-  background:
-    linear-gradient(rgba(26, 32, 29, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(26, 32, 29, 0.025) 1px, transparent 1px),
-    #f4f3ed;
-  background-size: 32px 32px;
+  background: #f4f3ed;
   color: #17201d;
   scroll-behavior: smooth;
 }
@@ -6471,29 +6467,29 @@ summary:focus-visible {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 2px 8px rgba(27, 35, 45, 0.05);
-  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 }
 
 .workbench-shell--instrument .flow-node--wide {
   width: 320px;
 }
 
-.workbench-shell--instrument .flow-node:not(.is-selected) .flow-node__body,
-.workbench-shell--instrument .flow-node:not(.is-selected) .flow-node__footer {
+.workbench-shell--instrument .flow-node .flow-node__body,
+.workbench-shell--instrument .flow-node .flow-node__footer {
   display: none;
 }
 
 .workbench-shell--instrument .flow-node.is-selected {
   border-color: var(--cobalt);
   box-shadow: 0 0 0 2px rgba(39, 107, 255, 0.12), 0 16px 36px rgba(27, 35, 45, 0.13);
-  transform: translateY(-4px);
+  transform: none;
 }
 
 .workbench-shell--instrument .flow-node__header {
   min-height: 68px;
   align-items: center;
   padding: 12px 13px;
-  border-color: #e6e9ed;
+  border-bottom: 0;
 }
 
 .workbench-shell--instrument .flow-node__header p {
@@ -8525,6 +8521,7 @@ body {
 
 .workbench-shell--instrument .flow-node.is-selected {
   border-color: var(--lovable-indigo-accent);
+  background: color-mix(in srgb, var(--lovable-indigo-accent) 3%, var(--lovable-parchment));
   box-shadow: var(--lovable-shadow-subtle);
 }
 

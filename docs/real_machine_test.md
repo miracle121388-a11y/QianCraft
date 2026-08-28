@@ -12,7 +12,7 @@
 
 0.6.0 人工决策验收在隔离工作区实际完成七阶段操作：新增苗族蜡染记录、把四平台缩为三平台、将文化适配权重从 20 精确改为 35 并即时重排 8 条机会、把第三候选改为 OPP-007、修改目标人群和三种产品形态、加入 V009 研究参照并改为竖版画幅、将 Concept B 设为当前方向、移出 Concept C、采用工坊拆解主题并隐藏工艺板块。保存后版本由 v1→v2→v3，服务端将 115% 正向输入归一化为 `culture_fit=0.304348`，Brief/Visual/Concept/Poster 全部变为 `stale`；默认工作区未被验收数据污染，临时工作区已删除。详情页的人工决策深链接也已重载验证，能保留工作区 ID 并直接打开对应阶段。
 
-0.7.0 前端验收把工作台从展示型 Demo 收敛为暖纸色 Creative Instrument：56px 五阶段导航、64px 工具轨、按任务切换的证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 形成稳定工具骨架。0.7.1 进一步把用户提供的 Lovable DTCG 色彩关系锁定到工作台、Decision Studio 和节点详情全部 chrome：Parchment / Warm Sand 承担主次表面，Linen / Stone 承担两级边界，Dim Gray / Charcoal 承担文字，Interaction Indigo 只承担链接、选中、路径与焦点；Hero 渐变继续只登记。0.7.2 逐页删除装饰性中英双标题、重复摘要、重复状态、节点 ID 和默认展开的机器字段，把运行信息与方法 JSON 收入按需层，并修正移动端决策双栏、文化图谱裁切、编辑器溢出、BOM 固定宽表格与海报重复覆盖。桌面 1440 × 900 与手机 390 × 844 均实际检查工作台、Decision Studio 和全部九个节点详情，页面无横向溢出，主要触控目标至少 44px。核心对比度为 16.47:1、6.18:1、5.83:1 和 6.84:1；Python 37/37、TypeScript 5/5、Ruff、typecheck、ESLint 和 Vinext 五阶段构建通过。
+0.7.0 前端验收把工作台从展示型 Demo 收敛为暖纸色 Creative Instrument：56px 五阶段导航、64px 工具轨、按任务切换的证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 形成稳定工具骨架。0.7.1 进一步把用户提供的 Lovable DTCG 色彩关系锁定到工作台、Decision Studio 和节点详情全部 chrome：Parchment / Warm Sand 承担主次表面，Linen / Stone 承担两级边界，Dim Gray / Charcoal 承担文字，Interaction Indigo 只承担链接、选中、路径与焦点；Hero 渐变继续只登记。0.7.2 逐页删除装饰性中英双标题、重复摘要、重复状态、节点 ID 和默认展开的机器字段，把运行信息与方法 JSON 收入按需层，并修正移动端决策双栏、文化图谱裁切、编辑器溢出、BOM 固定宽表格与海报重复覆盖。0.7.3 固定全部画布节点的横向几何尺寸，选中时不再膨胀或位移，详情与操作由 Inspector 和独立展示页承接；同时移除详情页遗留的装饰性双轴网格。桌面 1440 × 960 与手机 390 × 844 实测节点均保持 62px 渲染高度、`transform:none` 且页面无横向溢出，Inspector 的完整页面/运行/从此运行入口可达。核心对比度为 16.47:1、6.18:1、5.83:1 和 6.84:1。
 
 ## 环境
 
@@ -45,9 +45,9 @@
 | Workspace 与节点运行 | 通过 | HTTP 实测 New/Save/Load、Brief v2、Culture 节点、Concept 切换/复制/单体重生成/新增方向；节点状态与仅下游 stale 持久化到经过校验的 JSON |
 | Workbench 浏览器交互 | 通过 | 五阶段导航、工具轨、上下文证据/资产/历史 Dock、无限画布、小地图、Inspector、Concept 编辑动作、New Workspace 对话框和 Poster 参数均完成实际浏览器检查；阶段点击聚焦节点，资产点击联动画布与 Inspector；PNG 导出提示为 1800 × 2400，A/B/C 均显示实际图片 |
 | 七阶段人工交互 | 通过 | 浏览器实际完成文化、平台、权重、机会、任务书、视觉、方案与海报调整；保存后节点显示 HUMAN v3、人工分与系统分并列、下游 stale，展示页可深链返回对应决策阶段 |
-| 中文排版、令牌与响应式 | 通过 | 0.7.2 保留暖纸色系统并执行单一中文标签、12px 以上主要控件文字和渐进披露；1440 × 900 工作台/决策页/九节点详情与 390 × 844 同范围均完成真实浏览器复核。手机端文化图谱、任务书、三套概念 BOM、海报与决策表单的文档 `scrollWidth` 均等于 390px；核心触控目标至少 44px |
+| 中文排版、令牌与响应式 | 通过 | 0.7.3 保留暖纸色系统与单一中文标签，并把 9 个画布实例统一为稳定横条；1440 × 960 实测全部节点渲染高度为 62px，切换选择前后尺寸不变、`transform:none`，Inspector 仍绑定正确节点并提供完整页面/运行/从此运行。390 × 844 无页面横向溢出；0.7.2 已完成的手机端文化图谱、任务书、三套概念 BOM、海报和决策表单复核继续有效 |
 | Workbench production server | 通过 | Vinext 五阶段构建后以 `127.0.0.1:3000` 启动 production server；页面、真实 API、A/B/C 资产与 Flow Map 均重新验收，React Flow 合法最小 attribution 保留 |
-| Zeabur 线上实例 | 通过（分层验收） | 0.6.0 曾完成认证后首页、Bootstrap、9 个节点页/详情 API 与独立 Culture 公网验收；0.7.2 部署 `6a91d9ffdb37f2e6ddbc152e` 为 `RUNNING`，远端日志确认 `qiancraft-0.7.2` 与 Vinext 构建通过，公网 `/healthz` 为 200、匿名入口为 401。本轮执行环境没有站点凭证，因此 0.7.2 的认证后页面/API 结论仅保留为待凭证复验，不以本地结果替代 |
+| Zeabur 线上实例 | 通过（分层验收） | 0.6.0 曾完成认证后首页、Bootstrap、9 个节点页/详情 API 与独立 Culture 公网验收；0.7.3 部署 `6a91df9a13d3d467215e7737` 为 `RUNNING`，远端日志确认 `qiancraft-0.7.3` 安装及容器启动，公网 `/healthz` 为 200、匿名入口为 401。本轮执行环境没有站点凭证，因此 0.7.3 的认证后页面/API 结论仅保留为待凭证复验，不以本地结果替代 |
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 预期 warning | 独立 Images API 未配置；同一 DeepSeek 服务的 `/images/generations` 实测 HTTP 404。现有 A/B/C 可展示，但 Regenerate 与 Generate More 不会把项目资产冒充为一次新 API 结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |

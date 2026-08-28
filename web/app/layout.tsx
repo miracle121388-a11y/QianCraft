@@ -4,10 +4,10 @@ import '@fontsource-variable/noto-serif-sc';
 import './globals.css';
 
 const impeccableDirectionContract = `THESIS: The node canvas is the instrument; tools open around it only when summoned. QianCraft refuses both the permanent wall of panels and the showcase homepage.
-OWN-WORLD: Warm parchment command surfaces, a warm-sand canvas, linen seams, charcoal working text, and one interaction-indigo active state; restrained inset edges, soft containers, one selected elevation.
+OWN-WORLD: Warm parchment command surfaces, a warm-sand canvas, linen seams, charcoal working text, and one interaction-indigo active state; restrained inset edges, soft containers, one stable selected keyline.
 STORY: Choose a phase, inspect evidence, select or run a node, edit in its contextual inspector, then open the deep record only when needed.
 FIRST VIEWPORT: 56px command bar, 64px tool rail, optional 248px evidence dock, dominant node canvas, and 320px selected inspector; Run sits top-right, depth lives behind rail icons and tabs.
-FORM: User-pinned Creative Instrument Workbench, grounded direction 3, seed 599c7281; selection moves one node forward while the canvas holds.
+FORM: User-pinned Creative Instrument Workbench, grounded direction 3, seed 599c7281; selection preserves node geometry while the Inspector takes over detail.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance`;
 
 const impeccableContractScript = `document.currentScript?.parentNode?.insertBefore(document.createComment(${JSON.stringify(impeccableDirectionContract)}), document.currentScript);`;
