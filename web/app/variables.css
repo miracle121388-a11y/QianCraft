@@ -9,6 +9,9 @@
   --lovable-charcoal: #1c1c1c;
   --lovable-ink: #030303;
   --lovable-indigo-accent: #3451b2;
+  --lovable-status-success: #45a17b;
+  --lovable-status-warning: #7a5a16;
+  --lovable-status-danger: #bd4a4a;
   --lovable-indigo-soft: color-mix(in srgb, var(--lovable-indigo-accent) 9%, var(--lovable-parchment));
   --lovable-parchment-glass: color-mix(in srgb, var(--lovable-parchment) 94%, transparent);
   --lovable-hero-gradient: linear-gradient(90deg, rgb(28, 28, 28) 0%, rgb(28, 28, 28) 33.33%, rgb(130, 188, 255) 40%, rgb(36, 131, 255) 45%, rgb(255, 102, 244) 50%, rgb(255, 48, 41) 55%, rgb(254, 123, 2) 60%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);

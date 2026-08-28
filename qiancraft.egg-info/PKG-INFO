@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: qiancraft
-Version: 0.7.3
+Version: 0.8.0
 Summary: 贵州非遗文化知识图谱、市场前策与概念设计系统
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
@@ -24,7 +24,7 @@ Requires-Dist: pytest-asyncio>=1.2.0; extra == "test"
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.7.3-3451b2?style=flat-square" alt="Version 0.7.3">
+  <img src="https://img.shields.io/badge/version-0.8.0-3451b2?style=flat-square" alt="Version 0.8.0">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
   <img src="https://img.shields.io/badge/tests-42%20passed-2f7358?style=flat-square" alt="42 tests passed">
   <img src="https://img.shields.io/badge/status-deployed%20prototype-d08b32?style=flat-square" alt="Deployed prototype">
@@ -66,6 +66,7 @@ QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何�
 | **九节点专业展示页** | 每个实例可单击或双击进入独立页面；文化关系、市场原记录、六维量分、任务书、视觉提示、概念成品、BOM 和海报分别拥有专用视图，并附可回到原始网页的证据台账。 |
 | **暖纸色编辑系统** | 用户提供的 parchment / warm sand / linen / charcoal / interaction indigo 令牌统一颜色、间距、圆角、焦点和轻量内阴影；本地 Noto Sans SC / Noto Serif SC 负责真实中文覆盖，不依赖外部字体 CDN。 |
 | **诚实的运行状态** | 文化、市场、策划、设计、渲染分别记录 `live / cache / unavailable`；缓存不冒充实时数据。 |
+| **可恢复的真实任务** | “实时运行”会在服务端创建持久化后台任务，页面刷新后自动续接轮询；只有文化、策划和四平台全部为本轮 `live` 才会晋级并回写当前工作区。 |
 
 ## 成果展示
 
@@ -116,7 +117,9 @@ pnpm install
 pnpm dev
 ```
 
-打开 `http://localhost:3000`。默认工作区会载入“贵州苗绣 → 四平台市场雷达 → 策略 → 任务书 → 视觉 A/B/C → 海报”的完整链路，三套概念视觉均可直接比较；画布位置、视口、当前概念与编辑版本保存在 `data/workbench/workspaces/`。
+打开 `http://localhost:3000`。默认工作区会载入“贵州苗绣 → 四平台市场雷达 → 策略 → 任务书 → 视觉 A/B/C → 海报”的完整链路，三套概念视觉均可直接比较；画布位置、视口、当前概念、编辑版本、后台任务和设计运行保存在被 Git 忽略的 `data/runtime/`。容器部署继续把同一路径映射到 `/app/data/runtime` 持久卷，证据基线不会被用户操作覆盖。
+
+顶部“实时运行”不是演示按钮：它会执行 LightRAG 检索、四平台授权采集和模型策划，并轮询服务端任务。页面刷新或重新打开后会自动续接；任何平台未返回本轮真实记录时，该轮明确失败且不会拿历史快照回写。研究节点的单独“运行”也不会用读取旧文件伪造一次新成功。
 
 需要以已构建的 production server 使用网站时，在 `web` 目录执行 `pnpm build` 后运行 `pnpm start:local`；它只绑定 `127.0.0.1:3000`，并继续使用同一真实 API。
 

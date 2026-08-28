@@ -5689,6 +5689,91 @@ select:focus-visible {
   --shadow: var(--lovable-shadow-subtle);
 }
 
+.concept-asset-note {
+  display: block;
+  margin-top: 7px;
+  color: var(--lovable-status-warning);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Real-run monitor: one compact receipt for preflight, progress and terminal truth. */
+.workbench-shell--instrument .research-monitor {
+  position: absolute;
+  z-index: 6;
+  inset-block-start: 18px;
+  inset-inline-end: 18px;
+  width: min(420px, calc(100% - 340px));
+  min-width: 280px;
+  padding: 13px 15px;
+  overflow: hidden;
+  border: 1px solid var(--lovable-linen-border);
+  border-radius: var(--lovable-radius-container);
+  background: color-mix(in srgb, var(--lovable-parchment) 96%, transparent);
+  box-shadow: var(--lovable-shadow-subtle);
+  color: var(--lovable-charcoal);
+  overflow-wrap: anywhere;
+}
+
+.workbench-shell--instrument .research-monitor > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+}
+
+.workbench-shell--instrument .research-monitor span {
+  color: var(--lovable-dim-gray);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+.workbench-shell--instrument .research-monitor strong {
+  min-width: 0;
+  font-size: 13px;
+  font-weight: var(--lovable-weight-heading);
+  line-height: 1.5;
+}
+
+.workbench-shell--instrument .research-monitor p {
+  margin: 7px 0 0;
+  color: var(--lovable-dim-gray);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.45;
+}
+
+.workbench-shell--instrument .research-monitor--live_verified {
+  border-color: color-mix(in srgb, var(--lovable-status-success) 34%, var(--lovable-linen-border));
+}
+
+.workbench-shell--instrument .research-monitor--running,
+.workbench-shell--instrument .research-monitor--queued {
+  border-color: color-mix(in srgb, var(--lovable-indigo-accent) 28%, var(--lovable-linen-border));
+}
+
+.workbench-shell--instrument .research-monitor--failed_no_fallback,
+.workbench-shell--instrument .research-monitor--error,
+.workbench-shell--instrument .research-monitor--blocked {
+  border-color: color-mix(in srgb, var(--lovable-status-danger) 34%, var(--lovable-linen-border));
+}
+
+@media (max-width: 760px) {
+  .workbench-shell--instrument .research-monitor {
+    inset-block-start: 12px;
+    inset-inline: 12px;
+    width: auto;
+    min-width: 0;
+  }
+
+  .workbench-shell--instrument .research-monitor > div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+}
+
 html,
 body {
   background: var(--paper);
@@ -10035,6 +10120,20 @@ a {
 .concept-detail-image > span {
   font-size: 12px;
   letter-spacing: 0;
+}
+
+.concept-detail-image > .concept-asset-note {
+  position: absolute;
+  right: 17px;
+  bottom: 56px;
+  margin: 0;
+  padding: 7px 10px;
+  border: 1px solid color-mix(in srgb, var(--lovable-status-warning) 30%, transparent);
+  border-radius: 999px;
+  color: var(--lovable-status-warning);
+  background: color-mix(in srgb, var(--lovable-parchment) 92%, transparent);
+  box-shadow: var(--lovable-shadow-subtle);
+  backdrop-filter: blur(8px);
 }
 
 @media (max-width: 760px) {

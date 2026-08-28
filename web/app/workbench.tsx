@@ -36,14 +36,17 @@ import {
   activateConcept,
   createWorkspace,
   duplicateConcept,
+  generateWorkbenchDesign,
   generateMoreConcept,
   getBootstrap,
   getDesignPackage,
+  getResearchJob,
   runNode as runNodeRequest,
   regenerateConcept,
   saveDecisionProfile,
   saveDesignBrief,
   saveWorkspace,
+  startResearchRun,
 } from './workbench-api';
 import {
   NODE_TYPE_LABELS,
@@ -60,6 +63,8 @@ import {
   type ImageProviderStatus,
   type KnowledgeCenterData,
   type PosterConfig,
+  type ResearchJob,
+  type ResearchRuntime,
   type WorkbenchEdge,
   type WorkbenchNode,
   type WorkbenchNodeType,
@@ -121,6 +126,12 @@ const NODE_DECISION_STAGE: Record<WorkbenchNodeType, DecisionStage> = {
   ConceptNode: 'concept',
   PosterBoardNode: 'poster',
 };
+
+const RESEARCH_NODE_TYPES = new Set<WorkbenchNodeType>([
+  'CultureGraphNode',
+  'MarketRadarNode',
+  'StrategyNode',
+]);
 
 const STAGE_LABELS: Record<DecisionStage, string> = {
   culture: '文化记录选择',
@@ -923,6 +934,7 @@ export function Workbench() {
   const [knowledge, setKnowledge] = useState<KnowledgeCenterData | null>(null);
   const [decisionCatalog, setDecisionCatalog] = useState<DecisionCatalog | null>(null);
   const [provider, setProvider] = useState<ImageProviderStatus | null>(null);
+  const [researchRuntime, setResearchRuntime] = useState<ResearchRuntime | null>(null);
   const [workspaceList, setWorkspaceList] = useState<WorkspaceSummary[]>([]);
   const [nodes, setNodes, onNodesChange] = useNodesState<WorkbenchNode>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<WorkbenchEdge>([]);
@@ -967,6 +979,7 @@ export function Workbench() {
       setKnowledge(payload.knowledge);
       setDecisionCatalog(payload.decisionCatalog);
       setProvider(payload.imageProvider);
+      setResearchRuntime(payload.researchRuntime);
       setWorkspaceList(payload.workspaces);
     } catch (error) {
       setConnectionError(error instanceof Error ? error.message : String(error));
@@ -991,6 +1004,69 @@ export function Workbench() {
       if (toastTimer.current) clearTimeout(toastTimer.current);
     };
   }, [load]);
+
+  const activeResearchJobId = researchRuntime?.activeJob?.job_id ?? '';
+  const activeResearchJobStatus = researchRuntime?.activeJob?.status ?? '';
+
+  useEffect(() => {
+    if (!workspace
+      || busy
+      || !activeResearchJobId
+      || !['queued', 'running'].includes(activeResearchJobStatus)) return undefined;
+
+    let cancelled = false;
+    let timer = 0;
+    const poll = async () => {
+      try {
+        const job = await getResearchJob(activeResearchJobId);
+        if (cancelled) return;
+        setResearchRuntime((runtime) => runtime ? {
+          ...runtime,
+          activeJob: ['queued', 'running'].includes(job.status) ? job : null,
+          lastJob: job,
+        } : runtime);
+        if (['queued', 'running'].includes(job.status)) {
+          timer = window.setTimeout(() => void poll(), 1500);
+          return;
+        }
+        const refreshed = await getBootstrap(workspace.workspace_id);
+        if (cancelled) return;
+        applyWorkspace(refreshed.workspace);
+        setKnowledge(refreshed.knowledge);
+        setDecisionCatalog(refreshed.decisionCatalog);
+        setProvider(refreshed.imageProvider);
+        setResearchRuntime(refreshed.researchRuntime);
+        showToast({
+          tone: job.status === 'live_verified' ? 'success' : 'error',
+          message: job.status === 'live_verified'
+            ? '后台实时研究已核验完成，并自动回写当前工作区。'
+            : `后台实时研究未晋级：${job.detail}`,
+        });
+      } catch (error) {
+        if (cancelled) return;
+        setResearchRuntime((runtime) => runtime ? {
+          ...runtime,
+          activeJob: null,
+        } : runtime);
+        showToast({
+          tone: 'error',
+          message: `后台任务状态读取失败：${error instanceof Error ? error.message : String(error)}`,
+        });
+      }
+    };
+    timer = window.setTimeout(() => void poll(), 500);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [
+    activeResearchJobId,
+    activeResearchJobStatus,
+    applyWorkspace,
+    busy,
+    showToast,
+    workspace,
+  ]);
 
   useEffect(() => {
     const compactViewport = window.matchMedia('(max-width: 760px)');
@@ -1142,21 +1218,90 @@ export function Workbench() {
     let runningNodeId = '';
     try {
       let current = await persist(undefined, true);
-      const ids = startId
+      let ids = startId
         ? fromHere
           ? orderedRunNodeIds(current.nodes, current.edges, startId)
           : [startId]
         : orderedRunNodeIds(current.nodes, current.edges);
+      const researchIds = ids.filter((nodeId) => {
+        const node = current.nodes.find((item) => item.id === nodeId);
+        return Boolean(node && RESEARCH_NODE_TYPES.has(node.type));
+      });
+      if (researchIds.length > 0) {
+        setNodes((currentNodes) => currentNodes.map((node) => (
+          researchIds.includes(node.id)
+            ? { ...node, data: { ...node.data, status: 'running' as const } }
+            : node
+        )));
+        const queued = await startResearchRun(current.workspace_id, true);
+        setResearchRuntime((runtime) => runtime
+          ? { ...runtime, activeJob: queued }
+          : null);
+        let job: ResearchJob = queued;
+        for (let attempt = 0; attempt < 960; attempt += 1) {
+          await new Promise((resolve) => window.setTimeout(resolve, 1250));
+          job = await getResearchJob(queued.job_id);
+          setResearchRuntime((runtime) => runtime
+            ? {
+                ...runtime,
+                activeJob: job.status === 'queued' || job.status === 'running' ? job : null,
+                lastJob: job,
+              }
+            : null);
+          if (!['queued', 'running'].includes(job.status)) break;
+        }
+        if (['queued', 'running'].includes(job.status)) {
+          throw new Error('实时研究超过 20 分钟仍未完成；任务仍保留在服务端，请稍后查看运行状态。');
+        }
+        if (job.status !== 'live_verified') {
+          const platforms = Object.entries(job.platform_modes ?? {})
+            .map(([platform, status]) => `${PLATFORM_LABELS[platform] ?? platform} ${status}`)
+            .join('、');
+          throw new Error(`${job.detail}${platforms ? `（${platforms}）` : ''}`);
+        }
+        const refreshed = await getBootstrap(current.workspace_id);
+        applyWorkspace(refreshed.workspace);
+        setKnowledge(refreshed.knowledge);
+        setDecisionCatalog(refreshed.decisionCatalog);
+        setProvider(refreshed.imageProvider);
+        setResearchRuntime(refreshed.researchRuntime);
+        current = refreshed.workspace;
+        ids = ids.filter((nodeId) => !researchIds.includes(nodeId));
+      }
       for (const nodeId of ids) {
         runningNodeId = nodeId;
         setNodes((currentNodes) => markNodeStatus(currentNodes, nodeId, 'running'));
-        current = await runNodeRequest(current.workspace_id, nodeId);
+        const node = current.nodes.find((item) => item.id === nodeId);
+        current = node?.type === 'DesignBriefNode'
+          ? await generateWorkbenchDesign(current.workspace_id)
+          : await runNodeRequest(current.workspace_id, nodeId);
         applyWorkspace(current);
       }
-      showToast({ tone: 'success', message: fromHere ? `已按依赖顺序完成 ${ids.length} 个节点。` : '节点运行完成。' });
+      const unresolved = current.nodes.filter((node) => (
+        ids.includes(node.id) && ['warning', 'error', 'stale', 'cached'].includes(node.data.status)
+      ));
+      showToast({
+        tone: unresolved.length ? 'neutral' : 'success',
+        message: unresolved.length
+          ? `真实步骤已执行；${unresolved.length} 个节点仍受配置或证据状态阻断。`
+          : fromHere
+            ? `已按依赖顺序完成 ${ids.length + researchIds.length} 个节点。`
+            : '节点产生并保存了新的结果。',
+      });
     } catch (error) {
       if (runningNodeId) {
         setNodes((currentNodes) => markNodeStatus(currentNodes, runningNodeId, 'error'));
+      }
+      if (workspace) {
+        void getBootstrap(workspace.workspace_id)
+          .then((refreshed) => {
+            applyWorkspace(refreshed.workspace);
+            setKnowledge(refreshed.knowledge);
+            setDecisionCatalog(refreshed.decisionCatalog);
+            setProvider(refreshed.imageProvider);
+            setResearchRuntime(refreshed.researchRuntime);
+          })
+          .catch(() => undefined);
       }
       showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
     } finally {
@@ -1192,6 +1337,8 @@ export function Workbench() {
   const selectedNode = nodes.find((node) => node.id === selectedNodeId);
   const activeConcept = nodes.find((node) => node.type === 'ConceptNode' && node.data.active);
   const activePhase = phaseForNode(selectedNodeId);
+  const visibleResearchJob = researchRuntime?.activeJob ?? researchRuntime?.lastJob ?? null;
+  const researchBlockers = researchRuntime?.preflight.blockers ?? [];
 
   const handleSaveBrief = useCallback(async (brief: DesignBrief) => {
     if (!workspace || busy) return;
@@ -1275,31 +1422,49 @@ export function Workbench() {
     if (!workspace || busy) return;
     setBusy(true);
     try {
-      const nextNodes = nodes.map((node) => node.type === 'PosterBoardNode' ? { ...node, data: { ...node.data, title: poster.title, summary: poster.subtitle, poster, status: 'success' as const, history: [{ at: new Date().toISOString(), event: '保存海报标题、板块显示与顺序' }, ...(node.data.history ?? [])] } } : node);
+      const nextNodes = nodes.map((node) => node.type === 'PosterBoardNode' ? { ...node, data: { ...node.data, title: poster.title, summary: poster.subtitle, poster, status: 'stale' as const, history: [{ at: new Date().toISOString(), event: '保存海报版式；等待重新导出或服务端渲染' }, ...(node.data.history ?? [])] } } : node);
       setNodes(nextNodes);
       const saved = await saveWorkspace({ ...snapshotWorkspace(), nodes: nextNodes });
       applyWorkspace(saved);
-      showToast({ tone: 'success', message: '海报版式已保存。' });
+      showToast({ tone: 'neutral', message: '海报版式已保存，并标记为待重新导出。' });
     } catch (error) {
       showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
     } finally { setBusy(false); }
   }, [applyWorkspace, busy, nodes, setNodes, showToast, snapshotWorkspace, workspace]);
 
   const handleExportPoster = useCallback(async () => {
+    if (!workspace || busy) return;
     const poster = nodes.find((node) => node.type === 'PosterBoardNode')?.data.poster;
     if (!poster) return;
+    setBusy(true);
     try {
       await exportPosterPng(poster, activeConcept);
+      const nextNodes = nodes.map((node) => node.type === 'PosterBoardNode' ? {
+        ...node,
+        data: {
+          ...node.data,
+          status: 'success' as const,
+          history: [
+            { at: new Date().toISOString(), event: '浏览器实际生成并下载 1800 × 2400 PNG' },
+            ...(node.data.history ?? []),
+          ],
+        },
+      } : node);
+      const saved = await saveWorkspace({ ...snapshotWorkspace(), nodes: nextNodes });
+      applyWorkspace(saved);
       showToast({ tone: 'success', message: '已按当前版式导出 1800 × 2400 PNG。' });
     } catch (error) {
       showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally {
+      setBusy(false);
     }
-  }, [activeConcept, nodes, showToast]);
+  }, [activeConcept, applyWorkspace, busy, nodes, showToast, snapshotWorkspace, workspace]);
 
   const handleDownloadPackage = useCallback(async () => {
-    try { downloadJson(await getDesignPackage(), 'QianCraft-DesignPackage.json'); }
+    if (!workspace) return;
+    try { downloadJson(await getDesignPackage(workspace.workspace_id), 'QianCraft-DesignPackage.json'); }
     catch (error) { showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) }); }
-  }, [showToast]);
+  }, [showToast, workspace]);
 
   const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -1406,7 +1571,7 @@ export function Workbench() {
               <button type="button" onClick={() => { setDialogName(workspace.name); setDialog('rename'); }}>重命名</button>
               <button disabled={busy} type="button" onClick={() => void persist()}><Save aria-hidden="true" size={14} />{busy ? '保存中' : '保存'}</button>
             </div>
-            <p title={`${API_BASE}/api/health`}><i />API 已连接 · 本地 JSON 持久化</p>
+            <p title={`${API_BASE}/api/health`}><i />API 已连接 · 工作区已持久化</p>
           </div>
         </details>
         <nav className="phase-switcher" aria-label="工作流阶段">
@@ -1416,7 +1581,14 @@ export function Workbench() {
         </nav>
         <div className="app-bar__actions">
           <button className="human-decision-button" type="button" onClick={() => openDecisionStudio(NODE_DECISION_STAGE[selectedNode?.type ?? 'CultureGraphNode'])}><Scale aria-hidden="true" size={17} /><span>人工决策</span><em>v{workspace.metadata.decision_profile.version}</em></button>
-          <button className="run-all-button" disabled={busy} type="button" onClick={() => void runSequence(undefined, true)}><Play aria-hidden="true" fill="currentColor" size={16} /><span>{busy ? '运行中' : '运行链路'}</span></button>
+          <button
+            aria-label="启动严格实时全链路"
+            className="run-all-button"
+            disabled={busy}
+            title={researchBlockers.length ? researchBlockers.join('；') : '启动真实知识检索、四平台采集和模型策划'}
+            type="button"
+            onClick={() => void runSequence(undefined, true)}
+          ><Play aria-hidden="true" fill="currentColor" size={16} /><span>{busy ? '实时运行中' : '实时运行'}</span></button>
         </div>
       </header>
 
@@ -1464,6 +1636,17 @@ export function Workbench() {
             <MiniMap pannable zoomable position="bottom-right" nodeBorderRadius={4} nodeColor={(node) => { if (node.type === 'CultureGraphNode') return '#6f8fa4'; if (node.type === 'MarketRadarNode') return '#bd8a76'; if (node.type === 'ConceptNode') return '#6d77a7'; if (node.type === 'PosterBoardNode') return '#1d2836'; return '#9b9994'; }} maskColor="rgba(252, 251, 248, .84)" />
           </ReactFlow>
           <div className="canvas-context"><div><span>当前链路</span><strong>{workspace.metadata.topic}</strong></div><p>{nodes.length} 个节点 · {edges.length} 条关系</p><button type="button" onClick={() => openDecisionStudio('score')}>{workspace.metadata.decision_profile.mode === 'manual' ? '人工配置' : '系统建议'} v{workspace.metadata.decision_profile.version}</button></div>
+          {visibleResearchJob || researchBlockers.length ? (
+            <aside className={`research-monitor research-monitor--${visibleResearchJob?.status ?? 'blocked'}`} aria-live="polite">
+              <div>
+                <span>{visibleResearchJob?.status === 'live_verified' ? '实时链路已核验' : visibleResearchJob?.status === 'running' || visibleResearchJob?.status === 'queued' ? '实时链路运行中' : '实时链路未通过'}</span>
+                <strong>{visibleResearchJob?.detail ?? researchBlockers[0]}</strong>
+              </div>
+              {visibleResearchJob?.platform_modes && Object.keys(visibleResearchJob.platform_modes).length ? (
+                <p>{Object.entries(visibleResearchJob.platform_modes).map(([platform, status]) => `${PLATFORM_LABELS[platform] ?? platform} ${status}`).join(' · ')}</p>
+              ) : researchBlockers.length > 1 ? <p>另有 {researchBlockers.length - 1} 项运行条件未满足</p> : null}
+            </aside>
+          ) : null}
           <div className="canvas-legend"><span><i className="legend-success" />已就绪</span><span><i className="legend-cached" />证据快照</span><span><i className="legend-stale" />待更新</span></div>
           {showGraph ? <CultureGraphOverlay records={knowledge.culture.records} onClose={() => setShowGraph(false)} /> : null}
         </section>

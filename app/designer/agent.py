@@ -86,7 +86,15 @@ class DesignAgent:
                     f"Selected opportunity {primary_opportunity_id} is not present in DesignerHandoff"
                 )
         else:
-            primary = max(handoff.priority_opportunities, key=self._selection_score)
+            executable = [
+                item for item in handoff.priority_opportunities if self._has_product_generator(item)
+            ]
+            if not executable:
+                raise ValueError(
+                    "当前 DesignerHandoff 没有与真实设计生成器匹配的产品形态；"
+                    "请先补充具体品类，系统不会套用通用兜底模板。"
+                )
+            primary = max(executable, key=self._selection_score)
         supporting = self._supporting_opportunity(handoff, primary.opportunity_id)
         if self._is_plush_direction(primary):
             package = self._plush_package(handoff, resolved, primary, supporting)
@@ -167,8 +175,17 @@ class DesignAgent:
     def _is_provenance_direction(opportunity: PriorityOpportunity) -> bool:
         text = " ".join(opportunity.potential_product_categories)
         return any(
-            term in text
-            for term in ("学习卡", "互动学习", "体验套件", "档案", "故事型礼赠")
+            term in text for term in ("学习卡", "互动学习", "体验套件", "档案", "故事型礼赠")
+        )
+
+    @classmethod
+    def _has_product_generator(cls, opportunity: PriorityOpportunity) -> bool:
+        return any(
+            (
+                cls._is_plush_direction(opportunity),
+                cls._is_magnet_direction(opportunity),
+                cls._is_provenance_direction(opportunity),
+            )
         )
 
     def _base_contract(self, handoff: DesignerHandoff, path: Path) -> DesignInputContract:
@@ -251,8 +268,7 @@ class DesignAgent:
                 branch_or_community="雷山苗绣；具体合作社区待确认",
                 visual_role="以平整织物、凸起绣线和边缘拼接形成触觉层次",
                 transformation_rule=(
-                    "只转译针脚方向、厚薄和层次关系，重新绘制非叙事几何单元；"
-                    "不抽取完整传统纹样。"
+                    "只转译针脚方向、厚薄和层次关系，重新绘制非叙事几何单元；不抽取完整传统纹样。"
                 ),
                 source_primitives=["P005"],
                 reference_visual_ids=["V009", "V012"],
@@ -500,14 +516,102 @@ def _material(
 
 def _plush_manufacturing(evidence: list[str]) -> ManufacturingBrief:
     bom = [
-        _material("A01", "前片", "短毛绒布", "涤纶；克重与绒高由工厂打样确认", "展示用深靛近似色", "1片", "刀模裁片", "与后片车缝", "外轮廓±2 mm", "无破洞、色差与异常掉毛"),
-        _material("A02", "后片", "短毛绒布", "同A01", "同A01", "1片", "刀模裁片", "与前片车缝并留返口", "外轮廓±2 mm", "经纬方向一致"),
-        _material("A03", "可替换绣片基底", "棉质斜纹布", "约200 g/m²；实样确认缩水率", "深色中性底", "1片", "圆角裁片+包边", "隐藏按扣/软质钩面固定", "58×68 mm；±1 mm", "拆装20次后不起毛、不明显变形"),
-        _material("A04", "原创针层图案", "粘胶或涤纶绣线", "三种线迹高度；实际线号随设备确认", "红/白提示线；非标准传统色", "1组", "机器刺绣", "绣于A03", "套位±1 mm", "无线头、跳针、断线；工艺标注真实"),
-        _material("A05", "填充", "再生涤纶纤维或合规替代物", "回弹与阻燃要求按销售地确认", "本色", "12±2 g", "称重填充", "返口填充后藏针缝合", "成品厚度42±5 mm", "无硬块、异物与明显空洞"),
-        _material("A06", "挂环", "10 mm尼龙织带", "有效折叠长度约45 mm", "深色低反光", "1条", "热切/防散边", "夹入顶缝并回针", "外露22±2 mm", "拉力目标由工厂按用途验证"),
-        _material("A07", "旋转挂扣", "锌合金或不锈钢", "总长约38 mm；无尖锐边", "深枪色低反光", "1件", "采购件", "穿入A06", "开合顺畅", "镀层、盐雾与过敏物质按销售地确认"),
-        _material("A08", "溯源/洗护标", "织唛+可变数据纸卡", "标注地域、实际工艺、参与者、批次与护理", "高对比可读", "各1件", "织造/数字印刷", "织唛夹缝；纸卡随包装", "二维码≥15 mm", "信息与授权台账一致，扫码可读"),
+        _material(
+            "A01",
+            "前片",
+            "短毛绒布",
+            "涤纶；克重与绒高由工厂打样确认",
+            "展示用深靛近似色",
+            "1片",
+            "刀模裁片",
+            "与后片车缝",
+            "外轮廓±2 mm",
+            "无破洞、色差与异常掉毛",
+        ),
+        _material(
+            "A02",
+            "后片",
+            "短毛绒布",
+            "同A01",
+            "同A01",
+            "1片",
+            "刀模裁片",
+            "与前片车缝并留返口",
+            "外轮廓±2 mm",
+            "经纬方向一致",
+        ),
+        _material(
+            "A03",
+            "可替换绣片基底",
+            "棉质斜纹布",
+            "约200 g/m²；实样确认缩水率",
+            "深色中性底",
+            "1片",
+            "圆角裁片+包边",
+            "隐藏按扣/软质钩面固定",
+            "58×68 mm；±1 mm",
+            "拆装20次后不起毛、不明显变形",
+        ),
+        _material(
+            "A04",
+            "原创针层图案",
+            "粘胶或涤纶绣线",
+            "三种线迹高度；实际线号随设备确认",
+            "红/白提示线；非标准传统色",
+            "1组",
+            "机器刺绣",
+            "绣于A03",
+            "套位±1 mm",
+            "无线头、跳针、断线；工艺标注真实",
+        ),
+        _material(
+            "A05",
+            "填充",
+            "再生涤纶纤维或合规替代物",
+            "回弹与阻燃要求按销售地确认",
+            "本色",
+            "12±2 g",
+            "称重填充",
+            "返口填充后藏针缝合",
+            "成品厚度42±5 mm",
+            "无硬块、异物与明显空洞",
+        ),
+        _material(
+            "A06",
+            "挂环",
+            "10 mm尼龙织带",
+            "有效折叠长度约45 mm",
+            "深色低反光",
+            "1条",
+            "热切/防散边",
+            "夹入顶缝并回针",
+            "外露22±2 mm",
+            "拉力目标由工厂按用途验证",
+        ),
+        _material(
+            "A07",
+            "旋转挂扣",
+            "锌合金或不锈钢",
+            "总长约38 mm；无尖锐边",
+            "深枪色低反光",
+            "1件",
+            "采购件",
+            "穿入A06",
+            "开合顺畅",
+            "镀层、盐雾与过敏物质按销售地确认",
+        ),
+        _material(
+            "A08",
+            "溯源/洗护标",
+            "织唛+可变数据纸卡",
+            "标注地域、实际工艺、参与者、批次与护理",
+            "高对比可读",
+            "各1件",
+            "织造/数字印刷",
+            "织唛夹缝；纸卡随包装",
+            "二维码≥15 mm",
+            "信息与授权台账一致，扫码可读",
+        ),
     ]
     return ManufacturingBrief(
         bill_of_materials=bom,
@@ -566,11 +670,66 @@ def _plush_manufacturing(evidence: list[str]) -> ManufacturingBrief:
 
 def _magnet_manufacturing(evidence: list[str]) -> ManufacturingBrief:
     bom = [
-        _material("B01", "外框", "ABS或经工厂验证的替代材料", "圆角注塑框", "深色哑光", "1件", "注塑", "卡合B02", "76×76×8 mm", "无毛边、变形"),
-        _material("B02", "织物面板", "棉质斜纹布", "原创数纱网格刺绣", "线卡待确认", "1件", "裁切+机器刺绣", "卡入B01", "58×58 mm", "套位与边缘完整"),
-        _material("B03", "背板", "ABS", "封闭磁体", "同B01", "1件", "注塑", "与B01卡合/螺钉固定", "平面度待确认", "磁体不可外露"),
-        _material("B04", "磁体", "烧结钕铁硼或合规替代物", "规格由吸附测试确定", "防腐镀层", "1件", "采购件", "封闭在B03", "吸附目标待测", "跌落后不得脱出"),
-        _material("B05", "溯源标签", "合成纸", "批次与二维码", "高对比", "1件", "数字印刷", "贴于背板", "二维码≥15 mm", "扫码可读"),
+        _material(
+            "B01",
+            "外框",
+            "ABS或经工厂验证的替代材料",
+            "圆角注塑框",
+            "深色哑光",
+            "1件",
+            "注塑",
+            "卡合B02",
+            "76×76×8 mm",
+            "无毛边、变形",
+        ),
+        _material(
+            "B02",
+            "织物面板",
+            "棉质斜纹布",
+            "原创数纱网格刺绣",
+            "线卡待确认",
+            "1件",
+            "裁切+机器刺绣",
+            "卡入B01",
+            "58×58 mm",
+            "套位与边缘完整",
+        ),
+        _material(
+            "B03",
+            "背板",
+            "ABS",
+            "封闭磁体",
+            "同B01",
+            "1件",
+            "注塑",
+            "与B01卡合/螺钉固定",
+            "平面度待确认",
+            "磁体不可外露",
+        ),
+        _material(
+            "B04",
+            "磁体",
+            "烧结钕铁硼或合规替代物",
+            "规格由吸附测试确定",
+            "防腐镀层",
+            "1件",
+            "采购件",
+            "封闭在B03",
+            "吸附目标待测",
+            "跌落后不得脱出",
+        ),
+        _material(
+            "B05",
+            "溯源标签",
+            "合成纸",
+            "批次与二维码",
+            "高对比",
+            "1件",
+            "数字印刷",
+            "贴于背板",
+            "二维码≥15 mm",
+            "扫码可读",
+        ),
     ]
     return ManufacturingBrief(
         bill_of_materials=bom,
@@ -625,11 +784,66 @@ def _magnet_manufacturing(evidence: list[str]) -> ManufacturingBrief:
 
 def _kit_manufacturing(evidence: list[str]) -> ManufacturingBrief:
     bom = [
-        _material("C01", "折页外壳", "FSC或同等可追溯纸板", "约1.5 mm", "纸材原色", "1件", "裱糊模切", "折页", "210×148 mm", "耐折无爆边"),
-        _material("C02", "内页", "无涂布纸", "约160 g/m²", "纸材原色", "8页", "数字印刷", "骑马钉/线装", "版心待确认", "文字可读"),
-        _material("C03", "材料卡", "中性纸卡", "可替换插槽", "中性", "4张", "模切", "插入内袋", "90×55 mm", "边缘平整"),
-        _material("C04", "材料样", "经授权的实际材料", "种类待合作方确认", "实物原色", "4份", "裁切锁边", "固定于C03", "小样尺寸待定", "来源一致"),
-        _material("C05", "溯源标签", "可变数据贴纸", "批次二维码", "高对比", "1组", "数字印刷", "贴于内页", "二维码≥15 mm", "扫码可读"),
+        _material(
+            "C01",
+            "折页外壳",
+            "FSC或同等可追溯纸板",
+            "约1.5 mm",
+            "纸材原色",
+            "1件",
+            "裱糊模切",
+            "折页",
+            "210×148 mm",
+            "耐折无爆边",
+        ),
+        _material(
+            "C02",
+            "内页",
+            "无涂布纸",
+            "约160 g/m²",
+            "纸材原色",
+            "8页",
+            "数字印刷",
+            "骑马钉/线装",
+            "版心待确认",
+            "文字可读",
+        ),
+        _material(
+            "C03",
+            "材料卡",
+            "中性纸卡",
+            "可替换插槽",
+            "中性",
+            "4张",
+            "模切",
+            "插入内袋",
+            "90×55 mm",
+            "边缘平整",
+        ),
+        _material(
+            "C04",
+            "材料样",
+            "经授权的实际材料",
+            "种类待合作方确认",
+            "实物原色",
+            "4份",
+            "裁切锁边",
+            "固定于C03",
+            "小样尺寸待定",
+            "来源一致",
+        ),
+        _material(
+            "C05",
+            "溯源标签",
+            "可变数据贴纸",
+            "批次二维码",
+            "高对比",
+            "1组",
+            "数字印刷",
+            "贴于内页",
+            "二维码≥15 mm",
+            "扫码可读",
+        ),
     ]
     return ManufacturingBrief(
         bill_of_materials=bom,
@@ -664,7 +878,13 @@ def _poster_request(
 ) -> PosterRenderRequest:
     return PosterRenderRequest(
         request_id=f"PR-{design_id}",
-        required_panels=["文化元素与转译规则", "成品主视觉", "爆炸拆解", "材料/BOM", "工艺与审核边界"],
+        required_panels=[
+            "文化元素与转译规则",
+            "成品主视觉",
+            "爆炸拆解",
+            "材料/BOM",
+            "工艺与审核边界",
+        ],
         exact_copy={"title": title, "subtitle": subtitle},
         image_prompt=prompt,
         constraints=[
@@ -786,7 +1006,15 @@ def render_design_package_markdown(package: DesignPackage) -> str:
         f"- {item.item}：{item.value_mm:g} mm（±{item.tolerance_mm:g} mm）{item.note}"
         for item in product.dimensions
     )
-    lines.extend(["", "## 5. BOM", "", "| ID | 部件 | 材料/规格 | 工艺 | 装配 | 首样目标 | QC |", "|---|---|---|---|---|---|---|"])
+    lines.extend(
+        [
+            "",
+            "## 5. BOM",
+            "",
+            "| ID | 部件 | 材料/规格 | 工艺 | 装配 | 首样目标 | QC |",
+            "|---|---|---|---|---|---|---|",
+        ]
+    )
     for item in package.manufacturing.bill_of_materials:
         lines.append(
             f"| {item.part_id} | {item.component} | {item.material}；{item.specification} | "
@@ -807,7 +1035,9 @@ def render_design_package_markdown(package: DesignPackage) -> str:
             ]
         )
     lines.extend(["## 7. 装配顺序", ""])
-    lines.extend(f"{index}. {step}" for index, step in enumerate(package.manufacturing.assembly_steps, 1))
+    lines.extend(
+        f"{index}. {step}" for index, step in enumerate(package.manufacturing.assembly_steps, 1)
+    )
     lines.extend(["", "## 8. QC / 安全 / 待确认", "", "### QC", ""])
     lines.extend(f"- {item}" for item in package.manufacturing.qc_checks)
     lines.extend(["", "### 安全与合规", ""])

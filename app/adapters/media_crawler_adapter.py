@@ -152,11 +152,11 @@ class MediaCrawlerAdapter:
                     attempted = True
                     attempted_any = True
                     try:
-                        live_posts, raw_paths = await self._run_live_crawler(
+                        live_posts, raw_paths, crawl_note = await self._run_live_crawler(
                             platform, topic, auth_method
                         )
                         login_state = "authorized"
-                        detail = (
+                        detail = crawl_note or (
                             f"{PLATFORM_LABELS[platform]}登录与关键词搜索均通过，"
                             f"本次保存 {len(live_posts)} 条真实结果。"
                         )
@@ -362,7 +362,7 @@ class MediaCrawlerAdapter:
 
     async def _run_live_crawler(
         self, platform: str, topic: str, auth_method: str
-    ) -> tuple[list[MarketPost], list[Path]]:
+    ) -> tuple[list[MarketPost], list[Path], str]:
         root = self.settings.mediacrawler_path
         run_token = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
         output_root = self.settings.market_raw_dir / "_upstream" / run_token / platform
@@ -424,6 +424,7 @@ class MediaCrawlerAdapter:
                 else asyncio.subprocess.STDOUT
             ),
         )
+        timed_out = False
         try:
             stdout, _ = await asyncio.wait_for(
                 process.communicate(), timeout=self.settings.mediacrawler_timeout_seconds
@@ -431,8 +432,9 @@ class MediaCrawlerAdapter:
         except TimeoutError:
             process.kill()
             await process.wait()
-            raise RuntimeError("MediaCrawler timed out; login may be missing or expired")
-        if process.returncode != 0:
+            timed_out = True
+            stdout = b""
+        if process.returncode != 0 and not timed_out:
             output = (stdout or b"").decode("utf-8", errors="replace")[-1600:]
             raise RuntimeError(f"MediaCrawler exit={process.returncode}: {output}")
 
@@ -446,6 +448,10 @@ class MediaCrawlerAdapter:
             reverse=True,
         )
         if not files:
+            if timed_out:
+                raise RuntimeError(
+                    "MediaCrawler timed out before producing any content records"
+                )
             raise RuntimeError("MediaCrawler completed but produced no content records")
         raw_items: list[dict[str, Any]] = []
         for file in files:
@@ -455,11 +461,21 @@ class MediaCrawlerAdapter:
             [post for post in normalized if post.post_id and post.metrics_verified]
         )[: self.settings.mediacrawler_platform_record_limit]
         if len(posts) < 5:
+            if timed_out:
+                raise RuntimeError(
+                    "MediaCrawler timed out and produced fewer than 5 valid records"
+                )
             raise RuntimeError(
                 "MediaCrawler returned fewer than 5 valid records with IDs and engagement fields"
             )
         canonical_path = self._write_platform_snapshot(platform, posts)
-        return posts, [canonical_path, *files]
+        crawl_note = ""
+        if timed_out:
+            crawl_note = (
+                f"{PLATFORM_LABELS[platform]}达到单平台时间上限；"
+                f"已终止继续翻页，并保存 {len(posts)} 条本轮真实返回记录。"
+            )
+        return posts, [canonical_path, *files], crawl_note
 
     def _normalize_post(self, platform: str, item: dict[str, Any]) -> MarketPost:
         post_id = _pick(item, "note_id", "aweme_id", "video_id", "content_id", "id")

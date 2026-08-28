@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import uuid
 from collections import deque
 from datetime import UTC, datetime
@@ -12,16 +13,27 @@ from pathlib import Path
 from typing import Any
 
 from app.adapters.image_generation_adapter import ImageGenerationAdapter
+from app.designer import render_design_poster
+from app.schemas import DesignPackage
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 BUNDLED_WORKBENCH_DIR = ROOT_DIR / "data" / "workbench"
-WORKBENCH_DIR = Path(
-    os.environ.get("QIANCRAFT_WORKBENCH_DIR", str(BUNDLED_WORKBENCH_DIR))
-).expanduser().resolve()
+WORKBENCH_DIR = (
+    Path(
+        os.environ.get(
+            "QIANCRAFT_WORKBENCH_DIR",
+            str(ROOT_DIR / "data" / "runtime" / "workbench"),
+        )
+    )
+    .expanduser()
+    .resolve()
+)
 BUNDLED_WORKSPACES_DIR = BUNDLED_WORKBENCH_DIR / "workspaces"
 BUNDLED_GENERATED_DIR = BUNDLED_WORKBENCH_DIR / "generated"
 WORKSPACES_DIR = WORKBENCH_DIR / "workspaces"
 GENERATED_DIR = WORKBENCH_DIR / "generated"
+RESEARCH_DIR = WORKBENCH_DIR / "research"
+DESIGN_RUNS_DIR = WORKBENCH_DIR / "design_runs"
 DEFAULT_WORKSPACE_ID = "guizhou-miao-demo"
 
 NODE_TYPES = (
@@ -56,6 +68,7 @@ DEFAULT_SCORE_WEIGHTS = {
 POSTER_THEMES = ("editorial", "workshop", "exhibition")
 VISUAL_SIZES = ("1024x1024", "1536x1024", "1024x1536")
 _WORKSPACE_ID = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+_RUN_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9TZ-]{0,95}$")
 
 CULTURE_PATH = ROOT_DIR / "data" / "culture" / "knowledge_graph.json"
 HOTNESS_PATH = ROOT_DIR / "data" / "market" / "derived" / "product_form_hotness.json"
@@ -112,6 +125,55 @@ def _workspace_path(workspace_id: str) -> Path:
     return WORKSPACES_DIR / f"{workspace_id}.json"
 
 
+def _research_artifact_path(
+    workspace: dict[str, Any],
+    filename: str,
+    fallback: Path,
+) -> Path:
+    run_id = str(workspace.get("metadata", {}).get("research_run_id", ""))
+    workspace_id = str(workspace.get("workspace_id", ""))
+    if not _WORKSPACE_ID.fullmatch(workspace_id) or not _RUN_ID.fullmatch(run_id):
+        return fallback
+    candidate = RESEARCH_DIR / workspace_id / run_id / filename
+    return candidate if candidate.is_file() else fallback
+
+
+def workspace_strategy_path(workspace: dict[str, Any]) -> Path:
+    """Return the promoted strategy for this workspace, never a client-supplied path."""
+
+    return _research_artifact_path(
+        workspace,
+        "pre_design_strategy.json",
+        STRATEGY_PATH,
+    )
+
+
+def _workspace_hotness_path(workspace: dict[str, Any]) -> Path:
+    return _research_artifact_path(
+        workspace,
+        "product_form_hotness.json",
+        HOTNESS_PATH,
+    )
+
+
+def _workspace_manifest_path(workspace: dict[str, Any]) -> Path:
+    return _research_artifact_path(workspace, "run_manifest.json", MANIFEST_PATH)
+
+
+def _workspace_design_path(workspace: dict[str, Any]) -> Path:
+    run_id = str(workspace.get("metadata", {}).get("design_run_id", ""))
+    workspace_id = str(workspace.get("workspace_id", ""))
+    if _WORKSPACE_ID.fullmatch(workspace_id) and _RUN_ID.fullmatch(run_id):
+        candidate = DESIGN_RUNS_DIR / workspace_id / run_id / "design_specification.json"
+        if candidate.is_file():
+            return candidate
+    return _research_artifact_path(
+        workspace,
+        "design_specification.json",
+        DESIGN_PATH,
+    )
+
+
 def _node(
     node_id: str,
     node_type: str,
@@ -165,23 +227,20 @@ def _clean_string_list(
     if not isinstance(value, list) or len(value) > max_items:
         raise ValueError(f"{field} 必须是不超过 {max_items} 项的数组。")
     return list(
-        dict.fromkeys(
-            str(item).strip()[:max_length]
-            for item in value
-            if str(item).strip()
-        )
+        dict.fromkeys(str(item).strip()[:max_length] for item in value if str(item).strip())
     )
 
 
-def _default_decision_profile(concept_ids: list[str] | None = None) -> dict[str, Any]:
+def _default_decision_profile(
+    concept_ids: list[str] | None = None,
+    workspace: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     culture = _load_json(CULTURE_PATH)
-    hotness = _load_json(HOTNESS_PATH)
-    strategy = _load_json(STRATEGY_PATH)
-    design = _load_json(DESIGN_PATH)
+    hotness = _load_json(_workspace_hotness_path(workspace) if workspace else HOTNESS_PATH)
+    strategy = _load_json(workspace_strategy_path(workspace) if workspace else STRATEGY_PATH)
+    design = _load_json(_workspace_design_path(workspace) if workspace else DESIGN_PATH)
     visual = _load_json(VISUAL_REFERENCES_PATH)
-    culture_ids = {
-        str(item.get("culture_id", "")) for item in culture.get("records", [])
-    }
+    culture_ids = {str(item.get("culture_id", "")) for item in culture.get("records", [])}
     preferred_culture = [
         item
         for item in (
@@ -206,9 +265,7 @@ def _default_decision_profile(concept_ids: list[str] | None = None) -> dict[str,
             if ref
         )
     )
-    valid_visual_ids = {
-        str(item.get("visual_id", "")) for item in visual.get("references", [])
-    }
+    valid_visual_ids = {str(item.get("visual_id", "")) for item in visual.get("references", [])}
     reference_ids = [item for item in reference_ids if item in valid_visual_ids]
     if not reference_ids:
         reference_ids = [item for item in list(valid_visual_ids)[:1] if item]
@@ -216,8 +273,7 @@ def _default_decision_profile(concept_ids: list[str] | None = None) -> dict[str,
     return {
         "version": 1,
         "mode": "guided",
-        "cultureRecordIds": preferred_culture
-        or [item for item in list(culture_ids)[:4] if item],
+        "cultureRecordIds": preferred_culture or [item for item in list(culture_ids)[:4] if item],
         "marketPlatforms": list(MARKET_PLATFORMS),
         "marketProductForms": [
             str(item.get("product_form", ""))
@@ -225,30 +281,20 @@ def _default_decision_profile(concept_ids: list[str] | None = None) -> dict[str,
             if item.get("product_form")
         ],
         "opportunityIds": [
-            str(item.get("opportunity_id", ""))
-            for item in ranked[:3]
-            if item.get("opportunity_id")
+            str(item.get("opportunity_id", "")) for item in ranked[:3] if item.get("opportunity_id")
         ],
         "scoreWeights": dict(DEFAULT_SCORE_WEIGHTS),
         "culturalRiskPenalty": 0.20,
         "designIntent": {
-            "targetAudience": str(
-                product.get("target_audience", "18-30岁年轻消费者")
-            ),
-            "preferredProductForms": [
-                str(product.get("product_type", "文创产品"))
-            ],
+            "targetAudience": str(product.get("target_audience", "18-30岁年轻消费者")),
+            "preferredProductForms": [str(product.get("product_type", "文创产品"))],
             "priceBand": "待用户与渠道共同确认",
-            "useScenarios": [
-                str(item) for item in product.get("use_scenarios", [])[:8]
-            ],
+            "useScenarios": [str(item) for item in product.get("use_scenarios", [])[:8]],
             "materialPriorities": ["可追溯", "可拆解", "首样可验证"],
         },
         "visualDirection": {
             "referenceIds": reference_ids,
-            "styleKeywords": [
-                str(item) for item in product.get("visual_style", [])[:8]
-            ],
+            "styleKeywords": [str(item) for item in product.get("visual_style", [])[:8]],
             "imageSize": "1024x1024",
             "notes": "仅提取结构、节奏与材料关系，不复用 reference_only 像素。",
         },
@@ -264,9 +310,10 @@ def _default_decision_profile(concept_ids: list[str] | None = None) -> dict[str,
 def _validate_decision_profile(
     candidate: Any,
     nodes: list[dict[str, Any]],
+    workspace: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     concept_ids = [str(node["id"]) for node in nodes if node["type"] == "ConceptNode"]
-    defaults = _default_decision_profile(concept_ids)
+    defaults = _default_decision_profile(concept_ids, workspace)
     if candidate is None:
         candidate = {}
     if not isinstance(candidate, dict):
@@ -275,15 +322,27 @@ def _validate_decision_profile(
     merged.update(candidate)
     merged["scoreWeights"] = {
         **defaults["scoreWeights"],
-        **(candidate.get("scoreWeights", {}) if isinstance(candidate.get("scoreWeights"), dict) else {}),
+        **(
+            candidate.get("scoreWeights", {})
+            if isinstance(candidate.get("scoreWeights"), dict)
+            else {}
+        ),
     }
     merged["designIntent"] = {
         **defaults["designIntent"],
-        **(candidate.get("designIntent", {}) if isinstance(candidate.get("designIntent"), dict) else {}),
+        **(
+            candidate.get("designIntent", {})
+            if isinstance(candidate.get("designIntent"), dict)
+            else {}
+        ),
     }
     merged["visualDirection"] = {
         **defaults["visualDirection"],
-        **(candidate.get("visualDirection", {}) if isinstance(candidate.get("visualDirection"), dict) else {}),
+        **(
+            candidate.get("visualDirection", {})
+            if isinstance(candidate.get("visualDirection"), dict)
+            else {}
+        ),
     }
 
     mode = str(merged.get("mode", "guided"))
@@ -291,14 +350,14 @@ def _validate_decision_profile(
         raise ValueError("decision_profile.mode 只允许 guided 或 manual。")
 
     culture_ids = {
-        str(item.get("culture_id", ""))
-        for item in _load_json(CULTURE_PATH).get("records", [])
+        str(item.get("culture_id", "")) for item in _load_json(CULTURE_PATH).get("records", [])
     }
+    market_path = _workspace_hotness_path(workspace) if workspace else HOTNESS_PATH
+    strategy_path = workspace_strategy_path(workspace) if workspace else STRATEGY_PATH
     market_forms = {
-        str(item.get("product_form", ""))
-        for item in _load_json(HOTNESS_PATH).get("ranking", [])
+        str(item.get("product_form", "")) for item in _load_json(market_path).get("ranking", [])
     }
-    strategy_items = _load_json(STRATEGY_PATH).get("opportunity_signals", [])
+    strategy_items = _load_json(strategy_path).get("opportunity_signals", [])
     opportunity_ids = {
         str(item.get("opportunity_id", ""))
         for item in strategy_items
@@ -323,22 +382,16 @@ def _validate_decision_profile(
         )
         invalid = [item for item in values if item not in allowed]
         if invalid:
-            raise ValueError(
-                f"decision_profile.{field} 包含未知编号：{', '.join(invalid)}"
-            )
+            raise ValueError(f"decision_profile.{field} 包含未知编号：{', '.join(invalid)}")
         if required and not values:
             raise ValueError(f"decision_profile.{field} 至少选择 1 项。")
         return values
 
     culture_record_ids = allowed_list("cultureRecordIds", culture_ids, 22)
-    market_platforms = allowed_list(
-        "marketPlatforms", set(MARKET_PLATFORMS), len(MARKET_PLATFORMS)
-    )
+    market_platforms = allowed_list("marketPlatforms", set(MARKET_PLATFORMS), len(MARKET_PLATFORMS))
     market_product_forms = allowed_list("marketProductForms", market_forms, 10)
     selected_opportunities = allowed_list("opportunityIds", opportunity_ids, 3)
-    selected_concepts = allowed_list(
-        "conceptCompareIds", set(concept_ids), 12
-    )
+    selected_concepts = allowed_list("conceptCompareIds", set(concept_ids), 12)
     active_concept_id = str(merged.get("activeConceptId", ""))
     if active_concept_id not in concept_ids:
         raise ValueError("decision_profile.activeConceptId 必须指向 ConceptNode。")
@@ -412,9 +465,7 @@ def _validate_decision_profile(
     poster_theme = str(merged.get("posterTheme", "editorial"))
     if poster_theme not in POSTER_THEMES:
         raise ValueError("decision_profile.posterTheme 不受支持。")
-    poster_sections = allowed_list(
-        "posterSections", set(POSTER_SECTIONS), len(POSTER_SECTIONS)
-    )
+    poster_sections = allowed_list("posterSections", set(POSTER_SECTIONS), len(POSTER_SECTIONS))
     version = merged.get("version", 1)
     if not isinstance(version, int) or version < 1:
         version = 1
@@ -541,9 +592,7 @@ def default_workspace() -> dict[str, Any]:
                         else str(culture.get("scope") or "贵州苗绣")
                     ),
                     "keyCrafts": records[0].get("crafts", [])[:6] if records else [],
-                    "boundaries": records[0].get("cultural_taboos", [])[:3]
-                    if records
-                    else [],
+                    "boundaries": records[0].get("cultural_taboos", [])[:3] if records else [],
                 },
                 "history": [{"at": timestamp, "event": "载入策展式文化图谱"}],
             },
@@ -601,8 +650,7 @@ def default_workspace() -> dict[str, Any]:
                     {
                         "id": item.get("opportunity_id", ""),
                         "title": (
-                            f"{item.get('culture_element', '')} × "
-                            f"{item.get('trend_element', '')}"
+                            f"{item.get('culture_element', '')} × {item.get('trend_element', '')}"
                         ),
                         "score": item.get("overall_score", 0),
                         "verification": item.get("verification", {}).get("status", ""),
@@ -611,9 +659,7 @@ def default_workspace() -> dict[str, Any]:
                 ],
                 "sourceRefs": list(
                     dict.fromkeys(
-                        ref
-                        for item in top_opportunities
-                        for ref in item.get("evidence_refs", [])
+                        ref for item in top_opportunities for ref in item.get("evidence_refs", [])
                     )
                 )[:12],
                 "history": [{"at": timestamp, "event": "完成证据锁定与二次核验"}],
@@ -682,9 +728,7 @@ def default_workspace() -> dict[str, Any]:
                         {
                             "at": timestamp,
                             "event": (
-                                "载入现有项目概念视觉"
-                                if item["imageUrl"]
-                                else "建立待生成方向"
+                                "载入现有项目概念视觉" if item["imageUrl"] else "建立待生成方向"
                             ),
                         }
                     ],
@@ -713,9 +757,7 @@ def default_workspace() -> dict[str, Any]:
                         design.get("cultural_elements", [{}])[0].get("name", "原创数纱网格")
                     ),
                     "cultureRule": (
-                        design.get("cultural_elements", [{}])[0].get(
-                            "transformation_rule", ""
-                        )
+                        design.get("cultural_elements", [{}])[0].get("transformation_rule", "")
                     ),
                     "materials": [
                         f"{item.get('component', '')}｜{item.get('material', '')}"
@@ -837,11 +879,9 @@ def _validate_workspace(candidate: dict[str, Any], workspace_id: str) -> dict[st
     profile_candidate = metadata.get("decision_profile")
     if profile_candidate is None:
         profile_candidate = {"activeConceptId": selected_concept or next(iter(concept_ids), "")}
-    profile = _validate_decision_profile(profile_candidate, nodes)
+    profile = _validate_decision_profile(profile_candidate, nodes, payload)
     if selected_concept and profile["activeConceptId"] != selected_concept:
-        raise ValueError(
-            "decision_profile.activeConceptId 必须与 selected_concept_id 一致。"
-        )
+        raise ValueError("decision_profile.activeConceptId 必须与 selected_concept_id 一致。")
     metadata["decision_profile"] = profile
     payload["schema_version"] = "1.1"
     payload.setdefault("created_at", _now())
@@ -911,12 +951,179 @@ def create_workbench_workspace(candidate: dict[str, Any]) -> dict[str, Any]:
     return save_workbench_workspace(workspace_id, base)
 
 
+def _reconcile_promoted_decisions(
+    workspace: dict[str, Any],
+    *,
+    event_time: str,
+) -> dict[str, Any] | None:
+    """Keep valid human choices and explicitly replace only vanished research IDs."""
+
+    metadata = workspace.setdefault("metadata", {})
+    profile = metadata.get("decision_profile")
+    if not isinstance(profile, dict):
+        return None
+    strategy = _load_json(workspace_strategy_path(workspace))
+    hotness = _load_json(_workspace_hotness_path(workspace))
+    opportunity_rows = [
+        item
+        for item in strategy.get("opportunity_signals", [])
+        if item.get("verification", {}).get("status") != "rejected"
+    ]
+    ranked_ids = [
+        str(item.get("opportunity_id", ""))
+        for item in sorted(
+            opportunity_rows,
+            key=lambda item: float(item.get("overall_score", 0)),
+            reverse=True,
+        )
+        if item.get("opportunity_id")
+    ]
+    valid_opportunity_ids = set(ranked_ids)
+    old_opportunities = [str(item) for item in profile.get("opportunityIds", [])]
+    kept_opportunities = [item for item in old_opportunities if item in valid_opportunity_ids]
+    target_opportunity_count = max(1, min(3, len(old_opportunities) or 3))
+    new_opportunities = list(kept_opportunities)
+    for item in ranked_ids:
+        if item not in new_opportunities:
+            new_opportunities.append(item)
+        if len(new_opportunities) >= target_opportunity_count:
+            break
+
+    ranked_forms = [
+        str(item.get("product_form", ""))
+        for item in hotness.get("ranking", [])
+        if item.get("product_form")
+    ]
+    valid_forms = set(ranked_forms)
+    old_forms = [str(item) for item in profile.get("marketProductForms", [])]
+    new_forms = [item for item in old_forms if item in valid_forms]
+    target_form_count = max(1, min(10, len(old_forms) or 5))
+    for item in ranked_forms:
+        if item not in new_forms:
+            new_forms.append(item)
+        if len(new_forms) >= target_form_count:
+            break
+
+    if not new_opportunities or not new_forms:
+        raise ValueError("新研究结果缺少可选择的机会或产品形态，不能晋级。")
+    if new_opportunities == old_opportunities and new_forms == old_forms:
+        return None
+
+    profile["opportunityIds"] = new_opportunities
+    profile["marketProductForms"] = new_forms
+    profile["version"] = int(profile.get("version", 0)) + 1
+    profile["updatedAt"] = event_time
+    audit = {
+        "at": event_time,
+        "reason": "新研究结果晋级后，保留仍有效的人工选择并补齐已失效编号。",
+        "previousOpportunityIds": old_opportunities,
+        "currentOpportunityIds": new_opportunities,
+        "previousProductForms": old_forms,
+        "currentProductForms": new_forms,
+    }
+    metadata["decision_reconciliation"] = audit
+    return audit
+
+
+def promote_research_run(
+    workspace_id: str,
+    run_dir: Path,
+    manifest: dict[str, Any],
+) -> dict[str, Any]:
+    """Promote only a fully verified isolated research run into one workspace."""
+
+    workspace = load_workbench_workspace(workspace_id)
+    run_root = run_dir.resolve()
+    manifest_run_id = str(manifest.get("run_id", ""))
+    if not _RUN_ID.fullmatch(manifest_run_id):
+        raise ValueError("研究运行编号无效，不能晋级。")
+
+    component_modes = {
+        str(item.get("component", "")): str(item.get("mode", ""))
+        for item in manifest.get("components", [])
+        if item.get("component") in {"culture_knowledge", "market_research", "strategist"}
+    }
+    platform_modes = {
+        code: str(manifest.get("market_platforms", {}).get(code, {}).get("status", ""))
+        for code in MARKET_PLATFORMS
+    }
+    if set(component_modes.values()) != {"live"} or any(
+        mode != "live" for mode in platform_modes.values()
+    ):
+        raise ValueError("只有文化、市场、策划及四平台全部 live 的运行可以晋级。")
+
+    destination = RESEARCH_DIR / workspace_id / manifest_run_id
+    outputs = manifest.get("outputs", {})
+    sources: dict[str, Path] = {
+        "pre_design_strategy.json": Path(str(outputs.get("strategy_json", ""))),
+        "visual_reference_pack.json": Path(str(outputs.get("visual_reference_json", ""))),
+        "designer_handoff.json": Path(str(outputs.get("designer_handoff_json", ""))),
+        "run_manifest.json": Path(str(outputs.get("manifest", ""))),
+        "product_form_hotness.json": Path(str(outputs.get("product_form_hotness", ""))),
+        "market_evidence.json": Path(
+            str(manifest.get("market_source", {}).get("derived_path", ""))
+        ),
+    }
+    missing: list[str] = []
+    for name, source in sources.items():
+        try:
+            resolved = source.resolve(strict=True)
+        except (FileNotFoundError, OSError):
+            missing.append(name)
+            continue
+        if not resolved.is_relative_to(run_root):
+            raise ValueError(f"研究产物 {name} 不在隔离运行目录内。")
+    if missing:
+        raise FileNotFoundError("研究运行缺少产物：" + "、".join(missing))
+
+    destination.mkdir(parents=True, exist_ok=True)
+    for name, source in sources.items():
+        shutil.copy2(source.resolve(), destination / name)
+
+    metadata = workspace.setdefault("metadata", {})
+    metadata.update(
+        {
+            "source_run_id": manifest_run_id,
+            "research_run_id": manifest_run_id,
+            "research_verified_at": str(manifest.get("finished_at", _now())),
+            "research_component_modes": component_modes,
+            "research_platform_modes": platform_modes,
+        }
+    )
+    reconciliation = _reconcile_promoted_decisions(
+        workspace,
+        event_time=str(manifest.get("finished_at", _now())),
+    )
+    workspace = _apply_decision_profile_to_workspace(
+        workspace,
+        mark_downstream=True,
+    )
+    for node in workspace["nodes"]:
+        if node["type"] not in {
+            "CultureGraphNode",
+            "MarketRadarNode",
+            "StrategyNode",
+        }:
+            continue
+        node["data"]["status"] = "success"
+        node["data"].setdefault("history", []).insert(
+            0,
+            {
+                "at": str(manifest.get("finished_at", _now())),
+                "event": (
+                    f"实时研究 {manifest_run_id} 已核验并回写；失效的人工编号已在审计记录中替换"
+                    if reconciliation
+                    else f"实时研究 {manifest_run_id} 已核验并回写"
+                ),
+            },
+        )
+    return save_workbench_workspace(workspace_id, workspace)
+
+
 def _descendants(workspace: dict[str, Any], source_id: str) -> set[str]:
     adjacency: dict[str, list[str]] = {}
     for edge in workspace.get("edges", []):
-        adjacency.setdefault(str(edge.get("source", "")), []).append(
-            str(edge.get("target", ""))
-        )
+        adjacency.setdefault(str(edge.get("source", "")), []).append(str(edge.get("target", "")))
     visited: set[str] = set()
     queue = deque(adjacency.get(source_id, []))
     while queue:
@@ -936,13 +1143,14 @@ def manual_opportunity_score(
     total_weight = sum(float(weights.get(field, 0)) for field in SCORE_FIELDS)
     if total_weight <= 0:
         raise ValueError("人工评分权重之和必须大于 0。")
-    weighted_positive = sum(
-        float(opportunity.get(field, 0)) * float(weights.get(field, 0))
-        for field in SCORE_FIELDS
-    ) / total_weight
-    score = weighted_positive - cultural_risk_penalty * float(
-        opportunity.get("cultural_risk", 0)
+    weighted_positive = (
+        sum(
+            float(opportunity.get(field, 0)) * float(weights.get(field, 0))
+            for field in SCORE_FIELDS
+        )
+        / total_weight
     )
+    score = weighted_positive - cultural_risk_penalty * float(opportunity.get("cultural_risk", 0))
     verification = opportunity.get("verification", {}).get("status", "")
     if verification == "rejected":
         return 0.0
@@ -951,13 +1159,15 @@ def manual_opportunity_score(
     return round(max(0, min(100, score)), 1)
 
 
-def _decision_output(profile: dict[str, Any]) -> dict[str, Any]:
+def _decision_output(
+    profile: dict[str, Any],
+    workspace: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    workspace = workspace or {}
     culture = _load_json(CULTURE_PATH)
-    hotness = _load_json(HOTNESS_PATH)
-    strategy = _load_json(STRATEGY_PATH)
-    culture_map = {
-        str(item.get("culture_id", "")): item for item in culture.get("records", [])
-    }
+    hotness = _load_json(_workspace_hotness_path(workspace))
+    strategy = _load_json(workspace_strategy_path(workspace))
+    culture_map = {str(item.get("culture_id", "")): item for item in culture.get("records", [])}
     selected_culture = [
         {
             "id": item_id,
@@ -969,9 +1179,7 @@ def _decision_output(profile: dict[str, Any]) -> dict[str, Any]:
     ]
     selected_forms = set(profile["marketProductForms"])
     form_rows = [
-        item
-        for item in hotness.get("ranking", [])
-        if item.get("product_form") in selected_forms
+        item for item in hotness.get("ranking", []) if item.get("product_form") in selected_forms
     ]
     platform_sizes = hotness.get("platform_sample_sizes", {})
     ranked_opportunities = []
@@ -979,10 +1187,7 @@ def _decision_output(profile: dict[str, Any]) -> dict[str, Any]:
         ranked_opportunities.append(
             {
                 "id": item.get("opportunity_id", ""),
-                "title": (
-                    f"{item.get('culture_element', '')} × "
-                    f"{item.get('trend_element', '')}"
-                ),
+                "title": (f"{item.get('culture_element', '')} × {item.get('trend_element', '')}"),
                 "manualScore": manual_opportunity_score(
                     item,
                     profile["scoreWeights"],
@@ -1005,12 +1210,9 @@ def _decision_output(profile: dict[str, Any]) -> dict[str, Any]:
             "platforms": profile["marketPlatforms"],
             "productForms": profile["marketProductForms"],
             "selectedPlatformSamples": sum(
-                int(platform_sizes.get(item, 0))
-                for item in profile["marketPlatforms"]
+                int(platform_sizes.get(item, 0)) for item in profile["marketPlatforms"]
             ),
-            "selectedFormSamples": sum(
-                int(item.get("sample_size", 0)) for item in form_rows
-            ),
+            "selectedFormSamples": sum(int(item.get("sample_size", 0)) for item in form_rows),
         },
         "manualRanking": ranked_opportunities,
         "selectedOpportunityIds": profile["opportunityIds"],
@@ -1030,23 +1232,19 @@ def _apply_decision_profile_to_workspace(
 ) -> dict[str, Any]:
     metadata = workspace.setdefault("metadata", {})
     profile = _validate_decision_profile(
-        metadata.get("decision_profile"), workspace["nodes"]
+        metadata.get("decision_profile"), workspace["nodes"], workspace
     )
     metadata["decision_profile"] = profile
     metadata["selected_concept_id"] = profile["activeConceptId"]
-    output = _decision_output(profile)
+    output = _decision_output(profile, workspace)
     metadata["decision_output"] = output
 
     culture = _load_json(CULTURE_PATH)
-    hotness = _load_json(HOTNESS_PATH)
-    strategy = _load_json(STRATEGY_PATH)
-    culture_map = {
-        str(item.get("culture_id", "")): item for item in culture.get("records", [])
-    }
+    hotness = _load_json(_workspace_hotness_path(workspace))
+    strategy = _load_json(workspace_strategy_path(workspace))
+    culture_map = {str(item.get("culture_id", "")): item for item in culture.get("records", [])}
     selected_culture_records = [
-        culture_map[item]
-        for item in profile["cultureRecordIds"]
-        if item in culture_map
+        culture_map[item] for item in profile["cultureRecordIds"] if item in culture_map
     ]
     selected_culture_refs = list(
         dict.fromkeys(
@@ -1056,14 +1254,9 @@ def _apply_decision_profile_to_workspace(
             if ref
         )
     )
-    form_map = {
-        str(item.get("product_form", "")): item
-        for item in hotness.get("ranking", [])
-    }
+    form_map = {str(item.get("product_form", "")): item for item in hotness.get("ranking", [])}
     selected_form_rows = [
-        form_map[item]
-        for item in profile["marketProductForms"]
-        if item in form_map
+        form_map[item] for item in profile["marketProductForms"] if item in form_map
     ]
     market_refs = list(
         dict.fromkeys(
@@ -1079,21 +1272,14 @@ def _apply_decision_profile_to_workspace(
     }
     manual_map = {item["id"]: item for item in output["manualRanking"]}
     selected_opportunities = [
-        strategy_map[item]
-        for item in profile["opportunityIds"]
-        if item in strategy_map
+        strategy_map[item] for item in profile["opportunityIds"] if item in strategy_map
     ]
     selected_opportunity_rows = sorted(
         (
             {
                 "id": item.get("opportunity_id", ""),
-                "title": (
-                    f"{item.get('culture_element', '')} × "
-                    f"{item.get('trend_element', '')}"
-                ),
-                "score": manual_map.get(item.get("opportunity_id", ""), {}).get(
-                    "manualScore", 0
-                ),
+                "title": (f"{item.get('culture_element', '')} × {item.get('trend_element', '')}"),
+                "score": manual_map.get(item.get("opportunity_id", ""), {}).get("manualScore", 0),
                 "systemScore": item.get("overall_score", 0),
                 "verification": item.get("verification", {}).get("status", ""),
             }
@@ -1170,14 +1356,8 @@ def _apply_decision_profile_to_workspace(
                 if intent["useScenarios"]:
                     brief["scenarios"] = intent["useScenarios"]
                 decision_constraints = [
-                    *(
-                        [f"目标价格带：{intent['priceBand']}"]
-                        if intent["priceBand"]
-                        else []
-                    ),
-                    *[
-                        f"材料优先：{item}" for item in intent["materialPriorities"]
-                    ],
+                    *([f"目标价格带：{intent['priceBand']}"] if intent["priceBand"] else []),
+                    *[f"材料优先：{item}" for item in intent["materialPriorities"]],
                 ]
                 brief["constraints"] = list(
                     dict.fromkeys([*brief.get("constraints", []), *decision_constraints])
@@ -1236,7 +1416,7 @@ def update_decision_profile(
 ) -> dict[str, Any]:
     workspace = load_workbench_workspace(workspace_id)
     current = workspace.get("metadata", {}).get("decision_profile", {})
-    cleaned = _validate_decision_profile(candidate, workspace["nodes"])
+    cleaned = _validate_decision_profile(candidate, workspace["nodes"], workspace)
     cleaned["version"] = int(current.get("version", 0)) + 1
     cleaned["updatedAt"] = _now()
     workspace["metadata"]["decision_profile"] = cleaned
@@ -1249,15 +1429,17 @@ def update_decision_profile(
 
 def decision_catalog(workspace: dict[str, Any]) -> dict[str, Any]:
     culture = _load_json(CULTURE_PATH)
-    hotness = _load_json(HOTNESS_PATH)
-    strategy = _load_json(STRATEGY_PATH)
-    manifest = _load_json(MANIFEST_PATH)
+    hotness = _load_json(_workspace_hotness_path(workspace))
+    strategy = _load_json(workspace_strategy_path(workspace))
+    manifest = _load_json(_workspace_manifest_path(workspace))
     visual = _load_json(VISUAL_REFERENCES_PATH)
     recommended = _validate_decision_profile(
         _default_decision_profile(
-            [node["id"] for node in workspace["nodes"] if node["type"] == "ConceptNode"]
+            [node["id"] for node in workspace["nodes"] if node["type"] == "ConceptNode"],
+            workspace,
         ),
         workspace["nodes"],
+        workspace,
     )
     return {
         "cultureRecords": [
@@ -1279,9 +1461,7 @@ def decision_catalog(workspace: dict[str, Any]) -> dict[str, Any]:
                 "status": manifest.get("market_platforms", {})
                 .get(platform, {})
                 .get("status", "unavailable"),
-                "sampleSize": int(
-                    hotness.get("platform_sample_sizes", {}).get(platform, 0)
-                ),
+                "sampleSize": int(hotness.get("platform_sample_sizes", {}).get(platform, 0)),
             }
             for platform in MARKET_PLATFORMS
         ],
@@ -1418,9 +1598,7 @@ def duplicate_concept(workspace_id: str, concept_id: str) -> dict[str, Any]:
     )
     if source is None:
         raise ValueError("指定概念不存在。")
-    concept_count = sum(
-        node["type"] == "ConceptNode" for node in workspace["nodes"]
-    )
+    concept_count = sum(node["type"] == "ConceptNode" for node in workspace["nodes"])
     if concept_count >= 12:
         raise ValueError("单个工作区最多保留 12 个概念方向。")
     clone = copy.deepcopy(source)
@@ -1435,9 +1613,7 @@ def duplicate_concept(workspace_id: str, concept_id: str) -> dict[str, Any]:
     clone["data"]["title"] = f"{source['data'].get('title', '概念')} · 复制"
     clone["data"]["active"] = False
     clone["data"]["status"] = "cached" if clone["data"].get("imageUrl") else "idle"
-    clone["data"]["history"] = [
-        {"at": _now(), "event": f"从 {concept_id} 复制，等待独立迭代"}
-    ]
+    clone["data"]["history"] = [{"at": _now(), "event": f"从 {concept_id} 复制，等待独立迭代"}]
     workspace["nodes"].append(clone)
     workspace["edges"].extend(
         [
@@ -1480,9 +1656,7 @@ def regenerate_concept(workspace_id: str, concept_id: str) -> dict[str, Any]:
     prompt_suffix = str(concept["data"].get("decisionPromptSuffix", "")).strip()
     if prompt_suffix:
         prompt = f"{prompt}\n{prompt_suffix}"
-    image_size = workspace["metadata"]["decision_profile"]["visualDirection"][
-        "imageSize"
-    ]
+    image_size = workspace["metadata"]["decision_profile"]["visualDirection"]["imageSize"]
     try:
         result = adapter.generate(
             prompt,
@@ -1495,9 +1669,7 @@ def regenerate_concept(workspace_id: str, concept_id: str) -> dict[str, Any]:
             0, {"at": _now(), "event": "单概念重生成失败；请检查图像服务"}
         )
         save_workbench_workspace(workspace_id, workspace)
-        raise RuntimeError(
-            "概念重生成失败，请检查 provider、模型、配额与接口兼容性。"
-        ) from exc
+        raise RuntimeError("概念重生成失败，请检查 provider、模型、配额与接口兼容性。") from exc
     concept["data"].update(
         {
             "imageUrl": f"/assets/workbench/{workspace_id}/{filename}",
@@ -1530,9 +1702,7 @@ def generate_more_concept(workspace_id: str, concept_id: str) -> dict[str, Any]:
             "status": "idle",
         }
     )
-    clone["data"]["history"] = [
-        {"at": _now(), "event": f"从 {concept_id} 建立新生成方向"}
-    ]
+    clone["data"]["history"] = [{"at": _now(), "event": f"从 {concept_id} 建立新生成方向"}]
     save_workbench_workspace(workspace_id, workspace)
     if ImageGenerationAdapter().status()["configured"]:
         return regenerate_concept(workspace_id, clone_id)
@@ -1543,40 +1713,80 @@ def generate_more_concept(workspace_id: str, concept_id: str) -> dict[str, Any]:
     return save_workbench_workspace(workspace_id, workspace)
 
 
-def _refresh_node_data(node: dict[str, Any]) -> str:
-    node_type = node["type"]
-    data = node["data"]
-    if node_type == "CultureGraphNode":
-        culture = _load_json(CULTURE_PATH)
-        data["stats"] = [
-            {"label": "文化记录", "value": len(culture.get("records", []))},
-            {"label": "登记来源", "value": len(culture.get("sources", []))},
-        ]
-        return "success"
-    if node_type == "MarketRadarNode":
-        hotness = _load_json(HOTNESS_PATH)
-        data["topForms"] = [
-            {
-                "name": item.get("product_form", ""),
-                "score": item.get("cross_platform_hot_score", 0),
-                "sampleSize": item.get("sample_size", 0),
-            }
-            for item in hotness.get("ranking", [])[:5]
-        ]
-        return "cached"
-    if node_type == "StrategyNode":
-        strategy = _load_json(STRATEGY_PATH)
-        data["summary"] = (
-            f"已从 {len(strategy.get('opportunity_signals', []))} 条机会中同步证据锁定结果。"
-        )
-        return "success"
-    if node_type == "DesignBriefNode":
-        return "success"
-    if node_type == "ConceptNode":
-        return "success" if data.get("imageUrl") else "warning"
-    if node_type == "PosterBoardNode":
-        return "success"
-    return str(data.get("status", "idle"))
+def _validate_brief_node(node: dict[str, Any]) -> None:
+    brief = node.get("data", {}).get("brief")
+    if not isinstance(brief, dict):
+        raise ValueError("设计任务书不存在，不能运行。")
+    required = ("title", "objective", "audience", "productType", "factoryBoundary")
+    missing = [key for key in required if not str(brief.get(key, "")).strip()]
+    if missing:
+        raise ValueError("设计任务书缺少字段：" + "、".join(missing))
+
+
+def _concept_hero_path(workspace_id: str, image_url: str) -> Path | None:
+    prefix = f"/assets/workbench/{workspace_id}/"
+    if not image_url.startswith(prefix):
+        return None
+    filename = image_url.removeprefix(prefix)
+    if not filename or Path(filename).name != filename:
+        return None
+    candidates = (
+        GENERATED_DIR / workspace_id / filename,
+        BUNDLED_GENERATED_DIR / workspace_id / filename,
+    )
+    return next((path for path in candidates if path.is_file()), None)
+
+
+def _render_workspace_poster(
+    workspace: dict[str, Any],
+    node: dict[str, Any],
+) -> None:
+    package = DesignPackage.model_validate(_load_json(_workspace_design_path(workspace)))
+    poster = node.get("data", {}).get("poster", {})
+    if isinstance(poster, dict):
+        title = str(poster.get("title", "")).strip()
+        subtitle = str(poster.get("subtitle", "")).strip()
+        if title:
+            package.poster_request.exact_copy["title"] = title
+        if subtitle:
+            package.poster_request.exact_copy["subtitle"] = subtitle
+    active = next(
+        (
+            item
+            for item in workspace["nodes"]
+            if item["type"] == "ConceptNode" and item["data"].get("active")
+        ),
+        None,
+    )
+    hero_path = _concept_hero_path(
+        workspace["workspace_id"],
+        str(active.get("data", {}).get("imageUrl", "")) if active else "",
+    )
+    version = int(node["data"].get("version", 0)) + 1
+    filename = f"poster-v{version}.png"
+    output_path = GENERATED_DIR / workspace["workspace_id"] / filename
+    render_manifest, render_status = render_design_poster(
+        package,
+        output_path,
+        hero_path,
+        generated_now=True,
+    )
+    _atomic_json(
+        output_path.with_suffix(".manifest.json"),
+        render_manifest.model_dump(mode="json"),
+    )
+    node["data"].update(
+        {
+            "imageUrl": f"/assets/workbench/{workspace['workspace_id']}/{filename}",
+            "status": "success",
+            "version": version,
+            "generation": {
+                "engine": render_status.engine,
+                "mode": render_status.mode,
+                "generatedAt": _now(),
+            },
+        }
+    )
 
 
 def run_workbench_node(workspace_id: str, node_id: str) -> dict[str, Any]:
@@ -1585,7 +1795,46 @@ def run_workbench_node(workspace_id: str, node_id: str) -> dict[str, Any]:
     if node is None:
         raise ValueError("指定节点不存在。")
     node["data"]["status"] = "running"
-    if node["type"] == "VisualGenerationNode":
+    if node["type"] in {"CultureGraphNode", "MarketRadarNode", "StrategyNode"}:
+        node["data"]["status"] = "error"
+        node["data"].setdefault("history", []).insert(
+            0,
+            {
+                "at": _now(),
+                "event": "已阻止用旧文件冒充新运行；请启动严格实时研究任务",
+            },
+        )
+        save_workbench_workspace(workspace_id, workspace)
+        raise RuntimeError(
+            "研究节点必须通过“实时运行”执行知识检索、四平台采集与模型策划；"
+            "系统不会把读取旧文件标成新运行成功。"
+        )
+    if node["type"] == "DesignBriefNode":
+        try:
+            _validate_brief_node(node)
+        except Exception:
+            node["data"]["status"] = "error"
+            save_workbench_workspace(workspace_id, workspace)
+            raise
+        node["data"]["status"] = "success"
+        node["data"].setdefault("history", []).insert(
+            0,
+            {"at": _now(), "event": "任务书服务端契约校验通过；未伪造生成调用"},
+        )
+        return save_workbench_workspace(workspace_id, workspace)
+    if node["type"] == "ConceptNode":
+        return regenerate_concept(workspace_id, node_id)
+    if node["type"] == "PosterBoardNode":
+        try:
+            _render_workspace_poster(workspace, node)
+        except Exception as exc:
+            node["data"]["status"] = "error"
+            node["data"].setdefault("history", []).insert(
+                0, {"at": _now(), "event": "海报渲染失败；没有复用旧图冒充新版本"}
+            )
+            save_workbench_workspace(workspace_id, workspace)
+            raise RuntimeError("海报渲染失败，请检查设计包和概念资产。") from exc
+    elif node["type"] == "VisualGenerationNode":
         adapter = ImageGenerationAdapter()
         provider = adapter.status()
         node["data"]["provider"] = provider
@@ -1599,19 +1848,14 @@ def run_workbench_node(workspace_id: str, node_id: str) -> dict[str, Any]:
             concept_nodes = [
                 item
                 for item in workspace["nodes"]
-                if item["type"] == "ConceptNode"
-                and item["data"].get("inComparison", True)
+                if item["type"] == "ConceptNode" and item["data"].get("inComparison", True)
             ]
             for concept in concept_nodes:
                 prompt = str(concept["data"].get("prompt", ""))
-                prompt_suffix = str(
-                    concept["data"].get("decisionPromptSuffix", "")
-                ).strip()
+                prompt_suffix = str(concept["data"].get("decisionPromptSuffix", "")).strip()
                 if prompt_suffix:
                     prompt = f"{prompt}\n{prompt_suffix}"
-                filename = (
-                    f"{concept['id']}-v{int(concept['data'].get('version', 0)) + 1}.png"
-                )
+                filename = f"{concept['id']}-v{int(concept['data'].get('version', 0)) + 1}.png"
                 output_path = GENERATED_DIR / workspace_id / filename
                 result = adapter.generate(
                     prompt,
@@ -1639,18 +1883,17 @@ def run_workbench_node(workspace_id: str, node_id: str) -> dict[str, Any]:
             raise RuntimeError(
                 "图像生成服务调用失败，请检查 provider、模型、配额与接口兼容性。"
             ) from exc
-    else:
-        node["data"]["status"] = _refresh_node_data(node)
     node["data"].setdefault("history", []).insert(
-        0, {"at": _now(), "event": "节点运行完成"}
+        0, {"at": _now(), "event": "节点产生并保存了新的可核验结果"}
     )
     return save_workbench_workspace(workspace_id, workspace)
 
 
-def knowledge_center() -> dict[str, Any]:
+def knowledge_center(workspace: dict[str, Any] | None = None) -> dict[str, Any]:
+    workspace = workspace or {}
     culture = _load_json(CULTURE_PATH)
-    hotness = _load_json(HOTNESS_PATH)
-    manifest = _load_json(MANIFEST_PATH)
+    hotness = _load_json(_workspace_hotness_path(workspace))
+    manifest = _load_json(_workspace_manifest_path(workspace))
     records = []
     for item in culture.get("records", []):
         records.append(
@@ -1689,7 +1932,10 @@ def knowledge_center() -> dict[str, Any]:
     }
 
 
-def _citation_catalog() -> dict[str, dict[str, Any]]:
+def _citation_catalog(
+    workspace: dict[str, Any] | None = None,
+) -> dict[str, dict[str, Any]]:
+    workspace = workspace or {}
     catalog: dict[str, dict[str, Any]] = {}
 
     def add_source(item: dict[str, Any], kind: str) -> None:
@@ -1736,11 +1982,33 @@ def _citation_catalog() -> dict[str, dict[str, Any]]:
             "rightsNote": item.get("rights_note", ""),
         }
 
-    evidence_candidates = sorted(
-        (ROOT_DIR / "data" / "market" / "derived").glob("market_evidence_*.json")
+    promoted_evidence = _research_artifact_path(
+        workspace,
+        "market_evidence.json",
+        Path("__missing_market_evidence__"),
     )
-    if evidence_candidates:
-        evidence = _load_json(evidence_candidates[-1])
+    evidence_path: Path | None = promoted_evidence if promoted_evidence.is_file() else None
+    if evidence_path is None:
+        evidence_candidates: list[tuple[int, str, Path]] = []
+        for path in (ROOT_DIR / "data" / "market" / "derived").glob("market_evidence_*.json"):
+            try:
+                payload = _load_json(path)
+            except (OSError, ValueError):
+                continue
+            records = [
+                item
+                for item in payload.get("records", [])
+                if item.get("platform") in MARKET_PLATFORMS
+                and item.get("evidence_type") == "social_signal"
+            ]
+            evidence_candidates.append((len(records), str(payload.get("generated_at", "")), path))
+        if evidence_candidates:
+            evidence_path = max(
+                evidence_candidates,
+                key=lambda item: (item[0], item[1]),
+            )[2]
+    if evidence_path is not None:
+        evidence = _load_json(evidence_path)
         for item in evidence.get("records", []):
             source_id = str(item.get("source_ref", "")).strip()
             if not source_id or source_id in catalog:
@@ -1776,8 +2044,7 @@ def _market_post_summary(item: dict[str, Any]) -> dict[str, Any]:
     return {
         "sourceRef": item.get("source_ref", ""),
         "platform": item.get("platform", ""),
-        "title": item.get("title", "")
-        or str(item.get("content", "")).replace("\n", " ")[:100],
+        "title": item.get("title", "") or str(item.get("content", "")).replace("\n", " ")[:100],
         "publishedAt": item.get("published_at", ""),
         "url": item.get("url", ""),
         "productForm": item.get("product_form", ""),
@@ -1821,21 +2088,17 @@ def node_detail(
             "type": item["type"],
             "title": item["data"].get("title", ""),
             "status": item["data"].get("status", "idle"),
-            "relation": (
-                "upstream"
-                if item["id"] in upstream_ids
-                else "downstream"
-            ),
+            "relation": ("upstream" if item["id"] in upstream_ids else "downstream"),
         }
         for item in workspace["nodes"]
         if item["id"] in upstream_ids or item["id"] in downstream_ids
     ]
 
     culture = _load_json(CULTURE_PATH)
-    hotness = _load_json(HOTNESS_PATH)
-    strategy = _load_json(STRATEGY_PATH)
-    design = _load_json(DESIGN_PATH)
-    manifest = _load_json(MANIFEST_PATH)
+    hotness = _load_json(_workspace_hotness_path(workspace))
+    strategy = _load_json(workspace_strategy_path(workspace))
+    design = _load_json(_workspace_design_path(workspace))
+    manifest = _load_json(_workspace_manifest_path(workspace))
     visual = _load_json(VISUAL_REFERENCES_PATH)
     design_visual_refs = list(
         dict.fromkeys(
@@ -1851,9 +2114,7 @@ def node_detail(
     if node["type"] == "CultureGraphNode":
         records = culture.get("records", [])
         citation_refs = list(
-            dict.fromkeys(
-                ref for item in records for ref in item.get("source_refs", [])
-            )
+            dict.fromkeys(ref for item in records for ref in item.get("source_refs", []))
         )
         content = {
             "records": records,
@@ -1869,17 +2130,16 @@ def node_detail(
             for post in item.get("representative_posts", [])[:4]
         ]
         ranking = [
-            {
-                key: value
-                for key, value in item.items()
-                if key != "representative_posts"
-            }
+            {key: value for key, value in item.items() if key != "representative_posts"}
             for item in ranking_with_posts
         ]
         citation_refs = list(
             dict.fromkeys(
                 [post["sourceRef"] for post in posts if post.get("sourceRef")]
-                + [item.get("source_id", "") for item in _load_json(MARKET_VERIFIED_PATH).get("sources", [])]
+                + [
+                    item.get("source_id", "")
+                    for item in _load_json(MARKET_VERIFIED_PATH).get("sources", [])
+                ]
             )
         )
         content = {
@@ -1895,9 +2155,7 @@ def node_detail(
     elif node["type"] == "StrategyNode":
         opportunities = strategy.get("opportunity_signals", [])
         citation_refs = list(
-            dict.fromkeys(
-                ref for item in opportunities for ref in item.get("evidence_refs", [])
-            )
+            dict.fromkeys(ref for item in opportunities for ref in item.get("evidence_refs", []))
         )
         content = {
             "opportunities": opportunities,
@@ -1920,9 +2178,7 @@ def node_detail(
         content = {
             "provider": ImageGenerationAdapter().status(),
             "prompts": node["data"].get("prompts", []),
-            "concepts": [
-                item for item in workspace["nodes"] if item["type"] == "ConceptNode"
-            ],
+            "concepts": [item for item in workspace["nodes"] if item["type"] == "ConceptNode"],
             "posterRequest": design.get("poster_request", {}),
         }
 
@@ -1954,14 +2210,10 @@ def node_detail(
             "posterRequest": design.get("poster_request", {}),
         }
 
-    content["decisionProfile"] = workspace.get("metadata", {}).get(
-        "decision_profile", {}
-    )
-    content["decisionOutput"] = workspace.get("metadata", {}).get(
-        "decision_output", {}
-    )
+    content["decisionProfile"] = workspace.get("metadata", {}).get("decision_profile", {})
+    content["decisionOutput"] = workspace.get("metadata", {}).get("decision_output", {})
 
-    catalog = _citation_catalog()
+    catalog = _citation_catalog(workspace)
     citations = [catalog[ref] for ref in citation_refs if ref in catalog]
     missing_refs = [ref for ref in citation_refs if ref and ref not in catalog]
     return {
@@ -1990,9 +2242,22 @@ def workbench_bootstrap(workspace_id: str = DEFAULT_WORKSPACE_ID) -> dict[str, A
     return {
         "workspace": workspace,
         "workspaces": list_workbench_workspaces(),
-        "knowledge": knowledge_center(),
+        "knowledge": knowledge_center(workspace),
         "decisionCatalog": decision_catalog(workspace),
         "imageProvider": ImageGenerationAdapter().status(),
         "nodeTypes": list(NODE_TYPES),
         "statuses": list(NODE_STATUSES),
+    }
+
+
+def workbench_design_package(workspace_id: str) -> dict[str, Any]:
+    workspace = load_workbench_workspace(workspace_id)
+    path = _workspace_design_path(workspace)
+    return {
+        "workspace_id": workspace_id,
+        "workspace_name": workspace["name"],
+        "source_run_id": workspace.get("metadata", {}).get("source_run_id", ""),
+        "research_verified_at": workspace.get("metadata", {}).get("research_verified_at", ""),
+        "artifact": path.name,
+        "design": _load_json(path),
     }

@@ -73,9 +73,7 @@ async def test_market_fallback_is_honest(tmp_path) -> None:
     assert all(signal["source_ref"] in source_ids for signal in payload["signals"])
     assert all(
         signal.get("metrics_verified")
-        or not any(
-            signal.get(metric, 0) for metric in ("likes", "favorites", "comments", "shares")
-        )
+        or not any(signal.get(metric, 0) for metric in ("likes", "favorites", "comments", "shares"))
         for signal in payload["signals"]
     )
     trend, status = await MediaCrawlerAdapter(settings).research("贵州苗绣")
@@ -86,14 +84,52 @@ async def test_market_fallback_is_honest(tmp_path) -> None:
     assert trend.priority_product_forms == []
     assert trend.retrieval["verified_baseline_count"] >= 12
     assert all(
-        source["status"] == "unavailable"
-        for source in trend.retrieval["market_platforms"].values()
+        source["status"] == "unavailable" for source in trend.retrieval["market_platforms"].values()
     )
     assert all(
         post.metrics_verified or not any([post.likes, post.favorites, post.comments, post.shares])
         for post in trend.representative_cases
     )
     assert any("未登录" in note or "公开" in note for note in trend.methodology_notes)
+
+
+@pytest.mark.asyncio
+async def test_market_partial_live_records_are_reported_as_live(tmp_path, monkeypatch) -> None:
+    settings = replace(
+        load_settings().with_mode("live"),
+        mediacrawler_live_enabled=True,
+        mediacrawler_platforms=("xhs",),
+        market_raw_dir=tmp_path / "raw",
+        market_derived_dir=tmp_path / "derived",
+    )
+    adapter = MediaCrawlerAdapter(settings)
+    monkeypatch.setattr(adapter, "_live_readiness", lambda *_: (True, "可运行"))
+
+    async def partial_live(*_args):
+        posts = [
+            MarketPost(
+                platform="xhs",
+                post_id=f"live-{index}",
+                title=f"本轮实时记录 {index}",
+                url=f"https://www.xiaohongshu.com/explore/live-{index}",
+                likes=100 + index,
+                metrics_verified=True,
+                evidence_type="social_signal",
+                evidence_quality_score=80,
+                source_ref=f"XHS-LIVE-{index}",
+            )
+            for index in range(5)
+        ]
+        return posts, [], "小红书达到单平台时间上限；已保存 5 条本轮真实返回记录。"
+
+    monkeypatch.setattr(adapter, "_run_live_crawler", partial_live)
+    trend, status = await adapter.research("贵州苗绣")
+    source = trend.retrieval["market_platforms"]["xhs"]
+    assert status.mode == "live"
+    assert source["status"] == "live"
+    assert source["live_post_count"] == 5
+    assert source["login_state"] == "authorized"
+    assert "本轮真实返回记录" in source["detail"]
 
 
 def test_strategist_rejects_unknown_or_one_sided_evidence() -> None:
@@ -175,6 +211,44 @@ async def test_demo_pipeline_contract_and_outputs(tmp_path) -> None:
     assert len(manifest.outputs) == 13
 
 
+@pytest.mark.asyncio
+async def test_research_only_pipeline_persists_handoff_without_running_designer(
+    tmp_path, monkeypatch
+) -> None:
+    settings = replace(
+        load_settings().with_mode("demo"),
+        outputs_dir=tmp_path / "outputs",
+        demo_cache_dir=tmp_path / "cache",
+        market_raw_dir=tmp_path / "market" / "raw",
+        market_derived_dir=tmp_path / "market" / "derived",
+    )
+
+    def unexpected_design(*_args, **_kwargs):
+        raise AssertionError("research-only runs must not invoke the Design Agent")
+
+    monkeypatch.setattr(DesignAgent, "create_from_file", unexpected_design)
+    strategy, manifest = await run_pipeline(DemoRequest(), settings, include_design=False)
+
+    assert strategy.handoff_to_designer.ready
+    assert {item.component for item in manifest.components} == {
+        "culture_knowledge",
+        "market_research",
+        "strategist",
+    }
+    assert set(manifest.outputs) == {
+        "strategy_json",
+        "strategy_markdown",
+        "visual_reference_json",
+        "visual_reference_markdown",
+        "designer_handoff_json",
+        "designer_handoff_markdown",
+        "product_form_hotness",
+        "manifest",
+    }
+    assert Path(manifest.outputs["designer_handoff_json"]).is_file()
+    assert not (tmp_path / "outputs" / "design_specification.json").exists()
+
+
 def test_visual_reference_pack_has_required_coverage_and_rights() -> None:
     settings = load_settings().with_mode("demo")
     pack = LightRAGAdapter(settings).build_visual_reference_pack("贵州苗绣")
@@ -207,9 +281,7 @@ def test_visual_palettes_do_not_invent_hex() -> None:
     assert pack.pattern_primitives
     assert pack.color_palettes
     assert all(
-        not color.startswith("#")
-        for palette in pack.color_palettes
-        for color in palette.colors
+        not color.startswith("#") for palette in pack.color_palettes for color in palette.colors
     )
 
 
@@ -233,9 +305,7 @@ def test_xhs_mvp_keyword_and_volume_guardrails() -> None:
     assert XHS_MVP_KEYWORDS is UNIFIED_MARKET_KEYWORDS
     assert len(UNIFIED_MARKET_KEYWORDS) == 23
     assert len(keywords) == 6
-    assert {"非遗文创", "博物馆文创", "文创包挂", "文创冰箱贴"} <= set(
-        keywords
-    )
+    assert {"非遗文创", "博物馆文创", "文创包挂", "文创冰箱贴"} <= set(keywords)
     assert 50 <= len(keywords) * settings.mediacrawler_max_results <= 150
     assert 200 <= len(MARKET_PLATFORMS) * len(keywords) * settings.mediacrawler_max_results <= 600
 
@@ -293,8 +363,7 @@ def test_four_platform_records_normalize_to_one_schema(tmp_path) -> None:
         },
     }
     posts = [
-        adapter._normalize_post(platform, raw_records[platform])
-        for platform in MARKET_PLATFORMS
+        adapter._normalize_post(platform, raw_records[platform]) for platform in MARKET_PLATFORMS
     ]
     assert [post.platform for post in posts] == list(MARKET_PLATFORMS)
     assert [post.product_form for post in posts] == ["冰箱贴", "包挂", "徽章", "丝巾"]
@@ -359,10 +428,7 @@ async def test_market_evidence_types_and_scores_are_separated(tmp_path) -> None:
     assert all(post.evidence_type in allowed_types for post in trend.representative_cases)
     assert all(0 <= post.evidence_quality_score <= 100 for post in trend.representative_cases)
     assert all(post.real_engagement_score == 0 for post in trend.representative_cases)
-    assert all(
-        post.derived_viral_score == post.viral_score
-        for post in trend.representative_cases
-    )
+    assert all(post.derived_viral_score == post.viral_score for post in trend.representative_cases)
 
 
 def test_opportunity_weighted_score_is_explainable() -> None:
@@ -434,9 +500,7 @@ def test_design_agent_holds_sensitive_motif_when_safe_option_exists(tmp_path) ->
         encoding="utf-8",
     )
     package, status = DesignAgent(settings).create_from_file(target)
-    titles = {
-        item.opportunity_id: item.title for item in handoff.priority_opportunities
-    }
+    titles = {item.opportunity_id: item.title for item in handoff.priority_opportunities}
     selected_title = titles[package.selection.primary_opportunity_id]
     safe_verified_exists = any(
         item.verification.status == "verified"
@@ -444,9 +508,7 @@ def test_design_agent_holds_sensitive_motif_when_safe_option_exists(tmp_path) ->
         for item in handoff.priority_opportunities
     )
     if safe_verified_exists:
-        assert not any(
-            term in selected_title for term in ("鸟纹", "蝶纹", "蝴蝶", "苗龙", "祖源")
-        )
+        assert not any(term in selected_title for term in ("鸟纹", "蝶纹", "蝴蝶", "苗龙", "祖源"))
     assert status.mode == "live"
     assert not package.validation.reference_images_used_as_pixels
     if package.product.product_type == "可替换织物面板冰箱贴":
@@ -468,14 +530,9 @@ async def test_designer_handoff_json_is_markdown_truth(tmp_path) -> None:
     handoff = DesignerHandoff.model_validate_json(handoff_path.read_text(encoding="utf-8"))
     assert handoff == strategy.handoff_to_designer
     assert len(handoff.priority_opportunities) == 3
-    assert all(
-        item.verification.status != "rejected"
-        for item in handoff.priority_opportunities
-    )
+    assert all(item.verification.status != "rejected" for item in handoff.priority_opportunities)
     assert 150 <= len(handoff.creative_brief) <= 350
-    assert markdown_path.read_text(encoding="utf-8") == render_designer_handoff_markdown(
-        handoff
-    )
+    assert markdown_path.read_text(encoding="utf-8") == render_designer_handoff_markdown(handoff)
     assert len(manifest.outputs) == 13
     assert set(manifest.market_platforms) == set(MARKET_PLATFORMS)
     assert Path(manifest.outputs["product_form_hotness"]).exists()

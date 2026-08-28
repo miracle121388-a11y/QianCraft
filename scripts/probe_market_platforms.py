@@ -4,18 +4,19 @@ import argparse
 import asyncio
 import sys
 from dataclasses import replace
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from app.adapters.media_crawler_adapter import (
+from app.adapters.media_crawler_adapter import (  # noqa: E402
     MARKET_PLATFORMS,
     PLATFORM_LABELS,
     MediaCrawlerAdapter,
 )
-from app.config import load_settings
+from app.config import load_settings  # noqa: E402
 
 
 def _arguments() -> argparse.Namespace:
@@ -50,6 +51,13 @@ async def _main() -> int:
     max_results = 20 if args.formal else max(10, min(20, args.max_results))
     record_limit = 150 if args.formal else 20
     base = load_settings()
+    probe_root = (
+        base.root_dir
+        / "data"
+        / "tool_workspace"
+        / "market_probes"
+        / datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+    )
     settings = replace(
         base,
         live_mode=True,
@@ -68,6 +76,10 @@ async def _main() -> int:
         mediacrawler_keyword_limit=keyword_limit,
         mediacrawler_max_results=max_results,
         mediacrawler_platform_record_limit=record_limit,
+        market_raw_dir=(base.market_raw_dir if args.formal else probe_root / "raw"),
+        market_derived_dir=(
+            base.market_derived_dir if args.formal else probe_root / "derived"
+        ),
     )
     trend, _ = await MediaCrawlerAdapter(settings).research(args.topic)
     statuses = trend.retrieval["market_platforms"]
@@ -94,6 +106,8 @@ async def _main() -> int:
     print()
     print(f"{live_count} / {len(platforms)} platforms live")
     print(f"hotness: {trend.retrieval['product_form_hotness_path']}")
+    if not args.formal:
+        print(f"isolated probe: {probe_root}")
     return 0 if live_count == len(platforms) else 2
 
 

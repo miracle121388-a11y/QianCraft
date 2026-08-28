@@ -1,7 +1,7 @@
 # QianCraft 工作流程与持续更新记录
 
 > 文档性质：项目级唯一工作流说明、当前状态快照与追加式更新台账  
-> 当前版本：0.7.3
+> 当前版本：0.8.0
 > 最后维护：2026-08-29
 > 维护状态：强制持续维护
 
@@ -33,7 +33,7 @@
 |---|---|
 | 产品名称 | QianCraft Creative Intelligence Workbench｜文化文创智能工作台 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
-| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py`；暖纸色 Creative Instrument 工具骨架由 56px 五阶段导航、64px 工具轨、按需 248px 证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 组成，手机端把 Dock/Inspector 变为可逆覆盖层；默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio 贯通文化、市场、机会/量分、任务书、视觉、概念与海报；每个节点均有专用展示页、引用台账、独立运行/从此运行/编辑保存/JSON 导出。0.7.2 完成全页面信息降噪和移动端收口；0.7.3 把九个画布实例固定为稳定横向索引条，Rest / Selected 之间不再展开、缩放或位移，选择只改变 Indigo keyline 与极浅纸面色差。摘要、字段和操作统一由绑定 Inspector 或独立展示页承接，Inspector“操作”保留完整页面、运行和从此运行入口。390px 下文化图谱为双列触控卡，编辑器为单列，BOM 为分组记录，人工决策表单完整占宽。Camera Plain 保留为设计字体栈命名，实际中文由自托管 Noto Sans SC / Noto Serif SC 覆盖。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
+| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py`；暖纸色 Creative Instrument 工具骨架由 56px 五阶段导航、64px 工具轨、按需 248px 证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 组成，手机端把 Dock/Inspector 变为可逆覆盖层；默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio 贯通文化、市场、机会/量分、任务书、视觉、概念与海报；每个节点均有专用展示页、引用台账、独立运行/从此运行/编辑保存/JSON 导出。0.7.3 把九个画布实例固定为稳定横向索引条；0.8.0 将顶部、节点页和“从此运行”的研究动作统一接入持久化严格后台任务，页面刷新会自动续接轮询，只有文化、策划和 xhs/dy/bili/wb 四平台全部为本轮 `live` 才晋级。Brief 实际运行 Design Agent 并落盘 DesignPackage，Poster 实际服务端渲染 1800×2400 PNG；缺图像 provider 时 Concept 只保留上次成功资产并明确 warning。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
 | GitHub 展示 | 项目 README 包含原创横版 SVG 首屏、真实状态徽章、在线实例、成果海报、A/B/C 三方向视觉、Workbench 快速开始、Mermaid 架构、可信边界、路线图与许可证说明 |
 | 默认主题 | 贵州苗绣 |
 | 默认目标市场 | 18–30 岁年轻消费者 |
@@ -41,7 +41,7 @@
 | 苗绣检索 | 同时保留花溪挑花、剑河锡绣、松桃苗绣与雷山工艺差异 |
 | 视觉参考包 | 12 条权威参考、5 个 Pattern Primitive、3 组无伪造 HEX 的文字色彩关系；默认 `reference_only` |
 | 市场研究层 | 12 条结构化市场信号、12 条公开可追溯来源 |
-| 市场状态 | 最新 `auto` 实机运行未访问平台；当前 Windows 工作区保留四个平台原始 JSONL 与 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148），本轮统一标记为 `cache` 而非实时抓取；12 条公开核验基线不进入平台榜 |
+| 市场状态 | 当前 Windows 基线保留 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148）与 12 条不进榜公开核验记录。0.8.0 网页严格任务确实重新访问平台；最终轮 `20260828T202303Z-2bae17ff` 的 xhs/dy/bili/wb 均未产出可晋级实时内容，market=`cache`、整轮=`failed_no_fallback`，因此没有覆盖基线，也没有把“发起过爬取”写成 live |
 | 产品形态榜 | `product_form_hotness.json` 已由 378 条历史真实平台快照恢复：Top 10 为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒；Top 5 为前五项。该榜只代表有限历史样本，不代表当前全平台实时趋势 |
 | 对标案例 | 8 条 |
 | LightRAG 实机图 | 612 个实体、697 条关系；“贵州苗绣”节点查询通过 |
@@ -49,13 +49,13 @@
 | Design Agent | 自动模式从 Top 3 中选择 OPP-006，缩窄为“针格模块｜花溪挑花互动冰箱贴（概念样）”；工具支持人工从 8 条机会中选择 1–3 条、指定主机会、编辑交接/产品字段并生成带输入 SHA 的独立运行；没有匹配生成器时直接报错，不套用通用兜底模板 |
 | 工厂首样拆解 | 5 项原型尺寸、5 项 BOM、1 组原创网格应用、6 步装配、6 项质检、3 个文化门、3 个工程门与 5 个工厂问题；不宣称量产就绪 |
 | 设计海报 | 1800 × 2400；原创生成式成品/爆炸主视觉 + 本地精确中文排版；未使用 `reference_only` 馆藏像素 |
-| Workbench Workspace | 默认 `guizhou-miao-demo` 绑定运行 `20260828T060200Z-e44240e3`，Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept A、任务书 v1、A/B/C 三套概念视觉、可版本化 `DecisionProfile` 与机器/人工并列的 `decision_output`；New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；旧工作区读取时兼容迁移，线上运行态目录由持久卷承载，镜像中的证据基线不被覆盖 |
+| Workbench Workspace | 默认 `guizhou-miao-demo` 以仓库基线初始化，后续写入 `data/runtime/workbench/`；Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept、任务书、A/B/C、`DecisionProfile`、机器/人工并列的 `decision_output`、研究任务和设计运行引用。New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；研究晋级时保留仍有效的人工 ID，对消失的机会/品类只做带审计记录的补齐；源证据与运行态分离，页面操作不会覆盖仓库基线 |
 | 图像生成适配 | Concept A 使用项目原创主视觉；Concept B/C 已通过内置图像生成能力制作、目视复核、SHA-256 登记并存入项目。独立 OpenAI-compatible Images API 自动化边界仍未配置，因此 Visual Generation 与单概念重生成继续诚实返回 `warning`，不会把内置资产冒充为 DeepSeek 新调用 |
-| API | 本机与 Zeabur 服务端 LLM Key 均通过私密环境变量配置且不回显；探针确认 DeepSeek 可达、返回 3 个模型且 `deepseek-v4-flash` 可用；完整 `auto` 链路已真实调用并成功。对同一服务的 `/images/generations` 实测为 HTTP 404，确认该密钥只承担文本模型链路 |
+| API | 本机与 Zeabur 服务端 LLM Key 均通过私密环境变量配置且不回显；探针确认 DeepSeek 可达、返回 3 个模型且 `deepseek-v4-flash` 可用。`POST /api/research/run` 返回 202 和持久化任务号，`GET /api/research/jobs/{id}` 提供回调轮询，API 重启会把未完成任务标为 interrupted 而不是成功；研究段与 Design Agent 已解耦，研究必须先完整保存组件/平台状态，设计再消费晋级后的交接。对同一服务的 `/images/generations` 实测为 HTTP 404，确认该密钥只承担文本模型链路 |
 | 线上发布 | 0.7.3 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；部署 `6a91df9a13d3d467215e7737` 已为 `RUNNING`，远端日志确认 `qiancraft-0.7.3` 安装成功且容器启动。Nginx 统一 Basic Auth，`/healthz` 免鉴权，Vinext 与 Tool API 仅监听容器回环地址，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.7.3 认证后页面/API 保留待凭证复验；0.6.0 已完成的认证公网业务验收仍有记录 |
-| MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb 等平台；四平台原始 JSONL 与历史快照存在。最新 `auto` 实机运行没有重新访问平台，后续仍须按当轮实际结果标记 `live/cache/unavailable` |
-| 自动测试 | Python 37/37、Workbench TypeScript 5/5 通过 |
-| 静态检查 | `ruff check app tests`、Web typecheck、ESLint、Vinext 五阶段 production build、`uv lock --check`、JSON 解析与 `git diff --check` 通过；0.7.3 隔离发布包为 72 个文件、19,313,856 字节，敏感文件名与长 `sk-` 模式均为 0 命中。1440 × 960 实测九个节点渲染高度均为 62px，选择切换前后不变且 `transform:none`；390 × 844 无页面横向溢出。Impeccable 单次检测仅指出非画布详情页遗留装饰网格，该规则已删除；React Flow 的真实画布点阵继续保留 |
+| MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb；正式探针与网页严格任务均实际访问过平台。非正式探针现写入隔离目录，不再覆盖 canonical raw/derived；单平台达到时间上限时，若已保存至少 5 条有效内容则终止继续翻页并以“本轮部分 live”保留，否则为 `unavailable`。任何平台不是 live 时整轮不晋级，378 条历史快照继续保持 cache |
+| 自动测试 | Python 46/46、Workbench TypeScript 5/5 通过 |
+| 静态检查 | `ruff check app tests scripts/probe_market_platforms.py`、Web typecheck、ESLint、Vinext 五阶段 production build 通过；九个节点页面共 129 条引用解析缺失为 0，454 个唯一外链实测 442 个直接返回、12 个因目标站连接/站点防护未直接返回但经官方搜索索引复核仍为真实页面。1440 × 960 与 390 × 844 页面无横向溢出，图片无破损；`git diff --check` 与最终发布包检查在交付前复核 |
 | 凭证检查 | 交付目录未发现 `sk-` 密钥泄漏 |
 
 当前正式产物：
@@ -133,6 +133,9 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
        │
        └→ Tool API：Bootstrap + Workspace JSON + 节点详情 + 节点动作
                   │
+                  ├→ Strict Research Job：202 后台任务 → 持久化 job.json → 前端轮询/刷新续接
+                  │          ├→ 每轮独立 outputs/raw/derived，不读取 demo fallback
+                  │          └→ 文化 + 策划 + xhs/dy/bili/wb 全部 live 才原子晋级
                   ├→ 证据中心：22 条文化记录 / 32 来源 / 四平台 378 快照 / Top 10
                   ├→ React Flow：Culture + Market → Strategy → Brief → Visual → A/B/C → Poster
                   ├→ Inspector：概览 / 输入 / 配置 / 结果 / 证据 / 记录 / 操作
@@ -141,11 +144,14 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
                   │          ├→ Guided 保留系统推荐；Manual 保存人的选择与版本
                   │          └→ 系统分与人工重排分并列，事实、来源与原始互动保持只读
                   ├→ Brief 保存：版本 +1，仅将可达下游标记 stale
+                  ├→ Brief 运行：从当前人工选择重建 Handoff → DesignPackage → 结构海报落盘
                   ├→ Concept：Edit / Duplicate / Regenerate / Use / Generate More
-                  └→ Poster：标题、文案、图片来源、板块显隐/顺序 → 1800×2400 PNG
+                  └→ Poster：标题、文案、图片来源、板块显隐/顺序 → 服务端 1800×2400 PNG
 ```
 
-工作台前端不直接导入 Python，只通过 HTTP API 读取事实、保存工作区和运行节点。`/api/workbench/workspaces/{workspaceId}/nodes/{nodeId}/detail` 按节点类型返回专用内容与解析后的引用对象；文化页展示关系与 22 条记录，市场页展示 378 条历史快照派生榜和代表原记录，策略页展示八条机会及六维量分，设计页继续贯通任务书、视觉方向、文化转译、BOM 与海报。`POST /api/workbench/workspaces/{workspaceId}/decisions` 校验并保存 `DecisionProfile`，按选中范围重算人工排序、立即刷新 Culture/Market/Strategy 节点，并把 Brief 之后的依赖节点标为 stale；保存选择本身不会静默调用模型。每个节点详情通过 `workspace` 与 `decision` 查询参数深链到对应编辑阶段。节点动作使用异步 `fetch` 并即时显示 `running`；图像服务或其他调用失败时变为 `error/warning`，不会锁死界面。工具的“严格实时研究”继续先检查 LLM、MediaCrawler 开关/运行时与 LightRAG；未就绪时阻断。即使预检通过，运行后也必须确认文化、市场、策划和四个平台全部为 `live`，否则该轮只保留失败审计，不晋级为可用结果。
+工作台前端不直接导入 Python，只通过 HTTP API 读取事实、保存工作区和运行节点。`/api/workbench/workspaces/{workspaceId}/nodes/{nodeId}/detail` 按节点类型返回专用内容与解析后的引用对象；文化页展示关系与 22 条记录，市场页展示 378 条历史快照派生榜和代表原记录，策略页展示机会及六维量分，设计页继续贯通任务书、视觉方向、文化转译、BOM 与海报。`POST /api/workbench/workspaces/{workspaceId}/decisions` 校验并保存 `DecisionProfile`，按选中范围重算人工排序、立即刷新 Culture/Market/Strategy 节点，并把 Brief 之后的依赖节点标为 stale；保存选择本身不会静默调用模型。每个节点详情通过 `workspace` 与 `decision` 查询参数深链到对应编辑阶段。节点动作使用异步 `fetch` 并即时显示 `running`；图像服务或其他调用失败时变为 `error/warning`，不会锁死界面。
+
+“严格实时研究”先检查 LLM、MediaCrawler 授权/运行时与 LightRAG，然后以 202 后台任务执行；任务状态和结果写入独立 `job.json`，刷新或离开页面后仍可续接。研究流水线只运行到 `designer_handoff.json`，不让下游设计异常吞掉真实平台状态；即使预检通过，运行后也必须确认文化、市场、策划和四个平台全部为 `live`，否则该轮只保留失败审计，不晋级、不覆盖旧证据。晋级后前端才依次运行 Brief/Design Agent、Visual/Concept 与 Poster；没有真实生成器或图像 provider 的步骤保持 warning/error。
 
 ## 3. 运行模式与降级
 
@@ -154,7 +160,7 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 | `demo` | 结构化图谱 | 公开核验基线；四平台真实快照存在时只标 `cache` | 本地证据规则 | Design Agent 本地运行；无主视觉时几何海报标 `cache` | 离线验收、开发和稳定演示 |
 | `auto` | 尝试 LightRAG live，允许明确回退 | 仅在显式开关及授权登录态齐备时逐平台抓取 | 尝试 GPT Researcher + DeepSeek，允许明确回退 | 原创主视觉存在时海报标 `live` | 默认实机运行 |
 | `live` | 上游失败报错 | 未授权时仍使用合规缓存；授权失败写清状态 | 模型失败报错 | 保持同一证据锁与量产前门禁 | 严格集成测试 |
-| `tool-strict` | 必须 live | 四平台必须全部 live，任何 cache/unavailable 均失败 | 必须 live 且模型建议通过契约 | 只消费本轮通过的文件交接；无生成器即失败 | Web 工具中的“严格实时研究” |
+| `tool-strict` | 必须 live | 四平台必须全部 live，任何 cache/unavailable 均失败 | 必须 live 且模型建议通过契约；先在研究边界落盘 | 研究晋级后由工作台继续运行；无生成器或 provider 即 warning/error | Web 工具中的“严格实时研究” |
 
 组件统一状态为 `live|cache|unavailable`，登录状态为 `authorized|missing|expired`，不能互相冒充。当前项目没有使用 mock 数据。
 
@@ -168,16 +174,18 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 | `app/strategist/` | 唯一策划师、固定任务提示与证据锁 | 不允许生成最终设计；文化/市场事实不可被模型覆盖 |
 | `app/designer/` | Design Agent、设计包 Markdown 与精确文字海报排版 | 只消费已落盘交接；不得使用 reference-only 像素或宣称量产就绪 |
 | `app/pipeline.py` | 端到端编排、原子输出和运行清单 | 新步骤必须说明顺序、失败策略与状态字段 |
-| `app/tool_api.py` | 工具 API、真实计数、分页来源查询、节点专用详情、七阶段人工决策写入、严格预检、工作区持久化与设计运行 | 本地或容器内只绑定回环地址并由受保护代理转发；不得向前端返回凭证；历史、当前、live、cache、系统推荐和人工选择必须分开标注 |
-| `app/workbench.py` | 7 类节点注册、默认贵州苗绣链路、Workspace Schema 1.1 校验/兼容迁移/原子保存、DecisionProfile 校验/人工排序/下游 stale、Concept 动作、节点运行、文化/市场/馆藏/平台记录引用目录与详情组装 | 节点类型、状态、连线端点、引用编号、人工选择与选中 Concept 必须在写盘或响应前校验；权重在服务端归一化但保留输入意图；长任务失败要持久化 error/warning；馆藏 `reference_only` 不得改写为可用像素 |
+| `app/tool_api.py` | 工具 API、真实计数、分页来源查询、节点专用详情、七阶段人工决策写入、严格预检、202 后台研究任务/轮询/中断恢复、设计运行与资产路由 | 本地或容器内只绑定回环地址并由受保护代理转发；不得向前端返回凭证；job 异常必须脱敏并持久化；历史、当前、live、cache、系统推荐和人工选择必须分开标注 |
+| `app/workbench.py` | 7 类节点注册、默认贵州苗绣链路、Workspace Schema 1.1 校验/兼容迁移/原子保存、DecisionProfile 校验/人工排序/下游 stale、研究晋级、Concept 动作、真实 Poster 渲染、文化/市场/馆藏/平台记录引用目录与详情组装 | 只有隔离运行中的文化/市场/策划和四平台全部 live 才可晋级；人工选择只在新结果中 ID 消失时带审计补齐。节点类型、状态、连线、引用、Concept 与资产路径均须服务端校验；馆藏 `reference_only` 不得改写为可用像素 |
 | `data/culture/` | 文化图谱、视觉参考和 LightRAG 存储 | 事实先写结构化图谱；视觉图像权利与来源分开记录 |
 | `data/market/` | 核验基线、`raw/` 原始抓取、`derived/` 派生证据 | 未披露互动数保持为 0；原始与派生不可混写 |
 | `data/design/assets/` | 原创生成式成品/爆炸主视觉 | 不保存馆藏参考图像；每项正式使用资产必须进入渲染摘要 |
 | `data/benchmark/` | 对标案例 | 案例只提供方法启发，不直接变成产品答案 |
 | `data/demo_cache/` | 明确标注的稳定回退 | 缓存更新时间和生成模式必须可追踪 |
 | `data/outputs/` | 最新13项正式结果 | JSON 是机器契约；Markdown 从同一对象渲染；海报与输入摘要可复核 |
-| `data/tool_workspace/` | 人工选择、机会/设计覆盖字段、独立 DesignerHandoff 草稿与工具生成历史 | 每次设计运行单独保存输入 SHA、主机会、引擎、是否使用图像生成和输出路径；不得覆盖历史运行 |
-| `data/workbench/` | React Flow Workspace Schema 1.1 JSON、DecisionProfile 与概念视觉资产 | Workspace 保存引用而非 Base64；默认 Demo 保持 9 节点/10 连线/Concept A，并内置 A/B/C 三方向视觉；人工决策只保存 ID、参数、版本和备注，不复制或改写文化/市场事实；生成图按工作区和版本分目录，摘要与提示记录在同目录 manifest |
+| `data/tool_workspace/` | 仓库随附的旧版工具基线与可审计示例 | 作为只读初始化/历史证据；新运行不再写入该目录 |
+| `data/workbench/` | 仓库随附的 Workspace Schema 1.1 与 A/B/C 概念视觉基线 | 作为首次启动模板；浏览器写入不得覆盖该目录 |
+| `data/runtime/workbench/` | 实际 Workspace、研究晋级产物、DesignPackage、概念版本与海报 | 被 Git 忽略并在容器挂载持久卷；每个工作区/运行使用受校验目录，JSON 原子写入，不保存 Base64 或凭证 |
+| `data/runtime/tool_workspace/` | 严格研究 `job.json`、每轮隔离 raw/derived/outputs 与旧版工具的实际设计运行 | 后台任务、失败审计和设计运行都保留独立 ID；非正式平台探针另写隔离目录，不覆盖 canonical 证据 |
 | `scripts/` | 正式流水线、工具 API/一键启动、环境探针、四平台 Smoke Test 与显式授权入口 | 登录和工具启动命令变化同步维护本文件“标准命令” |
 | `tests/` | 数据、证据、降级与端到端契约 | 修复缺陷时优先增加回归测试 |
 | `docs/` | 专题说明与阶段性产品材料，包含人工决策契约、排版令牌、画布比例和视觉验收基线 | 本文件保留总览，专题细节链接到 docs |
@@ -252,6 +260,9 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 - 保存人工决策后，Culture/Market/Strategy 节点立即反映所选范围；Brief、Visual、Concept 与 Poster 标记 stale 并等待用户分别重跑。概念生成只消费比较组，当前采用方向必须属于比较组。
 - Design Brief、Concept 文本、视觉参数与 Poster 内容可以编辑；文化事实、证据编号、市场原始互动与权利状态不可在 Inspector 或 Decision Studio 中改写。
 - Concept 的 Edit、Duplicate、Regenerate、Use 与 Generate More 都必须保留版本或建立独立节点；图像 provider 缺失时明确 warning，不得把占位图或旧图标成新生成。
+- Culture / Market / Strategy 的普通“运行”和“从此运行”必须调用同一个严格后台研究任务；不得仅重读静态 JSON 后把节点改成 success。研究任务返回 202、持久化任务号和可轮询状态，页面刷新必须能恢复正在执行的任务。
+- 严格研究每轮使用独立 raw/derived/outputs；探针、失败轮次和正式结果不可互相覆盖。达到平台时限时只能保留已写盘且通过最低记录校验的真实部分结果，并明确说明停止继续翻页；没有有效记录时必须 unavailable。
+- Brief 运行必须实际写出带输入 SHA 的 DesignerHandoff、DesignPackage、RenderManifest 与海报；Poster 运行必须重新渲染文件。旧资产可在新生成失败时继续展示，但 UI 必须标明“保留上次成功资产 · 本轮未生成”。
 - Poster Board 第一版只做固定模板、标题/文案、当前 Concept 图片来源、板块显隐和简单顺序；导出 PNG 必须保留“概念/首样沟通、非量产定稿”边界。
 - Web 只通过 `app/tool_api.py` 的 HTTP API 读取和写入；API 继续只绑定回环地址，浏览器端不得读取 `.env`、`api.txt` 或 Cookie。节点页返回 Decision Studio 时必须保留 workspace 和阶段深链，不得落回错误工作区。
 
@@ -312,7 +323,7 @@ pnpm build
 pnpm start:local
 ```
 
-工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`。前端只通过 HTTP 使用真实 Python 数据；Workspace JSON 原子保存到 `data/workbench/workspaces/`，生成图片保存到 `data/workbench/generated/`。工作台会持久化节点坐标、视口、任务书版本、DecisionProfile 版本、人工量分输出、当前采用方向、海报编排和运行状态。五阶段导航负责聚焦链路，工具轨按需打开证据/资产/历史 Dock，节点选择联动画布与 Inspector；手机端外周面板变成可关闭覆盖层，打开时转移焦点，Escape 关闭后归还触发器。Human Decision Studio 可从顶部、工具轨、证据 Dock、画布、Inspector 或任一节点详情页进入；URL 使用 `?workspace=<id>&decision=<stage>` 恢复上下文。图像服务缺项时 Visual Generation 与单 Concept 操作明确进入 `warning`，不会用占位图冒充新生成。严格实时研究仍要求完整上游配置；缺项时阻断，不走兜底。
+工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`。前端只通过 HTTP 使用真实 Python 数据；Workspace、研究任务、设计运行与生成资产写入被 Git 忽略的 `data/runtime/`，`data/workbench/` 和 `data/tool_workspace/` 仅作首次初始化/历史基线。工作台会持久化节点坐标、视口、任务书版本、DecisionProfile 版本、人工量分输出、当前采用方向、海报编排、后台任务和运行状态。五阶段导航负责聚焦链路，工具轨按需打开证据/资产/历史 Dock，节点选择联动画布与 Inspector；手机端外周面板变成可关闭覆盖层，打开时转移焦点，Escape 关闭后归还触发器。Human Decision Studio 可从顶部、工具轨、证据 Dock、画布、Inspector 或任一节点详情页进入；URL 使用 `?workspace=<id>&decision=<stage>` 恢复上下文。图像服务缺项时 Visual Generation 与单 Concept 操作明确进入 `warning`，不会用占位图冒充新生成。严格实时研究要求完整上游配置；缺项时阻断，不走兜底，运行中刷新页面会从服务端任务号续接。
 
 ### 7.4 安装 API 与探针
 
@@ -335,6 +346,8 @@ pnpm start:local
 uv run ruff check app tests
 ```
 
+网页“实时运行”会调用 `POST /api/research/run`；状态由 `GET /api/research/jobs/{jobId}` 返回。它是长任务，不应通过重复 POST 轮询。只有返回 `live_verified` 后，工作台才继续执行 Brief/Design Agent 与 Poster。
+
 ### 7.6 四平台探测与用户显式授权
 
 ```powershell
@@ -354,7 +367,7 @@ uv run ruff check app tests
 
 ```powershell
 # 本地存在 Docker 时可先构建同一生产镜像
-docker build -t qiancraft:0.7.3 .
+docker build -t qiancraft:0.8.0 .
 
 # Zeabur CLI 在已选择项目/环境/服务后上传精简发布目录
 npx --yes zeabur@latest deploy --service-id <service-id> --environment-id <environment-id> --interactive=false
@@ -378,13 +391,49 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 - [ ] 已运行与风险相称的测试、静态检查或实机探针。
 - [ ] 正式输出需要更新时，已生成新的 JSON、Markdown 和 RunManifest。
 - [ ] 涉及 Design Agent 时，已核对交接 SHA-256、证据编号、量产状态、参考像素声明、海报尺寸与渲染摘要。
-- [ ] 涉及 Workbench 时，已核对 7 类节点契约、9 个默认实例的详情页、引用解析/缺失审计、Workspace Schema 1.1 与旧数据兼容、DecisionProfile 版本/ID 白名单/权重归一化、系统分和人工分并列、节点阶段深链、下游 stale 传播、Concept 单体操作、Poster 可逆编辑和真实 API 错误态。
+- [ ] 涉及 Workbench 时，已核对 7 类节点契约、9 个默认实例的详情页、引用解析/缺失审计、Workspace Schema 1.1 与旧数据兼容、DecisionProfile 版本/ID 白名单/权重归一化、系统分和人工分并列、节点阶段深链、下游 stale 传播、严格研究 202/轮询/刷新续接/全 live 晋级门、Brief 实际 DesignPackage、Concept 旧资产标识、Poster 实际渲染和真实 API 错误态。
 - [ ] 涉及前端排版时，已核对用户暖纸色令牌与实际组件一致、中文字体实际加载、画布可读比例、1440px 桌面及 390px 手机工作台/Decision Studio/节点详情、页面级横向溢出、44px 触控目标、可访问名称与覆盖层焦点闭环。
 - [ ] 涉及上线时，已核对匿名鉴权、健康检查、认证后页面/API、持久卷目录、运行日志和部署域名；不能只依据平台状态声明完成。
 - [ ] 本文件的当前状态、受影响章节和更新日志已经同步维护。
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-08-29｜0.8.0｜真实运行闭环、后台续接与全链路功能验收
+
+变更：
+
+- 全面审计工作台顶部动作、九个节点页、Inspector、API 路由、研究/设计/海报落盘与引用资产；删除 Culture/Market/Strategy 通过重读静态 JSON 假装本轮成功的路径。三个研究节点现在统一启动严格服务端任务，返回 202 与持久化任务号，由前端轮询；刷新页面可续接同一任务，API 重启会把未完成轮次标为 interrupted。
+- 将严格研究与 Design Agent 解耦：研究流水线只写 Culture/Market/Strategy、Visual Reference Pack、DesignerHandoff、热度榜与 RunManifest；无论下游设计是否支持新机会，四平台状态都会先完整保存。只有三个研究组件和 xhs/dy/bili/wb 全部为本轮 live 才能晋级，失败轮次只写审计，不回写旧工作区。
+- 把运行态从仓库基线迁到 `data/runtime/workbench/` 与 `data/runtime/tool_workspace/`；每轮研究使用隔离 raw/derived/outputs，非正式平台探针使用独立目录，不再覆盖 canonical 快照。MediaCrawler 到达时限后只在已有至少 5 条有效落盘记录时保留“部分 live”，否则保持 unavailable。
+- Brief 运行实际从当前 DecisionProfile 重建 DesignerHandoff、核对 SHA、生成 DesignPackage/Markdown/RenderManifest 与 1800×2400 海报并回写节点；Poster 运行实际重新渲染服务端 PNG。自动选案只在已有真实产品生成器的候选中选择，人工点选无生成器方向仍报错。Concept 无图像 provider 时保留上次成功图，并显式标明“本轮未生成”。
+- 前端增加真实任务监视器、刷新续接、重复提交阻断、严格失败平台回传和失败后的 Bootstrap 状态恢复；研究失败后节点不再永久停留 running。九个详情页、设计包/资产路由与同源 API 代理继续可独立操作。版本统一提升到 0.8.0。
+
+原因：
+
+- 用户明确要求逐项检查“是否真实可用”，要求点击后实际生成、自动回调、全自动爬取并打通所有链路，而不是使用兜底、旧缓存或展示状态伪装成完成。本轮因此把验收标准从视觉可达提升为真实副作用、持久化、失败语义和可恢复性。
+
+验证：
+
+- 环境探针确认 Python 3.13.9、DeepSeek API、`deepseek-v4-flash`、LightRAG/GPT Researcher/MediaCrawler 运行时可达，密钥未回显。四平台独立实机探针实际得到 xhs live/20、bili live/20、wb live/16；dy 本轮无内容产物并使用 14 条历史 cache，因此探针未伪报 4/4 成功。
+- 网页先后实际发起三次严格任务。最终修复轮 `20260828T202303Z-2bae17ff` 用 9 分 41 秒完成：culture/strategist live、market cache、xhs/dy/bili/wb unavailable，返回 `failed_no_fallback`；隔离目录保存 8 项研究产物、四平台详情与 `strict_result.json`，不含 DesignPackage，当前工作区仍绑定原已核验基线。页面刷新续接同一任务，终态监视器正确显示失败，三个研究节点恢复而非卡住。
+- 隔离 HTTP 功能验收实际完成 New/Rename/Save、Decision v2、Brief v3、Design Agent、Concept 复制/重生成 warning 与 Poster 渲染；正式工作区的设计运行 `20260828T201228Z-e646561b` 选择 OPP-006 并保存 DesignPackage，服务端海报为 1800×2400、305,202 字节。研究节点普通 POST 返回 409，证明旧文件不能冒充本轮成功。
+- 九个详情页逐页打开，文化/市场/策略/任务书/视觉/A/B/C/海报引用数为 28/39/15/7/8/8/8/8/8，合计 129、缺失 0；无破图、无横向溢出。数据层 454 个唯一外链中 442 个直接可达，12 个受目标站连接/防护影响但经官方索引复核为真实页面。
+- `uv run pytest` 46/46、`uv run ruff check app tests scripts/probe_market_platforms.py`、Workbench TypeScript 5/5、TypeScript no-emit、ESLint、Vinext 五阶段 production build 与 `git diff --check` 通过。桌面九页及 390×844 的 Brief/Concept/Poster/主工作台复核无页面横向溢出。
+
+边界：
+
+- 最终严格任务没有获得四平台本轮 live，因此没有可晋级的新实时市场集；378 条记录仍是带时间边界的历史真实快照。平台会话、风控、限流和当次搜索产物会变化，一次授权不等于永久成功。
+- 独立 Images API 仍未配置，DeepSeek 图片端点实测 404；A/B/C 旧项目资产可展示，但本轮不把它们标成新生成。精简 Zeabur 镜像不包含三上游运行时，云端严格任务会在预检阻断；完整实爬需在用户授权的本机环境执行。
+- DesignPackage、尺寸、BOM 与海报仍只用于概念展示、工厂报价和首样沟通，`mass_production_ready=false`；本轮未授权生产发布、工厂订单、商业图稿批准或制造/合规就绪声明。
+
+涉及文件：
+
+- `.gitignore`、`README.md`、`WORKFLOW.md`、`pyproject.toml`、`uv.lock`、`app/__init__.py`
+- `app/pipeline.py`、`app/tool_api.py`、`app/workbench.py`、`app/adapters/media_crawler_adapter.py`、`app/designer/agent.py`
+- `scripts/probe_market_platforms.py`、`tests/test_demo_pipeline.py`、`tests/test_tool_api.py`、`tests/test_workbench.py`
+- `web/app/workbench.tsx`、`web/app/node-detail.tsx`、`web/app/workbench-api.ts`、`web/app/workbench-model.ts`、`web/app/globals.css`、`web/app/variables.css`、`web/vite.config.ts`、`web/package.json`
+- `data/market/derived/latest.json`、`data/market/derived/product_form_hotness.json`、`data/workbench/workspaces/guizhou-miao-demo.json`、`docs/real_machine_test.md`、`docs/deployment_zeabur.md`
 
 ### 2026-08-29｜0.7.3｜稳定横条节点、Inspector 渐进披露与上线
 
@@ -1172,9 +1221,10 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 ## 11. 当前已知约束与下一步空间
 
 - Human Decision Studio 已让文化、市场、机会、量分、任务书、视觉、概念和海报具备人工可变输入；下一步可在不改事实层的前提下增加 DecisionProfile 命名版本、差异对比、撤销/重做、多人批注和方案分支合并。
-- Workbench 已形成完整本地闭环并内置 A/B/C 三套已审阅概念视觉，但独立图像自动化服务尚未配置；后续若要在界面中实际执行单 Concept 重生成或 Generate More，仍需由用户提供兼容 Images API 的服务地址、模型和密钥并重新实测。
+- Workbench 的研究任务、Design Agent、DesignPackage 和 Poster 已形成可持久化本地闭环，刷新页面可续接研究轮询；独立图像自动化服务仍未配置。后续若要实际生成新的 Concept，需由用户提供兼容 Images API 的服务地址、模型和密钥并重新实测；旧成功资产必须继续和本轮结果分开标注。
 - 当前 Zeabur 实例已通过 Nginx Basic Auth、回环 API、Secret 变量与持久卷形成受保护产品验证环境；若扩大为多人正式使用，仍需补用户级身份、权限审计、备份恢复、口令轮换、对象存储、任务队列和更细粒度限流。
-- 四平台授权资料均已建立；最近正式复核中 xhs/bili/wb 为 live，dy 仅能复用 14 条历史真实快照。后续复测仍必须按每次实际结果写 `live/cache/unavailable`，不能因曾经授权而固定写 live。
+- 四平台授权资料均曾建立，但会话不是永久有效。0.8.0 最终严格轮的 xhs/dy/bili/wb 均为 unavailable，整轮没有晋级；较早正式复核中 xhs/bili/wb 为 live、dy 复用 14 条历史快照。后续每次仍必须按实际结果写 `live/cache/unavailable`，不能因曾经授权或启动过浏览器而固定写 live。
+- 精简 Zeabur 镜像只发布 QianCraft 产品层与证据基线，不包含 MediaCrawler、LightRAG 和 GPT Researcher 上游源码/运行时；云端“实时运行”会如实预检阻断。若未来需要服务器实爬，必须另行解决平台授权浏览器、许可、队列、超时与长期会话，而不能复制本机 Cookie 到镜像。
 - 当前 378 条真实平台快照已经形成 Top 10 / Top 5，可作为下一阶段候选品类输入，但样本规模、关键词和时间窗都有限，不能据此直接定案或宣称全平台趋势。
 - MediaCrawler 仍缺少商业使用许可；现阶段只可在符合上游许可证和平台条款的非商业学习/研究场景使用。
 - 文化图谱虽有权威公开来源，具体村寨的纹样名称、可公开范围、授权意愿与收益方式仍需田野核验。

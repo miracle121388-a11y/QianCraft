@@ -3,7 +3,7 @@
   "workspace_id": "guizhou-miao-demo",
   "name": "贵州苗绣 · 文创机会工作台",
   "created_at": "2026-08-28T06:06:11.378436+00:00",
-  "updated_at": "2026-08-28T22:58:00+08:00",
+  "updated_at": "2026-08-28T19:51:53.072170+00:00",
   "viewport": {
     "x": 20,
     "y": 210,
@@ -46,9 +46,24 @@
         "GZ-MIAO-SONGTAO",
         "GZ-MIAO-EMBROIDERY"
       ],
-      "marketPlatforms": ["xhs", "dy", "bili", "wb"],
-      "marketProductForms": ["冰箱贴", "徽章", "盲盒", "包挂", "伴手礼"],
-      "opportunityIds": ["OPP-006", "OPP-002", "OPP-004"],
+      "marketPlatforms": [
+        "xhs",
+        "dy",
+        "bili",
+        "wb"
+      ],
+      "marketProductForms": [
+        "冰箱贴",
+        "徽章",
+        "盲盒",
+        "包挂",
+        "伴手礼"
+      ],
+      "opportunityIds": [
+        "OPP-006",
+        "OPP-002",
+        "OPP-004"
+      ],
       "scoreWeights": {
         "culture_fit": 0.2,
         "market_pull": 0.2,
@@ -60,23 +75,208 @@
       "culturalRiskPenalty": 0.2,
       "designIntent": {
         "targetAudience": "18-30岁年轻消费者",
-        "preferredProductForms": ["可替换织物面板冰箱贴"],
+        "preferredProductForms": [
+          "可替换织物面板冰箱贴"
+        ],
         "priceBand": "待用户与渠道共同确认",
-        "useScenarios": ["家居陈列", "系列收藏", "旅行礼赠"],
-        "materialPriorities": ["可追溯", "可拆解", "首样可验证"]
+        "useScenarios": [
+          "家居陈列",
+          "系列收藏",
+          "旅行礼赠"
+        ],
+        "materialPriorities": [
+          "可追溯",
+          "可拆解",
+          "首样可验证"
+        ]
       },
       "visualDirection": {
-        "referenceIds": ["V001"],
-        "styleKeywords": ["模块化", "像素化", "清晰网格", "克制强对比"],
+        "referenceIds": [
+          "V001"
+        ],
+        "styleKeywords": [
+          "模块化",
+          "像素化",
+          "清晰网格",
+          "克制强对比"
+        ],
         "imageSize": "1024x1024",
         "notes": "仅提取结构、节奏与材料关系，不复用 reference_only 像素。"
       },
-      "conceptCompareIds": ["concept-a", "concept-b", "concept-c"],
+      "conceptCompareIds": [
+        "concept-a",
+        "concept-b",
+        "concept-c"
+      ],
       "activeConceptId": "concept-a",
       "posterTheme": "editorial",
-      "posterSections": ["hero", "culture", "breakdown", "bom", "process"],
+      "posterSections": [
+        "hero",
+        "culture",
+        "breakdown",
+        "bom",
+        "process"
+      ],
       "notes": "",
       "updatedAt": "2026-08-28T22:58:00+08:00"
+    },
+    "decision_output": {
+      "profileVersion": 1,
+      "mode": "guided",
+      "selectedCulture": [
+        {
+          "id": "GZ-MIAO-HUAXI",
+          "name": "花溪苗绣",
+          "category": "传统美术"
+        },
+        {
+          "id": "GZ-MIAO-JIANHE-TIN",
+          "name": "剑河苗族锡绣",
+          "category": "传统美术"
+        },
+        {
+          "id": "GZ-MIAO-SONGTAO",
+          "name": "松桃苗绣",
+          "category": "传统美术"
+        },
+        {
+          "id": "GZ-MIAO-EMBROIDERY",
+          "name": "贵州苗绣",
+          "category": "传统美术"
+        }
+      ],
+      "marketScope": {
+        "platforms": [
+          "xhs",
+          "dy",
+          "bili",
+          "wb"
+        ],
+        "productForms": [
+          "冰箱贴",
+          "徽章",
+          "盲盒",
+          "包挂",
+          "伴手礼"
+        ],
+        "selectedPlatformSamples": 378,
+        "selectedFormSamples": 159
+      },
+      "manualRanking": [
+        {
+          "id": "OPP-006",
+          "title": "花溪、剑河、松桃、雷山等支系差异 × 可替换、可集齐并带学习线索的收藏系统",
+          "manualScore": 79.4,
+          "systemScore": 79.4,
+          "verification": "verified",
+          "selected": true
+        },
+        {
+          "id": "OPP-002",
+          "title": "鸟纹、蝶纹与动植物复合构图 × 可互动、可把玩、可集齐的小型收藏形态",
+          "manualScore": 76.6,
+          "systemScore": 76.6,
+          "verification": "verified",
+          "selected": true
+        },
+        {
+          "id": "OPP-004",
+          "title": "剑河锡绣的金属锡线与迷宫式几何纹 × 金属感科技配件、反光细节与材料对比",
+          "manualScore": 74.5,
+          "systemScore": 74.5,
+          "verification": "verified",
+          "selected": true
+        },
+        {
+          "id": "OPP-007",
+          "title": "绣线、辫绣、破线绣等可触摸的工艺层次 × 毛绒、软触感与真实刺绣结合的情绪陪伴产品",
+          "manualScore": 73.8,
+          "systemScore": 73.9,
+          "verification": "verified",
+          "selected": false
+        },
+        {
+          "id": "OPP-003",
+          "title": "花溪挑花的数纱、十字结构与反面挑绣 × 系列编号、成套收藏与轻量个性化",
+          "manualScore": 72.3,
+          "systemScore": 72.3,
+          "verification": "verified",
+          "selected": false
+        },
+        {
+          "id": "OPP-008",
+          "title": "苗绣的女性传承网络、学习过程与可穿戴记忆 × 可追溯体验套件、二维码档案与持续回访内容",
+          "manualScore": 69.5,
+          "systemScore": 69.5,
+          "verification": "warning",
+          "selected": false
+        },
+        {
+          "id": "OPP-005",
+          "title": "松桃苗绣的针法体系与苗画叙事 × 带作者信息、工时和故事卡的联名小批量产品",
+          "manualScore": 66.8,
+          "systemScore": 66.8,
+          "verification": "warning",
+          "selected": false
+        },
+        {
+          "id": "OPP-001",
+          "title": "蝴蝶妈妈、枫木与祖源叙事 × 日常高频随身挂饰与可替换模块",
+          "manualScore": 59.0,
+          "systemScore": 59.0,
+          "verification": "warning",
+          "selected": false
+        }
+      ],
+      "selectedOpportunityIds": [
+        "OPP-006",
+        "OPP-002",
+        "OPP-004"
+      ],
+      "designIntent": {
+        "targetAudience": "18-30岁年轻消费者",
+        "preferredProductForms": [
+          "可替换织物面板冰箱贴"
+        ],
+        "priceBand": "待用户与渠道共同确认",
+        "useScenarios": [
+          "家居陈列",
+          "系列收藏",
+          "旅行礼赠"
+        ],
+        "materialPriorities": [
+          "可追溯",
+          "可拆解",
+          "首样可验证"
+        ]
+      },
+      "visualDirection": {
+        "referenceIds": [
+          "V001"
+        ],
+        "styleKeywords": [
+          "模块化",
+          "像素化",
+          "清晰网格",
+          "克制强对比"
+        ],
+        "imageSize": "1024x1024",
+        "notes": "仅提取结构、节奏与材料关系，不复用 reference_only 像素。"
+      },
+      "conceptCompareIds": [
+        "concept-a",
+        "concept-b",
+        "concept-c"
+      ],
+      "activeConceptId": "concept-a",
+      "posterTheme": "editorial",
+      "posterSections": [
+        "hero",
+        "culture",
+        "breakdown",
+        "bom",
+        "process"
+      ]
     }
   },
   "nodes": [
@@ -95,19 +295,26 @@
         "status": "success",
         "stats": [
           {
-            "label": "文化记录",
-            "value": 22
+            "label": "人工选用",
+            "value": 4
           },
           {
-            "label": "登记来源",
-            "value": 32
+            "label": "图谱总记录",
+            "value": 22
           }
         ],
         "sourceRefs": [
           "C001",
+          "C005",
+          "C009",
           "C002",
+          "C010",
           "C003",
-          "C029"
+          "C008",
+          "C004",
+          "C006",
+          "C007",
+          "C011"
         ],
         "outputs": {
           "topic": "贵州国家级非遗与具有代表性的在地文化；首个深描主题为贵州苗绣",
@@ -123,6 +330,12 @@
             "不存在适用于全部苗族支系的统一纹样释义；不得把一个地区的解释冒充所有支系的共同意义。",
             "涉及祖源神话、祭祀、丧葬、鼓社或支系身份的完整图式，进入商品化前须向对应社区、保护单位或传承人核验。",
             "不要拆取神圣或身份性符号后赋予相反、猎奇或污名化含义；不要把机器印花冒充手工苗绣。"
+          ],
+          "selectedRecordIds": [
+            "GZ-MIAO-HUAXI",
+            "GZ-MIAO-JIANHE-TIN",
+            "GZ-MIAO-SONGTAO",
+            "GZ-MIAO-EMBROIDERY"
           ]
         },
         "history": [
@@ -130,7 +343,20 @@
             "at": "2026-08-28T14:06:11.378436+08:00",
             "event": "载入策展式文化图谱"
           }
+        ],
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "selectedRecordIds": [
+          "GZ-MIAO-HUAXI",
+          "GZ-MIAO-JIANHE-TIN",
+          "GZ-MIAO-SONGTAO",
+          "GZ-MIAO-EMBROIDERY"
         ]
+      },
+      "selected": false,
+      "measured": {
+        "width": 300,
+        "height": 76
       }
     },
     {
@@ -148,12 +374,12 @@
         "status": "cached",
         "stats": [
           {
-            "label": "历史样本",
-            "value": 378
+            "label": "选用平台",
+            "value": 4
           },
           {
-            "label": "平台",
-            "value": 4
+            "label": "形态样本",
+            "value": 159
           }
         ],
         "platforms": {
@@ -281,7 +507,7 @@
           },
           {
             "name": "伴手礼",
-            "score": 47.1,
+            "score": 47.0,
             "sampleSize": 6
           }
         ],
@@ -289,14 +515,45 @@
           "MPL-XHS-ADD1A725C83693E55392",
           "MPL-WB-BEF9FDE469E113008D8D",
           "MPL-BILI-CE60CB67717280F3E0A9",
-          "MPL-DY-27944D91D522C338411B"
+          "MPL-DY-27944D91D522C338411B",
+          "MPL-WB-8C2A9FCD0AC1990EE7AB",
+          "MPL-BILI-9D3C24AB18DD062C617A",
+          "MPL-XHS-86E971480DF92CB65751",
+          "MPL-DY-BE4841B90E9B64DF77C6",
+          "MPL-BILI-D3AD6452E5C575EE79ED",
+          "MPL-XHS-0DE55712F12CC3AA7521",
+          "MPL-WB-F25F6606766F74E5FA7D",
+          "MPL-XHS-0CBD2E87009C1F13CF79",
+          "MPL-BILI-D5375C2DCEBF75DCBB75",
+          "MPL-XHS-2B043F4A04CB3BC118F1",
+          "MPL-WB-08D51A1EF9DFB7D0FBB9"
         ],
         "history": [
           {
             "at": "2026-08-28T14:06:11.378436+08:00",
             "event": "载入四平台历史证据快照"
           }
+        ],
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "selectedPlatforms": [
+          "xhs",
+          "dy",
+          "bili",
+          "wb"
+        ],
+        "selectedProductForms": [
+          "冰箱贴",
+          "徽章",
+          "盲盒",
+          "包挂",
+          "伴手礼"
         ]
+      },
+      "selected": false,
+      "measured": {
+        "width": 300,
+        "height": 76
       }
     },
     {
@@ -314,12 +571,12 @@
         "status": "success",
         "stats": [
           {
-            "label": "候选机会",
-            "value": 8
+            "label": "人工候选",
+            "value": 3
           },
           {
-            "label": "进入设计",
-            "value": 3
+            "label": "权重版本",
+            "value": "v1"
           }
         ],
         "opportunities": [
@@ -327,18 +584,21 @@
             "id": "OPP-006",
             "title": "花溪、剑河、松桃、雷山等支系差异 × 可替换、可集齐并带学习线索的收藏系统",
             "score": 79.4,
+            "systemScore": 79.4,
             "verification": "verified"
           },
           {
             "id": "OPP-002",
             "title": "鸟纹、蝶纹与动植物复合构图 × 可互动、可把玩、可集齐的小型收藏形态",
             "score": 76.6,
+            "systemScore": 76.6,
             "verification": "verified"
           },
           {
             "id": "OPP-004",
             "title": "剑河锡绣的金属锡线与迷宫式几何纹 × 金属感科技配件、反光细节与材料对比",
             "score": 74.5,
+            "systemScore": 74.5,
             "verification": "verified"
           }
         ],
@@ -360,7 +620,89 @@
             "at": "2026-08-28T14:06:11.378436+08:00",
             "event": "完成证据锁定与二次核验"
           }
-        ]
+        ],
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "manualRanking": [
+          {
+            "id": "OPP-006",
+            "title": "花溪、剑河、松桃、雷山等支系差异 × 可替换、可集齐并带学习线索的收藏系统",
+            "manualScore": 79.4,
+            "systemScore": 79.4,
+            "verification": "verified",
+            "selected": true
+          },
+          {
+            "id": "OPP-002",
+            "title": "鸟纹、蝶纹与动植物复合构图 × 可互动、可把玩、可集齐的小型收藏形态",
+            "manualScore": 76.6,
+            "systemScore": 76.6,
+            "verification": "verified",
+            "selected": true
+          },
+          {
+            "id": "OPP-004",
+            "title": "剑河锡绣的金属锡线与迷宫式几何纹 × 金属感科技配件、反光细节与材料对比",
+            "manualScore": 74.5,
+            "systemScore": 74.5,
+            "verification": "verified",
+            "selected": true
+          },
+          {
+            "id": "OPP-007",
+            "title": "绣线、辫绣、破线绣等可触摸的工艺层次 × 毛绒、软触感与真实刺绣结合的情绪陪伴产品",
+            "manualScore": 73.8,
+            "systemScore": 73.9,
+            "verification": "verified",
+            "selected": false
+          },
+          {
+            "id": "OPP-003",
+            "title": "花溪挑花的数纱、十字结构与反面挑绣 × 系列编号、成套收藏与轻量个性化",
+            "manualScore": 72.3,
+            "systemScore": 72.3,
+            "verification": "verified",
+            "selected": false
+          },
+          {
+            "id": "OPP-008",
+            "title": "苗绣的女性传承网络、学习过程与可穿戴记忆 × 可追溯体验套件、二维码档案与持续回访内容",
+            "manualScore": 69.5,
+            "systemScore": 69.5,
+            "verification": "warning",
+            "selected": false
+          },
+          {
+            "id": "OPP-005",
+            "title": "松桃苗绣的针法体系与苗画叙事 × 带作者信息、工时和故事卡的联名小批量产品",
+            "manualScore": 66.8,
+            "systemScore": 66.8,
+            "verification": "warning",
+            "selected": false
+          },
+          {
+            "id": "OPP-001",
+            "title": "蝴蝶妈妈、枫木与祖源叙事 × 日常高频随身挂饰与可替换模块",
+            "manualScore": 59.0,
+            "systemScore": 59.0,
+            "verification": "warning",
+            "selected": false
+          }
+        ],
+        "scoreWeights": {
+          "culture_fit": 0.2,
+          "market_pull": 0.2,
+          "novelty": 0.2,
+          "visual_potential": 0.15,
+          "social_shareability": 0.15,
+          "product_feasibility": 0.1
+        },
+        "culturalRiskPenalty": 0.2
+      },
+      "selected": false,
+      "measured": {
+        "width": 300,
+        "height": 76
       }
     },
     {
@@ -414,7 +756,31 @@
             "at": "2026-08-28T14:06:11.378436+08:00",
             "event": "建立可编辑任务书 v1"
           }
-        ]
+        ],
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "decisionInputs": {
+          "targetAudience": "18-30岁年轻消费者",
+          "preferredProductForms": [
+            "可替换织物面板冰箱贴"
+          ],
+          "priceBand": "待用户与渠道共同确认",
+          "useScenarios": [
+            "家居陈列",
+            "系列收藏",
+            "旅行礼赠"
+          ],
+          "materialPriorities": [
+            "可追溯",
+            "可拆解",
+            "首样可验证"
+          ]
+        }
+      },
+      "selected": true,
+      "measured": {
+        "width": 300,
+        "height": 76
       }
     },
     {
@@ -462,7 +828,24 @@
         "importedConcepts": [
           "concept-b-v1.png",
           "concept-c-v1.png"
-        ]
+        ],
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "selectedReferenceIds": [
+          "V001"
+        ],
+        "styleKeywords": [
+          "模块化",
+          "像素化",
+          "清晰网格",
+          "克制强对比"
+        ],
+        "visualNotes": "仅提取结构、节奏与材料关系，不复用 reference_only 像素。"
+      },
+      "selected": false,
+      "measured": {
+        "width": 320,
+        "height": 76
       }
     },
     {
@@ -497,7 +880,16 @@
             "at": "2026-08-28T14:06:11.378436+08:00",
             "event": "载入现有项目概念视觉"
           }
-        ]
+        ],
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "inComparison": true,
+        "decisionPromptSuffix": "Manual art direction: 模块化, 像素化, 清晰网格, 克制强对比\n仅提取结构、节奏与材料关系，不复用 reference_only 像素。"
+      },
+      "selected": false,
+      "measured": {
+        "width": 320,
+        "height": 76
       }
     },
     {
@@ -542,7 +934,16 @@
           "mode": "project_asset",
           "sha256": "d5665f294dc833bc52fafd378531efd743b630ba676b9325d6792da2321a736d",
           "generated_at": "2026-08-28T06:17:21.9506930Z"
-        }
+        },
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "inComparison": true,
+        "decisionPromptSuffix": "Manual art direction: 模块化, 像素化, 清晰网格, 克制强对比\n仅提取结构、节奏与材料关系，不复用 reference_only 像素。"
+      },
+      "selected": false,
+      "measured": {
+        "width": 320,
+        "height": 76
       }
     },
     {
@@ -587,7 +988,16 @@
           "mode": "project_asset",
           "sha256": "04a9f4a0ff8bc4e0f0bee8d2bb23926279e389a097c72e5182b707970d60aef9",
           "generated_at": "2026-08-28T06:17:21.9506930Z"
-        }
+        },
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "inComparison": true,
+        "decisionPromptSuffix": "Manual art direction: 模块化, 像素化, 清晰网格, 克制强对比\n仅提取结构、节奏与材料关系，不复用 reference_only 像素。"
+      },
+      "selected": false,
+      "measured": {
+        "width": 320,
+        "height": 76
       }
     },
     {
@@ -648,7 +1058,15 @@
             "at": "2026-08-28T14:06:11.378436+08:00",
             "event": "载入可编辑固定版式"
           }
-        ]
+        ],
+        "decisionVersion": 1,
+        "decisionMode": "guided",
+        "posterTheme": "editorial"
+      },
+      "selected": false,
+      "measured": {
+        "width": 320,
+        "height": 76
       }
     }
   ],

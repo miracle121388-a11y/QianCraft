@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 from dataclasses import replace
 
 import pytest
@@ -24,6 +25,7 @@ def isolated_workspaces(tmp_path, monkeypatch):
         "BUNDLED_GENERATED_DIR",
         tmp_path / "bundled-generated",
     )
+    monkeypatch.setattr(workbench, "RESEARCH_DIR", tmp_path / "research")
     return tmp_path
 
 
@@ -49,9 +51,7 @@ def test_default_workspace_loads_bundled_concept_assets(isolated_workspaces) -> 
 
     payload = workbench.default_workspace()
     concepts = {
-        node["id"]: node["data"]
-        for node in payload["nodes"]
-        if node["type"] == "ConceptNode"
+        node["id"]: node["data"] for node in payload["nodes"] if node["type"] == "ConceptNode"
     }
 
     assert concepts["concept-b"]["status"] == "success"
@@ -75,6 +75,67 @@ def test_workspace_round_trip_persists_viewport_nodes_and_edges(
     assert len(loaded["edges"]) == 10
 
 
+def test_research_promotion_requires_only_research_artifacts(
+    isolated_workspaces,
+) -> None:
+    payload = workbench.ensure_default_workspace()
+    run_dir = isolated_workspaces / "strict-research-run"
+    output_dir = run_dir / "outputs"
+    market_dir = run_dir / "market" / "derived"
+    output_dir.mkdir(parents=True)
+    market_dir.mkdir(parents=True)
+
+    sources = {
+        "strategy_json": (output_dir / "pre_design_strategy.json", workbench.STRATEGY_PATH),
+        "visual_reference_json": (
+            output_dir / "visual_reference_pack.json",
+            workbench.VISUAL_REFERENCES_PATH,
+        ),
+        "designer_handoff_json": (
+            output_dir / "designer_handoff.json",
+            workbench.ROOT_DIR / "data" / "outputs" / "designer_handoff.json",
+        ),
+        "product_form_hotness": (
+            market_dir / "product_form_hotness.json",
+            workbench.HOTNESS_PATH,
+        ),
+    }
+    for target, source in sources.values():
+        target.write_bytes(source.read_bytes())
+    evidence_path = market_dir / "market_evidence.json"
+    evidence_path.write_text("{}", encoding="utf-8")
+    manifest_path = output_dir / "run_manifest.json"
+    run_id = "20260829T000000Z-research"
+    manifest = {
+        "run_id": run_id,
+        "finished_at": "2026-08-29T00:00:00+00:00",
+        "components": [
+            {"component": component, "mode": "live"}
+            for component in ("culture_knowledge", "market_research", "strategist")
+        ],
+        "market_platforms": {
+            platform: {"status": "live"} for platform in workbench.MARKET_PLATFORMS
+        },
+        "market_source": {"derived_path": str(evidence_path)},
+        "outputs": {key: str(target) for key, (target, _source) in sources.items()},
+    }
+    manifest["outputs"]["manifest"] = str(manifest_path)
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    promoted = workbench.promote_research_run(payload["workspace_id"], run_dir, manifest)
+    promoted_dir = workbench.RESEARCH_DIR / payload["workspace_id"] / run_id
+
+    assert promoted["metadata"]["research_run_id"] == run_id
+    assert (promoted_dir / "pre_design_strategy.json").is_file()
+    assert (promoted_dir / "run_manifest.json").is_file()
+    assert not (promoted_dir / "design_specification.json").exists()
+    statuses = {node["id"]: node["data"]["status"] for node in promoted["nodes"]}
+    assert statuses["culture"] == "success"
+    assert statuses["market"] == "success"
+    assert statuses["strategy"] == "success"
+    assert statuses["brief"] == "stale"
+
+
 def test_brief_version_marks_only_downstream_nodes_stale(isolated_workspaces) -> None:
     payload = workbench.ensure_default_workspace()
     brief_node = next(node for node in payload["nodes"] if node["id"] == "brief")
@@ -94,9 +155,7 @@ def test_brief_version_marks_only_downstream_nodes_stale(isolated_workspaces) ->
 
 def test_invalid_edge_is_rejected_before_workspace_write(isolated_workspaces) -> None:
     payload = workbench.ensure_default_workspace()
-    payload["edges"].append(
-        {"id": "broken", "source": "brief", "target": "missing-node"}
-    )
+    payload["edges"].append({"id": "broken", "source": "brief", "target": "missing-node"})
 
     with pytest.raises(ValueError, match="不存在的节点"):
         workbench.save_workbench_workspace(payload["workspace_id"], payload)
@@ -199,6 +258,34 @@ def test_generate_more_creates_empty_direction_when_provider_is_missing(
     assert created["data"]["status"] == "warning"
 
 
+def test_research_node_cannot_refresh_old_file_as_new_success(
+    isolated_workspaces,
+) -> None:
+    payload = workbench.ensure_default_workspace()
+
+    with pytest.raises(RuntimeError, match="实时运行"):
+        workbench.run_workbench_node(payload["workspace_id"], "culture")
+
+    saved = workbench.load_workbench_workspace(payload["workspace_id"])
+    culture = next(node for node in saved["nodes"] if node["id"] == "culture")
+    assert culture["data"]["status"] == "error"
+    assert "旧文件" in culture["data"]["history"][0]["event"]
+
+
+def test_poster_run_writes_a_new_verifiable_png(isolated_workspaces) -> None:
+    payload = workbench.ensure_default_workspace()
+
+    updated = workbench.run_workbench_node(payload["workspace_id"], "poster")
+    poster = next(node for node in updated["nodes"] if node["id"] == "poster")
+    filename = str(poster["data"]["imageUrl"]).rsplit("/", 1)[-1]
+    generated = workbench.GENERATED_DIR / payload["workspace_id"] / filename
+
+    assert poster["data"]["status"] == "success"
+    assert poster["data"]["version"] >= 1
+    assert generated.is_file()
+    assert generated.with_suffix(".manifest.json").is_file()
+
+
 def test_node_detail_resolves_professional_citations(isolated_workspaces) -> None:
     workbench.ensure_default_workspace()
 
@@ -215,9 +302,7 @@ def test_node_detail_resolves_professional_citations(isolated_workspaces) -> Non
     assert all(item["sourceRef"] for item in market["content"]["representativePosts"])
     assert len(strategy["content"]["opportunities"]) == 8
     assert strategy["citationAudit"]["missing"] == []
-    assert next(item for item in strategy["citations"] if item["id"] == "M007")[
-        "kind"
-    ] == "market"
+    assert next(item for item in strategy["citations"] if item["id"] == "M007")["kind"] == "market"
     assert any(item["id"] == "V001" for item in visual["citations"])
 
 

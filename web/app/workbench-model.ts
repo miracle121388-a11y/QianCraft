@@ -194,6 +194,13 @@ export interface WorkbenchWorkspace {
     node_types: WorkbenchNodeType[];
     product_stage: string;
     stop_before: string;
+    research_run_id?: string;
+    research_verified_at?: string;
+    research_component_modes?: Record<string, string>;
+    research_platform_modes?: Record<string, string>;
+    design_run_id?: string;
+    design_generated_at?: string;
+    design_primary_opportunity_id?: string;
     decision_profile: DecisionProfile;
     decision_output: DecisionOutput;
   };
@@ -251,12 +258,56 @@ export interface ImageProviderStatus {
   detail: string;
 }
 
+export interface ResearchCheck {
+  id: string;
+  label: string;
+  ok: boolean;
+  detail: string;
+}
+
+export interface ResearchPreflight {
+  research_ready: boolean;
+  image_generation_ready: boolean;
+  interactive_launch: boolean;
+  login_method: string;
+  checks: ResearchCheck[];
+  blockers: string[];
+}
+
+export type ResearchJobStatus =
+  | 'queued'
+  | 'running'
+  | 'live_verified'
+  | 'failed_no_fallback'
+  | 'error';
+
+export interface ResearchJob {
+  job_id: string;
+  workspace_id: string;
+  status: ResearchJobStatus;
+  stage: string;
+  created_at: string;
+  started_at: string;
+  finished_at: string;
+  detail: string;
+  component_modes: Record<string, string>;
+  platform_modes: Record<string, string>;
+  source_run_id?: string;
+}
+
+export interface ResearchRuntime {
+  preflight: ResearchPreflight;
+  activeJob: ResearchJob | null;
+  lastJob: ResearchJob | null;
+}
+
 export interface WorkbenchBootstrap {
   workspace: WorkbenchWorkspace;
   workspaces: WorkspaceSummary[];
   knowledge: KnowledgeCenterData;
   decisionCatalog: DecisionCatalog;
   imageProvider: ImageProviderStatus;
+  researchRuntime: ResearchRuntime;
   nodeTypes: WorkbenchNodeType[];
   statuses: NodeStatus[];
 }

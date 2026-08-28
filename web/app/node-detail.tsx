@@ -17,14 +17,17 @@ import {
   API_BASE,
   activateConcept,
   duplicateConcept,
+  generateWorkbenchDesign,
   generateMoreConcept,
   getBootstrap,
   getDesignPackage,
   getNodeDetail,
+  getResearchJob,
   regenerateConcept,
   runNode,
   saveDesignBrief,
   saveWorkspace,
+  startResearchRun,
 } from './workbench-api';
 import {
   NODE_TYPE_LABELS,
@@ -59,6 +62,12 @@ const NODE_DECISION_STAGE: Record<WorkbenchNodeType, string> = {
   ConceptNode: 'concept',
   PosterBoardNode: 'poster',
 };
+
+const RESEARCH_NODE_TYPES = new Set<WorkbenchNodeType>([
+  'CultureGraphNode',
+  'MarketRadarNode',
+  'StrategyNode',
+]);
 
 const POSTER_SECTION_LABELS: Record<string, string> = {
   hero: '成品主视觉',
@@ -319,14 +328,16 @@ function VisualDetail({ detail, onOpen }: { detail: NodeDetailPayload; onOpen: (
 
 function ConceptTile({ concept, onOpen }: { concept: WorkbenchNode; onOpen: (id: string) => void }) {
   const image = apiAssetUrl(concept.data.imageUrl, API_BASE);
-  return <article className={concept.data.active ? 'is-active' : ''}>{image ? <img src={image} alt={`${concept.data.title} 概念视觉`} /> : <div className="concept-placeholder">等待图像服务</div>}<div><span>{text(concept.data.label, '概念方向')}</span><h3>{concept.data.title}</h3><p>{text(concept.data.direction, concept.data.summary)}</p><button type="button" onClick={() => onOpen(concept.id)}>进入独立概念页 ↗</button></div></article>;
+  const previousAsset = Boolean(image && ['warning', 'error', 'stale', 'cached'].includes(concept.data.status));
+  return <article className={concept.data.active ? 'is-active' : ''}>{image ? <img src={image} alt={`${concept.data.title} 概念视觉`} /> : <div className="concept-placeholder">等待图像服务</div>}<div><span>{text(concept.data.label, '概念方向')}</span>{previousAsset ? <small className="concept-asset-note">保留上次成功资产 · 本轮未生成</small> : null}<h3>{concept.data.title}</h3><p>{text(concept.data.direction, concept.data.summary)}</p><button type="button" onClick={() => onOpen(concept.id)}>进入独立概念页 ↗</button></div></article>;
 }
 
 function ConceptDetail({ detail, draft, setDraft, onSave, onAction, busy }: { detail: NodeDetailPayload; draft: { title: string; summary: string; direction: string; prompt: string }; setDraft: (value: { title: string; summary: string; direction: string; prompt: string }) => void; onSave: () => void; onAction: (action: 'activate' | 'duplicate' | 'regenerate' | 'generate-more') => void; busy: boolean }) {
   const image = apiAssetUrl(detail.node.data.imageUrl, API_BASE);
   const manufacturing = detail.content.manufacturing ?? {};
   const bom = asRecords(manufacturing.bill_of_materials);
-  return <><section className="concept-detail-hero"><div className="concept-detail-image">{image ? <img src={image} alt={`${detail.node.data.title} 文创成品概念`} /> : <div className="concept-placeholder">当前方向尚无生成图</div>}<span>{detail.node.data.active ? '当前采用' : '候选方案'}</span></div><form className="detail-editor" onSubmit={(event) => { event.preventDefault(); onSave(); }}><header><h2>编辑概念方向</h2></header><label><span>概念标题</span><input value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} /></label><label><span>概念说明</span><textarea rows={4} value={draft.summary} onChange={(event) => setDraft({ ...draft, summary: event.target.value })} /></label><label><span>视觉方向</span><textarea rows={3} value={draft.direction} onChange={(event) => setDraft({ ...draft, direction: event.target.value })} /></label><label><span>图像生成提示词</span><textarea rows={9} value={draft.prompt} onChange={(event) => setDraft({ ...draft, prompt: event.target.value })} /></label><button className="detail-primary" disabled={busy} type="submit">保存概念编辑</button><div className="detail-action-grid"><button disabled={busy || Boolean(detail.node.data.active)} type="button" onClick={() => onAction('activate')}>设为当前方向</button><button disabled={busy} type="button" onClick={() => onAction('duplicate')}>复制方向</button><button disabled={busy} type="button" onClick={() => onAction('regenerate')}>单独重生成</button><button disabled={busy} type="button" onClick={() => onAction('generate-more')}>生成更多方向</button></div></form></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>文化元素与转译规则</h2></div></header><div className="culture-element-grid">{(detail.content.culturalElements ?? []).map((item, index) => <article key={text(item.element_id, String(index))}><code>{text(item.element_id, `E-${index + 1}`)}</code><h3>{text(item.name)}</h3><p>{text(item.transformation_rule)}</p><TagList values={asStrings(item.evidence_refs)} /></article>)}</div></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>BOM 与加工拆解</h2></div><p>仅用于询价与首样沟通</p></header><div className="bom-table"><div className="bom-row bom-row--head"><span>编号</span><span>部件</span><span>材料</span><span>工艺</span><span>尺寸 / 验收</span></div>{bom.map((item, index) => <div className="bom-row" key={text(item.item_id, String(index))}><code>{text(item.item_id, String(index + 1))}</code><strong>{text(item.component)}</strong><span>{text(item.material)}</span><span>{text(item.process)}</span><small>{text(item.dimension)}<br />{text(item.quality_check)}</small></div>)}</div></section></>;
+  const previousAsset = Boolean(image && ['warning', 'error', 'stale', 'cached'].includes(detail.node.data.status));
+  return <><section className="concept-detail-hero"><div className="concept-detail-image">{image ? <img src={image} alt={`${detail.node.data.title} 文创成品概念`} /> : <div className="concept-placeholder">当前方向尚无生成图</div>}{previousAsset ? <small className="concept-asset-note">保留上次成功资产 · 本轮未生成</small> : null}<span>{detail.node.data.active ? '当前采用' : '候选方案'}</span></div><form className="detail-editor" onSubmit={(event) => { event.preventDefault(); onSave(); }}><header><h2>编辑概念方向</h2></header><label><span>概念标题</span><input value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} /></label><label><span>概念说明</span><textarea rows={4} value={draft.summary} onChange={(event) => setDraft({ ...draft, summary: event.target.value })} /></label><label><span>视觉方向</span><textarea rows={3} value={draft.direction} onChange={(event) => setDraft({ ...draft, direction: event.target.value })} /></label><label><span>图像生成提示词</span><textarea rows={9} value={draft.prompt} onChange={(event) => setDraft({ ...draft, prompt: event.target.value })} /></label><button className="detail-primary" disabled={busy} type="submit">保存概念编辑</button><div className="detail-action-grid"><button disabled={busy || Boolean(detail.node.data.active)} type="button" onClick={() => onAction('activate')}>设为当前方向</button><button disabled={busy} type="button" onClick={() => onAction('duplicate')}>复制方向</button><button disabled={busy} type="button" onClick={() => onAction('regenerate')}>单独重生成</button><button disabled={busy} type="button" onClick={() => onAction('generate-more')}>生成更多方向</button></div></form></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>文化元素与转译规则</h2></div></header><div className="culture-element-grid">{(detail.content.culturalElements ?? []).map((item, index) => <article key={text(item.element_id, String(index))}><code>{text(item.element_id, `E-${index + 1}`)}</code><h3>{text(item.name)}</h3><p>{text(item.transformation_rule)}</p><TagList values={asStrings(item.evidence_refs)} /></article>)}</div></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>BOM 与加工拆解</h2></div><p>仅用于询价与首样沟通</p></header><div className="bom-table"><div className="bom-row bom-row--head"><span>编号</span><span>部件</span><span>材料</span><span>工艺</span><span>尺寸 / 验收</span></div>{bom.map((item, index) => <div className="bom-row" key={text(item.item_id, String(index))}><code>{text(item.item_id, String(index + 1))}</code><strong>{text(item.component)}</strong><span>{text(item.material)}</span><span>{text(item.process)}</span><small>{text(item.dimension)}<br />{text(item.quality_check)}</small></div>)}</div></section></>;
 }
 
 function PosterDetail({ detail, draft, setDraft, onSave, busy }: { detail: NodeDetailPayload; draft: PosterConfig; setDraft: (value: PosterConfig) => void; onSave: () => void; busy: boolean }) {
@@ -374,22 +385,80 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
     setBusy(true);
     setNotice(null);
     try {
-      await operation();
+      const result = await operation();
       await load();
-      setNotice({ tone: 'success', text: success });
+      const returnedNode = result && typeof result === 'object' && 'nodes' in result
+        ? (result as { nodes?: WorkbenchNode[] }).nodes?.find((item) => item.id === nodeId)
+        : undefined;
+      const returnedStatus = returnedNode?.data.status;
+      const unresolved = returnedStatus
+        && ['warning', 'error', 'cached', 'stale'].includes(returnedStatus);
+      setNotice({
+        tone: unresolved ? 'neutral' : 'success',
+        text: unresolved
+          ? `操作已执行，但节点仍为“${STATUS_LABELS[returnedStatus]}”；请按提示补齐条件。`
+          : success,
+      });
     } catch (reason) {
       setNotice({ tone: 'error', text: reason instanceof Error ? reason.message : String(reason) });
     } finally { setBusy(false); }
-  }, [busy, load]);
+  }, [busy, load, nodeId]);
+
+  const executeResearch = useCallback(async () => {
+    const queued = await startResearchRun(workspaceId, true);
+    setNotice({ tone: 'neutral', text: '已启动真实知识检索、四平台采集和模型策划。' });
+    let job = queued;
+    for (let attempt = 0; attempt < 960; attempt += 1) {
+      await new Promise((resolve) => window.setTimeout(resolve, 1250));
+      job = await getResearchJob(queued.job_id);
+      if (!['queued', 'running'].includes(job.status)) break;
+    }
+    if (['queued', 'running'].includes(job.status)) {
+      throw new Error('实时研究超过 20 分钟仍未完成；服务端任务仍保留，可稍后返回工作台查看。');
+    }
+    if (job.status !== 'live_verified') {
+      const platforms = Object.entries(job.platform_modes ?? {})
+        .map(([platform, status]) => `${PLATFORM_LABELS[platform] ?? platform} ${status}`)
+        .join('、');
+      throw new Error(`${job.detail}${platforms ? `（${platforms}）` : ''}`);
+    }
+  }, [workspaceId]);
 
   if (!detail) return <main className="node-detail-loading"><div>Q</div><span>{error ? '载入失败' : '正在读取证据'}</span><h1>{error || '正在装载节点页面'}</h1>{error ? <button type="button" onClick={() => void load()}>重新连接</button> : null}</main>;
 
   const node = detail.node;
   const nodeLabel = NODE_TYPE_LABELS[node.type];
-  const runCurrent = () => act(() => runNode(workspaceId, node.id), '当前节点已独立运行完成。');
+  const runCurrent = () => act(
+    RESEARCH_NODE_TYPES.has(node.type)
+      ? executeResearch
+      : node.type === 'DesignBriefNode'
+        ? () => generateWorkbenchDesign(workspaceId)
+      : () => runNode(workspaceId, node.id),
+    RESEARCH_NODE_TYPES.has(node.type)
+      ? '实时研究已通过并回写当前工作区。'
+      : '当前节点已产生并保存新的可核验结果。',
+  );
   const runFromHere = () => act(async () => {
-    const bootstrap = await getBootstrap(workspaceId);
-    for (const id of orderedRunNodeIds(bootstrap.workspace.nodes, bootstrap.workspace.edges, node.id)) await runNode(workspaceId, id);
+    let bootstrap = await getBootstrap(workspaceId);
+    let ids = orderedRunNodeIds(bootstrap.workspace.nodes, bootstrap.workspace.edges, node.id);
+    const needsResearch = ids.some((id) => {
+      const item = bootstrap.workspace.nodes.find((candidate) => candidate.id === id);
+      return Boolean(item && RESEARCH_NODE_TYPES.has(item.type));
+    });
+    if (needsResearch) {
+      await executeResearch();
+      bootstrap = await getBootstrap(workspaceId);
+      ids = orderedRunNodeIds(bootstrap.workspace.nodes, bootstrap.workspace.edges, node.id)
+        .filter((id) => {
+          const item = bootstrap.workspace.nodes.find((candidate) => candidate.id === id);
+          return !item || !RESEARCH_NODE_TYPES.has(item.type);
+        });
+    }
+    for (const id of ids) {
+      const item = bootstrap.workspace.nodes.find((candidate) => candidate.id === id);
+      if (item?.type === 'DesignBriefNode') await generateWorkbenchDesign(workspaceId);
+      else await runNode(workspaceId, id);
+    }
   }, '已按依赖顺序运行当前节点与下游。');
   const saveBriefDraft = () => briefDraft ? act(() => saveDesignBrief(workspaceId, briefDraft), '设计任务书已保存为新版本。') : undefined;
   const saveCurrentNode = (data: JsonRecord, success: string) => act(async () => {
@@ -460,11 +529,11 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
         {node.type === 'DesignBriefNode' && briefDraft ? <BriefDetail draft={briefDraft} setDraft={setBriefDraft} onSave={saveBriefDraft} busy={busy} detail={detail} /> : null}
         {node.type === 'VisualGenerationNode' ? <VisualDetail detail={detail} onOpen={(id) => window.location.assign(`/nodes/${encodeURIComponent(id)}?workspace=${encodeURIComponent(workspaceId)}`)} /> : null}
         {node.type === 'ConceptNode' ? <ConceptDetail detail={detail} draft={conceptDraft} setDraft={setConceptDraft} onSave={() => saveCurrentNode({ ...conceptDraft }, '保存概念文本与生成参数；等待重生成')} onAction={conceptAction} busy={busy} /> : null}
-        {node.type === 'PosterBoardNode' && posterDraft ? <PosterDetail detail={detail} draft={posterDraft} setDraft={setPosterDraft} onSave={() => saveCurrentNode({ title: posterDraft.title, summary: posterDraft.subtitle, poster: posterDraft, status: 'success' }, '保存海报标题与板块配置')} busy={busy} /> : null}
+        {node.type === 'PosterBoardNode' && posterDraft ? <PosterDetail detail={detail} draft={posterDraft} setDraft={setPosterDraft} onSave={() => saveCurrentNode({ title: posterDraft.title, summary: posterDraft.subtitle, poster: posterDraft, status: 'stale' }, '保存海报标题与板块配置；等待重新渲染')} busy={busy} /> : null}
         <CitationLedger citations={detail.citations} audit={detail.citationAudit} />
       </div>
 
-      <footer className="detail-footer"><div><strong>QianCraft</strong><span>有据可查的文化文创设计</span></div><p>文化事实、市场记录、策略推导与设计假设分层展示；引用可回到原始来源。</p><button type="button" onClick={() => void act(() => getDesignPackage().then((payload) => saveJson(payload, 'QianCraft-DesignPackage.json')), 'DesignPackage 已导出。')}>下载 DesignPackage</button></footer>
+      <footer className="detail-footer"><div><strong>QianCraft</strong><span>有据可查的文化文创设计</span></div><p>文化事实、市场记录、策略推导与设计假设分层展示；引用可回到原始来源。</p><button type="button" onClick={() => void act(() => getDesignPackage(workspaceId).then((payload) => saveJson(payload, 'QianCraft-DesignPackage.json')), '当前工作区 DesignPackage 已导出。')}>下载 DesignPackage</button></footer>
       {notice ? <div className={`detail-notice detail-notice--${notice.tone}`}>{notice.text}</div> : null}
     </main>
   );

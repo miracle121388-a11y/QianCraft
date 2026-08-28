@@ -4,6 +4,8 @@ import argparse
 import asyncio
 import json
 import os
+import re
+import socket
 import threading
 from collections import Counter
 from dataclasses import replace
@@ -13,6 +15,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
+from uuid import uuid4
 
 from app.adapters.image_generation_adapter import image_provider_status
 from app.config import MARKET_PLATFORM_CODES, load_settings
@@ -21,6 +24,7 @@ from app.pipeline import run_pipeline
 from app.schemas import DemoRequest, DesignerHandoff, DesignPackage
 from app.workbench import (
     BUNDLED_GENERATED_DIR,
+    DESIGN_RUNS_DIR,
     GENERATED_DIR,
     create_workbench_workspace,
     duplicate_concept,
@@ -28,6 +32,7 @@ from app.workbench import (
     list_workbench_workspaces,
     load_workbench_workspace,
     node_detail,
+    promote_research_run,
     regenerate_concept,
     run_workbench_node,
     save_workbench_workspace,
@@ -35,6 +40,8 @@ from app.workbench import (
     update_decision_profile,
     update_design_brief,
     workbench_bootstrap,
+    workbench_design_package,
+    workspace_strategy_path,
 )
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -48,7 +55,7 @@ RUN_MANIFEST_PATH = ROOT_DIR / "data" / "outputs" / "run_manifest.json"
 WORKSPACE_DIR = Path(
     os.environ.get(
         "QIANCRAFT_TOOL_WORKSPACE_DIR",
-        str(ROOT_DIR / "data" / "tool_workspace"),
+        str(ROOT_DIR / "data" / "runtime" / "tool_workspace"),
     )
 ).expanduser().resolve()
 WORKSPACE_PATH = WORKSPACE_DIR / "workspace.json"
@@ -57,6 +64,8 @@ RESEARCH_RUNS_DIR = WORKSPACE_DIR / "research_runs"
 
 DESIGN_LOCK = threading.Lock()
 RESEARCH_LOCK = threading.Lock()
+RESEARCH_JOB_STATE_LOCK = threading.Lock()
+ACTIVE_RESEARCH_JOB_ID = ""
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -92,13 +101,26 @@ def _historical_market_snapshot() -> tuple[Path | None, dict[str, Any], dict[str
             candidates.append((generated_at, path, payload, dict(counts)))
     if not candidates:
         return None, {}, {}
-    _, path, payload, counts = max(candidates, key=lambda item: item[0])
+    _, path, payload, counts = max(
+        candidates,
+        key=lambda item: (sum(item[3].values()), item[0]),
+    )
     return path, payload, counts
 
 
-def _strict_preflight() -> dict[str, Any]:
+def _port_open(host: str, port: int) -> bool:
+    try:
+        with socket.create_connection((host, port), timeout=0.35):
+            return True
+    except OSError:
+        return False
+
+
+def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
     settings = load_settings()
     image_status = image_provider_status(settings)
+    crawler_entry = settings.mediacrawler_path / "main.py"
+    explicit_crawl = allow_interactive and os.name == "nt"
     checks = [
         {
             "id": "llm",
@@ -109,9 +131,11 @@ def _strict_preflight() -> dict[str, Any]:
         {
             "id": "crawler_switch",
             "label": "实时市场采集开关",
-            "ok": settings.mediacrawler_live_enabled,
+            "ok": settings.mediacrawler_live_enabled or explicit_crawl,
             "detail": (
-                "已启用"
+                "网页本轮显式授权启动"
+                if explicit_crawl and not settings.mediacrawler_live_enabled
+                else "已启用"
                 if settings.mediacrawler_live_enabled
                 else "MEDIACRAWLER_LIVE_ENABLED=false"
             ),
@@ -119,18 +143,22 @@ def _strict_preflight() -> dict[str, Any]:
         {
             "id": "crawler_runtime",
             "label": "市场采集运行时",
-            "ok": settings.mediacrawler_python.exists(),
+            "ok": settings.mediacrawler_python.exists() and crawler_entry.exists(),
             "detail": (
                 "可用"
-                if settings.mediacrawler_python.exists()
-                else "MediaCrawler 独立 Python 环境不存在"
+                if settings.mediacrawler_python.exists() and crawler_entry.exists()
+                else "MediaCrawler 源码或独立 Python 环境不存在"
             ),
         },
         {
             "id": "lightrag",
             "label": "文化检索运行时",
-            "ok": settings.lightrag_path.exists(),
-            "detail": "源码可用" if settings.lightrag_path.exists() else "LightRAG 路径不存在",
+            "ok": (settings.lightrag_path / "lightrag").is_dir(),
+            "detail": (
+                "源码可用"
+                if (settings.lightrag_path / "lightrag").is_dir()
+                else "LightRAG 运行模块不存在"
+            ),
         },
         {
             "id": "image_provider",
@@ -139,10 +167,45 @@ def _strict_preflight() -> dict[str, Any]:
             "detail": image_status["detail"],
         },
     ]
-    blockers = [item["detail"] for item in checks[:4] if not item["ok"]]
+    method = settings.mediacrawler_login_method
+    cdp_ready = _port_open("127.0.0.1", settings.mediacrawler_cdp_port)
+    platform_checks: list[dict[str, Any]] = []
+    for platform in MARKET_PLATFORM_CODES:
+        cookie_ready = bool(settings.mediacrawler_cookies.get(platform, ""))
+        if method == "cookie":
+            ok = cookie_ready
+            detail = "Cookie 已配置" if ok else "缺少该平台 Cookie"
+        elif method == "cdp":
+            ok = cdp_ready or explicit_crawl
+            detail = (
+                "已连接授权浏览器"
+                if cdp_ready
+                else "将启动本机已保存的授权浏览器资料"
+                if explicit_crawl
+                else "没有已连接的授权浏览器"
+            )
+        else:
+            ok = explicit_crawl
+            detail = "将打开本人二维码授权" if ok else "二维码授权未显式开启"
+        platform_checks.append(
+            {
+                "id": f"auth_{platform}",
+                "label": f"{platform.upper()} 授权入口",
+                "ok": ok,
+                "detail": detail,
+            }
+        )
+    checks.extend(platform_checks)
+    blockers = [
+        f"{item['label']}：{item['detail']}"
+        for item in checks
+        if item["id"] != "image_provider" and not item["ok"]
+    ]
     return {
         "research_ready": not blockers,
         "image_generation_ready": image_status["configured"],
+        "interactive_launch": explicit_crawl,
+        "login_method": method,
         "checks": checks,
         "blockers": blockers,
     }
@@ -480,8 +543,12 @@ def _priority_payload(
     return payload
 
 
-def _build_handoff_draft(workspace: dict[str, Any], path: Path) -> tuple[str | None, Path]:
-    strategy = _load_json(STRATEGY_PATH)
+def _build_handoff_draft(
+    workspace: dict[str, Any],
+    path: Path,
+    strategy_path: Path = STRATEGY_PATH,
+) -> tuple[str | None, Path]:
+    strategy = _load_json(strategy_path)
     items = {
         item["opportunity_id"]: item for item in strategy.get("opportunity_signals", [])
     }
@@ -615,6 +682,200 @@ def generate_design() -> dict[str, Any]:
         DESIGN_LOCK.release()
 
 
+def _workbench_design_selection(workspace: dict[str, Any]) -> dict[str, Any]:
+    metadata = workspace.get("metadata", {})
+    profile = metadata.get("decision_profile", {})
+    selected = [str(item) for item in profile.get("opportunityIds", [])][:3]
+    if not selected:
+        raise ValueError("请先在人工决策中选择 1 到 3 条机会。")
+    manual_rows = metadata.get("decision_output", {}).get("manualRanking", [])
+    ranked_selected = [
+        str(item.get("id", ""))
+        for item in manual_rows
+        if item.get("selected") and item.get("id") in selected
+    ]
+    primary = ranked_selected[0] if ranked_selected else selected[0]
+    brief_node = next(
+        (node for node in workspace["nodes"] if node["type"] == "DesignBriefNode"),
+        None,
+    )
+    poster_node = next(
+        (node for node in workspace["nodes"] if node["type"] == "PosterBoardNode"),
+        None,
+    )
+    brief = brief_node.get("data", {}).get("brief", {}) if brief_node else {}
+    poster = poster_node.get("data", {}).get("poster", {}) if poster_node else {}
+    intent = profile.get("designIntent", {})
+    manual_brief = " ".join(
+        str(value).strip()
+        for value in (
+            brief.get("objective", ""),
+            f"目标人群：{brief.get('audience', '')}" if brief.get("audience") else "",
+            f"产品形态：{brief.get('productType', '')}" if brief.get("productType") else "",
+            f"使用场景：{'、'.join(brief.get('scenarios', []))}"
+            if brief.get("scenarios")
+            else "",
+        )
+        if str(value).strip()
+    )
+    return {
+        "selection_mode": "manual",
+        "selected_opportunity_ids": selected,
+        "primary_opportunity_id": primary,
+        "opportunity_edits": {},
+        "manual_brief": manual_brief,
+        "design_overrides": {
+            "product_name": str(brief.get("title", "")).strip(),
+            "product_type": str(brief.get("productType", "")).strip(),
+            "target_audience": str(brief.get("audience", "")).strip(),
+            "use_scenarios": brief.get("scenarios", []),
+            "visual_style": brief.get("style", []),
+            "color_direction": profile.get("visualDirection", {}).get(
+                "styleKeywords", []
+            ),
+            "poster_title": str(poster.get("title", "")).strip(),
+            "poster_subtitle": str(poster.get("subtitle", "")).strip(),
+            "interaction": intent.get("useScenarios", []),
+        },
+    }
+
+
+def _workbench_concept_hero(workspace: dict[str, Any]) -> Path | None:
+    active = next(
+        (
+            node
+            for node in workspace["nodes"]
+            if node["type"] == "ConceptNode" and node["data"].get("active")
+        ),
+        None,
+    )
+    image_url = str(active.get("data", {}).get("imageUrl", "")) if active else ""
+    prefix = f"/assets/workbench/{workspace['workspace_id']}/"
+    if not image_url.startswith(prefix):
+        return None
+    filename = image_url.removeprefix(prefix)
+    if not filename or Path(filename).name != filename:
+        return None
+    candidates = (
+        GENERATED_DIR / workspace["workspace_id"] / filename,
+        BUNDLED_GENERATED_DIR / workspace["workspace_id"] / filename,
+    )
+    return next((path for path in candidates if path.is_file()), None)
+
+
+def generate_workbench_design(workspace_id: str) -> dict[str, Any]:
+    if not DESIGN_LOCK.acquire(blocking=False):
+        raise RuntimeError("已有设计生成任务在运行")
+    try:
+        workspace = load_workbench_workspace(workspace_id)
+        selection = _workbench_design_selection(workspace)
+        started = datetime.now(UTC)
+        run_id = f"{started.strftime('%Y%m%dT%H%M%SZ')}-{uuid4().hex[:8]}"
+        run_dir = DESIGN_RUNS_DIR / workspace_id / run_id
+        handoff_path = run_dir / "designer_handoff_draft.json"
+        primary_id, _ = _build_handoff_draft(
+            selection,
+            handoff_path,
+            workspace_strategy_path(workspace),
+        )
+        package, design_status = DesignAgent(load_settings()).create_from_file(
+            handoff_path,
+            primary_opportunity_id=primary_id,
+        )
+        package = _apply_design_overrides(
+            package,
+            selection.get("design_overrides", {}),
+        )
+        specification_path = run_dir / "design_specification.json"
+        markdown_path = run_dir / "design_specification.md"
+        poster_request_path = run_dir / "poster_render_request.json"
+        poster_path = run_dir / "design_poster.png"
+        render_manifest_path = run_dir / "design_render_manifest.json"
+        _atomic_json(specification_path, package.model_dump(mode="json"))
+        markdown_path.write_text(
+            render_design_package_markdown(package), encoding="utf-8", newline="\n"
+        )
+        _atomic_json(poster_request_path, package.poster_request.model_dump(mode="json"))
+        render_manifest, render_status = render_design_poster(
+            package,
+            poster_path,
+            _workbench_concept_hero(workspace),
+            generated_now=True,
+        )
+        _atomic_json(render_manifest_path, render_manifest.model_dump(mode="json"))
+        finished = datetime.now(UTC)
+        result = {
+            "run_id": run_id,
+            "workspace_id": workspace_id,
+            "status": "design_generated",
+            "started_at": started.isoformat(),
+            "finished_at": finished.isoformat(),
+            "primary_opportunity_id": package.selection.primary_opportunity_id,
+            "selected_opportunity_ids": package.input_contract.selected_opportunity_ids,
+            "source_handoff_sha256": package.input_contract.source_sha256,
+            "design_id": package.design_id,
+            "design_engine": design_status.engine,
+            "render_engine": render_status.engine,
+            "image_generation_used": False,
+            "reference_only_images_used": False,
+            "paths": {
+                "handoff": handoff_path.name,
+                "specification": specification_path.name,
+                "poster": poster_path.name,
+                "render_manifest": render_manifest_path.name,
+            },
+        }
+        _atomic_json(run_dir / "tool_run.json", result)
+
+        workspace["metadata"].update(
+            {
+                "design_run_id": run_id,
+                "design_generated_at": finished.isoformat(),
+                "design_primary_opportunity_id": package.selection.primary_opportunity_id,
+            }
+        )
+        for node in workspace["nodes"]:
+            if node["type"] == "DesignBriefNode":
+                node["data"]["status"] = "success"
+                node["data"].setdefault("history", []).insert(
+                    0,
+                    {
+                        "at": finished.isoformat(),
+                        "event": f"Design Agent 真实生成 {run_id}",
+                    },
+                )
+            elif node["type"] == "VisualGenerationNode":
+                node["data"]["status"] = "stale"
+            elif node["type"] == "ConceptNode":
+                node["data"]["status"] = "stale"
+            elif node["type"] == "PosterBoardNode":
+                node["data"].update(
+                    {
+                        "status": "success",
+                        "version": int(node["data"].get("version", 0)) + 1,
+                        "imageUrl": (
+                            f"/assets/workbench-design/{workspace_id}/{run_id}/"
+                            "design_poster.png"
+                        ),
+                        "generation": {
+                            "engine": render_status.engine,
+                            "mode": render_status.mode,
+                            "runId": run_id,
+                        },
+                    }
+                )
+                node["data"].setdefault("history", []).insert(
+                    0,
+                    {
+                        "at": finished.isoformat(),
+                        "event": f"从当前人工决策生成海报 {run_id}",
+                    },
+                )
+        return save_workbench_workspace(workspace_id, workspace)
+    finally:
+        DESIGN_LOCK.release()
+
+
 def design_state() -> dict[str, Any]:
     official = _load_json(DESIGN_PATH)
     workspace = load_workspace()
@@ -648,23 +909,41 @@ def design_state() -> dict[str, Any]:
     }
 
 
-def run_strict_research() -> dict[str, Any]:
+def run_strict_research(
+    workspace_id: str = "guizhou-miao-demo",
+    *,
+    allow_interactive: bool = False,
+) -> dict[str, Any]:
     if not RESEARCH_LOCK.acquire(blocking=False):
         raise RuntimeError("已有实时研究任务在运行")
     try:
-        preflight = _strict_preflight()
+        preflight = _strict_preflight(allow_interactive=allow_interactive)
         if not preflight["research_ready"]:
             raise ValueError("严格实时研究未就绪：" + "；".join(preflight["blockers"]))
         started = datetime.now(UTC)
         run_id = f"{started.strftime('%Y%m%dT%H%M%SZ')}-research"
         run_dir = RESEARCH_RUNS_DIR / run_id
+        base_settings = load_settings().with_mode("live")
         settings = replace(
-            load_settings().with_mode("live"),
+            base_settings,
             outputs_dir=run_dir / "outputs",
             demo_cache_dir=run_dir / "no_fallback_cache",
+            market_raw_dir=run_dir / "market" / "raw",
+            market_derived_dir=run_dir / "market" / "derived",
+            mediacrawler_live_enabled=(
+                True if allow_interactive else base_settings.mediacrawler_live_enabled
+            ),
+            mediacrawler_interactive_login=(
+                True if allow_interactive else base_settings.mediacrawler_interactive_login
+            ),
+            mediacrawler_cdp_connect_existing=(
+                False if allow_interactive else base_settings.mediacrawler_cdp_connect_existing
+            ),
         )
         request = DemoRequest()
-        _, manifest = asyncio.run(run_pipeline(request, settings))
+        _, manifest = asyncio.run(
+            run_pipeline(request, settings, include_design=False)
+        )
         required = {"culture_knowledge", "market_research", "strategist"}
         component_modes = {
             item.component: item.mode for item in manifest.components if item.component in required
@@ -677,6 +956,7 @@ def run_strict_research() -> dict[str, Any]:
         ):
             failure = {
                 "run_id": run_id,
+                "workspace_id": workspace_id,
                 "status": "failed_no_fallback",
                 "component_modes": component_modes,
                 "platform_modes": platform_modes,
@@ -684,17 +964,174 @@ def run_strict_research() -> dict[str, Any]:
             }
             _atomic_json(run_dir / "strict_result.json", failure)
             return failure
+        promoted = promote_research_run(
+            workspace_id,
+            run_dir,
+            manifest.model_dump(mode="json"),
+        )
         success = {
             "run_id": run_id,
+            "source_run_id": manifest.run_id,
+            "workspace_id": workspace_id,
             "status": "live_verified",
             "component_modes": component_modes,
             "platform_modes": platform_modes,
-            "manifest": manifest.model_dump(mode="json"),
+            "output_count": len(manifest.outputs),
+            "workspace_updated_at": promoted["updated_at"],
+            "detail": "文化、四平台、策划均为本轮 live；结果已回写到当前工作区。",
         }
         _atomic_json(run_dir / "strict_result.json", success)
         return success
     finally:
         RESEARCH_LOCK.release()
+
+
+def _research_job_path(job_id: str) -> Path:
+    if not re.fullmatch(r"[A-Za-z0-9-]{1,96}", job_id):
+        raise ValueError("研究任务编号无效。")
+    return RESEARCH_RUNS_DIR / job_id / "job.json"
+
+
+def _save_research_job(job: dict[str, Any]) -> dict[str, Any]:
+    _atomic_json(_research_job_path(str(job["job_id"])), job)
+    return job
+
+
+def _load_research_job(job_id: str) -> dict[str, Any]:
+    path = _research_job_path(job_id)
+    if not path.is_file():
+        raise FileNotFoundError(f"研究任务不存在：{job_id}")
+    return _load_json(path)
+
+
+def _latest_research_job(workspace_id: str) -> dict[str, Any] | None:
+    jobs: list[dict[str, Any]] = []
+    if not RESEARCH_RUNS_DIR.exists():
+        return None
+    for path in RESEARCH_RUNS_DIR.glob("*/job.json"):
+        try:
+            job = _load_json(path)
+        except (OSError, ValueError):
+            continue
+        if job.get("workspace_id") == workspace_id:
+            jobs.append(job)
+    return max(jobs, key=lambda item: str(item.get("created_at", "")), default=None)
+
+
+def research_runtime_status(
+    workspace_id: str,
+    *,
+    allow_interactive: bool = False,
+) -> dict[str, Any]:
+    with RESEARCH_JOB_STATE_LOCK:
+        active_job_id = ACTIVE_RESEARCH_JOB_ID
+    active = None
+    if active_job_id:
+        try:
+            active = _load_research_job(active_job_id)
+        except FileNotFoundError:
+            active = None
+    last = _latest_research_job(workspace_id)
+    if active is None and last and last.get("status") in {"queued", "running"}:
+        last.update(
+            {
+                "status": "error",
+                "stage": "interrupted",
+                "finished_at": datetime.now(UTC).isoformat(),
+                "detail": "API 进程在任务完成前重启；该轮没有晋级，也没有回写旧结果。",
+            }
+        )
+        _save_research_job(last)
+    return {
+        "preflight": _strict_preflight(allow_interactive=allow_interactive),
+        "activeJob": active,
+        "lastJob": last,
+    }
+
+
+def _research_job_worker(
+    job_id: str,
+    workspace_id: str,
+    allow_interactive: bool,
+) -> None:
+    global ACTIVE_RESEARCH_JOB_ID
+    job = _load_research_job(job_id)
+    job.update(
+        {
+            "status": "running",
+            "stage": "culture_market_strategy",
+            "started_at": datetime.now(UTC).isoformat(),
+            "detail": "正在执行知识检索、四平台采集和模型策划。",
+        }
+    )
+    _save_research_job(job)
+    try:
+        result = run_strict_research(
+            workspace_id,
+            allow_interactive=allow_interactive,
+        )
+        job.update(
+            {
+                **result,
+                "job_id": job_id,
+                "status": result["status"],
+                "stage": "complete",
+                "finished_at": datetime.now(UTC).isoformat(),
+            }
+        )
+    except Exception as exc:  # noqa: BLE001 - persisted as an explicit failed job
+        public_error = re.sub(r"sk-[A-Za-z0-9_-]+", "<redacted>", str(exc))[:1600]
+        job.update(
+            {
+                "status": "error",
+                "stage": "failed",
+                "finished_at": datetime.now(UTC).isoformat(),
+                "detail": public_error,
+            }
+        )
+    finally:
+        _save_research_job(job)
+        with RESEARCH_JOB_STATE_LOCK:
+            if ACTIVE_RESEARCH_JOB_ID == job_id:
+                ACTIVE_RESEARCH_JOB_ID = ""
+
+
+def start_research_job(candidate: dict[str, Any]) -> dict[str, Any]:
+    global ACTIVE_RESEARCH_JOB_ID
+    workspace_id = str(candidate.get("workspace_id", "guizhou-miao-demo"))
+    load_workbench_workspace(workspace_id)
+    allow_interactive = bool(candidate.get("allow_interactive", False))
+    preflight = _strict_preflight(allow_interactive=allow_interactive)
+    if not preflight["research_ready"]:
+        raise ValueError("严格实时研究未就绪：" + "；".join(preflight["blockers"]))
+    with RESEARCH_JOB_STATE_LOCK:
+        if ACTIVE_RESEARCH_JOB_ID:
+            raise RuntimeError(f"已有实时研究任务在运行：{ACTIVE_RESEARCH_JOB_ID}")
+        now = datetime.now(UTC)
+        job_id = f"{now.strftime('%Y%m%dT%H%M%SZ')}-{uuid4().hex[:8]}"
+        ACTIVE_RESEARCH_JOB_ID = job_id
+    job = {
+        "job_id": job_id,
+        "workspace_id": workspace_id,
+        "status": "queued",
+        "stage": "queued",
+        "created_at": now.isoformat(),
+        "started_at": "",
+        "finished_at": "",
+        "allow_interactive": allow_interactive,
+        "detail": "任务已进入真实运行队列。",
+        "component_modes": {},
+        "platform_modes": {},
+    }
+    _save_research_job(job)
+    worker = threading.Thread(
+        target=_research_job_worker,
+        args=(job_id, workspace_id, allow_interactive),
+        daemon=True,
+        name=f"qiancraft-research-{job_id}",
+    )
+    worker.start()
+    return job
 
 
 class ToolRequestHandler(BaseHTTPRequestHandler):
@@ -754,11 +1191,33 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                 self._send_json(load_workspace())
             elif parsed.path == "/api/design":
                 self._send_json(design_state())
+            elif parsed.path == "/api/research/status":
+                params = parse_qs(parsed.query)
+                workspace_id = params.get("workspace_id", ["guizhou-miao-demo"])[0]
+                allow_interactive = params.get("allow_interactive", ["false"])[0].lower() in {
+                    "1",
+                    "true",
+                    "yes",
+                }
+                self._send_json(
+                    research_runtime_status(
+                        workspace_id,
+                        allow_interactive=allow_interactive,
+                    )
+                )
+            elif parsed.path.startswith("/api/research/jobs/"):
+                job_id = parsed.path.removeprefix("/api/research/jobs/")
+                self._send_json(_load_research_job(job_id))
             elif parsed.path == "/api/workbench/bootstrap":
                 workspace_id = parse_qs(parsed.query).get(
                     "workspace_id", ["guizhou-miao-demo"]
                 )[0]
-                self._send_json(workbench_bootstrap(workspace_id))
+                payload = workbench_bootstrap(workspace_id)
+                payload["researchRuntime"] = research_runtime_status(
+                    workspace_id,
+                    allow_interactive=True,
+                )
+                self._send_json(payload)
             elif parsed.path == "/api/workbench/workspaces":
                 self._send_json({"workspaces": list_workbench_workspaces()})
             elif parsed.path == "/api/workbench/image-provider":
@@ -767,6 +1226,8 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                 parts = [part for part in parsed.path.split("/") if part]
                 if len(parts) == 4:
                     self._send_json(load_workbench_workspace(parts[3]))
+                elif len(parts) == 5 and parts[4] == "design-package":
+                    self._send_json(workbench_design_package(parts[3]))
                 elif (
                     len(parts) == 7
                     and parts[4] == "nodes"
@@ -810,7 +1271,7 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
             if parsed.path == "/api/design/generate":
                 self._send_json(generate_design(), HTTPStatus.CREATED)
             elif parsed.path == "/api/research/run":
-                self._send_json(run_strict_research(), HTTPStatus.CREATED)
+                self._send_json(start_research_job(self._read_json()), HTTPStatus.ACCEPTED)
             elif parsed.path == "/api/workbench/workspaces":
                 self._send_json(
                     create_workbench_workspace(self._read_json()), HTTPStatus.CREATED
@@ -826,6 +1287,8 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                     )
                 elif len(parts) == 5 and parts[4] == "brief":
                     self._send_json(update_design_brief(parts[3], body.get("brief", {})))
+                elif len(parts) == 6 and parts[4:] == ["design", "run"]:
+                    self._send_json(generate_workbench_design(parts[3]), HTTPStatus.CREATED)
                 elif len(parts) == 5 and parts[4] == "active-concept":
                     self._send_json(
                         set_active_concept(parts[3], str(body.get("concept_id", "")))
@@ -905,6 +1368,16 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                     (candidate for candidate in candidates if candidate.is_file()),
                     None,
                 )
+        elif len(parts) == 5 and parts[:2] == ["assets", "workbench-design"]:
+            workspace_id, run_id, filename = parts[2], parts[3], parts[4]
+            safe_workspace = workspace_id.replace("-", "").isalnum()
+            safe_run = run_id.replace("-", "").isalnum()
+            if (
+                safe_workspace
+                and safe_run
+                and filename in {"design_poster.png"}
+            ):
+                path = DESIGN_RUNS_DIR / workspace_id / run_id / filename
         if path is None or not path.is_file():
             self._send_json({"error": "asset not found"}, HTTPStatus.NOT_FOUND)
             return

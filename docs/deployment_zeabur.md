@@ -33,20 +33,20 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 ## 数据边界
 
-`/app/data/runtime/workbench` 保存画布、任务书、概念版本和海报编辑状态；`/app/data/runtime/tool_workspace` 保存旧版工具工作区与设计运行产物。文化图谱、市场证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线。
+`/app/data/runtime/workbench` 保存画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs 与旧版工具设计运行。文化图谱、市场证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；页面刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted。
 
-当前线上容器面向产品工作台和设计验证。四平台实时采集仍受平台登录态、授权用途和独立浏览器运行时约束，不在无交互服务器中冒充可用；线上保留已经核验并标明时间边界的 378 条历史市场快照。
+当前线上容器面向产品工作台和设计验证。四平台实时采集仍受平台登录态、授权用途、MediaCrawler 源码与独立浏览器运行时约束；精简云端镜像不包含这些上游运行时，因此严格研究会在预检阶段明确阻断，不会用 378 条历史快照冒充本轮 live。完整实爬应在用户已授权浏览器的本机运行，再由核验门晋级到对应工作区。
 
 ## 本地构建
 
 ```bash
-docker build -t qiancraft:0.7.3 .
+docker build -t qiancraft:0.8.0 .
 docker run --rm -p 8080:8080 \
   -e QIANCRAFT_WEB_USERNAME=qiancraft \
   -e QIANCRAFT_WEB_PASSWORD='<set-in-secret-manager>' \
   -e LLM_API_KEY='<set-in-secret-manager>' \
   -v qiancraft-runtime:/app/data/runtime \
-  qiancraft:0.7.3
+  qiancraft:0.8.0
 ```
 
 生产密钥只应通过 Zeabur 的变量管理界面注入，不写入 Dockerfile、仓库或部署日志。

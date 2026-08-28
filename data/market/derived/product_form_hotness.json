@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28T06:02:06.585088+00:00",
+  "generated_at": "2026-08-28T19:50:56.592285+00:00",
   "platforms": [
     "xhs",
     "dy",
@@ -23,7 +23,7 @@
         "xhs": 52.7,
         "dy": 5.4,
         "bili": 43.2,
-        "wb": 40.9
+        "wb": 41.0
       },
       "platform_post_counts": {
         "xhs": 42,
@@ -33,7 +33,7 @@
       },
       "sample_size": 89,
       "high_hot_post_ratio": 0.146,
-      "freshness_score": 66.9,
+      "freshness_score": 66.8,
       "why_hot": [
         "覆盖 4/4 个平台",
         "小红书平台内平均热度 52.7",
@@ -139,11 +139,11 @@
           ],
           "source_ref": "MPL-WB-BEF9FDE469E113008D8D",
           "retrieved_at": "2026-08-27T22:20:55.518427+00:00",
-          "platform_hot_score": 88.8,
-          "real_engagement_score": 88.8,
+          "platform_hot_score": 89.1,
+          "real_engagement_score": 89.1,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 86.9,
-          "viral_score": 86.9,
+          "derived_viral_score": 87.0,
+          "viral_score": 87.0,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -260,7 +260,7 @@
         "xhs": 30.8,
         "dy": 21.4,
         "bili": 31.3,
-        "wb": 36.1
+        "wb": 36.0
       },
       "platform_post_counts": {
         "xhs": 8,
@@ -270,10 +270,10 @@
       },
       "sample_size": 33,
       "high_hot_post_ratio": 0.091,
-      "freshness_score": 61.8,
+      "freshness_score": 61.7,
       "why_hot": [
         "覆盖 4/4 个平台",
-        "微博平台内平均热度 36.1",
+        "微博平台内平均热度 36.0",
         "高热帖子占比 9%",
         "共识别 33 条相关真实记录",
         "近期内容占比较高"
@@ -642,7 +642,7 @@
       },
       "sample_size": 28,
       "high_hot_post_ratio": 0.107,
-      "freshness_score": 63.6,
+      "freshness_score": 63.5,
       "why_hot": [
         "覆盖 3/4 个平台",
         "小红书平台内平均热度 40.0",
@@ -757,8 +757,8 @@
           "platform_hot_score": 82.4,
           "real_engagement_score": 82.4,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 76.8,
-          "viral_score": 76.8,
+          "derived_viral_score": 76.7,
+          "viral_score": 76.7,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -820,11 +820,11 @@
     {
       "rank": 5,
       "product_form": "伴手礼",
-      "cross_platform_hot_score": 47.1,
+      "cross_platform_hot_score": 47.0,
       "platform_coverage": 2,
       "platform_scores": {
         "xhs": 62.0,
-        "wb": 25.8
+        "wb": 25.6
       },
       "platform_post_counts": {
         "xhs": 3,
@@ -832,7 +832,7 @@
       },
       "sample_size": 6,
       "high_hot_post_ratio": 0.0,
-      "freshness_score": 57.2,
+      "freshness_score": 57.0,
       "why_hot": [
         "覆盖 2/4 个平台",
         "小红书平台内平均热度 62.0",
@@ -953,11 +953,11 @@
           ],
           "source_ref": "MPL-WB-08D51A1EF9DFB7D0FBB9",
           "retrieved_at": "2026-08-27T22:20:55.516269+00:00",
-          "platform_hot_score": 28.6,
-          "real_engagement_score": 28.6,
+          "platform_hot_score": 28.4,
+          "real_engagement_score": 28.4,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 53.3,
-          "viral_score": 53.3,
+          "derived_viral_score": 53.2,
+          "viral_score": 53.2,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -970,11 +970,11 @@
     {
       "rank": 6,
       "product_form": "潮玩",
-      "cross_platform_hot_score": 46.2,
+      "cross_platform_hot_score": 46.3,
       "platform_coverage": 2,
       "platform_scores": {
         "xhs": 59.0,
-        "wb": 18.2
+        "wb": 18.5
       },
       "platform_post_counts": {
         "xhs": 4,
@@ -982,7 +982,7 @@
       },
       "sample_size": 7,
       "high_hot_post_ratio": 0.143,
-      "freshness_score": 67.0,
+      "freshness_score": 66.9,
       "why_hot": [
         "覆盖 2/4 个平台",
         "小红书平台内平均热度 59.0",
@@ -1124,12 +1124,12 @@
     {
       "rank": 7,
       "product_form": "香氛",
-      "cross_platform_hot_score": 43.8,
+      "cross_platform_hot_score": 44.0,
       "platform_coverage": 3,
       "platform_scores": {
         "xhs": 52.0,
         "bili": 54.9,
-        "wb": 7.6
+        "wb": 9.0
       },
       "platform_post_counts": {
         "xhs": 3,
@@ -1317,11 +1317,11 @@
           ],
           "source_ref": "MPL-WB-5987BB5450FA39F4DCDF",
           "retrieved_at": "2026-08-27T22:20:55.523119+00:00",
-          "platform_hot_score": 7.6,
-          "real_engagement_score": 7.6,
+          "platform_hot_score": 9.0,
+          "real_engagement_score": 9.0,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 43.8,
-          "viral_score": 43.8,
+          "derived_viral_score": 44.4,
+          "viral_score": 44.4,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -1339,7 +1339,7 @@
       "platform_scores": {
         "xhs": 49.3,
         "bili": 26.8,
-        "wb": 22.9
+        "wb": 22.6
       },
       "platform_post_counts": {
         "xhs": 3,
@@ -1348,7 +1348,7 @@
       },
       "sample_size": 5,
       "high_hot_post_ratio": 0.2,
-      "freshness_score": 70.5,
+      "freshness_score": 70.3,
       "why_hot": [
         "覆盖 3/4 个平台",
         "小红书平台内平均热度 49.3",
@@ -1506,11 +1506,11 @@
           ],
           "source_ref": "MPL-WB-B79DAA30C867A796380A",
           "retrieved_at": "2026-08-27T22:20:55.518253+00:00",
-          "platform_hot_score": 22.9,
-          "real_engagement_score": 22.9,
+          "platform_hot_score": 22.6,
+          "real_engagement_score": 22.6,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 55.6,
-          "viral_score": 55.6,
+          "derived_viral_score": 55.4,
+          "viral_score": 55.4,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -1526,7 +1526,7 @@
       "cross_platform_hot_score": 38.9,
       "platform_coverage": 2,
       "platform_scores": {
-        "xhs": 68.5,
+        "xhs": 68.4,
         "wb": 7.0
       },
       "platform_post_counts": {
@@ -1535,10 +1535,10 @@
       },
       "sample_size": 4,
       "high_hot_post_ratio": 0.5,
-      "freshness_score": 53.9,
+      "freshness_score": 53.7,
       "why_hot": [
         "覆盖 2/4 个平台",
-        "小红书平台内平均热度 68.5",
+        "小红书平台内平均热度 68.4",
         "高热帖子占比 50%",
         "共识别 4 条相关真实记录",
         "近期内容占比较高"
@@ -1658,8 +1658,8 @@
           "platform_hot_score": 7.0,
           "real_engagement_score": 7.0,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 43.5,
-          "viral_score": 43.5,
+          "derived_viral_score": 43.4,
+          "viral_score": 43.4,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -1672,11 +1672,11 @@
     {
       "rank": 10,
       "product_form": "毛绒",
-      "cross_platform_hot_score": 36.6,
+      "cross_platform_hot_score": 37.0,
       "platform_coverage": 2,
       "platform_scores": {
         "xhs": 35.6,
-        "wb": 12.5
+        "wb": 13.8
       },
       "platform_post_counts": {
         "xhs": 8,
@@ -1748,8 +1748,8 @@
           ],
           "source_ref": "MPL-XHS-0A643FC34F73416F8C15",
           "retrieved_at": "2026-08-27T22:09:59.570985+00:00",
-          "platform_hot_score": 81.9,
-          "real_engagement_score": 81.9,
+          "platform_hot_score": 82.0,
+          "real_engagement_score": 82.0,
           "institutional_signal_score": 0.0,
           "derived_viral_score": 67.7,
           "viral_score": 67.7,
@@ -1804,11 +1804,11 @@
           ],
           "source_ref": "MPL-WB-1617EB0D2FAC88CDD970",
           "retrieved_at": "2026-08-27T22:20:55.517119+00:00",
-          "platform_hot_score": 12.5,
-          "real_engagement_score": 12.5,
+          "platform_hot_score": 13.8,
+          "real_engagement_score": 13.8,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 46.9,
-          "viral_score": 46.9,
+          "derived_viral_score": 47.5,
+          "viral_score": 47.5,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",

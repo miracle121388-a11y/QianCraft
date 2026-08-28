@@ -10,4 +10,8 @@ __pycache__/
 .zeabur-stage-*/
 data/culture/lightrag_storage/
 data/market/raw/
+data/runtime/
+data/tool_workspace/functional_audit/
+data/tool_workspace/market_probes/
+data/tool_workspace/research_runs/
 *.log

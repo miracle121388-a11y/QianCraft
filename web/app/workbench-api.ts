@@ -2,12 +2,14 @@ import type {
   DesignBrief,
   DecisionProfile,
   NodeDetailPayload,
+  ResearchJob,
+  ResearchRuntime,
   WorkbenchBootstrap,
   WorkbenchWorkspace,
 } from './workbench-model';
 
 export const API_BASE = (
-  process.env.NEXT_PUBLIC_QIANCRAFT_API_URL ?? 'http://127.0.0.1:8787'
+  process.env.NEXT_PUBLIC_QIANCRAFT_API_URL ?? ''
 ).replace(/\/$/, '');
 
 export class WorkbenchApiError extends Error {
@@ -44,6 +46,34 @@ export function getBootstrap(workspaceId?: string): Promise<WorkbenchBootstrap> 
   return request<WorkbenchBootstrap>(`/api/workbench/bootstrap${query}`);
 }
 
+export function getResearchRuntime(
+  workspaceId: string,
+  allowInteractive = true,
+): Promise<ResearchRuntime> {
+  const query = new URLSearchParams({
+    workspace_id: workspaceId,
+    allow_interactive: String(allowInteractive),
+  });
+  return request<ResearchRuntime>(`/api/research/status?${query}`);
+}
+
+export function startResearchRun(
+  workspaceId: string,
+  allowInteractive = true,
+): Promise<ResearchJob> {
+  return request<ResearchJob>('/api/research/run', {
+    method: 'POST',
+    body: JSON.stringify({
+      workspace_id: workspaceId,
+      allow_interactive: allowInteractive,
+    }),
+  });
+}
+
+export function getResearchJob(jobId: string): Promise<ResearchJob> {
+  return request<ResearchJob>(`/api/research/jobs/${encodeURIComponent(jobId)}`);
+}
+
 export function getNodeDetail(
   workspaceId: string,
   nodeId: string,
@@ -76,6 +106,15 @@ export function saveDesignBrief(
   return request<WorkbenchWorkspace>(
     `/api/workbench/workspaces/${encodeURIComponent(workspaceId)}/brief`,
     { method: 'POST', body: JSON.stringify({ brief }) },
+  );
+}
+
+export function generateWorkbenchDesign(
+  workspaceId: string,
+): Promise<WorkbenchWorkspace> {
+  return request<WorkbenchWorkspace>(
+    `/api/workbench/workspaces/${encodeURIComponent(workspaceId)}/design/run`,
+    { method: 'POST', body: '{}' },
   );
 }
 
@@ -139,6 +178,10 @@ export function generateMoreConcept(
   );
 }
 
-export async function getDesignPackage(): Promise<Record<string, unknown>> {
-  return request<Record<string, unknown>>('/api/design');
+export async function getDesignPackage(
+  workspaceId: string,
+): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>(
+    `/api/workbench/workspaces/${encodeURIComponent(workspaceId)}/design-package`,
+  );
 }

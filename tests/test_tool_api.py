@@ -1,10 +1,21 @@
 from __future__ import annotations
 
+import json
+
 import pytest
 
+from app import tool_api, workbench
 from app.config import MARKET_PLATFORM_CODES, load_settings
 from app.designer import DesignAgent
-from app.tool_api import HANDOFF_PATH, ROOT_DIR, audit_summary, opportunities
+from app.tool_api import (
+    HANDOFF_PATH,
+    ROOT_DIR,
+    _historical_market_snapshot,
+    _strict_preflight,
+    audit_summary,
+    opportunities,
+    start_research_job,
+)
 
 
 def test_truth_audit_uses_real_repository_files() -> None:
@@ -13,13 +24,9 @@ def test_truth_audit_uses_real_repository_files() -> None:
     assert summary["truth_audit"]["culture"]["actual"] == 22
     assert summary["truth_audit"]["market"]["actual"] == 378
     raw_dir = ROOT_DIR / "data" / "market" / "raw"
-    raw_file_count = sum(
-        (raw_dir / f"{code}.jsonl").is_file() for code in MARKET_PLATFORM_CODES
-    )
+    raw_file_count = sum((raw_dir / f"{code}.jsonl").is_file() for code in MARKET_PLATFORM_CODES)
     assert summary["truth_audit"]["market"]["raw_file_count"] == raw_file_count
-    assert summary["truth_audit"]["market"]["raw_files_present"] is (
-        raw_file_count > 0
-    )
+    assert summary["truth_audit"]["market"]["raw_files_present"] is (raw_file_count > 0)
     assert summary["truth_audit"]["market"]["raw_files_complete"] is (
         raw_file_count == len(MARKET_PLATFORM_CODES)
     )
@@ -32,6 +39,25 @@ def test_truth_audit_uses_real_repository_files() -> None:
             "不能标成模型从网上新生成的机会。"
         ),
     }
+
+
+def test_historical_audit_prefers_complete_snapshot_over_newer_smoke_probe() -> None:
+    _, _, counts = _historical_market_snapshot()
+
+    assert sum(counts.values()) == 378
+    assert counts == {"xhs": 115, "dy": 14, "bili": 101, "wb": 148}
+
+
+def test_strict_research_requires_explicit_runtime_authorization() -> None:
+    passive = _strict_preflight(allow_interactive=False)
+    explicit = _strict_preflight(allow_interactive=True)
+
+    assert passive["research_ready"] is False
+    assert any("实时市场采集开关" in item for item in passive["blockers"])
+    assert explicit["interactive_launch"] is True
+    assert next(item for item in explicit["checks"] if item["id"] == "crawler_switch")["ok"] is True
+    with pytest.raises(ValueError, match="严格实时研究未就绪"):
+        start_research_job({"workspace_id": "guizhou-miao-demo", "allow_interactive": False})
 
 
 def test_all_stored_opportunity_scores_are_reproducible() -> None:
@@ -50,3 +76,45 @@ def test_manual_primary_selection_is_real_and_unknown_generator_fails() -> None:
 
     with pytest.raises(ValueError, match="不会套用通用兜底模板"):
         agent.create_from_file(HANDOFF_PATH, primary_opportunity_id="OPP-004")
+
+
+def test_auto_design_selects_an_executable_verified_opportunity(tmp_path) -> None:
+    payload = json.loads(HANDOFF_PATH.read_text(encoding="utf-8"))
+    unsupported = next(
+        item for item in payload["priority_opportunities"] if item["opportunity_id"] == "OPP-004"
+    )
+    unsupported["overall_score"] = 100
+    handoff = tmp_path / "designer_handoff.json"
+    handoff.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    package, _ = DesignAgent(load_settings()).create_from_file(handoff)
+
+    assert package.selection.primary_opportunity_id != "OPP-004"
+    assert package.selection.primary_opportunity_id in {"OPP-002", "OPP-006"}
+
+
+def test_workbench_design_run_consumes_current_decisions_and_writes_artifacts(
+    tmp_path,
+    monkeypatch,
+) -> None:
+    workspaces = tmp_path / "workspaces"
+    generated = tmp_path / "generated"
+    design_runs = tmp_path / "design-runs"
+    monkeypatch.setattr(workbench, "WORKSPACES_DIR", workspaces)
+    monkeypatch.setattr(workbench, "GENERATED_DIR", generated)
+    monkeypatch.setattr(workbench, "DESIGN_RUNS_DIR", design_runs)
+    monkeypatch.setattr(tool_api, "GENERATED_DIR", generated)
+    monkeypatch.setattr(tool_api, "DESIGN_RUNS_DIR", design_runs)
+    payload = workbench.ensure_default_workspace()
+
+    updated = tool_api.generate_workbench_design(payload["workspace_id"])
+    run_id = updated["metadata"]["design_run_id"]
+    run_dir = design_runs / payload["workspace_id"] / run_id
+    poster = next(node for node in updated["nodes"] if node["id"] == "poster")
+
+    assert updated["metadata"]["design_primary_opportunity_id"] == "OPP-006"
+    assert (run_dir / "designer_handoff_draft.json").is_file()
+    assert (run_dir / "design_specification.json").is_file()
+    assert (run_dir / "design_poster.png").is_file()
+    assert poster["data"]["status"] == "success"
+    assert run_id in poster["data"]["imageUrl"]

@@ -29,6 +29,8 @@ async def run_pipeline(
     request: DemoRequest,
     settings: Settings,
     design_hero_path: Path | None = None,
+    *,
+    include_design: bool = True,
 ) -> tuple[PreDesignStrategy, RunManifest]:
     started_at = datetime.now(UTC)
     run_id = f"{started_at.strftime('%Y%m%dT%H%M%SZ')}-{uuid4().hex[:8]}"
@@ -63,9 +65,7 @@ async def run_pipeline(
     _atomic_write(json_path, json.dumps(strategy_payload, ensure_ascii=False, indent=2) + "\n")
     _atomic_write(
         markdown_path,
-        render_strategy_markdown(
-            strategy, [culture_status, market_status, strategist_status]
-        ),
+        render_strategy_markdown(strategy, [culture_status, market_status, strategist_status]),
     )
     _atomic_write(
         visual_json_path,
@@ -85,35 +85,62 @@ async def run_pipeline(
         handoff_markdown_path,
         render_designer_handoff_markdown(strategy.handoff_to_designer),
     )
-    design_package, design_status = DesignAgent(settings).create_from_file(handoff_json_path)
-    _atomic_write(
-        design_json_path,
-        json.dumps(design_package.model_dump(mode="json"), ensure_ascii=False, indent=2) + "\n",
-    )
-    _atomic_write(design_markdown_path, render_design_package_markdown(design_package))
-    _atomic_write(
-        poster_request_path,
-        json.dumps(
-            design_package.poster_request.model_dump(mode="json"),
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n",
-    )
-    render_manifest, poster_status = render_design_poster(
-        design_package,
-        design_poster_path,
-        design_hero_path,
-    )
-    _atomic_write(
-        design_render_manifest_path,
-        json.dumps(render_manifest.model_dump(mode="json"), ensure_ascii=False, indent=2)
-        + "\n",
-    )
     _atomic_write(
         settings.demo_cache_dir / "pre_design_strategy.json",
         json.dumps(strategy_payload, ensure_ascii=False, indent=2) + "\n",
     )
+
+    components = [culture_status, market_status, strategist_status]
+    outputs = {
+        "strategy_json": str(json_path.resolve()),
+        "strategy_markdown": str(markdown_path.resolve()),
+        "visual_reference_json": str(visual_json_path.resolve()),
+        "visual_reference_markdown": str(visual_markdown_path.resolve()),
+        "designer_handoff_json": str(handoff_json_path.resolve()),
+        "designer_handoff_markdown": str(handoff_markdown_path.resolve()),
+        "product_form_hotness": trend_dna.retrieval["product_form_hotness_path"],
+        "manifest": str(manifest_path.resolve()),
+    }
+    if include_design:
+        design_package, design_status = DesignAgent(settings).create_from_file(handoff_json_path)
+        _atomic_write(
+            design_json_path,
+            json.dumps(design_package.model_dump(mode="json"), ensure_ascii=False, indent=2) + "\n",
+        )
+        _atomic_write(design_markdown_path, render_design_package_markdown(design_package))
+        _atomic_write(
+            poster_request_path,
+            json.dumps(
+                design_package.poster_request.model_dump(mode="json"),
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+        )
+        render_manifest, poster_status = render_design_poster(
+            design_package,
+            design_poster_path,
+            design_hero_path,
+        )
+        _atomic_write(
+            design_render_manifest_path,
+            json.dumps(
+                render_manifest.model_dump(mode="json"),
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+        )
+        components.extend([design_status, poster_status])
+        outputs.update(
+            {
+                "design_specification_json": str(design_json_path.resolve()),
+                "design_specification_markdown": str(design_markdown_path.resolve()),
+                "poster_render_request": str(poster_request_path.resolve()),
+                "design_poster": str(design_poster_path.resolve()),
+                "design_render_manifest": str(design_render_manifest_path.resolve()),
+            }
+        )
 
     finished_at = datetime.now(UTC)
     manifest = RunManifest(
@@ -121,37 +148,13 @@ async def run_pipeline(
         started_at=started_at,
         finished_at=finished_at,
         request=request,
-        components=[
-            culture_status,
-            market_status,
-            strategist_status,
-            design_status,
-            poster_status,
-        ],
-        market_source=MarketSourceStatus.model_validate(
-            trend_dna.retrieval["market_source"]
-        ),
+        components=components,
+        market_source=MarketSourceStatus.model_validate(trend_dna.retrieval["market_source"]),
         market_platforms={
             platform: MarketPlatformStatus.model_validate(source)
             for platform, source in trend_dna.retrieval["market_platforms"].items()
         },
-        outputs={
-            "strategy_json": str(json_path.resolve()),
-            "strategy_markdown": str(markdown_path.resolve()),
-            "visual_reference_json": str(visual_json_path.resolve()),
-            "visual_reference_markdown": str(visual_markdown_path.resolve()),
-            "designer_handoff_json": str(handoff_json_path.resolve()),
-            "designer_handoff_markdown": str(handoff_markdown_path.resolve()),
-            "product_form_hotness": trend_dna.retrieval[
-                "product_form_hotness_path"
-            ],
-            "design_specification_json": str(design_json_path.resolve()),
-            "design_specification_markdown": str(design_markdown_path.resolve()),
-            "poster_render_request": str(poster_request_path.resolve()),
-            "design_poster": str(design_poster_path.resolve()),
-            "design_render_manifest": str(design_render_manifest_path.resolve()),
-            "manifest": str(manifest_path.resolve()),
-        },
+        outputs=outputs,
         source_snapshot_date=_source_snapshot_date(strategy),
     )
     _atomic_write(
@@ -202,9 +205,7 @@ def render_strategy_markdown(strategy: PreDesignStrategy, statuses: list[Any]) -
         "",
     ]
     for status in statuses:
-        lines.append(
-            f"- {status.component}：`{status.mode}`｜{status.engine}｜{status.detail}"
-        )
+        lines.append(f"- {status.component}：`{status.mode}`｜{status.engine}｜{status.detail}")
     lines.extend(
         [
             "",
@@ -254,10 +255,7 @@ def render_strategy_markdown(strategy: PreDesignStrategy, statuses: list[Any]) -
                     or "尚无真实四平台样本，未生成排名"
                 )
             ),
-            (
-                "- Top 5 优先形态："
-                + ("、".join(trend.priority_product_forms) or "尚未生成")
-            ),
+            ("- Top 5 优先形态：" + ("、".join(trend.priority_product_forms) or "尚未生成")),
             f"- 上升方向：{'；'.join(trend.rising_categories)}",
             f"- 情绪价值：{'、'.join(trend.emotional_values)}",
             f"- 白空间：{'；'.join(trend.white_space_opportunities)}",
@@ -460,9 +458,7 @@ def render_designer_handoff_markdown(handoff: DesignerHandoff) -> str:
     lines.extend(["", "## Soft Direction", ""])
     lines.extend(f"- {item}" for item in handoff.soft_direction)
     lines.extend(["", "## Output Requirements", ""])
-    lines.extend(
-        f"- {item}" for item in handoff.output_requirements.get("deliverables", [])
-    )
+    lines.extend(f"- {item}" for item in handoff.output_requirements.get("deliverables", []))
     lines.extend(["", "### 禁止", ""])
     lines.extend(f"- {item}" for item in handoff.output_requirements.get("prohibited", []))
     lines.extend(["", "## Evidence Refs", ""])
