@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-08-28",
+  "cases": [
+    {
+      "brand_or_institution": "中国国家博物馆｜凤冠冰箱贴",
+      "culture_source": "明孝端皇后九龙九凤冠",
+      "product_category": "重工收藏冰箱贴及长尾IP系列",
+      "design_idea": "保留凤冠的高辨识器形与华丽层次，把不可拥有的国宝转成可触摸、可陈列的小尺度收藏物。",
+      "visual_style": "金红蓝、珍珠流苏、精工华丽",
+      "innovation_point": "金属与木质双版本；由单品带出毛绒、服饰、音乐盒等二十余款长尾。",
+      "market_signal": "截至2025-03-25累计销量破100万件，系列销售额破亿元。",
+      "why_it_worked": ["原型具有强文化认知", "小体积高细节适合分享", "可收藏和可负担", "爆款后延展长尾"],
+      "transferable_lessons": ["先找到一个高识别且证据充分的母题", "产品需兼顾触感、层次与社交展示", "建立同一文化母题的价格梯度"],
+      "cautions": ["贵州苗绣不是宫廷文物，不能照搬皇家华丽叙事", "支系图案需社区确认"],
+      "source_refs": ["M005"]
+    },
+    {
+      "brand_or_institution": "河南博物院｜珐琅镶玉葫芦冰箱贴",
+      "culture_source": "清代珐琅镶玉葫芦",
+      "product_category": "立体金属冰箱贴",
+      "design_idea": "提取核心器形和吉祥语义，不照搬全部文物细节，再以浮雕烤漆适配日常。",
+      "visual_style": "多彩珐琅感、金属浮雕、现代简化",
+      "innovation_point": "文化意蕴、工艺表现和低门槛日用品三者平衡。",
+      "market_signal": "2025年夏单日销量破千。",
+      "why_it_worked": ["葫芦语义易懂", "工艺与原物视觉呼应", "实用且适合旅行购买"],
+      "transferable_lessons": ["苗绣应提取文化意义和构图规律，而非直接截图印花", "用材料表达原工艺的触觉特征"],
+      "cautions": ["避免把所有苗绣符号简化成泛吉祥纹"],
+      "source_refs": ["M006"]
+    },
+    {
+      "brand_or_institution": "贵州省博物馆｜贵地宝藏互动文创",
+      "culture_source": "贵州多件代表文物与苗族银花冠",
+      "product_category": "旋转/抽拉冰箱贴、毛绒挂饰",
+      "design_idea": "把一枚冰箱贴做成可滑动、可旋转的小型展览，并用毛绒把书卷与凤鸟转成随身触感。",
+      "visual_style": "翠绿墨绿、红金、Q版与传统纹样并置",
+      "innovation_point": "互动机构、在地多文物组合、毛绒触觉和佩戴场景。",
+      "market_signal": "2026年贵州本地馆方新品，代表当前在地开发方向；页面未披露销量。",
+      "why_it_worked": ["贵州二字建立地域识别", "互动提升停留与分享", "毛绒让严肃藏品进入日常"],
+      "transferable_lessons": ["苗绣可用可替换绣片与互动结构呈现支系差异", "一件产品只讲清一条文化关系"],
+      "cautions": ["Q版不能牺牲祭祀或身份性符号的尊重"],
+      "source_refs": ["M001"]
+    },
+    {
+      "brand_or_institution": "CASETiFY × 龙禄颖｜蝶绣生花",
+      "culture_source": "贵州苗绣、苗族古歌、蝴蝶妈妈、苗龙与鹡宇鸟",
+      "product_category": "手机壳、手机挂饰、旅行配件",
+      "design_idea": "由传承人参与，从故事与纹样中提取生命祝福和自然智慧，进入高频科技生活用品。",
+      "visual_style": "高饱和传统纹样、潮流布局、个性表达",
+      "innovation_point": "非遗传承人共创；从数码配件拓展到旅行场景；刺绣挂饰保留手工触感。",
+      "market_signal": "2026-07品牌官方发布的最新苗绣跨界案例；销量未披露。",
+      "why_it_worked": ["高频使用场景", "年轻品牌已有受众", "明确联名与传承人", "故事、纹样和产品语义一致"],
+      "transferable_lessons": ["优先进入用户每天携带的物件", "建立传承人共同署名和收益机制", "用实物绣片避免全部降格为平面印花"],
+      "cautions": ["不应重复同一手机壳路径", "需核验具体图样授权范围"],
+      "source_refs": ["M003", "C009"]
+    },
+    {
+      "brand_or_institution": "UNESCO × 松桃｜Creative Guizhou – Songtao Gift",
+      "culture_source": "松桃苗绣与在地生活遗产",
+      "product_category": "旅游纪念品、包装、民宿体验",
+      "design_idea": "把产品设计、包装和在地住宿作为同一文化生计系统，而非只开发单件纪念品。",
+      "visual_style": "在地纹样、生活化、场景化",
+      "innovation_point": "社区、政府、院校与国际组织协作；以文化认知、实用性和场地适用性评审。",
+      "market_signal": "184件投稿、38件入选，形成可复制的在地转译方法。",
+      "why_it_worked": ["社区和保护机构参与", "产品与目的地体验联动", "评审同时考虑文化与市场"],
+      "transferable_lessons": ["先建立社区共创流程", "把溯源和体验纳入产品服务", "评估场地与供应链可行性"],
+      "cautions": ["不能把竞赛入选等同于市场销量", "需继续追踪社区收益和长期影响"],
+      "source_refs": ["C008", "C009"]
+    },
+    {
+      "brand_or_institution": "丹寨石桥｜古纸+新业态",
+      "culture_source": "皮纸制作技艺",
+      "product_category": "专业修复纸、灯饰、书签、纸伞、手提袋、体验",
+      "design_idea": "同时保留高门槛专业用途与亲民生活用途，以纸的纤维、透光和可触感建立差异。",
+      "visual_style": "本白、花草纤维、自然暖光",
+      "innovation_point": "专业文保产品与文旅体验双轨，形成材料而非单一符号驱动的产品族。",
+      "market_signal": "已有多品类落地并进入专业文博机构；公开报道未披露统一销量。",
+      "why_it_worked": ["材料真实性强", "专业用途建立信任", "低门槛品类扩大触达", "可现场体验"],
+      "transferable_lessons": ["苗绣可与皮纸形成轻量、可触、可修复的跨工艺试验", "保留高端手作和普及版两条线并透明标注"],
+      "cautions": ["跨工艺必须由双方传承人与材料专家共同验证"],
+      "source_refs": ["M012", "C021"]
+    },
+    {
+      "brand_or_institution": "贵州四绣六场景布局",
+      "culture_source": "苗绣、马尾绣、侗绣、布依绣",
+      "product_category": "景区/展馆/城市商业/线上/跨界生活/快闪的组合产品",
+      "design_idea": "从单件纪念品升级为有故事的伴手礼与可体验、可数字互动的场景网络。",
+      "visual_style": "贵州在地、多工艺但保持来源区分",
+      "innovation_point": "六类渠道协同，覆盖展示、体验、销售和传播。",
+      "market_signal": "2025年底贵州政策推动，2026年企业实践已启动；不是单品销量结论。",
+      "why_it_worked": ["触点多", "兼顾游客与城市日常", "体验可带动理解和购买"],
+      "transferable_lessons": ["Designer Handoff应同时给出产品与场景", "每个工艺保持独立标签和来源"],
+      "cautions": ["不要把四绣混成一种‘贵州纹样’", "政策方向不等于具体产品已获市场验证"],
+      "source_refs": ["M002", "C009"]
+    },
+    {
+      "brand_or_institution": "双馆限定联动收藏",
+      "culture_source": "两地同源主题藏品",
+      "product_category": "成对限定收藏品",
+      "design_idea": "把两件产品设计成互为线索的组合，推动用户跨地点理解、打卡和集齐。",
+      "visual_style": "成对、限定、互补叙事",
+      "innovation_point": "用产品关系连接两个空间，而不是单靠稀缺炒作。",
+      "market_signal": "2026年政府媒体报道社交平台发酵并带动跨区打卡。",
+      "why_it_worked": ["集齐目标清晰", "自带社交话题", "把流量导回展厅"],
+      "transferable_lessons": ["可把花溪、剑河、松桃、雷山做成可学习的支系系列，但不能混淆纹样", "每件附一条可验证来源"],
+      "cautions": ["限定机制不能制造过度浪费或投机", "支系系列需各社区参与"],
+      "source_refs": ["M007"]
+    }
+  ]
+}
+

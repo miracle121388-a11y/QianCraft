@@ -1,0 +1,491 @@
+{
+  "project": "QianCraft",
+  "topic": "贵州苗绣",
+  "references": [
+    {
+      "visual_id": "V001",
+      "title": "贵阳花溪蝴蝶纹彩挑背扇花块",
+      "subject_type": "地域工艺与蝴蝶纹",
+      "region": "贵州省贵阳市花溪区",
+      "craft": "十字挑花、数纱",
+      "cultural_context": "花溪苗族挑花依织物经纬数纱，以十字挑花形成对称、概括的纹样；该件为贵州省博物馆藏花溪背扇花块。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620164402598.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "馆藏图像版权及商品化权利未在页面中明确开放，仅作研究参考；复制、训练或商业使用需另行取得馆方及相关社区授权。",
+      "design_relevance": [
+        "数纱网格",
+        "对称组织",
+        "花溪地域辨识"
+      ],
+      "not_to_copy": [
+        "不得直接描摹完整馆藏纹样",
+        "不得脱离花溪来源标注为通用苗绣"
+      ]
+    },
+    {
+      "visual_id": "V002",
+      "title": "剑河锡绣田园如画女单衣",
+      "subject_type": "地域工艺、服装与金属质感",
+      "region": "贵州省剑河县柳川一带",
+      "craft": "数纱挑花、锡箔卷片缝合、彩线点缀",
+      "cultural_context": "锡卷片按经纬排列固定在深色织物上，以折光形成排列、节奏和材质美，是剑河锡绣的核心识别点。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620164311223.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "仅作馆藏研究参考；锡绣材料、纹样与服装结构的衍生使用需与剑河保护单位和传承主体确认。",
+      "design_relevance": [
+        "藏青与锡银材质对比",
+        "迷宫式排列",
+        "金属与织物结合"
+      ],
+      "not_to_copy": [
+        "不得用银色塑料冒充锡绣",
+        "不得复制整件服装或完整核心纹样"
+      ]
+    },
+    {
+      "visual_id": "V003",
+      "title": "松桃苗族拼连空花刺绣云肩",
+      "subject_type": "地域工艺与服饰部件",
+      "region": "贵州省铜仁市松桃苗族自治县",
+      "craft": "拼连空花刺绣、多针法组合",
+      "cultural_context": "贵州省博物馆馆藏云肩以多种绣法和层叠色彩构成，页面明确标注为松桃苗族作品。",
+      "source_ref": "C032",
+      "source_url": "https://www.gzmuseum.com/zlhg/202204/301.html",
+      "image_url": "https://www.gzmuseum.com/public/uploads/images/20220425/1650855833427308.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "展览图片仅供视觉研究；完整云肩形制和馆藏作品不得直接商品化复制。",
+      "design_relevance": [
+        "松桃针法层次",
+        "放射式服饰边界",
+        "强对比彩线"
+      ],
+      "not_to_copy": [
+        "不得复刻完整云肩",
+        "不得虚构传承人联名或授权"
+      ]
+    },
+    {
+      "visual_id": "V004",
+      "title": "雷山县西江苗族女盛装",
+      "subject_type": "地域服装与银饰整体关系",
+      "region": "贵州省雷山县西江",
+      "craft": "服装刺绣、百褶裙、银片与大型银角组合",
+      "cultural_context": "馆藏说明将该盛装明确归于雷山西江，强调无领大襟交领、刺绣部位、百褶长裙、飘带裙及银饰整体结构。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620162418175.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "盛装具有明确地域、节庆和身份语境，只作比例、层次和材料关系研究；不得直接简化成通用民族风服装。",
+      "design_relevance": [
+        "刺绣与银饰层级",
+        "服装轮廓",
+        "雷山支系辨识"
+      ],
+      "not_to_copy": [
+        "不得拆取大型银角或整套盛装作为随意装饰",
+        "不得抹去西江地域标注"
+      ]
+    },
+    {
+      "visual_id": "V005",
+      "title": "台江苗族破线绣‘蝴蝶妈妈’袖片",
+      "subject_type": "祖源母题与破线绣纹理",
+      "region": "贵州省台江县及黔东南相关苗族社区",
+      "craft": "破线绣",
+      "cultural_context": "馆藏说明把蝴蝶妈妈、枫树与鹡宇鸟置于祖源叙事中，属于高敏感文化母题，并非普通蝶形装饰。",
+      "source_ref": "C030",
+      "source_url": "https://www.gzmuseum.com/cixiu/202111/193.html",
+      "image_url": "https://www.gzmuseum.com/public/uploads/images/2021/11/20211130144607130.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "馆藏图像和祖源母题只用于语义与构图研究；任何产品化转译必须由对应社区复核。",
+      "design_relevance": [
+        "红线与靛青底对比",
+        "祖源叙事层次",
+        "破线绣细密表面"
+      ],
+      "not_to_copy": [
+        "不得把蝴蝶妈妈降格为无出处萌化图标",
+        "不得复制完整袖片"
+      ]
+    },
+    {
+      "visual_id": "V006",
+      "title": "台江苗族破线绣‘鹡宇孵蛋’袖片",
+      "subject_type": "鸟纹、祖源叙事与针法纹理",
+      "region": "贵州省台江县及黔东南相关苗族社区",
+      "craft": "破线绣",
+      "cultural_context": "鹡宇鸟在相关古歌叙事中承担孵化祖先的角色；图像应与蝴蝶妈妈等叙事关系一并理解。",
+      "source_ref": "C031",
+      "source_url": "https://www.gzmuseum.com/cixiu/202111/197.html",
+      "image_url": "https://www.gzmuseum.com/public/uploads/images/2021/11/20211130145056122.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "仅作馆藏与文化语义研究；祖源鸟纹的商业化使用需要社区复核与明确授权。",
+      "design_relevance": [
+        "鸟与卵的叙事关系",
+        "密集针脚",
+        "主体与边饰层次"
+      ],
+      "not_to_copy": [
+        "不得将鹡宇鸟笼统称为凤凰",
+        "不得拆散祖源关系后宣称固定吉祥寓意"
+      ]
+    },
+    {
+      "visual_id": "V007",
+      "title": "台江施洞‘保公屠龙’刺绣图案袖片",
+      "subject_type": "龙纹与叙事构图",
+      "region": "贵州省台江县施洞",
+      "craft": "叙事刺绣",
+      "cultural_context": "馆藏说明将图像与清水江、保公屠龙和龙船节传说相连，是具体地域故事的图说，而非抽象龙纹。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620163241450.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "具体叙事与馆藏纹样不得直接复制；现代转译需保持台江施洞和龙船节语境并另行审核。",
+      "design_relevance": [
+        "连续叙事",
+        "变形龙纹",
+        "人物与动物关系"
+      ],
+      "not_to_copy": [
+        "不得当作泛化东方龙纹",
+        "不得脱离故事复制完整画面"
+      ]
+    },
+    {
+      "visual_id": "V008",
+      "title": "台江双象鱼蝶纹彩绣袖片",
+      "subject_type": "动物复合纹与彩绣构图",
+      "region": "贵州省台江县",
+      "craft": "彩绣",
+      "cultural_context": "馆藏说明强调动物形态经变形夸张、重在生命灵动，构图具有主次与复合关系。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620163241591.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "仅用于理解复合母题与构图原则；不可描摹馆藏完整图样。",
+      "design_relevance": [
+        "复合动物",
+        "主次构图",
+        "夸张变形"
+      ],
+      "not_to_copy": [
+        "不得为所有动物强加同一寓意",
+        "不得直接矢量化完整馆藏纹样"
+      ]
+    },
+    {
+      "visual_id": "V009",
+      "title": "贵州苗族刺绣针法与表面层次示例",
+      "subject_type": "针脚、绣线与织物肌理",
+      "region": "贵州省苗族地区（页面为综合馆藏说明）",
+      "craft": "平绣、辫绣、绉绣、锁绣、破线绣、缠线绣、打籽绣",
+      "cultural_context": "馆方把不同针法的平整、光亮、厚重、堆扭和轮廓特征并列说明；这是一组材料与劳动形成的真实表面，不等于滤镜效果。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620164311207.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "只用于针法和表面层次研究；具体作品、针法名称和手工属性必须逐项核对。",
+      "design_relevance": [
+        "线材厚薄",
+        "针脚方向",
+        "浮起与平整对比"
+      ],
+      "not_to_copy": [
+        "不得用印刷纹理冒充真实绣线",
+        "不得把不同针法混称为同一种工艺"
+      ]
+    },
+    {
+      "visual_id": "V010",
+      "title": "施秉平挑火镰飞鸟纹袖片",
+      "subject_type": "鸟纹与平挑几何组织",
+      "region": "贵州省施秉县苗族地区",
+      "craft": "平挑、数纱",
+      "cultural_context": "馆藏说明记录火镰花与飞鸟在黑色底布上的工整对称组织，颜色由丝线组合形成。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620164310051.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "只用于观察平挑构成；使用飞鸟与火镰组合前需核实施秉地方含义并取得许可。",
+      "design_relevance": [
+        "横竖排线",
+        "对称边饰",
+        "暗底彩线"
+      ],
+      "not_to_copy": [
+        "不得与台江鹡宇鸟母题混标",
+        "不得复制完整袖片边饰"
+      ]
+    },
+    {
+      "visual_id": "V011",
+      "title": "三都高尧苗族鼓藏服（百鸟衣）",
+      "subject_type": "鸟纹、仪式服装与禁用边界",
+      "region": "贵州省三都自治县高尧及都柳江、月亮山相关地区",
+      "craft": "织锦与刺绣服饰组合",
+      "cultural_context": "馆藏说明明确该服饰用于鼓藏节祭祖，含鸟、涡、日月、菱形纹和羽毛，平常秘藏不穿，是高风险的仪式性参照。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620163241403.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "仅作为文化边界反例与仪式语境研究，不进入普通商品造型库。",
+      "design_relevance": [
+        "识别仪式专用边界",
+        "服饰纹样的语境不可拆分"
+      ],
+      "not_to_copy": [
+        "禁止将鼓藏服直接转成日常商品",
+        "禁止拆取羽毛、祭祖纹样作娱乐化装饰"
+      ]
+    },
+    {
+      "visual_id": "V012",
+      "title": "雷山苗族盛装细部与银饰层叠参照",
+      "subject_type": "银饰、刺绣与服装局部关系",
+      "region": "贵州省雷山县西江",
+      "craft": "刺绣服装与苗族银饰组合",
+      "cultural_context": "同一馆藏展览中的雷山盛装细部，供观察银片、刺绣区和衣身之间的层级关系；银饰与服装不能被当成无地域的闪亮装饰。",
+      "source_ref": "C029",
+      "source_url": "https://www.chinasilkmuseum.com/yz/info_18.aspx?itemid=26654",
+      "image_url": "https://www.chinasilkmuseum.com/uploadfiles/2018/06/20180620162418300.jpg",
+      "local_path": "",
+      "rights_status": "reference_only",
+      "rights_note": "仅供材料关系与层级研究；馆藏图像、银饰造型和整套搭配均需另行授权。",
+      "design_relevance": [
+        "银片反光",
+        "刺绣区域分布",
+        "软硬材料层叠"
+      ],
+      "not_to_copy": [
+        "不得用廉价亮片冒充苗族银饰",
+        "不得复刻完整盛装搭配"
+      ]
+    }
+  ],
+  "pattern_primitives": [
+    {
+      "primitive_id": "P001",
+      "name": "数纱十字网格",
+      "derived_from": [
+        "V001",
+        "V010"
+      ],
+      "geometry": [
+        "经纬网格",
+        "十字针单元",
+        "镜像与平移重复"
+      ],
+      "transformation_guidance": [
+        "可研究模块化、像素化和可替换拼接",
+        "保持针脚方向与计数逻辑可见"
+      ],
+      "cultural_boundary": [
+        "只能作为结构原则，不复制完整馆藏纹样",
+        "花溪与施秉平挑必须分开标注"
+      ],
+      "evidence_refs": [
+        "C001",
+        "C029"
+      ]
+    },
+    {
+      "primitive_id": "P002",
+      "name": "锡片迷宫节奏",
+      "derived_from": [
+        "V002"
+      ],
+      "geometry": [
+        "折线回旋",
+        "等距短片排列",
+        "深底上的间歇反光"
+      ],
+      "transformation_guidance": [
+        "可探索可维修金属模块和光线变化",
+        "材料真实性优先于表面印花"
+      ],
+      "cultural_boundary": [
+        "不得以银色塑料冒充锡绣",
+        "核心纹样释义须由剑河社区核验"
+      ],
+      "evidence_refs": [
+        "C002",
+        "C029"
+      ]
+    },
+    {
+      "primitive_id": "P003",
+      "name": "动植物复合主次构图",
+      "derived_from": [
+        "V005",
+        "V006",
+        "V008"
+      ],
+      "geometry": [
+        "中心母题",
+        "伴生动物",
+        "密集边饰",
+        "夸张变形"
+      ],
+      "transformation_guidance": [
+        "可抽取主次关系和层级，不抽取完整轮廓",
+        "用故事卡保持叙事关系可追溯"
+      ],
+      "cultural_boundary": [
+        "祖源母题不得萌化去语境",
+        "不同地区的鸟、蝶、龙不能互换释义"
+      ],
+      "evidence_refs": [
+        "C004",
+        "C029",
+        "C030",
+        "C031"
+      ]
+    },
+    {
+      "primitive_id": "P004",
+      "name": "叙事流线与场景分段",
+      "derived_from": [
+        "V007"
+      ],
+      "geometry": [
+        "人物与动物对向关系",
+        "连续场景",
+        "局部夸张"
+      ],
+      "transformation_guidance": [
+        "可研究翻页、旋转或抽拉带来的叙事节奏",
+        "保留故事发生地和角色来源"
+      ],
+      "cultural_boundary": [
+        "不得将‘保公屠龙’降为通用龙纹",
+        "进入设计前需台江施洞相关主体复核"
+      ],
+      "evidence_refs": [
+        "C029"
+      ]
+    },
+    {
+      "primitive_id": "P005",
+      "name": "针脚浮层与软硬对比",
+      "derived_from": [
+        "V002",
+        "V003",
+        "V009",
+        "V012"
+      ],
+      "geometry": [
+        "平整底层",
+        "凸起绣线",
+        "金属高光点",
+        "边缘拼接"
+      ],
+      "transformation_guidance": [
+        "可探索触摸反馈、可拆换绣片和局部修复",
+        "标注手工、机绣与授权数字转译的区别"
+      ],
+      "cultural_boundary": [
+        "工艺名必须与实物工艺一致",
+        "不得用渲染纹理冒充实际材料"
+      ],
+      "evidence_refs": [
+        "C002",
+        "C003",
+        "C013",
+        "C029",
+        "C032"
+      ]
+    }
+  ],
+  "color_palettes": [
+    {
+      "palette_id": "CP001",
+      "name": "剑河锡绣材质对比",
+      "colors": [
+        "藏青色棉布",
+        "锡银色金属反光",
+        "黑色线",
+        "红色丝线",
+        "蓝色丝线",
+        "绿色丝线"
+      ],
+      "source_basis": "国家非遗资料与馆藏说明对材料颜色的文字记录；未从屏幕图片推测色值。",
+      "evidence_refs": [
+        "C002",
+        "C029"
+      ],
+      "notes": [
+        "无 HEX；实物色卡需在材料打样阶段测量",
+        "锡银色是材料光泽，不是单一平面色"
+      ]
+    },
+    {
+      "palette_id": "CP002",
+      "name": "台江破线绣文本记录色组",
+      "colors": [
+        "染青布底",
+        "红色破线丝线",
+        "白色破线丝线"
+      ],
+      "source_basis": "贵州省博物馆藏品页面对蝴蝶妈妈袖片的文字描述。",
+      "evidence_refs": [
+        "C030"
+      ],
+      "notes": [
+        "无 HEX；仅作为材料关系提示",
+        "不同藏品、光照和老化会造成色差"
+      ]
+    },
+    {
+      "palette_id": "CP003",
+      "name": "松桃多色针法方向",
+      "colors": [
+        "手工布本色或深色底",
+        "鲜艳多色丝线",
+        "局部高对比色"
+      ],
+      "source_basis": "国家非遗名录与贵州省博物馆对松桃苗绣自由配色、色彩层次的文字说明。",
+      "evidence_refs": [
+        "C003",
+        "C032"
+      ],
+      "notes": [
+        "不是固定标准色板",
+        "具体配色须随作品、支系和合作绣娘共同确定"
+      ]
+    }
+  ],
+  "source_refs": [
+    "C001",
+    "C002",
+    "C003",
+    "C004",
+    "C013",
+    "C029",
+    "C030",
+    "C031",
+    "C032"
+  ],
+  "methodology_notes": [
+    "优先采用国家非遗数字博物馆、贵州省博物馆和中国丝绸博物馆页面。",
+    "image_url 与 source_url 分开保存；页面可访问不等于图片可商用。",
+    "全部馆藏图片默认 reference_only，不下载到本地、不复制为商品图稿。",
+    "Pattern Primitive 只抽取结构、材料和叙事关系，不矢量化或复刻完整传统纹样。",
+    "颜色仅保留权威来源文字或可直接观察的关系描述；未测色时不生成 HEX。"
+  ]
+}

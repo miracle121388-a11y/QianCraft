@@ -1,0 +1,891 @@
+{
+  "generated_at": "2026-08-27T20:43:13.412611+00:00",
+  "market_source": {
+    "status": "cache",
+    "login_state": "missing",
+    "auth_method": "cdp",
+    "platform": "xhs",
+    "live_post_count": 0,
+    "cache_post_count": 12,
+    "keyword_count": 6,
+    "keywords": [
+      "贵州苗绣 文创",
+      "贵州苗绣文创",
+      "花溪苗绣",
+      "花溪挑花",
+      "剑河锡绣",
+      "松桃苗绣"
+    ],
+    "raw_paths": [],
+    "derived_path": "",
+    "detail": "演示模式使用公开来源核验的市场信号；未发起登录、未伪造社交互动数。"
+  },
+  "records": [
+    {
+      "platform": "贵州省博物馆官网",
+      "post_id": "gzmuseum-20260224",
+      "title": "贵地宝藏互动冰箱贴与毛绒挂饰",
+      "content": "以贵州二字为框架容纳八件代表文物，加入滑动和旋转组件；书卷文物转成可佩戴毛绒挂饰，苗族银花冠凤鸟做Q版日常化表达。",
+      "author": "贵州省博物馆",
+      "published_at": "2026-02-24",
+      "url": "https://www.gzmuseum.com/gbyw/202602/1263.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "文创",
+        "互动",
+        "冰箱贴",
+        "毛绒",
+        "贵州"
+      ],
+      "search_keyword": "贵州 文创 互动 冰箱贴",
+      "product_category": "互动冰箱贴",
+      "styles": [
+        "传统元素现代化",
+        "Q版萌化",
+        "小型展览感"
+      ],
+      "colors": [
+        "翠绿",
+        "墨绿",
+        "红金",
+        "米白"
+      ],
+      "materials": [
+        "金属复合",
+        "磁吸件",
+        "毛绒",
+        "刺绣"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "博物馆游客",
+        "收藏爱好者"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "旅行纪念",
+        "桌面/冰箱陈列",
+        "随身包挂"
+      ],
+      "emotional_values": [
+        "可玩",
+        "收藏",
+        "治愈",
+        "地方记忆"
+      ],
+      "verified_market_signal": "馆方2026年新品，页面阅读量可见但不等同销量；互动结构与毛绒触感均有实物描述。",
+      "verified_signal_strength": 68,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 71,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M001",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 74.2,
+      "viral_score": 74.2,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "馆方2026年新品，页面阅读量可见但不等同销量；互动结构与毛绒触感均有实物描述。"
+      ]
+    },
+    {
+      "platform": "中国文化报",
+      "post_id": "ctnews-guizhou-20260722",
+      "title": "贵州四绣进入六类消费场景",
+      "content": "以苗绣、马尾绣、侗绣、布依绣为核心，覆盖景区、展馆、城市商业、线上数字、跨界生活与快闪市集，强调看得见、摸得到、亲手做、带回家。",
+      "author": "中国文化报",
+      "published_at": "2026-07-22",
+      "url": "https://tour.youth.cn/xw/202607/t20260722_16777153.htm",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "贵州",
+        "四绣",
+        "场景",
+        "体验",
+        "伴手礼"
+      ],
+      "search_keyword": "贵州 文创 四绣 场景",
+      "product_category": "可追溯伴手礼",
+      "styles": [
+        "在地叙事",
+        "生活化",
+        "体验式"
+      ],
+      "colors": [
+        "多彩贵州"
+      ],
+      "materials": [
+        "刺绣",
+        "银饰",
+        "纸",
+        "数字内容"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "入黔游客",
+        "礼赠用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "景区",
+        "展馆",
+        "城市商业",
+        "线上",
+        "快闪",
+        "跨界生活"
+      ],
+      "emotional_values": [
+        "在地归属",
+        "参与感",
+        "故事感"
+      ],
+      "verified_market_signal": "2025年底贵州出台43条文创开发措施，报道披露企业以四绣布局六类场景。",
+      "verified_signal_strength": 82,
+      "metrics_verified": false,
+      "evidence_type": "media_signal",
+      "evidence_quality_score": 81,
+      "evidence_quality_reasons": [
+        "证据类型：media_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M002",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 86.8,
+      "viral_score": 86.8,
+      "viral_reasons": [
+        "media_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "2025年底贵州出台43条文创开发措施，报道披露企业以四绣布局六类场景。"
+      ]
+    },
+    {
+      "platform": "微博",
+      "post_id": "casetify-miao-20260727",
+      "title": "蝶绣生花苗绣合作系列",
+      "content": "品牌与苗绣传承人龙禄颖共创，从苗族古歌、创世传说与山川自然提取苗龙、鹡宇鸟、蝴蝶妈妈，进入手机壳、挂饰与旅行配件。",
+      "author": "CASETiFY官方微博",
+      "published_at": "2026-07-27",
+      "url": "https://www.sina.cn/news/detail/5325276839941484.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "苗绣",
+        "联名",
+        "手机壳",
+        "手机挂饰",
+        "旅行配件"
+      ],
+      "search_keyword": "苗绣 科技配件 联名",
+      "product_category": "科技生活配件",
+      "styles": [
+        "潮流化",
+        "传统纹样新配色",
+        "品牌联名"
+      ],
+      "colors": [
+        "高饱和多彩",
+        "自然色"
+      ],
+      "materials": [
+        "印花保护壳",
+        "刺绣挂饰",
+        "旅行箱材质"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "数码配件用户",
+        "潮流联名收藏者"
+      ],
+      "price_range": "品牌中高价格带",
+      "usage_scenarios": [
+        "手机日用",
+        "随身表达",
+        "旅行"
+      ],
+      "emotional_values": [
+        "个性表达",
+        "祝福",
+        "女性力量",
+        "文化参与"
+      ],
+      "verified_market_signal": "品牌官方账号发布的2026年合作系列；未披露销量或互动数。",
+      "verified_signal_strength": 86,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 84,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M003",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 89.3,
+      "viral_score": 89.3,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "品牌官方账号发布的2026年合作系列；未披露销量或互动数。"
+      ]
+    },
+    {
+      "platform": "人民网",
+      "post_id": "shui-horsetail-20260210",
+      "title": "马尾绣文创订单排至2026年7月",
+      "content": "传统马尾绣结合现代产品与数字辅助设计，报道显示订单排期至2026年7月并带动女性就业。",
+      "author": "人民网贵州频道",
+      "published_at": "2026-02-10",
+      "url": "https://gz.people.com.cn/n2/2026/0210/c402972-41498475.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "马尾绣",
+        "订单",
+        "AI辅助",
+        "女性就业"
+      ],
+      "search_keyword": "贵州 非遗 文创 订单",
+      "product_category": "刺绣饰品与礼赠",
+      "styles": [
+        "非遗手作",
+        "传统与科技协作"
+      ],
+      "colors": [
+        "红绿",
+        "蓝白"
+      ],
+      "materials": [
+        "马尾",
+        "丝线",
+        "织物"
+      ],
+      "target_audiences": [
+        "节庆礼赠用户",
+        "非遗收藏用户",
+        "游客"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "节庆礼赠",
+        "穿戴",
+        "家居"
+      ],
+      "emotional_values": [
+        "手工价值",
+        "吉祥",
+        "支持绣娘"
+      ],
+      "verified_market_signal": "报道明确写明订单排至2026年7月；未披露具体订单量。",
+      "verified_signal_strength": 84,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 83,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M004",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 83.2,
+      "viral_score": 83.2,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "报道明确写明订单排至2026年7月；未披露具体订单量。"
+      ]
+    },
+    {
+      "platform": "中国国家博物馆",
+      "post_id": "nmc-phoenix-magnet-20250325",
+      "title": "凤冠冰箱贴累计销量突破100万件",
+      "content": "以明代九龙九凤冠为原型，金属与木质两条产品线带动笔记本、毛绒、马面裙、音乐盒等二十余款长尾产品。",
+      "author": "中国国家博物馆",
+      "published_at": "2025-03-27",
+      "url": "https://www.mct.gov.cn/preview/whzx/zsdw/zggjbwg/202503/t20250327_959057.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "凤冠",
+        "冰箱贴",
+        "爆款",
+        "长尾IP"
+      ],
+      "search_keyword": "博物馆 文创 爆款 冰箱贴",
+      "product_category": "重工收藏冰箱贴",
+      "styles": [
+        "高还原",
+        "精工",
+        "国风华丽"
+      ],
+      "colors": [
+        "金",
+        "红",
+        "蓝",
+        "珍珠白"
+      ],
+      "materials": [
+        "金属",
+        "木",
+        "仿宝石与流苏组件"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "博物馆游客",
+        "收藏者"
+      ],
+      "price_range": "中价格带",
+      "usage_scenarios": [
+        "旅行纪念",
+        "收藏陈列",
+        "社交分享"
+      ],
+      "emotional_values": [
+        "把国宝带回家",
+        "华丽感",
+        "文化归属",
+        "收藏成就"
+      ],
+      "verified_market_signal": "截至2025-03-25累计销量突破100万件，系列销售额突破亿元。",
+      "verified_signal_strength": 100,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 95,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M005",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 86.4,
+      "viral_score": 86.4,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "截至2025-03-25累计销量突破100万件，系列销售额突破亿元。"
+      ]
+    },
+    {
+      "platform": "河南博物院",
+      "post_id": "henan-gourd-202507",
+      "title": "珐琅镶玉葫芦冰箱贴单日销量破千",
+      "content": "提取文物核心器形和文化意蕴，以锌合金浮雕与烤漆转成兼顾观赏和实用的日常冰箱贴。",
+      "author": "河南博物院/中国文化报",
+      "published_at": "2025-07-10",
+      "url": "https://www.mct.gov.cn/preview/whzx/qgwhxxlb/hn/202507/t20250710_961096.htm",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "葫芦",
+        "浮雕",
+        "烤漆",
+        "冰箱贴"
+      ],
+      "search_keyword": "博物馆 文创 浮雕 烤漆",
+      "product_category": "立体冰箱贴",
+      "styles": [
+        "核心元素提炼",
+        "现代简约",
+        "传统华彩"
+      ],
+      "colors": [
+        "多色珐琅感",
+        "金属金"
+      ],
+      "materials": [
+        "锌合金",
+        "烤漆"
+      ],
+      "target_audiences": [
+        "博物馆游客",
+        "年轻收藏用户"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "日常陈列",
+        "旅行纪念"
+      ],
+      "emotional_values": [
+        "吉祥",
+        "精致",
+        "可拥有的文物"
+      ],
+      "verified_market_signal": "2025年夏单日销量破千。",
+      "verified_signal_strength": 94,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 90,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M006",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 84.4,
+      "viral_score": 84.4,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "2025年夏单日销量破千。"
+      ]
+    },
+    {
+      "platform": "上海市政府门户",
+      "post_id": "twin-museum-20260731",
+      "title": "双馆限定文创带动跨区域集齐",
+      "content": "两家郊区博物馆以同源主题开发一对限定文创，依靠独家性和社交平台自传播，形成跨区打卡集齐闭环。",
+      "author": "上海市政府门户/解放日报",
+      "published_at": "2026-07-31",
+      "url": "https://www.shanghai.gov.cn/nw4411/20260731/d0fa4170511b4d43b5a460c3ff6ac4ca.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "限定",
+        "联动",
+        "集齐",
+        "社交传播"
+      ],
+      "search_keyword": "文创 限定 联动 社交传播",
+      "product_category": "系列收藏品",
+      "styles": [
+        "成对",
+        "限定",
+        "地域联动"
+      ],
+      "colors": [
+        "金属金",
+        "馆藏原色"
+      ],
+      "materials": [
+        "金属复合"
+      ],
+      "target_audiences": [
+        "城市青年",
+        "博物馆打卡用户",
+        "收藏用户"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "跨馆打卡",
+        "社交分享",
+        "集齐收藏"
+      ],
+      "emotional_values": [
+        "稀缺",
+        "成就",
+        "社交连接"
+      ],
+      "verified_market_signal": "政府门户称限定周边在社交平台发酵并吸引观众跨区集齐。",
+      "verified_signal_strength": 80,
+      "metrics_verified": false,
+      "evidence_type": "institutional_signal",
+      "evidence_quality_score": 70,
+      "evidence_quality_reasons": [
+        "证据类型：institutional_signal",
+        "来源链接可追溯",
+        "为方向性公开信号"
+      ],
+      "source_ref": "M007",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 80.0,
+      "derived_viral_score": 83.5,
+      "viral_score": 83.5,
+      "viral_reasons": [
+        "institutional_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "机构信号来自可追溯公开来源",
+        "政府门户称限定周边在社交平台发酵并吸引观众跨区集齐。"
+      ]
+    },
+    {
+      "platform": "央视网",
+      "post_id": "youth-museum-products-20250109",
+      "title": "超九成受访青年期待更多博物馆产品进入日常",
+      "content": "青年消费者偏好好看、好玩、有历史内涵、可记录分享的产品，并对考古体验箱、数实卡牌等参与式形式表现兴趣。",
+      "author": "中国青年报",
+      "published_at": "2025-01-09",
+      "url": "https://news.cctv.com/2025/01/09/ARTIITMHNcMexsr2Ka2zD1H1250109.shtml",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "青年",
+        "调查",
+        "生活化",
+        "体验",
+        "社交分享"
+      ],
+      "search_keyword": "年轻消费者 博物馆文创 偏好",
+      "product_category": "生活用品与体验套件",
+      "styles": [
+        "好看好玩",
+        "有文化内涵",
+        "个性化"
+      ],
+      "colors": [
+        "多样"
+      ],
+      "materials": [
+        "多材料",
+        "数实结合"
+      ],
+      "target_audiences": [
+        "青年消费者",
+        "亲子用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "日常生活",
+        "学习",
+        "社交分享",
+        "亲子体验"
+      ],
+      "emotional_values": [
+        "文化认同",
+        "参与",
+        "分享",
+        "审美"
+      ],
+      "verified_market_signal": "调查报道标题与正文均指向超九成受访青年期待更多产品生活化。",
+      "verified_signal_strength": 88,
+      "metrics_verified": false,
+      "evidence_type": "institutional_signal",
+      "evidence_quality_score": 76,
+      "evidence_quality_reasons": [
+        "证据类型：institutional_signal",
+        "来源链接可追溯",
+        "为方向性公开信号"
+      ],
+      "source_ref": "M008",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 88.0,
+      "derived_viral_score": 75.8,
+      "viral_score": 75.8,
+      "viral_reasons": [
+        "institutional_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "机构信号来自可追溯公开来源",
+        "调查报道标题与正文均指向超九成受访青年期待更多产品生活化。"
+      ]
+    },
+    {
+      "platform": "人民日报",
+      "post_id": "emotion-economy-20260204",
+      "title": "小物件里的情绪消费与新国潮",
+      "content": "专题把包挂、香薰、文创与非遗手作体验放在悦己、陪伴、兴趣和文化认同的消费语境中，显示小型日常物需要由实际体验、审美与文化内涵共同支撑。",
+      "author": "人民日报",
+      "published_at": "2026-02-04",
+      "url": "https://paper.people.com.cn/rmrb/pc/attachement/202602/04/5f8b765c-215b-4f7d-b2ad-f74405557996.pdf",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "情绪消费",
+        "包挂",
+        "香薰",
+        "非遗手作",
+        "新国潮"
+      ],
+      "search_keyword": "情绪经济 非遗 文创 日常小物",
+      "product_category": "情绪陪伴小物",
+      "styles": [
+        "轻量化",
+        "新国潮",
+        "悦己表达"
+      ],
+      "colors": [
+        "多样"
+      ],
+      "materials": [
+        "织物",
+        "香氛材料",
+        "手工材料"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "兴趣消费用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "随身陪伴",
+        "通勤",
+        "家居",
+        "手作体验"
+      ],
+      "emotional_values": [
+        "悦己",
+        "陪伴",
+        "兴趣认同",
+        "文化认同"
+      ],
+      "verified_market_signal": "人民日报2026年专题对消费现象的报道，不是特定产品销量或平台互动量证据。",
+      "verified_signal_strength": 76,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 77,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M009",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 78.4,
+      "viral_score": 78.4,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "人民日报2026年专题对消费现象的报道，不是特定产品销量或平台互动量证据。"
+      ]
+    },
+    {
+      "platform": "贵州产业",
+      "post_id": "guizhou-embroidery-sales-2025",
+      "title": "机绣提效、手绣保留细节的组合生产",
+      "content": "企业以机绣完成基础轮廓、手绣处理纹样细节，2025年销售各类文创46万件、产值1300多万元，并在景区设直营店。",
+      "author": "贵州地方产业报道",
+      "published_at": "2026-01-24",
+      "url": "https://www.gzdx.gov.cn/dwjl/21718",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "苗绣",
+        "机绣+手绣",
+        "景区零售",
+        "规模化"
+      ],
+      "search_keyword": "贵州 苗绣 文创 销售",
+      "product_category": "刺绣生活产品",
+      "styles": [
+        "手工细节",
+        "规模化基础",
+        "景区零售"
+      ],
+      "colors": [
+        "多彩"
+      ],
+      "materials": [
+        "织物",
+        "绣线"
+      ],
+      "target_audiences": [
+        "游客",
+        "日常服饰与包袋用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "景区购买",
+        "日常穿戴",
+        "礼赠"
+      ],
+      "emotional_values": [
+        "手工温度",
+        "支持绣娘",
+        "在地纪念"
+      ],
+      "verified_market_signal": "报道披露2025年46万件、产值1300多万元；互动指标未披露。",
+      "verified_signal_strength": 92,
+      "metrics_verified": false,
+      "evidence_type": "institutional_signal",
+      "evidence_quality_score": 89,
+      "evidence_quality_reasons": [
+        "证据类型：institutional_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M010",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 92.0,
+      "derived_viral_score": 87.5,
+      "viral_score": 87.5,
+      "viral_reasons": [
+        "institutional_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "机构信号来自可追溯公开来源",
+        "报道披露2025年46万件、产值1300多万元；互动指标未披露。"
+      ]
+    },
+    {
+      "platform": "中国旅游报",
+      "post_id": "qian-gift-20250715",
+      "title": "非遗+健康与亲民首饰进入贵州手信",
+      "content": "刺梨与蜡染结合的香包兼具天然香氛与舒缓叙事，苗族水滴纹进入亲民银饰；门店提供文化溯源讲解与邮寄服务。",
+      "author": "中国旅游报",
+      "published_at": "2025-07-15",
+      "url": "https://www.ctnews.com.cn/paper/att/202507/15/b444c673-add0-4f31-9758-1fc9db2d95c9.pdf",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "非遗+健康",
+        "香包",
+        "香氛",
+        "银饰",
+        "溯源"
+      ],
+      "search_keyword": "贵州 文创 非遗 健康 首饰",
+      "product_category": "轻礼赠与首饰",
+      "styles": [
+        "轻量化",
+        "自然疗愈感",
+        "可解释纹样"
+      ],
+      "colors": [
+        "靛蓝",
+        "银白",
+        "刺梨果色"
+      ],
+      "materials": [
+        "织物",
+        "植物香材",
+        "银"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "伴手礼用户"
+      ],
+      "price_range": "亲民至中价格带",
+      "usage_scenarios": [
+        "通勤穿戴",
+        "旅行伴手礼",
+        "家居香氛"
+      ],
+      "emotional_values": [
+        "疗愈",
+        "祝福",
+        "在地气味记忆"
+      ],
+      "verified_market_signal": "2025贵州旅游商品与文创大赛及线下门店案例。",
+      "verified_signal_strength": 77,
+      "metrics_verified": false,
+      "evidence_type": "media_signal",
+      "evidence_quality_score": 77,
+      "evidence_quality_reasons": [
+        "证据类型：media_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M011",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 74.4,
+      "viral_score": 74.4,
+      "viral_reasons": [
+        "media_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "2025贵州旅游商品与文创大赛及线下门店案例。"
+      ]
+    },
+    {
+      "platform": "中国非遗网",
+      "post_id": "danzhai-paper-20231224",
+      "title": "皮纸从专业修复走向灯饰、书签和体验",
+      "content": "石桥皮纸同时进入古籍修复专业场景和花草纸、灯饰、书签、纸伞、手提袋等生活场景，形成古纸+文旅体验。",
+      "author": "人民日报",
+      "published_at": "2023-12-24",
+      "url": "https://www.ihchina.cn/project_details/28752.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "tags": [
+        "皮纸",
+        "灯饰",
+        "书签",
+        "修复",
+        "体验"
+      ],
+      "search_keyword": "贵州 非遗 皮纸 文创",
+      "product_category": "纸艺生活产品",
+      "styles": [
+        "自然纤维",
+        "轻透",
+        "手作"
+      ],
+      "colors": [
+        "本白",
+        "花草色",
+        "暖光"
+      ],
+      "materials": [
+        "构皮纸",
+        "花草纤维",
+        "灯具组件"
+      ],
+      "target_audiences": [
+        "文具用户",
+        "家居用户",
+        "手作爱好者"
+      ],
+      "price_range": "亲民至中价格带",
+      "usage_scenarios": [
+        "阅读书写",
+        "家居照明",
+        "礼赠",
+        "手作体验"
+      ],
+      "emotional_values": [
+        "自然",
+        "慢工",
+        "知识保存",
+        "触感"
+      ],
+      "verified_market_signal": "国家非遗网/人民日报报道多个已落地品类，但未披露销量。",
+      "verified_signal_strength": 72,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 64,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "为方向性公开信号"
+      ],
+      "source_ref": "M012",
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 63.1,
+      "viral_score": 63.1,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "国家非遗网/人民日报报道多个已落地品类，但未披露销量。"
+      ]
+    }
+  ]
+}

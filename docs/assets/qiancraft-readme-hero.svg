@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">QianCraft 黔艺前策</title>
+  <desc id="desc">An evidence-to-design pipeline for Guizhou cultural products.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#102238"/>
+      <stop offset="1" stop-color="#1d3550"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#243e5b"/>
+      <stop offset="1" stop-color="#0a1726"/>
+    </linearGradient>
+    <pattern id="counted-grid" width="22" height="22" patternUnits="userSpaceOnUse">
+      <path d="M22 0H0V22" fill="none" stroke="#38516a" stroke-width="1" opacity=".48"/>
+    </pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="15" flood-color="#06101b" flood-opacity=".42"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="420" rx="28" fill="url(#background)"/>
+  <circle cx="1120" cy="-20" r="230" fill="#274864" opacity=".32"/>
+  <circle cx="1040" cy="410" r="220" fill="#0b1725" opacity=".32"/>
+
+  <rect x="66" y="72" width="8" height="130" rx="4" fill="#d84236"/>
+  <text x="104" y="124" fill="#f6f1e7" font-family="Inter, Segoe UI, Microsoft YaHei, sans-serif" font-size="62" font-weight="760" letter-spacing="1">QianCraft</text>
+  <text x="106" y="178" fill="#f6f1e7" font-family="Inter, Segoe UI, Microsoft YaHei, sans-serif" font-size="34" font-weight="650">黔艺前策</text>
+  <text x="106" y="226" fill="#b9c6d3" font-family="Inter, Segoe UI, Microsoft YaHei, sans-serif" font-size="21">从文化证据与市场信号，到可制造的概念设计</text>
+  <text x="106" y="258" fill="#8195a8" font-family="Inter, Segoe UI, sans-serif" font-size="15" letter-spacing="2.4">EVIDENCE  →  STRATEGY  →  DESIGN</text>
+
+  <g font-family="Inter, Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="600">
+    <rect x="104" y="307" width="134" height="38" rx="19" fill="#f6f1e7" opacity=".11"/>
+    <text x="171" y="331" text-anchor="middle" fill="#e9e2d5">Culture DNA</text>
+    <rect x="250" y="307" width="132" height="38" rx="19" fill="#f6f1e7" opacity=".11"/>
+    <text x="316" y="331" text-anchor="middle" fill="#e9e2d5">Trend DNA</text>
+    <rect x="394" y="307" width="152" height="38" rx="19" fill="#d84236" opacity=".88"/>
+    <text x="470" y="331" text-anchor="middle" fill="#fff8ef">Design Agent</text>
+    <rect x="558" y="307" width="150" height="38" rx="19" fill="#f6f1e7" opacity=".11"/>
+    <text x="633" y="331" text-anchor="middle" fill="#e9e2d5">Factory Brief</text>
+  </g>
+
+  <g transform="translate(805 58)" filter="url(#shadow)">
+    <rect x="0" y="0" width="300" height="300" rx="46" fill="url(#frame)" stroke="#4a6178" stroke-width="2"/>
+    <rect x="32" y="32" width="236" height="236" rx="26" fill="#172d46" stroke="#667b8d" stroke-width="2"/>
+    <rect x="45" y="45" width="210" height="210" rx="18" fill="url(#counted-grid)"/>
+
+    <g fill="none" stroke-linecap="round" stroke-width="5">
+      <path d="M77 77l12 12m0-12L77 89M123 77l12 12m0-12l-12 12M169 77l12 12m0-12l-12 12M215 77l12 12m0-12l-12 12" stroke="#d84236"/>
+      <path d="M77 123l12 12m0-12l-12 12M123 123l12 12m0-12l-12 12M169 123l12 12m0-12l-12 12M215 123l12 12m0-12l-12 12" stroke="#f1e7d5"/>
+      <path d="M77 169l12 12m0-12l-12 12M123 169l12 12m0-12l-12 12M169 169l12 12m0-12l-12 12M215 169l12 12m0-12l-12 12" stroke="#f1e7d5"/>
+      <path d="M77 215l12 12m0-12l-12 12M123 215l12 12m0-12l-12 12M169 215l12 12m0-12l-12 12M215 215l12 12m0-12l-12 12" stroke="#d84236"/>
+    </g>
+
+    <path d="M89 106H215M89 198H215M106 89V215M198 89V215" fill="none" stroke="#d8cbb6" stroke-width="3" stroke-dasharray="4 9" opacity=".8"/>
+  </g>
+
+  <text x="1140" y="392" text-anchor="end" fill="#71879b" font-family="Inter, Segoe UI, sans-serif" font-size="12" letter-spacing="1.8">RESEARCH PROTOTYPE · 0.4.0</text>
+</svg>

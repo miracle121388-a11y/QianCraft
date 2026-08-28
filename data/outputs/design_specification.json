@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0",
+  "design_id": "QD-FFEC8E83-MAGNET-01",
+  "generated_at": "2026-08-27T23:08:54.756165Z",
+  "stage": "concept_visual_and_prototype_brief",
+  "input_contract": {
+    "source_file": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.json",
+    "source_sha256": "ffec8e836d0498cbcb1999b827dd73164f791137b0a9a11ecd39fcd30f39fdfa",
+    "schema_name": "DesignerHandoff",
+    "ready": true,
+    "input_stage": "designer_handoff",
+    "authorized_scope": "concept_visual_and_prototype_brief",
+    "selected_opportunity_ids": [
+      "OPP-006",
+      "OPP-002",
+      "OPP-004"
+    ]
+  },
+  "selection": {
+    "primary_opportunity_id": "OPP-006",
+    "primary_verification": "verified",
+    "supporting_opportunity_ids": [],
+    "selection_reason": [
+      "主机会已通过文化二次核验。",
+      "产品关系具体，能够同时验证成品形象、材料层次和拆解结构。",
+      "首版只做单一地域/工艺方向，避免把多支系混成抽象苗绣风。"
+    ],
+    "held_back_opportunities": {
+      "OPP-002": "包含高敏感动植物或祖源母题，须先完成对应社区核验。",
+      "OPP-004": "保留为后续变体；当前海报只呈现一个可验证主方向。"
+    }
+  },
+  "cultural_elements": [
+    {
+      "element_id": "CE-01",
+      "name": "数纱十字网格",
+      "region": "贵州省贵阳市花溪区（首版地域范围）",
+      "branch_or_community": "花溪挑花；具体合作社区待确认",
+      "visual_role": "作为模块尺寸、针脚方向和重复秩序",
+      "transformation_rule": "重新设计原创网格单元，不复制完整馆藏纹样。",
+      "source_primitives": [
+        "P001"
+      ],
+      "reference_visual_ids": [
+        "V001"
+      ],
+      "rights_rule": "V001 为 reference_only，不作为生成图像输入。",
+      "do_not_copy": [
+        "完整背扇花块",
+        "其他地域专属工艺或纹样"
+      ],
+      "evidence_refs": [
+        "C001",
+        "C029"
+      ]
+    }
+  ],
+  "product": {
+    "product_name": "针格模块｜花溪挑花互动冰箱贴（概念样）",
+    "product_type": "可替换织物面板冰箱贴",
+    "prototype_level": "appearance_and_structure_sample",
+    "target_audience": "18-30岁年轻消费者",
+    "use_scenarios": [
+      "家居陈列",
+      "系列收藏",
+      "旅行礼赠"
+    ],
+    "concept_statement": "以原创数纱网格模块展示针脚秩序，面板可拆换并连接溯源卡。",
+    "form_description": "圆角方形框体、可拆织物面板和背部封闭磁体。",
+    "interaction": [
+      "更换织物面板",
+      "系列编号",
+      "溯源阅读"
+    ],
+    "visual_style": [
+      "模块化",
+      "像素化",
+      "清晰网格",
+      "克制强对比"
+    ],
+    "color_direction": [
+      "深色中性框体",
+      "原型彩线关系待实物线卡确认"
+    ],
+    "dimensions": [
+      {
+        "item": "框体高度",
+        "value_mm": 76.0,
+        "tolerance_mm": 1.0,
+        "note": ""
+      },
+      {
+        "item": "框体宽度",
+        "value_mm": 76.0,
+        "tolerance_mm": 1.0,
+        "note": ""
+      },
+      {
+        "item": "框体厚度",
+        "value_mm": 8.0,
+        "tolerance_mm": 0.5,
+        "note": ""
+      },
+      {
+        "item": "可替换织物面板高度",
+        "value_mm": 58.0,
+        "tolerance_mm": 1.0,
+        "note": ""
+      },
+      {
+        "item": "可替换织物面板宽度",
+        "value_mm": 58.0,
+        "tolerance_mm": 1.0,
+        "note": ""
+      }
+    ],
+    "target_weight_g": "55±10 g（首样目标）",
+    "claims": [
+      "只转译数纱结构，不复制完整馆藏纹样。"
+    ]
+  },
+  "manufacturing": {
+    "readiness": "prototype_quote_and_sample_only",
+    "bill_of_materials": [
+      {
+        "part_id": "B01",
+        "component": "外框",
+        "material": "ABS或经工厂验证的替代材料",
+        "specification": "圆角注塑框",
+        "color_finish": "深色哑光",
+        "quantity": "1件",
+        "process": "注塑",
+        "assembly": "卡合B02",
+        "tolerance_or_target": "76×76×8 mm",
+        "qc_check": "无毛边、变形",
+        "supplier_confirmation_required": true
+      },
+      {
+        "part_id": "B02",
+        "component": "织物面板",
+        "material": "棉质斜纹布",
+        "specification": "原创数纱网格刺绣",
+        "color_finish": "线卡待确认",
+        "quantity": "1件",
+        "process": "裁切+机器刺绣",
+        "assembly": "卡入B01",
+        "tolerance_or_target": "58×58 mm",
+        "qc_check": "套位与边缘完整",
+        "supplier_confirmation_required": true
+      },
+      {
+        "part_id": "B03",
+        "component": "背板",
+        "material": "ABS",
+        "specification": "封闭磁体",
+        "color_finish": "同B01",
+        "quantity": "1件",
+        "process": "注塑",
+        "assembly": "与B01卡合/螺钉固定",
+        "tolerance_or_target": "平面度待确认",
+        "qc_check": "磁体不可外露",
+        "supplier_confirmation_required": true
+      },
+      {
+        "part_id": "B04",
+        "component": "磁体",
+        "material": "烧结钕铁硼或合规替代物",
+        "specification": "规格由吸附测试确定",
+        "color_finish": "防腐镀层",
+        "quantity": "1件",
+        "process": "采购件",
+        "assembly": "封闭在B03",
+        "tolerance_or_target": "吸附目标待测",
+        "qc_check": "跌落后不得脱出",
+        "supplier_confirmation_required": true
+      },
+      {
+        "part_id": "B05",
+        "component": "溯源标签",
+        "material": "合成纸",
+        "specification": "批次与二维码",
+        "color_finish": "高对比",
+        "quantity": "1件",
+        "process": "数字印刷",
+        "assembly": "贴于背板",
+        "tolerance_or_target": "二维码≥15 mm",
+        "qc_check": "扫码可读",
+        "supplier_confirmation_required": true
+      }
+    ],
+    "pattern_applications": [
+      {
+        "pattern_id": "PAT-01",
+        "name": "原创数纱网格",
+        "originality_rule": "只使用网格、镜像和平移规则，重新设计非传统单元。",
+        "geometry": [
+          "经纬网格",
+          "十字针单元",
+          "镜像重复"
+        ],
+        "placement": "B02正面",
+        "scale_and_repeat": "单元8–12 mm",
+        "process": "机器刺绣首样",
+        "color_and_material": "实物线卡待确认",
+        "registration_tolerance": "±1 mm",
+        "cultural_boundary": [
+          "不复制V001完整图案",
+          "不得与其他支系混标"
+        ],
+        "evidence_refs": [
+          "C001",
+          "C029"
+        ]
+      }
+    ],
+    "assembly_steps": [
+      "确认框体、背板和织物面板纸样，校核圆角、缝份与磁体封闭空间。",
+      "注塑/机加工B01与B03首样，去毛边并检验卡合间隙和平面度。",
+      "完成B02原创网格机器刺绣、裁切和包边，检验套位后装入框体。",
+      "按安全方案把B04磁体完全封闭在B03内，不使用外露磁片。",
+      "卡合或可逆固定B01/B03，验证面板可拆换且无锐边、夹手点。",
+      "粘贴B05并录入批次、地域、实际工艺、参与者和护理信息。"
+    ],
+    "qc_checks": [
+      "框体76×76×8 mm与织物面板58×58 mm首样尺寸及圆角一致性。",
+      "刺绣中心套位±1 mm、无线头/跳针，包边不露毛、不影响卡合。",
+      "磁体完全封闭；跌落后不得移位、破壳或脱出。",
+      "在目标冰箱门板与常见涂层钢板上记录吸附力和滑移表现。",
+      "拆装循环次数、框体变形、面板磨损和背板刮擦由工厂提交方案。",
+      "标签地域、工艺、材料、参与者和授权台账一致，二维码可读。"
+    ],
+    "packaging_direction": [
+      "纸质展示套突出可替换织物面板，不印刷完整传统纹样。",
+      "随附花溪地域、机器/手工组成、设计参与者、批次和护理溯源卡。"
+    ],
+    "safety_and_compliance": [
+      "磁体和小部件风险须按最终销售年龄与地区验证；当前不按儿童玩具宣称。",
+      "塑料、磁体镀层、油墨和胶黏剂的受限物质要求由供应商和检测机构确认。"
+    ],
+    "factory_open_questions": [
+      "外框采用ABS、再生ABS还是其他材料，模具结构、缩水率、MOQ和目标成本是多少？",
+      "磁体等级、尺寸、封装方式与目标吸附力如何平衡重量和安全？",
+      "织物面板采用卡扣、压框还是可逆胶层，拆装寿命目标是多少？",
+      "机器针数、线数、换色限制、最小针距和包边方式是什么？",
+      "最终销售年龄、地区、包装法规和测试标准尚未确定。"
+    ]
+  },
+  "poster_request": {
+    "request_id": "PR-QD-FFEC8E83-MAGNET-01",
+    "use_case": "product-mockup",
+    "asset_type": "A2-style vertical design poster",
+    "canvas_width_px": 1800,
+    "canvas_height_px": 2400,
+    "orientation": "portrait",
+    "required_panels": [
+      "文化元素与转译规则",
+      "成品主视觉",
+      "爆炸拆解",
+      "材料/BOM",
+      "工艺与审核边界"
+    ],
+    "exact_copy": {
+      "title": "针格模块",
+      "subtitle": "花溪挑花数纱结构启发的互动冰箱贴｜概念样"
+    },
+    "image_prompt": "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.",
+    "constraints": [
+      "一张成品主视图和一组清晰爆炸拆解必须同时出现",
+      "不使用任何馆藏参考图像作为输入或贴图",
+      "画面不写文字；准确中文由QianCraft本地排版器叠加",
+      "原创、可制造、无品牌、无水印"
+    ],
+    "avoid": [
+      "完整传统纹样",
+      "跨支系混用",
+      "馆藏图像",
+      "外露磁体"
+    ],
+    "reference_policy": "textual primitives only; reference_only museum pixels are prohibited",
+    "intended_output": "data/outputs/design_poster.png"
+  },
+  "cultural_review_gates": [
+    "由花溪具体合作社区/保护单位确认原创数纱网格转译可公开商品化。",
+    "共同确认花溪地域、挑花工艺、机器刺绣组成和参与者署名。",
+    "共同确定收益、后续面板迭代、返修与撤回机制。"
+  ],
+  "engineering_review_gates": [
+    "确认磁体等级、封闭结构、吸附力、跌落和儿童小部件风险。",
+    "验证框体卡合、面板拆装循环、绣线耐磨和背板平整度。",
+    "根据最终销售年龄与地区确定材料、标签与适用合规测试。"
+  ],
+  "evidence_refs": [
+    "C001",
+    "C002",
+    "C003",
+    "C005",
+    "C006",
+    "M007",
+    "C029"
+  ],
+  "validation": {
+    "evidence_lock": true,
+    "reference_images_used_as_pixels": false,
+    "cultural_review_status": "required_before_commercialization",
+    "engineering_review_required": true,
+    "mass_production_ready": false,
+    "checks": [
+      "将多支系机会缩窄到花溪单一原型。",
+      "没有使用 reference_only 图像像素。",
+      "首样尺寸不等于量产定稿。"
+    ]
+  }
+}

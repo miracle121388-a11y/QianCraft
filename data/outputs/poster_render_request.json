@@ -1,0 +1,34 @@
+{
+  "request_id": "PR-QD-FFEC8E83-MAGNET-01",
+  "use_case": "product-mockup",
+  "asset_type": "A2-style vertical design poster",
+  "canvas_width_px": 1800,
+  "canvas_height_px": 2400,
+  "orientation": "portrait",
+  "required_panels": [
+    "文化元素与转译规则",
+    "成品主视觉",
+    "爆炸拆解",
+    "材料/BOM",
+    "工艺与审核边界"
+  ],
+  "exact_copy": {
+    "title": "针格模块",
+    "subtitle": "花溪挑花数纱结构启发的互动冰箱贴｜概念样"
+  },
+  "image_prompt": "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.",
+  "constraints": [
+    "一张成品主视图和一组清晰爆炸拆解必须同时出现",
+    "不使用任何馆藏参考图像作为输入或贴图",
+    "画面不写文字；准确中文由QianCraft本地排版器叠加",
+    "原创、可制造、无品牌、无水印"
+  ],
+  "avoid": [
+    "完整传统纹样",
+    "跨支系混用",
+    "馆藏图像",
+    "外露磁体"
+  ],
+  "reference_policy": "textual primitives only; reference_only museum pixels are prohibited",
+  "intended_output": "data/outputs/design_poster.png"
+}

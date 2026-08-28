@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qiancraft"
+version = "0.4.0"
+description = "贵州非遗文化知识图谱、市场前策与概念设计系统"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx>=0.28.1",
+  "json-repair>=0.44.0",
+  "numpy>=2.0.0,<2.3.0",
+  "Pillow>=12.0.0,<13.0.0",
+  "pydantic>=2.11.0,<3.0.0",
+  "python-dotenv>=1.1.0",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8.4.0",
+  "pytest-asyncio>=1.2.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

@@ -1,0 +1,18 @@
+{
+  "design_id": "QD-FFEC8E83-MAGNET-01",
+  "rendered_at": "2026-08-27T23:08:55.493205Z",
+  "engine": "QianCraft exact-text compositor + generated hero asset",
+  "poster_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_poster.png",
+  "poster_sha256": "376941c0fa589558216d8e2996ce62844b7cfcd28428f3495a4c4ca21c852125",
+  "hero_asset_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\design\\assets\\huaxi_grid_magnet_hero_v1.png",
+  "hero_asset_sha256": "c08f9ddc4e01027091d59e4aab7196c6594fafdbeb3dcfca48d4b77054f3e133",
+  "exact_text_compositor": true,
+  "reference_only_images_used": false,
+  "width_px": 1800,
+  "height_px": 2400,
+  "notes": [
+    "Chinese labels are rendered locally for exact spelling.",
+    "Museum reference-only images were not used.",
+    "Dimensions are prototype targets, not production drawings."
+  ]
+}

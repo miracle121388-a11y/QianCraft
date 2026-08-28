@@ -1,0 +1,193 @@
+{
+  "run_id": "20260827T225611Z-4f2a77ae",
+  "started_at": "2026-08-27T22:56:11.556800Z",
+  "finished_at": "2026-08-27T23:08:55.501838Z",
+  "request": {
+    "topic": "贵州苗绣",
+    "region": "贵州",
+    "target_market": "18-30岁年轻消费者",
+    "goal": "寻找具有爆款潜力的文创产品机会"
+  },
+  "components": [
+    {
+      "component": "culture_knowledge",
+      "mode": "live",
+      "engine": "LightRAG local KG",
+      "ok": true,
+      "detail": "已索引 612 个实体、697 条关系；主题节点与边查询成功。"
+    },
+    {
+      "component": "market_research",
+      "mode": "cache",
+      "engine": "QianCraft verified market evidence cache",
+      "ok": true,
+      "detail": "四平台状态：xhs=cache(115)；dy=cache(14)；bili=cache(101)；wb=cache(148)。"
+    },
+    {
+      "component": "strategist",
+      "mode": "live",
+      "engine": "GPT Researcher external-context writer",
+      "ok": true,
+      "detail": "已调用 deepseek-v4-flash；生成建议经过证据编号白名单和 Pydantic 契约校验。 已评分 8 条机会，LightRAG 二次核验高分候选，仅将通过门槛的 Top 3 交给设计阶段。"
+    },
+    {
+      "component": "design_agent",
+      "mode": "live",
+      "engine": "QianCraft evidence-locked deterministic designer",
+      "ok": true,
+      "detail": "已从 designer_handoff.json 选择 OPP-006，生成概念视觉、工厂首样拆解和海报渲染请求；未使用 reference_only 图像像素。"
+    },
+    {
+      "component": "poster_renderer",
+      "mode": "live",
+      "engine": "QianCraft exact-text compositor + generated hero asset",
+      "ok": true,
+      "detail": "已合成成品主视觉、文化元素、爆炸拆解、BOM和工艺路径；使用项目内生成式主视觉素材。"
+    }
+  ],
+  "market_source": {
+    "status": "cache",
+    "login_state": "missing",
+    "auth_method": "cdp",
+    "platform": "multi",
+    "platforms": [
+      "xhs",
+      "dy",
+      "bili",
+      "wb"
+    ],
+    "live_post_count": 0,
+    "cache_post_count": 390,
+    "keyword_count": 6,
+    "keywords": [
+      "贵州苗绣文创",
+      "非遗文创",
+      "博物馆文创",
+      "文创包挂",
+      "文创冰箱贴",
+      "文创徽章"
+    ],
+    "raw_paths": [],
+    "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
+    "hotness_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
+    "detail": "四平台状态：xhs=cache(115)；dy=cache(14)；bili=cache(101)；wb=cache(148)。"
+  },
+  "market_platforms": {
+    "xhs": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "xhs",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 115,
+      "live_post_count": 0,
+      "cache_post_count": 115,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\xhs.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 115 条历史真实抓取快照。"
+    },
+    "dy": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "dy",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 14,
+      "live_post_count": 0,
+      "cache_post_count": 14,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\dy.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 14 条历史真实抓取快照。"
+    },
+    "bili": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "bili",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 101,
+      "live_post_count": 0,
+      "cache_post_count": 101,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\bili.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 101 条历史真实抓取快照。"
+    },
+    "wb": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "wb",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 148,
+      "live_post_count": 0,
+      "cache_post_count": 148,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\wb.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 148 条历史真实抓取快照。"
+    }
+  },
+  "outputs": {
+    "strategy_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\pre_design_strategy.json",
+    "strategy_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\pre_design_strategy.md",
+    "visual_reference_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\visual_reference_pack.json",
+    "visual_reference_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\visual_reference_pack.md",
+    "designer_handoff_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.json",
+    "designer_handoff_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.md",
+    "product_form_hotness": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
+    "design_specification_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_specification.json",
+    "design_specification_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_specification.md",
+    "poster_render_request": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\poster_render_request.json",
+    "design_poster": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_poster.png",
+    "design_render_manifest": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_render_manifest.json",
+    "manifest": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\run_manifest.json"
+  },
+  "source_snapshot_date": "2026-08-28"
+}

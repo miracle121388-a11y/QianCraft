@@ -1,0 +1,4890 @@
+{
+  "generated_at": "2026-08-27T22:03:17.464930+00:00",
+  "market_source": {
+    "status": "cache",
+    "login_state": "missing",
+    "auth_method": "cdp",
+    "platform": "multi",
+    "platforms": [
+      "xhs",
+      "dy",
+      "bili",
+      "wb"
+    ],
+    "live_post_count": 0,
+    "cache_post_count": 82,
+    "keyword_count": 6,
+    "keywords": [
+      "贵州苗绣文创",
+      "非遗文创",
+      "博物馆文创",
+      "文创包挂",
+      "文创冰箱贴",
+      "文创徽章"
+    ],
+    "raw_paths": [],
+    "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T220317Z.json",
+    "hotness_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
+    "detail": "四平台状态：xhs=cache(20)；dy=cache(14)；bili=cache(20)；wb=cache(16)。"
+  },
+  "market_platforms": {
+    "xhs": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "xhs",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 20,
+      "live_post_count": 0,
+      "cache_post_count": 20,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\xhs.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T220317Z.json",
+      "detail": "演示模式不发起平台访问。 使用 20 条历史真实抓取快照。",
+      "crawl_attempted": false
+    },
+    "dy": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "dy",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 14,
+      "live_post_count": 0,
+      "cache_post_count": 14,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\dy.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T220317Z.json",
+      "detail": "演示模式不发起平台访问。 使用 14 条历史真实抓取快照。",
+      "crawl_attempted": false
+    },
+    "bili": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "bili",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 20,
+      "live_post_count": 0,
+      "cache_post_count": 20,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\bili.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T220317Z.json",
+      "detail": "演示模式不发起平台访问。 使用 20 条历史真实抓取快照。",
+      "crawl_attempted": false
+    },
+    "wb": {
+      "status": "cache",
+      "login_state": "missing",
+      "auth_method": "cdp",
+      "platform": "wb",
+      "adapter_discovered": true,
+      "login_ok": false,
+      "search_ok": false,
+      "sample_size": 16,
+      "live_post_count": 0,
+      "cache_post_count": 16,
+      "keyword_count": 6,
+      "keywords": [
+        "贵州苗绣文创",
+        "非遗文创",
+        "博物馆文创",
+        "文创包挂",
+        "文创冰箱贴",
+        "文创徽章"
+      ],
+      "raw_paths": [],
+      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\wb.jsonl",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T220317Z.json",
+      "detail": "演示模式不发起平台访问。 使用 16 条历史真实抓取快照。",
+      "crawl_attempted": false
+    }
+  },
+  "records": [
+    {
+      "platform": "xhs",
+      "post_id": "694e568b000000001e001fde",
+      "title": "🧨用吹塑板解锁非遗拓印✨年味挂饰自己做～",
+      "content": "💡用吹塑板尝试了拓印画，第一回做就成功啦！\n\t\n🎨材料：\n1:4mm厚度的吹塑板\n2:丙烯颜料\n3:剪刀、牙签棒、海绵印章等辅助工具\n4:中国结挂绳\n5:厚一些的水彩纸\n#传统手艺过春节[话题]# #创意手工[话题]# #非遗手工[话题]# #有趣的手工[话题]# #拓印[话题]# #拓印画[话题]# #马年手工[话题]# #非遗焕新纪[话题]#@手工薯 #手工DIY[话题]#",
+      "author": "蜡***工",
+      "published_at": "2025-12-26T09:34:03+00:00",
+      "url": "https://www.xiaohongshu.com/explore/694e568b000000001e001fde",
+      "likes": 19000,
+      "favorites": 16000,
+      "comments": 172,
+      "shares": 6372,
+      "views": 0,
+      "tags": [
+        "传统手艺过春节",
+        "创意手工",
+        "非遗手工",
+        "有趣的手工",
+        "拓印",
+        "拓印画",
+        "马年手工",
+        "非遗焕新纪",
+        "手工DIY"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "挂件",
+      "product_category": "随身挂饰",
+      "styles": [],
+      "colors": [],
+      "materials": [
+        "纸"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-3621FB69F104F70DD47B",
+      "retrieved_at": "2026-08-27T21:50:23.301975+00:00",
+      "platform_hot_score": 93.8,
+      "real_engagement_score": 93.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 75.7,
+      "viral_score": 75.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "68358dc500000000220253d2",
+      "title": "华灿奖解密！昆山地标+扁平插画=稳拿奖",
+      "content": "🔥华灿奖解密！昆山地标+扁平插画=稳拿奖密码｜附万能江南风配色公式🔥\n\t\n🏆第九届华灿奖获奖作品深度拆解！\n今天带你拆解李梦瑶学姐《大美昆山，领秀江南》的三大破圈技法，学会这套\"江南美学方程式\"，竞赛/毕设/商稿通吃！\n\t\n🌟三大必抄设计亮点🌟\n1️⃣ 四维文化解码术\n▫️地标层：古莲桥飞檐等比缩放（见图1元素库）\n▫️珍宝层：昆石肌理做渐变网\n▫️色彩层：7FC4B1水绿+FFA7C3粉荷撞色，CMYK调色见图2邮票色谱\n▫️叙事层：每款文创暗藏\"桥-塔-街\"游览动线（看图3帆布袋）\n2️⃣ 扁平风破壁公式\n✅ 建筑简化3步法：\n拆飞檐→保轮廓→填色块  见图1周庄全福塔变形\n✅ 植物符号化秘诀：\n琼花=5圆+1三角的极简组合（图2邮票\n\t\n3️⃣ 文创\n▫️基础款：冰箱贴用2.5D视角\n▫️氛围款：渐变帆布袋保留留白\n\t\n🎯竞赛必杀四部曲🎯\n1️⃣ 文化元素坐标系\nX轴：地标建筑 / Y轴：城市珍宝 / Z轴：非遗技艺\n（案例：并蒂莲×古桥×苏绣针法=图3书签设计）\n\t\n2️⃣ 江南色谱调配法\n▫️主色：7FC4B1（取自阳澄湖水最深处的绿）\n▫️辅色：FFA7C3（琼花初绽的粉）\n▫️锚点色：D4AF37（古建筑金匾额）\n\t\n3️⃣ 文创产品黄金配比\n30%实用品+40%收藏品+30%氛围品=满分作品集\n（见图3产品矩阵：帆布袋+邮票+书签的完美配比）\n\t\n💥新人避坑指南💥\n⚠️ 扁平≠简陋！（详见图1古莲桥线稿）\n⚠️ 文创包装必须做应用mockup（学图2手提袋立体打光）\n⚠️ 系列作品要有\"视觉定帧\"（如图2右下角昆山印章统一标识）\n#华灿奖[话题]# #大广赛[话题]# #文创设计[话题]# #好创意[话题]# #视觉传达设计[话题]# #未来设计师[话题]# #设计竞赛[话题]# #设计竞赛[话题]# #视觉传达素材[话题]# #蓝桥杯[话题]#\n#oc[话题]# #设计竞赛[话题]# #未来设计师[话题]# #视觉传达设计[话题]# #视觉传达设[话题]# #文创设计[话题]# #包装样机[话题]# #文创插画[话题]# #插画包装设计[话题]# #信息可视化[话题]# #视觉传达毕业设计[话题]# #插画比赛[话题]# #主视觉设计[话题]# #插画风效果图[话题]# #商业插画[话题]# #运营插画[话题]# #活动主KV[话题]# #插画设计[话题]# #大学生设计比赛[话题]# #矢量插画[话题]#",
+      "author": "前***计",
+      "published_at": "2025-05-27T10:02:45+00:00",
+      "url": "https://www.xiaohongshu.com/explore/68358dc500000000220253d2",
+      "likes": 10000,
+      "favorites": 6671,
+      "comments": 58,
+      "shares": 1642,
+      "views": 0,
+      "tags": [
+        "华灿奖",
+        "大广赛",
+        "文创设计",
+        "好创意",
+        "视觉传达设计",
+        "未来设计师",
+        "设计竞赛",
+        "视觉传达素材",
+        "蓝桥杯",
+        "oc",
+        "视觉传达设",
+        "包装样机",
+        "文创插画",
+        "插画包装设计",
+        "信息可视化",
+        "视觉传达毕业设计",
+        "插画比赛",
+        "主视觉设计",
+        "插画风效果图",
+        "商业插画",
+        "运营插画",
+        "活动主KV",
+        "插画设计",
+        "大学生设计比赛",
+        "矢量插画"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "冰箱贴",
+      "product_category": "互动冰箱贴",
+      "styles": [
+        "极简"
+      ],
+      "colors": [
+        "蓝",
+        "绿",
+        "金",
+        "白"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "收藏"
+      ],
+      "emotional_values": [
+        "收藏"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-137A2BB45C9109B0E05B",
+      "retrieved_at": "2026-08-27T21:50:23.306625+00:00",
+      "platform_hot_score": 78.6,
+      "real_engagement_score": 78.6,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 66.0,
+      "viral_score": 66.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "67c9ce3e000000000302b0b4",
+      "title": "当千年非遗遇见AR未来科技",
+      "content": "一双巧手刻千年！金坛刻纸非遗绝技美到失语#指尖上的敦煌[话题]# #非遗有灵[话题]#\n“纸薄千层，刀落万象”\n当AR遇上国家级非物质文化遗产(金坛刻纸)\n传承人杨兆群大师创作的《三兔飞天藻井图》\n灵感源于敦煌壁画。\n不用颜料不染墨，素白宣纸刻敦煌\n三兔踏莲、飞天逐月暗藏11层叠影\n深蓝衬底如夜幕，皎月浮空东方美拉满\n#当非遗会说话[话题]# #敦煌配色高级感[话题]# #科技复兴传统文化[话题]# #国潮顶流诞生记[话题]# #每个中国人DNA都动了[话题]# #我眼中的非遗年[话题]# #用科技的方式打开传统文化[话题]# #非遗走进生活[话题]#",
+      "author": "开***冰",
+      "published_at": "2025-03-06T16:33:02+00:00",
+      "url": "https://www.xiaohongshu.com/explore/67c9ce3e000000000302b0b4",
+      "likes": 8459,
+      "favorites": 5800,
+      "comments": 65,
+      "shares": 3075,
+      "views": 0,
+      "tags": [
+        "指尖上的敦煌",
+        "非遗有灵",
+        "当非遗会说话",
+        "敦煌配色高级感",
+        "科技复兴传统文化",
+        "国潮顶流诞生记",
+        "每个中国人DNA都动了",
+        "我眼中的非遗年",
+        "用科技的方式打开传统文化",
+        "非遗走进生活"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "蓝",
+        "金",
+        "白"
+      ],
+      "materials": [
+        "纸"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-497F77077D38AAE55204",
+      "retrieved_at": "2026-08-27T21:50:23.306774+00:00",
+      "platform_hot_score": 76.2,
+      "real_engagement_score": 76.2,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 77.7,
+      "viral_score": 77.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "67b5cbd4000000002901c6a5",
+      "title": "🦋24种非遗手作看完直接跪了！老祖宗的审美",
+      "content": "🔵24种非遗手作，看完直接跪了！老祖宗的审美绝绝子！🦋👍24种非遗手作每一种都能让你惊呼“老祖宗也太会玩了吧！”🎨✨ 不管你是手作控、文化迷，还是单纯想找点新鲜玩意儿，这篇绝对让你看得停不下来！准备好被惊艳了吗？👇\n1. 非遗剪纸✂️\n一张纸，一把剪刀，剪出千年故事！你敢信？这手艺比电影还精彩！\n2. 非遗竹编🎋\n竹子编出艺术品？没错！老祖宗的智慧让你跪服，实用又美炸！\n3. 非遗漆器🍶\n漆器光泽千年不褪，摸一下仿佛穿越回古代，质感绝了！\n4. 非遗刺绣🧵\n一针一线绣出山河锦绣，这手艺简直是“东方高定”！\n5. 非遗蓝晒🔵\n阳光+蓝晒液=艺术大片！随手一拍就是朋友圈爆款！\n6. 非遗扎染🎨\n每一块布都是独一无二的艺术品，穿上它你就是最靓的崽！\n7. 插花🌸\n花与器的完美CP，随手一摆就是高级感，氛围感拉满！\n8. 五行手串📿\n五行能量加持，戴上手串秒变“气场女王”，还能转运哦！\n9. 非遗螺钿🐚\n贝壳+木头=绝美艺术品！这光泽感，看一眼就沦陷！\n10. 掐丝珐琅🔥\n金属+釉料=绚丽色彩！这手艺简直是“东方蒂芙尼”！\n11. 中药首饰💊\n首饰还能养生？老祖宗的脑洞也太大了！戴它=美+健康！\n12. 扭扭棒花🌼\n扭扭棒也能玩出花？手残党也能秒变艺术家！\n13. 手工皮具👜\n每一针每一线都是匠心，背上它你就是“质感天花板”！\n14. 非遗盘扣🧷\n盘扣不仅是衣服的点缀，更是东方美学的象征，绝美！\n15. 非遗唐卡🖼️\n藏传佛教的艺术瑰宝，每一笔都是信仰的力量，震撼！\n16. 节庆挂饰🎉\n节日氛围神器！挂上它，家里瞬间喜庆值爆表！\n17. 中药香囊🌿\n香囊不仅能驱邪，还能提神醒脑！老祖宗的“香水”绝了！\n18. 珍珠胸针🐚\n珍珠的温润光泽，戴上它你就是优雅本雅！\n19. 粘土牡丹🌺\n粘土捏出的牡丹，逼真到能骗过蜜蜂！\n20. 干花杯垫🍵\n干花+杯垫=文艺感拉满！喝水都能喝出高级感！\n21. 干花画🖼️\n干花+画框=艺术品！挂墙上瞬间提升家居格调！\n#非遗手作[话题]# #传统文化[话题]# #手作艺术[话题]# #创意生活[话题]# #小红书爆款[话题]# #老祖宗的智慧[话题]##求流量[话题]# #官方大大求流量[话题]# #女神节[话题]##深圳团建策划[话题]#",
+      "author": "鍂*",
+      "published_at": "2025-02-19T12:17:24+00:00",
+      "url": "https://www.xiaohongshu.com/explore/67b5cbd4000000002901c6a5",
+      "likes": 8288,
+      "favorites": 4893,
+      "comments": 188,
+      "shares": 1073,
+      "views": 0,
+      "tags": [
+        "非遗手作",
+        "传统文化",
+        "手作艺术",
+        "创意生活",
+        "小红书爆款",
+        "老祖宗的智慧",
+        "求流量",
+        "官方大大求流量",
+        "女神节",
+        "深圳团建策划"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "首饰",
+      "product_category": "首饰与穿戴",
+      "styles": [],
+      "colors": [
+        "红",
+        "蓝",
+        "金"
+      ],
+      "materials": [
+        "刺绣",
+        "金属",
+        "木",
+        "纸",
+        "竹"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "家居"
+      ],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-51E98E4412F0A8AD5857",
+      "retrieved_at": "2026-08-27T21:50:23.306851+00:00",
+      "platform_hot_score": 77.8,
+      "real_engagement_score": 77.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 64.1,
+      "viral_score": 64.1,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "68df9e390000000004029afc",
+      "title": "傩戏ip设计",
+      "content": "已参赛，当练手啦，我觉得多跟进一些专业的设计要求，还是对自己有一定的锻炼意义的！\n傩戏ip：韵韵\n对了，最近又发现这个号又恢复了，就打算两个号都更新啦，至于这个号就打算更新一些ip相关的，小号用来更新贴纸。可以移步观看新作品呦@焖饼小烊.\n#IP设计[话题]# #视觉传达设[话题]# #吉祥物设计[话题]# #中国传统元素[话题]# #原创IP[话题]# #非遗ip[话题]# #周边设计[话题]# #ip排版[话题]# #来自星星的艺术家[话题]#",
+      "author": "小*",
+      "published_at": "2025-10-03T09:58:17+00:00",
+      "url": "https://www.xiaohongshu.com/explore/68df9e390000000004029afc",
+      "likes": 7432,
+      "favorites": 3658,
+      "comments": 66,
+      "shares": 1005,
+      "views": 0,
+      "tags": [
+        "IP设计",
+        "视觉传达设",
+        "吉祥物设计",
+        "中国传统元素",
+        "原创IP",
+        "非遗ip",
+        "周边设计",
+        "ip排版",
+        "来自星星的艺术家"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [
+        "纸"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-C9C19C9F367BAA03C5A9",
+      "retrieved_at": "2026-08-27T21:50:23.307439+00:00",
+      "platform_hot_score": 68.5,
+      "real_engagement_score": 68.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 76.9,
+      "viral_score": 76.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "6852680f0000000013011d85",
+      "title": "🌟 32种必看非遗手作|感受指尖上的千年国粹",
+      "content": "🖋️ 非遗书法蜡烛： 墨韵入蜡，点燃诗意！\n🎨 非遗扎染： 蓝白晕染，独一无二！\n🔥 掐丝珐琅： 金丝彩釉，流光溢彩！\n🌬️ 非遗漆扇： 流动漆艺，摇曳生姿！\n🔖 非遗篆刻： 方寸金石，气象万千！\n☔ 非遗油纸伞： 烟雨诗意，掌中浪漫！\n🥮 非遗饼印： 舌尖雕刻，印刻甜蜜！\n🪁 非遗纸鸢： 扶摇直上，放飞梦想！\n🌸 非遗绒花： 蚕丝为瓣，永不凋零！\n🏮 非遗花草灯： 封存自然，点亮诗意！\n🐇 泥塑兔儿爷： 泥塑萌虎，京味民俗！\n🌾 非遗农民画： 泥土芬芳，热烈生活！\n🧘 宋韵制香： 一缕青烟，澄澈心神！\n🌿 非遗香包： 东方香氛，驱邪养生！\n🐯 非遗布老虎： 萌虎镇宅，针线祝福！\n🖼️ 非遗唐卡： 笔尖修行，矿物瑰宝！\n🧵 非遗刺绣： 指尖生花，东方高定！\n🖋️ 活字印刷： 排版文明，触摸智慧！\n🌿 非遗藤编： 自然脉络，编织生活！\n🍃 植物拓染： “敲”进春天，定格自然！\n🧷 非遗盘扣： 衣襟密码，东方优雅！\n✨ 非遗烧箔画： 金箔火舞，璀璨夺目！\n📜 古法造纸： 亲手造“蔡侯纸”！\n🔨 艾草锤： 古法养生，捶走疲惫！\n🐚 非遗螺钿： 贝母流光，星河璀璨！\n💠 非遗点翠： (仿)翠羽生辉，极致美学！ (注：现代多用仿)\n🎭 非遗皮影戏： 光影摇曳，戏说千古！\n🥚 非遗蛋兜： 端午彩线，兜住平安！\n🎐 非遗团扇： 轻罗摇曳，诗情画意！\n🔶 非遗琉璃： 火中涅槃，七彩永恒！\n🎋 非遗竹编： 柔韧经纬，自然匠心！\n📿 中式手串： 腕间禅意，五行流转！\n\t\n✨ 看完是不是心动了？这些老祖宗传下来的宝贝，不仅美得惊心动魄，更藏着无穷的智慧与乐趣！ 无论是想动手体验，还是纯粹欣赏美学，这份非遗清单都值得你狠狠收藏！快分享给同好，一起为东方美学打call吧！👍\n\t\n🌟我是“云山·有趣的非遗”\n✨呈现看得懂、用得上、玩得转、学得到的非遗之美！\n\t\n﻿#非遗[话题]#﻿ ﻿#国潮[话题]#﻿ ﻿#手作[话题]#﻿ ﻿#传统文化[话题]#﻿ ﻿#东方美学[话题]#﻿ ﻿#非遗传承[话题]#﻿ ﻿#东方美学天花板[话题]#﻿ ﻿#传统手工艺[话题]#﻿ ﻿#国风才是顶流[话题]#﻿ ﻿#云山有趣的非遗[话题]#﻿",
+      "author": "一***物",
+      "published_at": "2025-06-18T10:04:33+00:00",
+      "url": "https://www.xiaohongshu.com/explore/6852680f0000000013011d85",
+      "likes": 7317,
+      "favorites": 4130,
+      "comments": 52,
+      "shares": 903,
+      "views": 0,
+      "tags": [
+        "非遗",
+        "国潮",
+        "手作",
+        "传统文化",
+        "东方美学",
+        "非遗传承",
+        "东方美学天花板",
+        "传统手工艺",
+        "国风才是顶流",
+        "云山有趣的非遗"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "香氛",
+      "product_category": "家居与香氛",
+      "styles": [
+        "国风"
+      ],
+      "colors": [
+        "蓝",
+        "金",
+        "白"
+      ],
+      "materials": [
+        "刺绣",
+        "纸",
+        "竹"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "收藏"
+      ],
+      "emotional_values": [
+        "祝福",
+        "收藏"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-6CAE27EA8A2BCE3DB164",
+      "retrieved_at": "2026-08-27T21:50:23.307561+00:00",
+      "platform_hot_score": 60.7,
+      "real_engagement_score": 60.7,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 57.4,
+      "viral_score": 57.4,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "69041c650000000004021577",
+      "title": "女大日常｜宅宿舍做手工div，成就感拉满",
+      "content": "年轻人最喜欢的DIY手工🎨。#手工diy团建[话题]# #非遗[话题]# #手工[话题]# #手作[话题]# #非遗传承[话题]#",
+      "author": "织***盒",
+      "published_at": "2025-10-31T02:18:13+00:00",
+      "url": "https://www.xiaohongshu.com/explore/69041c650000000004021577",
+      "likes": 6723,
+      "favorites": 3711,
+      "comments": 98,
+      "shares": 1325,
+      "views": 0,
+      "tags": [
+        "手工diy团建",
+        "非遗",
+        "手工",
+        "手作",
+        "非遗传承"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-F35921D6E6E3D382730D",
+      "retrieved_at": "2026-08-27T21:50:23.307670+00:00",
+      "platform_hot_score": 72.0,
+      "real_engagement_score": 72.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 79.0,
+      "viral_score": 79.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "6870cac9000000001703520b",
+      "title": "蓝桥杯省一获奖作品分享",
+      "content": "作品名称：非遗-芝麻小将 IP形象设计\n设计说明：浙江省安吉县洪家村非遗芝麻浇切片是当地独有的非遗美食文化。芝麻小匠IP形象设计以洪家村非遗文化芝麻浇切片为切入点，结合配料选择、营养价值、制作工艺和当地文旅背景，而创造设计的芝麻糖的拟人化形象--活泼可爱的洪家村非遗芝麻糖代言人，在他的带领下能通过电商营销、文化宣传等多种手段进行文化传播，让人们了解洪家村非遗文化和品尝特色非遗食品的味道，弘扬非遗文化，传承非遗技艺，增强文化自信。\n#蓝桥杯[话题]# #华灿奖[话题]# #米兰设计周[话题]# #未来设计师[话题]# #设计竞赛[话题]# #创意星球学院奖[话题]# #视觉传达素材[话题]# #IP设计[话题]#\n作品来源：赛事官网（如有侵权私信删除）",
+      "author": "艺***）",
+      "published_at": "2025-07-11T08:26:49+00:00",
+      "url": "https://www.xiaohongshu.com/explore/6870cac9000000001703520b",
+      "likes": 5750,
+      "favorites": 3378,
+      "comments": 11,
+      "shares": 1192,
+      "views": 0,
+      "tags": [
+        "蓝桥杯",
+        "华灿奖",
+        "米兰设计周",
+        "未来设计师",
+        "设计竞赛",
+        "创意星球学院奖",
+        "视觉传达素材",
+        "IP设计"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "蓝"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [
+        "可爱"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-6DE4810D07963121940B",
+      "retrieved_at": "2026-08-27T21:50:23.307746+00:00",
+      "platform_hot_score": 46.9,
+      "real_engagement_score": 46.9,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 66.0,
+      "viral_score": 66.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "696ca128000000002203a9da",
+      "title": "非遗草本养生手作合集|原来中药还能这么用",
+      "content": "hi~这里是养生小当家~\n中药\"破圈\"了!\n这些国风养生日用品，把老祖宗的智慧戴在身上、用进日常。\n提到中药，你是否还停留在药房的药罐、苦涩的汤药?\n如今，中药早已跳出\"治病\"的单一框架，以更鲜活、更贴近生活的姿态，藏进了我们的日常里。\n这波「可佩戴、可使用、可品尝」的中药草本创意\n把东方养生哲学，变成了触手可及的治愈感\n传统智慧×现代设计，每一款都长在审美点上！\n【🌷贴身香伴 · 本草可佩戴】\n1、合香梳\n材料：檀木/牛角梳体 + 沉香/艾草/玫瑰等合香粉嵌入\n2、药材首饰\n材料：琥珀（古植物树脂）、珊瑚、菩提子、迷你干花药材封存\n3、中药香囊\n材料：绸缎刺绣囊袋 + 艾叶/藿香/薄荷/丁香等配伍\n4、冷香丸\n材料：四季花蕊+节气露水为基，加入白芷、零陵香等\n【🍵疗愈食养 · 舌尖上的本草】\n5、中药眼罩\n材料：丝绸面料 + 决明子/密蒙花/茶叶/薰衣草填充\n6、古法唇膏\n材料：蜂蜡+紫草根浸泡油（显色修复）+金银花/甘草\n7、 秋梨膏棒棒糖\n材料：梨汁熬膏+枇杷叶/川贝粉+麦芽糖成型\n8、 草本润喉糖\n材料：薄荷脑+甘草粉+金银花提取+蜂蜜\n9、 五行调味盐\n材料：海盐为基础，分别加入：木（绿茶/迷迭香）火（红枸杞/山楂）土（甘草/陈皮）金（百合/白芷）水（黑豆/肉桂）\n【🖼雅致生活 · 家居美学中的药香】\n10、 古法护手霜\n材料：茶油50ml + 蜂蜡10g + 金银花纯露40ml + 桂花粉少许\n11、 中药手工皂\n材料：皂基+何首乌（乌发）、白茯苓（美白）、艾草（祛痘）等打粉入皂\n12、中药装饰画\n材料：实木画框+标本级药材（灵芝、荷叶、辛夷）排列构图\n13、 古法扎染\n材料：棉麻布料+板蓝根、苏木、栀子等植物染料\n【✋暖心手作 · 把关怀握在手中】\n14、艾草锤\n材料：棉布包裹紧实艾绒+桂枝/姜片粉，檀木手柄\n15、 草药香薰蜡\n材料：大豆蜡+柏木/苍术/桂花等精油，可见干花封层\n16、定制茶饮包\n材料：根据体质搭配（如熬夜党：枸杞菊花决明子；脾胃虚：山药薏苡仁茯苓）\n#非遗手工[话题]# #在小红书轻养生[话题]# #让中医药文化走进家庭[话题]# #中国传统技艺[话题]# #我的养生仪式感[话题]# #女生创业[话题]#  #中药文创[话题]# #生活美学市集[话题]# #大自然材料手工[话题]# #亲子手工[话题]#",
+      "author": "养***记",
+      "published_at": "2026-01-18T09:00:24+00:00",
+      "url": "https://www.xiaohongshu.com/explore/696ca128000000002203a9da",
+      "likes": 4557,
+      "favorites": 4421,
+      "comments": 57,
+      "shares": 1018,
+      "views": 0,
+      "tags": [
+        "非遗手工",
+        "在小红书轻养生",
+        "让中医药文化走进家庭",
+        "中国传统技艺",
+        "我的养生仪式感",
+        "女生创业",
+        "中药文创",
+        "生活美学市集",
+        "大自然材料手工",
+        "亲子手工"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "首饰",
+      "product_category": "首饰与穿戴",
+      "styles": [
+        "国风"
+      ],
+      "colors": [
+        "红",
+        "蓝",
+        "绿",
+        "金",
+        "银",
+        "黑",
+        "白"
+      ],
+      "materials": [
+        "刺绣",
+        "木",
+        "银"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "家居"
+      ],
+      "emotional_values": [
+        "治愈"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-35DAA367798390A5EF3A",
+      "retrieved_at": "2026-08-27T21:50:23.307835+00:00",
+      "platform_hot_score": 66.9,
+      "real_engagement_score": 66.9,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 64.1,
+      "viral_score": 64.1,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "68b00c91000000001b01e910",
+      "title": "AI文创设计分享",
+      "content": "以上是东北师范大学“创”忆长春队在本次“青春为中国式现代化挺膺担当”2025年暑期社会实践中，经过实地实践，以历史文化→工业文化→非遗文化→影视文化为路径，利用人工智能工具赋能落地的AI文创设计成果🥰\n\t\n#社会实践[话题]# #三下乡[话题]# #文创设计[话题]# #东北师范大学[话题]# #传媒[话题]#",
+      "author": "S***w",
+      "published_at": "2025-08-28T08:00:17+00:00",
+      "url": "https://www.xiaohongshu.com/explore/68b00c91000000001b01e910",
+      "likes": 3962,
+      "favorites": 2124,
+      "comments": 17,
+      "shares": 812,
+      "views": 0,
+      "tags": [
+        "文创设计",
+        "社会实践",
+        "三下乡",
+        "东北师范大学",
+        "传媒"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-392869EB58D0EEEABCDE",
+      "retrieved_at": "2026-08-27T21:50:23.308038+00:00",
+      "platform_hot_score": 37.4,
+      "real_engagement_score": 37.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 62.4,
+      "viral_score": 62.4,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "660613cc0000000012035945",
+      "title": "书法字条纸编|非遗文创让你的作品更加艺术",
+      "content": "#浪漫生活的记录者[话题]#\nHey 宝贝们！你是否有时候觉得手账、手工艺品都差点意思？想要做点特别的文创作品来装饰家里或送给朋友，但一直没有好主意？别担心！今天我要分享一个超酷炫的创意，利用书法字条和纸编技巧制作非遗纸编书法文创！不仅眼前一亮，还能带来春天绿色的浪漫元素，真的是小红书上的爆款！\n[鼓掌R][鼓掌R][鼓掌R]\n我们需要准备一些书法字条。然后，我们写下自己喜欢的字句或诗句，尽量选择简短而有力的文字，以突出书法的美感。 现在，让我们开始纸编的过程吧！\n[星R][星R][星R][星R]\n接下来，我们可以开始编织啦！先将一根纸条弯曲成一个小环，然后把另一根纸条穿过这个小环的两侧，形成一个交叉的结构。\n重复这个步骤，直到纸条编织成你想要的形状。\n[星R][星R][星R][星R]\n小提示：编织时可以根据书法字条的长度和形状进行调整，以突出书法的美感。\n[星R][星R][星R]\n此外，可以使用不同颜色的纸条交叉编织，营造出更丰富的视觉效果哦！\n[星R][星R][星R]\n\t\n完成编织后，你就会得到一个非遗竹编书法文创作品！不仅可以是一幅作品，还可以挂在墙上当装饰品，或是送给亲朋好友作为惊喜。\n想象一下，春天的阳光透过窗户洒在纸编上，书法字条上的文字在光影中若隐若现，真是美不胜收啊！\n快来动手尝试吧！相信你一定能够创造出独特而艺术的作品。\n记得分享给我看，我非常期待看到你们的创作！\n◇创作团队@一北时光宫老师 @一北时光\n#创意手工[话题]# #手工贴画[话题]# #幼儿园手工作业[话题]# #每日分享[话题]# #小红书手工天才[话题]# #小红书手工达人[话题]# #小红书手工[话题]# #笔记灵感[话题]# #我的书法分享[话题]# #硬笔书法[话题]# #书法作品纸[话题]# #书法文创[话题]# #非遗[话题]# #国风[话题]# #纸编[话题]# #竹编工艺品[话题]# #竹编[话题]# #纸编画[话题]# #手工[话题]# #用小红书记录点滴生活[话题]# #硬笔书法作品纸[话题]# #书法艺术[话题]# #书法[话题]# #文创周边[话题]#",
+      "author": "一***师",
+      "published_at": "2024-03-29T01:05:16+00:00",
+      "url": "https://www.xiaohongshu.com/explore/660613cc0000000012035945",
+      "likes": 3645,
+      "favorites": 2869,
+      "comments": 35,
+      "shares": 614,
+      "views": 0,
+      "tags": [
+        "浪漫生活的记录者",
+        "创意手工",
+        "手工贴画",
+        "幼儿园手工作业",
+        "每日分享",
+        "小红书手工天才",
+        "小红书手工达人",
+        "小红书手工",
+        "笔记灵感",
+        "我的书法分享",
+        "硬笔书法",
+        "书法作品纸",
+        "书法文创",
+        "非遗",
+        "国风",
+        "纸编",
+        "竹编工艺品",
+        "竹编",
+        "纸编画",
+        "手工",
+        "用小红书记录点滴生活",
+        "硬笔书法作品纸",
+        "书法艺术",
+        "书法",
+        "文创周边"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [
+        "国风"
+      ],
+      "colors": [
+        "红",
+        "绿"
+      ],
+      "materials": [
+        "纸",
+        "竹"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-04CEBC392CE3AD2D2613",
+      "retrieved_at": "2026-08-27T21:50:23.308149+00:00",
+      "platform_hot_score": 41.1,
+      "real_engagement_score": 41.1,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 59.8,
+      "viral_score": 59.8,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "64d8e891000000000301c550",
+      "title": "💗非遗与文创 |#非遗知识系列10",
+      "content": "🌈Hi~ #非遗知识系列 -第10期来了哦！\n\t\n🌈\n文创对于非遗的意义：\n🍃【有利于弘扬非物质文化遗产独特的文化魅力】：\n•         文创产品作为非物质文化遗产的载体，可以将这些古老而珍贵的人类文化遗产传播到更广泛的受众中，同时也为非物质文化遗产的传承和发展提供了新的途径。\n🍃【有利于大众唤起对非物质文化遗产的自觉保护意识】：\n•         通过购买文创产品，人们不仅可以欣赏到这些文化遗产的美，也可以实质性地支持非物质文化遗产的保护工作，进一步唤起大众对非物质文化遗产的自觉保护意识。\n🍃【有利于非物质文化遗产空间上的拓展】：\n•         文创产品不仅可以在博物馆和展览中展示，也可以进入人们的日常生活，将非物质文化遗产从静态的展示变为动态的体验。\n\t\n🌈\n非遗文创的价值\n🍃【审美价值】\n🍃【社会价值】\n🍃【产业价值】\n\t\n🌈\n非物质文化遗产文创产业存在的问题：\n🍃【文化创意产品趋于同质化，缺少创意元素】：\n•         许多产品只是对传统的非物质文化遗产进行简单的复制和再现，而缺乏独特的创意元素，无法体现文化遗产的独特性和深度。\n🍃【文化创意市场缺乏联动性，习惯各自为战】：\n•         这种各自为战的情况不仅使得创意资源无法得到充分利用，也使得市场推广和产品推广的效果大打折扣。\n🍃【现代的营销体系与展销的渠道没有打开】：\n•         虽然近年来互联网和新媒体的兴起为文化创意产品的推广提供了新的平台和机遇，但大多数非物质文化遗产文创产品仍然依赖传统的销售渠道和推广方式。\n\t\n🌈\n非遗开展文创的注意事项\n🍃【尊重非遗文化】：\n•         非遗是文创的核心，必须尊重其历史背景、文化内涵和技艺技巧等，不得随意篡改或歪曲。\n🍃【创新设计】：\n•         文创产品需要创新设计，既要符合现代审美需求，又要体现非遗文化的特色。可以通过运用现代设计手法、新材料和技术，将非遗元素与现代艺术相结合，打造具有独特魅力的文创产品。\n🍃【市场需求  】：\n•         需要满足市场需求和消费者群体，根据目标市场的特点进行定位和设计。这样可以提高文创产品的市场竞争力，实现文化与经济的互动发展。\n\t\n#非遗[话题]#  #非遗传承[话题]#  #非物质文化遗产[话题]#   #文创[话题]# #知识[话题]#  #知识点总结[话题]#  #知识博主[话题]#  #新手博主[话题]#  #女性成长[话题]#\n\t\n💗————\n更多专题持续更新中 💕",
+      "author": "非***委",
+      "published_at": "2023-08-14T09:00:44+00:00",
+      "url": "https://www.xiaohongshu.com/explore/64d8e891000000000301c550",
+      "likes": 3647,
+      "favorites": 2496,
+      "comments": 24,
+      "shares": 442,
+      "views": 0,
+      "tags": [
+        "非遗",
+        "非遗传承",
+        "非物质文化遗产",
+        "文创",
+        "知识",
+        "知识点总结",
+        "知识博主",
+        "新手博主",
+        "女性成长"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-1B47AAC5E0CA98DD906F",
+      "retrieved_at": "2026-08-27T21:50:23.308278+00:00",
+      "platform_hot_score": 36.4,
+      "real_engagement_score": 36.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 57.1,
+      "viral_score": 57.1,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "697e29d9000000001a034216",
+      "title": "南京绒花IP",
+      "content": "她居住在一个名为 “绒梦阁” 的异度空间，这里的一切都由绒花制成。她通过一面名为 “心镜” 的古老镜子，观察人间的情感波动，并前往需要她的地方。\n绒绒在收集情感的过程中，发现现代社会的“情感荒漠化”现象越来越严重。她开始与一位失去创作灵感的画家、一位与朋友产生隔阂的少女、一位对未来感到迷茫的年轻人等相遇，通过为他们制作专属的“情感绒花”，帮助他们重拾内心的光彩。#IP设计[话题]# #文创设计[话题]# #吉祥物设计[话题]# #原创IP[话题]# #向量设计[话题]# #潮玩手办[话题]##武汉向量设计[话题]#",
+      "author": "H*",
+      "published_at": "2026-01-31T16:12:09+00:00",
+      "url": "https://www.xiaohongshu.com/explore/697e29d9000000001a034216",
+      "likes": 3208,
+      "favorites": 1656,
+      "comments": 57,
+      "shares": 361,
+      "views": 0,
+      "tags": [
+        "IP设计",
+        "文创设计",
+        "吉祥物设计",
+        "原创IP",
+        "向量设计",
+        "潮玩手办",
+        "武汉向量设计"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "潮玩",
+      "product_category": "毛绒与触感产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-CC7708FAE5FA0FCEC2BA",
+      "retrieved_at": "2026-08-27T21:50:23.308372+00:00",
+      "platform_hot_score": 43.4,
+      "real_engagement_score": 43.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 53.8,
+      "viral_score": 53.8,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "68d52f6a000000001101e7bd",
+      "title": "我在AI做非遗，当积木遇到刀马旦",
+      "content": "#小红书创作灵感设计大赛[话题]# #我眼中的非遗年[话题]# #ai[话题]# #非遗[话题]# #国风才是顶级浪漫[话题]# #非遗里的中国年[话题]# #刀马旦[话题]# #国潮设计[话题]# ﻿@手工薯 #文创设计[话题]#  #小红书设计周[话题]# @小红书设计周 @设计薯",
+      "author": "c***镝",
+      "published_at": "2025-09-25T12:02:51+00:00",
+      "url": "https://www.xiaohongshu.com/explore/68d52f6a000000001101e7bd",
+      "likes": 3137,
+      "favorites": 2125,
+      "comments": 77,
+      "shares": 540,
+      "views": 0,
+      "tags": [
+        "小红书创作灵感设计大赛",
+        "我眼中的非遗年",
+        "ai",
+        "非遗",
+        "国风才是顶级浪漫",
+        "非遗里的中国年",
+        "刀马旦",
+        "国潮设计",
+        "文创设计",
+        "小红书设计周"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [
+        "国风"
+      ],
+      "colors": [
+        "红"
+      ],
+      "materials": [
+        "木"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-2EBD8B0DDABF300A4F8B",
+      "retrieved_at": "2026-08-27T21:50:23.308436+00:00",
+      "platform_hot_score": 48.5,
+      "real_engagement_score": 48.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 67.8,
+      "viral_score": 67.8,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "69c0feed00000000220017fa",
+      "title": "【宣】超萌擦手巾～",
+      "content": "这么可爱😍不立马拿下！？\n非常貌美的厨房擦手巾～吸水性极强！\n除了当擦手巾，还能当台面抹布使用[暗中观察R]\n\t\n[萌萌哒R]蓝色福大、黄色猴三、黑色二狗\n这三款ip都是回艺的独家原创,\n并登记了国家版权[得意R]，\n预计这周就可以上架跟大家正式见面了[派对R]\n#回艺[话题]# #非遗潮玩[话题]# #擦手巾[话题]##把非遗搬进冬日厨房[话题]# #毛巾[话题]# #吸水毛巾[话题]# #非遗文创[话题]# #文创[话题]# #好物分享[话题]#",
+      "author": "回***玩",
+      "published_at": "2026-03-23T08:50:53+00:00",
+      "url": "https://www.xiaohongshu.com/explore/69c0feed00000000220017fa",
+      "likes": 2516,
+      "favorites": 1371,
+      "comments": 54,
+      "shares": 416,
+      "views": 0,
+      "tags": [
+        "回艺",
+        "非遗潮玩",
+        "擦手巾",
+        "把非遗搬进冬日厨房",
+        "毛巾",
+        "吸水毛巾",
+        "非遗文创",
+        "文创",
+        "好物分享"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "潮玩",
+      "product_category": "毛绒与触感产品",
+      "styles": [],
+      "colors": [
+        "蓝",
+        "黑"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [
+        "可爱"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-C614CBCF8376D893E9E0",
+      "retrieved_at": "2026-08-27T21:50:23.308492+00:00",
+      "platform_hot_score": 36.6,
+      "real_engagement_score": 36.6,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 52.0,
+      "viral_score": 52.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "68b020c0000000001b03d80f",
+      "title": "好创意国三作品分享：皮影八音盒",
+      "content": "设计绝绝子！把非遗皮影玩出花\n灵感直接 “搬” 自成都博物馆的皮影文物，白素贞、许仙、小青三位主角变身木雕皮影，细节控狂喜\n\t\n✔️ 人物裙摆的纹路、手里的道具，甚至断桥的弧度，都和皮影原型一毛一样！\n✔️ 八音盒旋转时，光影洒在墙上，瞬间复刻 “皮影戏” 的氛围感，传统文化直接活过来～\n听觉 + 视觉双暴击！\n\t\n音乐一起直接梦回断桥相遇名场面🎵 光影随着旋律转圈圈，仿佛能看到小白和许仙在桥上 “爱恨纠葛”，小青在旁边急到跺脚，这谁扛得住啊！\n既能当非遗文化的小传承，又能当治愈小物，获奖真的实至名归👏\n\t\n﻿#国潮设计[话题]#﻿  ﻿#非遗创新[话题]#﻿  ﻿#八音盒[话题]#﻿  ﻿#白蛇传[话题]#﻿  ﻿#设计美学[话题]#﻿ ﻿#中国好创意[话题]#﻿\n来源于好创意官网～\n仅用于学习分享～\n如有打扰，请联系删～",
+      "author": "蝴***🐾",
+      "published_at": "2025-08-28T09:26:24+00:00",
+      "url": "https://www.xiaohongshu.com/explore/68b020c0000000001b03d80f",
+      "likes": 2408,
+      "favorites": 1313,
+      "comments": 9,
+      "shares": 409,
+      "views": 0,
+      "tags": [
+        "国潮设计",
+        "非遗创新",
+        "八音盒",
+        "白蛇传",
+        "设计美学",
+        "中国好创意"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "白"
+      ],
+      "materials": [
+        "木"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [
+        "治愈"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-6114C143944DB4011D80",
+      "retrieved_at": "2026-08-27T21:50:23.308562+00:00",
+      "platform_hot_score": 18.2,
+      "real_engagement_score": 18.2,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 53.7,
+      "viral_score": 53.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "68d11a4d000000001400922f",
+      "title": "泡泡玛特逆天了吧，竟然和这些非遗都结合过",
+      "content": "嗨，我是造物天地造造，和大家分享一些有趣好玩的传统文化[派对R]\n\t\n[星R]泡泡玛特的明星们，都担任起了传统文化的传播大使，每一个都想拥有啊[满月R][满月R][满月R]\n\t\n[一R] ROYAL MOLLY  X 常沙娜X 敦煌文化\n联合中国文联终身成就美术家称号获得者常沙娜，以敦煌文化为灵感，采用隋唐390窟莲花藻井内的忍冬作为艺术元素，头戴王冠的小女孩将宝藏送出“天外”、带向乐园。\n\t\n[二R] ROYAL MOLLY  X 赵树宪 X 绒花\n「漫缦花落·绒」\n联合非遗工艺大师赵树宪，将江苏省非物质文化遗产——南京绒花技艺融入潮玩设计中。铜丝做脉、蚕丝作蕊，闭目垂睫，簪一场金陵烟雨。\n\t\n[三R] SPACE MOLLY X 陈粉丸 X 剪纸\n艺术家陈粉丸为SPACE MOLLY披上镂空纹样，巧妙融合经典剪纸元素，搭配大胆的撞色，引出神奇力场，释放粉色能量。\n\t\n[四R] SPACE MOLLY X 黄旺旺 X 木雕\n「藏金无痕 · 木」\n与非遗木雕传承人黄旺旺联手，打造「太空圣斗士」MOLLY。全身采用木刻工艺，身上金属纹样采用古法错金工艺，纯手工打造，身上饰有纹理和图腾如「夔龙」、「商代兽纹」等。\n\t\n[五R] SKULLPANDA X 苗族银饰 x 蜡染\n「聆蝶」\n14周年推出的无双镇系列中，SKULLPANDA化身苗族少女，头戴银饰，依靠在蜡染灯上，闭眼聆听蝴蝶低语，造型优雅又有民族韵味。\n\t\n[六R] SPACE MOLLY X 髤漆 X雕漆\n「朱墨祥韵·漆」\n以髤漆为制作工艺，朱红色搭配墨黑色，同时还加入京城工艺“四大名单”之一的雕漆制作工艺，手工上色后，再用到雕刻出细致花纹，经过画图、制漆、髹漆、雕刻和打磨等百余道工序手工完成。\n\t\n[七R] ROYAL MOLLY 400% X 景德镇陶瓷 X 扒花\n「嫣胭入轧·瓷」\n联手景德镇陶瓷推出，创新采用了非物质文化遗产 “扒花” 工艺，花纹经设计既具古典韵味，又不失现代感，通过白瓷塑身，使产品更具非遗与潮玩相结合的特殊韵味。\n\t\n[八R] DIMOO X 泥塑（北京兔儿爷）\n泥塑（北京兔儿爷）是以胶泥为原料制作的兔首人身彩塑工艺品，形象源自玉兔祛病消灾的民间传说，其工艺包含十二道传统工序，尤以“三分塑七分彩”的对称纹饰与浓烈配色为特点。\n\t\n（图片源于网络）\n\t\n还有什么非遗潮玩，评论区发出来跟大家分享吧！[皱眉R][皱眉R]想要一个非遗活化的评论区[派对R] [萌萌哒R]\n#泡泡玛特[话题]# #popmart[话题]# #非遗潮玩[话题]# #奇货潮玩[话题]# #非遗[话题]# #非遗文化[话题]# #传统与创意[话题]# #国潮设计[话题]# #当潮玩融入生活[话题]#",
+      "author": "造***地",
+      "published_at": "2025-09-22T09:43:42+00:00",
+      "url": "https://www.xiaohongshu.com/explore/68d11a4d000000001400922f",
+      "likes": 2322,
+      "favorites": 1517,
+      "comments": 23,
+      "shares": 834,
+      "views": 0,
+      "tags": [
+        "泡泡玛特",
+        "popmart",
+        "非遗潮玩",
+        "奇货潮玩",
+        "非遗",
+        "非遗文化",
+        "传统与创意",
+        "国潮设计",
+        "当潮玩融入生活"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "首饰",
+      "product_category": "首饰与穿戴",
+      "styles": [],
+      "colors": [
+        "红",
+        "金",
+        "银",
+        "黑",
+        "白"
+      ],
+      "materials": [
+        "金属",
+        "木",
+        "纸",
+        "银"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-EE543307B1A6A106DF15",
+      "retrieved_at": "2026-08-27T21:50:23.308643+00:00",
+      "platform_hot_score": 25.9,
+      "real_engagement_score": 25.9,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 43.4,
+      "viral_score": 43.4,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "694d19a7000000001f00ce58",
+      "title": "野兽派×非遗：闻之欲醉的纸上艺术",
+      "content": "野兽派中国工坊开创高端香氛的东方叙事，2026 丙午马年，野兽派循着年味记忆，捕捉“马”的祥瑞寓意，凝练“醉马观花”主题，携手非遗传承人打造新年限定礼。\n\t\n【光影生辉：上海剪纸的鎏金演绎】\n\t\n野兽派携手国家级非遗上海剪纸传承人贡亮，以“马踏新岁”为灵感，将剪纸的玲珑剔透与走马灯的灵动浪漫完美融合。既有北方剪纸的质朴写意，又融入了江南文化的细腻流畅与海派艺术的大胆创新。\n\t\n“上海剪纸”妙在虚实相生——阳剪镂出的骏马轮廓，不见繁饰，却将昂扬与温顺都刻得真切。\n\t\n当这幅精致的剪纸艺术品化作走马灯的鎏金烛罩，光影流转，马儿仿佛在琳琅花影间绕室而行，烛火摇曳，暖香徐来。\n\t\n【福气随身：庆阳刺绣的吉祥馈赠】\n\t\n除了案头雅器，年的韵味，在于随身相伴的温暖祝福。野兽派携手国家级非遗庆阳香包的代表性传承人刘兰芳，共创马年系列手工刺绣香囊：“马上有柴”纳财气，“马上封猴”祝高升，“马上有对象”盼良缘。绣线穿梭间，灵动小马跃然其上，一针一线都饱含手作的温度与陇东大地上深厚的祈福。\n\t\n小tips：\n野兽派特意为部分年货开启「开运金印」专属定制，定制后的祝福可化作精致小马、小花吊牌随礼赠送哦。\n\t\n我们对新年的愿景从未改变，只是越发懂得 “醉马观花” 的珍贵 —— 奔波岁月里，留一份从容赏景的心境；追逐目标时，不忘驻足身边的美好，这才是年味的本真。那匹 “醉马”，是踏平坎坷后从容赏春光的通透，是儿时不慌不忙盼新年的纯粹，也是快节奏生活里，我们对慢时光的深切眷恋。\n#野兽派马年限定[话题]# #醉马观花[话题]# #马年[话题]# #非遗[话题]# #新年礼物[话题]# #上海剪纸[话题]# #刺绣[话题]# #香氛推荐[话题]# #传统文化[话题]# #非遗焕新纪[话题]#@BEAST野兽派 @人文薯 @家居薯 @生活薯 @手工薯",
+      "author": "非***s",
+      "published_at": "2025-12-25T11:37:54+00:00",
+      "url": "https://www.xiaohongshu.com/explore/694d19a7000000001f00ce58",
+      "likes": 2124,
+      "favorites": 1268,
+      "comments": 28,
+      "shares": 611,
+      "views": 0,
+      "tags": [
+        "野兽派马年限定",
+        "醉马观花",
+        "马年",
+        "非遗",
+        "新年礼物",
+        "上海剪纸",
+        "刺绣",
+        "香氛推荐",
+        "传统文化",
+        "非遗焕新纪"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "香氛",
+      "product_category": "家居与香氛",
+      "styles": [],
+      "colors": [
+        "金"
+      ],
+      "materials": [
+        "刺绣",
+        "纸"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "礼赠",
+        "家居"
+      ],
+      "emotional_values": [
+        "祝福"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-99CEA0A6966DB9D0F0DE",
+      "retrieved_at": "2026-08-27T21:50:23.308738+00:00",
+      "platform_hot_score": 22.8,
+      "real_engagement_score": 22.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 43.5,
+      "viral_score": 43.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "695d459b000000000a03c6ed",
+      "title": "非遗IP形象 | 云瑾·稚织·灯绮·阿木",
+      "content": "分享一组以非遗技艺为核心的IP形象设计海报，围绕云肩、刺绣、花灯、木雕四大非遗主题，塑造了云瑾、稚织、灯绮、阿木四个角色。\n每个IP都赋予了专属的性格、背景与技能点，搭配三视图、表情包、服装延展及文创周边设计，从视觉到应用层面对非遗文化进行年轻化转译，让传统技艺以更鲜活的形式呈现。\n#海报分享[话题]# #海报设计[话题]# #IP设计[话题]# #中国传统元素[话题]# #卡通形象设计[话题]# #AIGC[话题]# #非遗[话题]##传统与创意[话题]# #视觉设计[话题]# #非遗海报[话题]#",
+      "author": "呱***计",
+      "published_at": "2026-01-07T05:14:01+00:00",
+      "url": "https://www.xiaohongshu.com/explore/695d459b000000000a03c6ed",
+      "likes": 2116,
+      "favorites": 1046,
+      "comments": 33,
+      "shares": 324,
+      "views": 0,
+      "tags": [
+        "海报分享",
+        "海报设计",
+        "IP设计",
+        "中国传统元素",
+        "卡通形象设计",
+        "AIGC",
+        "非遗",
+        "传统与创意",
+        "视觉设计",
+        "非遗海报"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [
+        "刺绣",
+        "木"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-A6E93332CF5EC4107122",
+      "retrieved_at": "2026-08-27T21:50:23.308835+00:00",
+      "platform_hot_score": 18.4,
+      "real_engagement_score": 18.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 56.2,
+      "viral_score": 56.2,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "xhs",
+      "post_id": "6a3a16f60000000008033f60",
+      "title": "藏在云南屋脊上的千年神兽✨",
+      "content": "从前安家于瓦房檐角，吞灾纳福的镇宅瓦猫\n如今化作掌心守护玩偶，把一整年平安揣在身边\n黑绒身躯配满彩色传统纹样\n鎏金云纹环绕，胸口古钱自带招财buff\n巨嘴吞尽晦气，彩目看穿纷扰\n民间说瓦猫中空能纳四方财气，猫嘴朝内留住好运\n五种随身用法：\n屋顶摆件｜书桌镇纸｜随身挂饰\n卡通小人周边｜吉祥印章摆件\n把滇地古老民俗，做成日常可触摸的温柔守护\n新中式伴手礼天花板，自带避邪纳吉好寓意\n#传统与创意[话题]# #IP设计[话题]# #瓦猫[话题]# #云南[话题]# #非遗[话题]# #包包挂件[话题]# #玩偶[话题]# #国风玩偶[话题]# #招财[话题]#",
+      "author": "M***U",
+      "published_at": "2026-06-23T05:17:42+00:00",
+      "url": "https://www.xiaohongshu.com/explore/6a3a16f60000000008033f60",
+      "likes": 2029,
+      "favorites": 1052,
+      "comments": 75,
+      "shares": 250,
+      "views": 0,
+      "tags": [
+        "传统与创意",
+        "IP设计",
+        "瓦猫",
+        "云南",
+        "非遗",
+        "包包挂件",
+        "玩偶",
+        "国风玩偶",
+        "招财"
+      ],
+      "search_keyword": "非遗文创",
+      "product_form": "包挂",
+      "product_category": "随身挂饰",
+      "styles": [
+        "国风",
+        "新中式"
+      ],
+      "colors": [
+        "金",
+        "黑"
+      ],
+      "materials": [
+        "纸"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的小红书搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-XHS-303509ECE50E7C9F9C05",
+      "retrieved_at": "2026-08-27T21:50:23.308898+00:00",
+      "platform_hot_score": 30.0,
+      "real_engagement_score": 30.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 51.9,
+      "viral_score": 51.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7642287209344797986",
+      "title": "景泰蓝，学名铜胎掐丝珐琅，因兴盛于明代景泰年间而得名，距今已有六百多年历史#非遗守护人#抖音非遗嘉年华 #抖音非遗计划",
+      "content": "景泰蓝，学名铜胎掐丝珐琅，因兴盛于明代景泰年间而得名，距今已有六百多年历史#非遗守护人#抖音非遗嘉年华 #抖音非遗计划",
+      "author": "彭***科",
+      "published_at": "2026-05-21T13:00:00+00:00",
+      "url": "https://www.douyin.com/video/7642287209344797986",
+      "likes": 1541288,
+      "favorites": 121326,
+      "comments": 31683,
+      "shares": 273473,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "蓝"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-7AABB78EEE708F34EE92",
+      "retrieved_at": "2026-08-27T21:52:39.807947+00:00",
+      "platform_hot_score": 85.7,
+      "real_engagement_score": 85.7,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 90.0,
+      "viral_score": 90.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7622287277892879348",
+      "title": "灯火不息，传承不止。愿这一盏闽南龙虎灯，照亮你我，也照亮东方 #非遗文化 #非遗传承 #龙虎灯",
+      "content": "灯火不息，传承不止。愿这一盏闽南龙虎灯，照亮你我，也照亮东方 #非遗文化 #非遗传承 #龙虎灯",
+      "author": "欠***呀",
+      "published_at": "2026-03-28T12:57:41+00:00",
+      "url": "https://www.douyin.com/video/7622287277892879348",
+      "likes": 51389,
+      "favorites": 1178,
+      "comments": 195,
+      "shares": 6148,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-01A6AE42F58EE66CB9B1",
+      "retrieved_at": "2026-08-27T21:52:39.814429+00:00",
+      "platform_hot_score": 30.8,
+      "real_engagement_score": 30.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 63.8,
+      "viral_score": 63.8,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7452172641114328377",
+      "title": "抢不到国博文创？老公居然用玉米皮复刻了镇馆之宝九龙九凤冠！#非遗 #九龙九凤冠 #国家博物馆 #手工 #东方美学",
+      "content": "抢不到国博文创？老公居然用玉米皮复刻了镇馆之宝九龙九凤冠！#非遗 #九龙九凤冠 #国家博物馆 #手工 #东方美学",
+      "author": "熙***🍯",
+      "published_at": "2024-12-25T02:36:17+00:00",
+      "url": "https://www.douyin.com/video/7452172641114328377",
+      "likes": 350456,
+      "favorites": 21296,
+      "comments": 6886,
+      "shares": 85779,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-055407D90CB22E4587F9",
+      "retrieved_at": "2026-08-27T21:52:39.814513+00:00",
+      "platform_hot_score": 62.1,
+      "real_engagement_score": 62.1,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 70.8,
+      "viral_score": 70.8,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7657487506178362660",
+      "title": "中国人有自己的非遗高定#非遗守护人#马尾绣#用红枫准出片#华为Mate80#华为影像XMAGE",
+      "content": "中国人有自己的非遗高定#非遗守护人#马尾绣#用红枫准出片#华为Mate80#华为影像XMAGE",
+      "author": "小*",
+      "published_at": "2026-07-01T11:10:49+00:00",
+      "url": "https://www.douyin.com/video/7657487506178362660",
+      "likes": 170990,
+      "favorites": 6233,
+      "comments": 1429,
+      "shares": 5431,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "红"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-14E3409793DD73350456",
+      "retrieved_at": "2026-08-27T21:52:39.814562+00:00",
+      "platform_hot_score": 48.7,
+      "real_engagement_score": 48.7,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 74.7,
+      "viral_score": 74.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7631136213260438818",
+      "title": "我带了百人为中国技艺正名 #百young非遗计划#非遗新青年#锤草印花#植物拓印#共创",
+      "content": "我带了百人为中国技艺正名 #百young非遗计划#非遗新青年#锤草印花#植物拓印#共创",
+      "author": "陈***十",
+      "published_at": "2026-04-21T11:06:00+00:00",
+      "url": "https://www.douyin.com/video/7631136213260438818",
+      "likes": 152197,
+      "favorites": 22049,
+      "comments": 2805,
+      "shares": 9389,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-C7A1D0732E5A427C9E09",
+      "retrieved_at": "2026-08-27T21:52:39.814603+00:00",
+      "platform_hot_score": 50.4,
+      "real_engagement_score": 50.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 73.2,
+      "viral_score": 73.2,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7670530751607098667",
+      "title": "灯工，是博山琉璃烧制技艺核心分支，被称作火中的雕塑#非遗守护人 #抖音非遗计划",
+      "content": "灯工，是博山琉璃烧制技艺核心分支，被称作火中的雕塑#非遗守护人 #抖音非遗计划",
+      "author": "彭***科",
+      "published_at": "2026-08-05T12:56:57+00:00",
+      "url": "https://www.douyin.com/video/7670530751607098667",
+      "likes": 2926125,
+      "favorites": 222173,
+      "comments": 77156,
+      "shares": 500835,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-ECA7DAD14F139818E6C8",
+      "retrieved_at": "2026-08-27T21:52:39.815089+00:00",
+      "platform_hot_score": 95.5,
+      "real_engagement_score": 95.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 97.1,
+      "viral_score": 97.1,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7600724195529510159",
+      "title": "苏绣四大名绣之首 《苏绣猫》是双面异色绣的经典作品 #百young非遗计划 #非遗守护人  #青年创作者成长计划 #抖音非遗联欢会#非遗贺新春",
+      "content": "苏绣四大名绣之首 《苏绣猫》是双面异色绣的经典作品 #百young非遗计划 #非遗守护人  #青年创作者成长计划 #抖音非遗联欢会#非遗贺新春",
+      "author": "好***娩",
+      "published_at": "2026-01-29T10:12:02+00:00",
+      "url": "https://www.douyin.com/video/7600724195529510159",
+      "likes": 77104,
+      "favorites": 8365,
+      "comments": 3448,
+      "shares": 5319,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-07A42B39046794ACA046",
+      "retrieved_at": "2026-08-27T21:52:39.815141+00:00",
+      "platform_hot_score": 37.5,
+      "real_engagement_score": 37.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 65.3,
+      "viral_score": 65.3,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7674163951421501158",
+      "title": "好适合当吧唧托啊…#国风手作 #东方美学手作 #故宫文创",
+      "content": "好适合当吧唧托啊…#国风手作 #东方美学手作 #故宫文创",
+      "author": "明***_",
+      "published_at": "2026-08-15T07:55:33+00:00",
+      "url": "https://www.douyin.com/video/7674163951421501158",
+      "likes": 3285,
+      "favorites": 562,
+      "comments": 55,
+      "shares": 1398,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "徽章",
+      "product_category": "随身挂饰",
+      "styles": [
+        "国风"
+      ],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-BE4841B90E9B64DF77C6",
+      "retrieved_at": "2026-08-27T21:52:39.815181+00:00",
+      "platform_hot_score": 21.4,
+      "real_engagement_score": 21.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 50.0,
+      "viral_score": 50.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7134908298234711303",
+      "title": "国家级非物质文化遗产项目--甲路纸伞制作技艺。一个人很普通，但连接起来  会拥有不普通的力量  传统文化，让“等闲”被更多人看见 #抖音文创百般手艺 #江西DOU是好风光#抖音匠心守护人 @江西风景独好 #抖转新遗潮起国风 ",
+      "content": "国家级非物质文化遗产项目--甲路纸伞制作技艺。一个人很普通，但连接起来  会拥有不普通的力量  传统文化，让“等闲”被更多人看见 #抖音文创百般手艺 #江西DOU是好风光#抖音匠心守护人 @江西风景独好 #抖转新遗潮起国风 ",
+      "author": "抖***创",
+      "published_at": "2022-08-23T03:28:34+00:00",
+      "url": "https://www.douyin.com/video/7134908298234711303",
+      "likes": 161522,
+      "favorites": 5851,
+      "comments": 4017,
+      "shares": 3310,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [
+        "国风"
+      ],
+      "colors": [],
+      "materials": [
+        "纸"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-4FB0FD02888A820A561B",
+      "retrieved_at": "2026-08-27T21:52:39.815223+00:00",
+      "platform_hot_score": 38.8,
+      "real_engagement_score": 38.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 57.7,
+      "viral_score": 57.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7554353825148652826",
+      "title": "是漂亮的贵州非遗手工文创冰箱贴呀！！#非遗文化传承 #手工diy #我的手工作品 #冰箱贴 #贵州旅游",
+      "content": "是漂亮的贵州非遗手工文创冰箱贴呀！！#非遗文化传承 #手工diy #我的手工作品 #冰箱贴 #贵州旅游",
+      "author": "小***～",
+      "published_at": "2025-09-26T11:11:10+00:00",
+      "url": "https://www.douyin.com/video/7554353825148652826",
+      "likes": 64,
+      "favorites": 19,
+      "comments": 8,
+      "shares": 54,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "冰箱贴",
+      "product_category": "互动冰箱贴",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-27944D91D522C338411B",
+      "retrieved_at": "2026-08-27T21:52:39.815254+00:00",
+      "platform_hot_score": 5.4,
+      "real_engagement_score": 5.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 34.8,
+      "viral_score": 34.8,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7646078384133348507",
+      "title": "文创设计师的设计作品分享。抽象沙（阿沙设计）：文创设计师的作品.#视觉传达设计 #文创设计 #非遗文创 #设计作品 #平面设计",
+      "content": "文创设计师的设计作品分享。抽象沙（阿沙设计）：文创设计师的作品.#视觉传达设计 #文创设计 #非遗文创 #设计作品 #平面设计",
+      "author": "抽***沙",
+      "published_at": "2026-05-31T15:29:12+00:00",
+      "url": "https://www.douyin.com/video/7646078384133348507",
+      "likes": 10930,
+      "favorites": 2985,
+      "comments": 293,
+      "shares": 1703,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-77BAF15872BE7CC0B36F",
+      "retrieved_at": "2026-08-27T21:52:39.815294+00:00",
+      "platform_hot_score": 26.3,
+      "real_engagement_score": 26.3,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 63.6,
+      "viral_score": 63.6,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7561812952072998154",
+      "title": "大漆灵芝杯巧妙地将大漆工艺与灵芝的祥瑞寓意结合，是融合了精湛技艺与美好祝愿的器物。#非遗守护人 #百young非遗计划#非遗有好物",
+      "content": "大漆灵芝杯巧妙地将大漆工艺与灵芝的祥瑞寓意结合，是融合了精湛技艺与美好祝愿的器物。#非遗守护人 #百young非遗计划#非遗有好物",
+      "author": "彭***科",
+      "published_at": "2025-10-16T13:36:36+00:00",
+      "url": "https://www.douyin.com/video/7561812952072998154",
+      "likes": 691363,
+      "favorites": 52574,
+      "comments": 17949,
+      "shares": 50123,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-976028E17722BC698161",
+      "retrieved_at": "2026-08-27T21:52:39.815333+00:00",
+      "platform_hot_score": 67.4,
+      "real_engagement_score": 67.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 76.7,
+      "viral_score": 76.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7582894912363449609",
+      "title": "即将消失的中国龙，靠一位70岁的老人苦苦支撑 #百young非遗 #抖音非遗合伙人计划 #青年创作者成长计划 #非遗 #非遗传承",
+      "content": "即将消失的中国龙，靠一位70岁的老人苦苦支撑 #百young非遗 #抖音非遗合伙人计划 #青年创作者成长计划 #非遗 #非遗传承",
+      "author": "琳***上",
+      "published_at": "2025-12-12T09:05:24+00:00",
+      "url": "https://www.douyin.com/video/7582894912363449609",
+      "likes": 110329,
+      "favorites": 13600,
+      "comments": 14911,
+      "shares": 8141,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-4B8128E727F676F4DEBF",
+      "retrieved_at": "2026-08-27T21:52:39.815372+00:00",
+      "platform_hot_score": 50.0,
+      "real_engagement_score": 50.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 69.9,
+      "viral_score": 69.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "dy",
+      "post_id": "7661478633236456570",
+      "title": "我们老祖宗传了几千年的东西，怎么就成国外的“原创”了！？ #非遗守护人#抖音非遗计划#dou来广东百千万 #一见爱上传统文化 #九瑾故事会",
+      "content": "我们老祖宗传了几千年的东西，怎么就成国外的“原创”了！？ #非遗守护人#抖音非遗计划#dou来广东百千万 #一见爱上传统文化 #九瑾故事会",
+      "author": "国***瑾",
+      "published_at": "2026-07-12T03:30:02+00:00",
+      "url": "https://www.douyin.com/video/7661478633236456570",
+      "likes": 726237,
+      "favorites": 30692,
+      "comments": 18661,
+      "shares": 51228,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的抖音搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-DY-076B520BCECC7DA66E5D",
+      "retrieved_at": "2026-08-27T21:52:39.815411+00:00",
+      "platform_hot_score": 79.9,
+      "real_engagement_score": 79.9,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 89.2,
+      "viral_score": 89.2,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "115242780595325",
+      "title": "非遗苗绣AI短片《绣》【AI影像征集大赛-中国非遗赛道】",
+      "content": "在贵州苗寨的群山之间，针线穿梭的不只是布面上的花纹，更是一个民族的记忆与灵魂。\n这是一个关于坚守与创造的故事。以一位时装设计师的幻象为引，带观众走进苗绣的世界，从课堂上一针一线的传承，再到山脚下的大秀现场——现代与传统在阳光下交织。\n苗绣，不仅是非物质文化遗产，更是一种流淌在血脉里的语言。",
+      "author": "B***王",
+      "published_at": "2025-09-21T17:02:08+00:00",
+      "url": "https://www.bilibili.com/video/av115242780595325",
+      "likes": 381,
+      "favorites": 571,
+      "comments": 40,
+      "shares": 551,
+      "views": 26838,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-2AAA4FBAAA6F051D917C",
+      "retrieved_at": "2026-08-27T21:54:54.152183+00:00",
+      "platform_hot_score": 34.7,
+      "real_engagement_score": 34.7,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 61.5,
+      "viral_score": 61.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "113870202998865",
+      "title": "参数｜买博物馆文创当年货，年轻人把博物馆“带回家”",
+      "content": "“买博物馆文创就像把博物馆里的文物‘搬’到自己家一样”“现在博物馆基本上没有淡季，跟文创热有一定关系”……逛完博物馆，再购买几件文创产品，已经成为很多年轻人的打卡“标配”。在社交媒体上也不乏网友发布文创“种草”帖子，感叹现在的文创产品越来越会“整活”了。中国青年报社社会调查中心的一项调查显示，超八成受访青年感觉近几年让人眼前一亮的博物馆文创越来越多了。2025年春节即将来临，不少年轻人购买文创产品做年货。本期《参数》栏目记者走进北京古代建筑博物馆，采访了多位热爱博物馆文创的年轻人和文创工作者，一起聊聊博物馆文创背后的魅力。",
+      "author": "中***报",
+      "published_at": "2025-01-22T04:57:36+00:00",
+      "url": "https://www.bilibili.com/video/av113870202998865",
+      "likes": 292,
+      "favorites": 431,
+      "comments": 3,
+      "shares": 374,
+      "views": 14868,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-214FDB2203255F0CB73B",
+      "retrieved_at": "2026-08-27T21:54:54.155715+00:00",
+      "platform_hot_score": 24.2,
+      "real_engagement_score": 24.2,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 53.9,
+      "viral_score": 53.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "116702314633431",
+      "title": "真正能转化的非遗文创品牌，是什么思路？",
+      "content": "-",
+      "author": "设***旭",
+      "published_at": "2026-06-06T08:57:32+00:00",
+      "url": "https://www.bilibili.com/video/av116702314633431",
+      "likes": 17,
+      "favorites": 6,
+      "comments": 0,
+      "shares": 0,
+      "views": 693,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-A65B92B6366458756EEF",
+      "retrieved_at": "2026-08-27T21:54:54.155789+00:00",
+      "platform_hot_score": 12.2,
+      "real_engagement_score": 12.2,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 57.5,
+      "viral_score": 57.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "113961286500615",
+      "title": "《只瓷一生》非遗纪录片｜景德镇手工制瓷技艺纪录片|闻传大学生毕设作品",
+      "content": "-",
+      "author": "昭***l",
+      "published_at": "2025-02-07T06:58:37+00:00",
+      "url": "https://www.bilibili.com/video/av113961286500615",
+      "likes": 2489,
+      "favorites": 2932,
+      "comments": 238,
+      "shares": 2334,
+      "views": 84031,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-BCDA0CB919271ECB4BFE",
+      "retrieved_at": "2026-08-27T21:54:54.155830+00:00",
+      "platform_hot_score": 60.8,
+      "real_engagement_score": 60.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 70.5,
+      "viral_score": 70.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "113543030640921",
+      "title": "硬控年轻人！当古人的顶级审美变成冰箱贴",
+      "content": "当古代文物遇上现代审美，会碰撞出多少爆款产品？近期，博物馆新晋“顶流”文创冰箱贴爆火出圈，“一贴难求”。有人凌晨五点到博物馆门口排队，只为把栩栩如生的“文物”带回家；有人两年间收集400多件冰箱贴，希望留住旅行见闻和美好记忆；还有人“蹲守”购物网站拼手速，只为抢到戳中审美、心心念念的那款冰箱贴。",
+      "author": "央***看",
+      "published_at": "2024-11-25T10:12:22+00:00",
+      "url": "https://www.bilibili.com/video/av113543030640921",
+      "likes": 628,
+      "favorites": 308,
+      "comments": 15,
+      "shares": 288,
+      "views": 10647,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "冰箱贴",
+      "product_category": "互动冰箱贴",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "旅行"
+      ],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-F17780534DC7E1E63657",
+      "retrieved_at": "2026-08-27T21:54:54.155860+00:00",
+      "platform_hot_score": 21.5,
+      "real_engagement_score": 21.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 38.6,
+      "viral_score": 38.6,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "554377091",
+      "title": "【毕业设计】缬·角 温州非物质文化遗产蓝夹缬数字文创设计",
+      "content": "杭州电子科技大学2022届数字媒体艺术本科独立毕业设计\n主要运用软件：Unity、Blender、AE\n\n作品基于温州非物质文化遗产蓝夹缬结合当下数字文创的发展背景，通过提取、分析、创新结合新媒体方式，让夹缬纹样便于在互联网进行传播，让更多的人可以了解关注到这一非物质文化遗产。\n重点选取蓝夹缬的人物纹样，对人物纹样进行三维模型、数字动态图形、增强现实程序、衍生品设计，以更创新的方式对非遗文化进行传承，被更多的年轻人所关注，展现温州文化，讲好中国故事。",
+      "author": "难***m",
+      "published_at": "2022-05-27T17:35:48+00:00",
+      "url": "https://www.bilibili.com/video/av554377091",
+      "likes": 1728,
+      "favorites": 2416,
+      "comments": 75,
+      "shares": 1150,
+      "views": 45616,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "蓝"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-8FFF40B286F48D7BF393",
+      "retrieved_at": "2026-08-27T21:54:54.156280+00:00",
+      "platform_hot_score": 44.9,
+      "real_engagement_score": 44.9,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 60.4,
+      "viral_score": 60.4,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "117121711349725",
+      "title": "耗时三小时打造传统非遗皮影戏《牛来》，看哭5000万非遗爱好者",
+      "content": "真的绷不住了，家人们，边演边笑",
+      "author": "泰***方",
+      "published_at": "2026-08-19T10:37:46+00:00",
+      "url": "https://www.bilibili.com/video/av117121711349725",
+      "likes": 9321,
+      "favorites": 1563,
+      "comments": 384,
+      "shares": 628,
+      "views": 92000,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-3CBFB3C9DFD035C2FB8A",
+      "retrieved_at": "2026-08-27T21:54:54.156338+00:00",
+      "platform_hot_score": 66.9,
+      "real_engagement_score": 66.9,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 84.8,
+      "viral_score": 84.8,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "114574342757495",
+      "title": "从1块泥巴到上亿天价！非遗汝瓷如何点土成“金”？",
+      "content": "这些看似不起眼的泥巴和石头，经过巧妙的加工，竟然可能卖出上亿元的天价。作为瓷器的一种，为什么“它”这么值钱？这次我们和@碧蓝航线  一拍即合，前往河南汝州，想带你一起来看看这门传承了千年的中国手艺——汝瓷。如果你喜欢这期视频，请多多支持我们，并把视频分享给你的朋友们一起看看!",
+      "author": "影***风",
+      "published_at": "2025-05-28T09:00:00+00:00",
+      "url": "https://www.bilibili.com/video/av114574342757495",
+      "likes": 174416,
+      "favorites": 40958,
+      "comments": 3435,
+      "shares": 12101,
+      "views": 3043118,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "蓝",
+        "金"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-29E0A0D5640C6893D321",
+      "retrieved_at": "2026-08-27T21:54:54.156380+00:00",
+      "platform_hot_score": 88.1,
+      "real_engagement_score": 88.1,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 83.9,
+      "viral_score": 83.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "870118526",
+      "title": "谁还不是个rapper！一首歌串起中国43项世界级非遗",
+      "content": "目前，中国43个项目列入联合国教科文组织，非物质文化遗产名录、名册数量居世界第一。端午节到来之际，央视新闻推出原创音乐MV《非常·非遗》，用一首歌曲串联起这43项世界级非遗项目，以音乐和视觉符号呈现中国式浪漫，彰显古老东方的历史文明之美。",
+      "author": "央***闻",
+      "published_at": "2023-06-22T01:56:19+00:00",
+      "url": "https://www.bilibili.com/video/av870118526",
+      "likes": 46695,
+      "favorites": 9783,
+      "comments": 785,
+      "shares": 4416,
+      "views": 362182,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-83FF68AE942FEDE3A1E9",
+      "retrieved_at": "2026-08-27T21:54:54.156426+00:00",
+      "platform_hot_score": 76.5,
+      "real_engagement_score": 76.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 75.0,
+      "viral_score": 75.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "117117735277032",
+      "title": "非遗布艺文创“姥姥和我”创业者纪录片",
+      "content": "",
+      "author": "橙***夏",
+      "published_at": "2026-08-18T17:45:27+00:00",
+      "url": "https://www.bilibili.com/video/av117117735277032",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 1,
+      "views": 15,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-98930A9D3BE9E9CC14C5",
+      "retrieved_at": "2026-08-27T21:54:54.156464+00:00",
+      "platform_hot_score": 10.1,
+      "real_engagement_score": 10.1,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 59.2,
+      "viral_score": 59.2,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "116345110797770",
+      "title": "最近很火的非遗文创，怎么设计？",
+      "content": "#非遗 #非遗文创店 #手造非遗年 #旅行中的非遗体验 #文创设计 #文创店 #杂货铺 #文创 #文创产品 #文旅",
+      "author": "设***旭",
+      "published_at": "2026-04-04T06:55:29+00:00",
+      "url": "https://www.bilibili.com/video/av116345110797770",
+      "likes": 16,
+      "favorites": 14,
+      "comments": 0,
+      "shares": 3,
+      "views": 960,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "旅行"
+      ],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-B527E7C5F3F922DAEA7C",
+      "retrieved_at": "2026-08-27T21:54:54.156500+00:00",
+      "platform_hot_score": 13.8,
+      "real_engagement_score": 13.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 56.3,
+      "viral_score": 56.3,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "115977454880282",
+      "title": "龙泉青瓷｜内藏雕花·中式瓷韵的极致美学",
+      "content": "",
+      "author": "白***丶",
+      "published_at": "2026-01-29T11:00:00+00:00",
+      "url": "https://www.bilibili.com/video/av115977454880282",
+      "likes": 515584,
+      "favorites": 64672,
+      "comments": 18494,
+      "shares": 8020,
+      "views": 6894529,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-DE31B099971F86D30A59",
+      "retrieved_at": "2026-08-27T21:54:54.156536+00:00",
+      "platform_hot_score": 94.3,
+      "real_engagement_score": 94.3,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 90.9,
+      "viral_score": 90.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "936714657",
+      "title": "年轻人正在对“非遗”上头",
+      "content": "陶瓷、石雕、木雕、文房等14个非遗产业在某电商平台成交过亿，购买非遗产品成了85后、90后的消费新潮流。年轻人都将和接棒非遗手艺的传承人一起，挖掘非遗这块宝藏，讲述一个个乡村振兴的独特故事。记得一键三连哦~",
+      "author": "农***表",
+      "published_at": "2022-02-22T09:00:04+00:00",
+      "url": "https://www.bilibili.com/video/av936714657",
+      "likes": 2013,
+      "favorites": 3355,
+      "comments": 95,
+      "shares": 2197,
+      "views": 116821,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [
+        "木"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-1A868F59EA5990345A43",
+      "retrieved_at": "2026-08-27T21:54:54.156572+00:00",
+      "platform_hot_score": 56.3,
+      "real_engagement_score": 56.3,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 65.5,
+      "viral_score": 65.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "114562984580005",
+      "title": "90%文旅文创都是垃圾！#小骏先生品牌营销咨询",
+      "content": "-",
+      "author": "小***n",
+      "published_at": "2025-05-24T13:19:37+00:00",
+      "url": "https://www.bilibili.com/video/av114562984580005",
+      "likes": 18289,
+      "favorites": 10505,
+      "comments": 621,
+      "shares": 1100,
+      "views": 442917,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-396355645DD1F39533D0",
+      "retrieved_at": "2026-08-27T21:54:54.156607+00:00",
+      "platform_hot_score": 76.2,
+      "real_engagement_score": 76.2,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 78.5,
+      "viral_score": 78.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "115621660524902",
+      "title": "《宝马·长安花》五花马，跑出了诗句。",
+      "content": "从小刻进DNA里对马的好印象大概就是：\n“五花马，千金裘，呼儿将出换美酒”\n“春风得意马蹄疾，一日看尽长安花”\n这两首诗都出自唐代，而“宝马”这个名词也是从唐代诗句中开始盛行，所以本作品腆颜取名为《宝马》，既是对盛唐的充分神往，也是对本作马的“五花”鬃造型的一个最好诠释，五花马本身就是唐代传说中最华丽的马造型方式。\n宝马·五花白玉马，以玉为底，配合战国纹饰结构和唐代花纹填充来确立美术风格，模仿古玉的雕刻手法来完成肌理的塑造，当然少不了也要加入唐代对于圆润的审美偏好。然后用一个巨大的二层障泥当做画布，把镶金、烧蓝、螺钿工艺以及漆艺融合在一起来表现唐代宝的繁复美学风格。贵气非凡的古代美学通过现代技术获得动态的呈现方式，是《宝马》系列作品的主要出发点。\n长安花，因唐代都城本就是长安，所以使用唐代代表性的宝相花造型表现长安花。破掉传统宝相花平面的曼陀罗对称设计，在空间上以更动态化和立体化的方式来表现“长安花（宝相花）”未曾展开过的独特数学美感。\n春风得意的马儿有多快？说到快马不得不提到“马踏飞燕”的形式，用非遗燕型鸢来表现更有艺术感的踏燕画面。\n这种胖胖沉沉的马在飘飞的风筝上的奇特感受，是否能",
+      "author": "学***草",
+      "published_at": "2025-11-27T12:32:25+00:00",
+      "url": "https://www.bilibili.com/video/av115621660524902",
+      "likes": 851,
+      "favorites": 541,
+      "comments": 55,
+      "shares": 324,
+      "views": 13927,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "蓝",
+        "金",
+        "白"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-E15B57138BCE5DCCD627",
+      "retrieved_at": "2026-08-27T21:54:54.156651+00:00",
+      "platform_hot_score": 34.5,
+      "real_engagement_score": 34.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 62.6,
+      "viral_score": 62.6,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "795760792",
+      "title": "文创的千层套路",
+      "content": "设计师在设计和理解文创产品时可应用以下步骤：\n1.确定产品的主成分；\n2.从文化符号中解构出感知；\n3.尽量从办公用品和生活用品中重构出这一感知的新载体，即产品符号文本；\n4.对副成分进行综合权衡，使其达到服务并更好地表现出主成分的目的。\n你品，你细品。你细细细细细细品。\n\n视频中有借鉴素材，感谢以下两位up主\nhttps://www.bilibili.com/video/BV13t411V7yZ?t=24\nhttps://www.bilibili.com/video/BV1Xs411h7St",
+      "author": "大***-",
+      "published_at": "2020-05-31T14:14:29+00:00",
+      "url": "https://www.bilibili.com/video/av795760792",
+      "likes": 4148,
+      "favorites": 4317,
+      "comments": 147,
+      "shares": 1259,
+      "views": 82560,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-3A39137ED05DC92D186D",
+      "retrieved_at": "2026-08-27T21:54:54.156702+00:00",
+      "platform_hot_score": 56.4,
+      "real_engagement_score": 56.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 65.4,
+      "viral_score": 65.4,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "115546028777403",
+      "title": "原来有这么多好玩的文物文创！",
+      "content": "",
+      "author": "亚***大",
+      "published_at": "2025-11-14T03:59:02+00:00",
+      "url": "https://www.bilibili.com/video/av115546028777403",
+      "likes": 6902,
+      "favorites": 1166,
+      "comments": 158,
+      "shares": 128,
+      "views": 64049,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-BA4D6B45840294856A55",
+      "retrieved_at": "2026-08-27T21:54:54.156740+00:00",
+      "platform_hot_score": 52.1,
+      "real_engagement_score": 52.1,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 70.3,
+      "viral_score": 70.3,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "488350212",
+      "title": "【非遗竹编扇子教程】难度零 幼儿园小朋友都学会啦~",
+      "content": "这大概是我出材料包以来制作最简单的一个了吧",
+      "author": "亓***n",
+      "published_at": "2023-07-10T08:17:20+00:00",
+      "url": "https://www.bilibili.com/video/av488350212",
+      "likes": 11304,
+      "favorites": 11546,
+      "comments": 119,
+      "shares": 1171,
+      "views": 359104,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [
+        "竹"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-513D0425B65EDF81DE47",
+      "retrieved_at": "2026-08-27T21:54:54.156773+00:00",
+      "platform_hot_score": 68.3,
+      "real_engagement_score": 68.3,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 71.4,
+      "viral_score": 71.4,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "116729594256160",
+      "title": "纯AI手搓的非遗短片《龙舟》，看完我沉默了",
+      "content": "起龙、采青、赛龙、藏龙、散龙——一条龙舟在岭南的完整一生。🐉\n这部纯AI制作的《龙舟》，把五段仪式、千年祈愿，浓缩成三分钟的数字画卷。\n没有实拍，但有魂。\n从淤泥里唤醒沉睡的龙骨，到竞渡争流，最后藏龙于水、散龙于民——每一步，都是“风调雨顺、力争上游”的中华精神。\n愿这份传承，在年轻人手中，继续破浪。",
+      "author": "a***犬",
+      "published_at": "2026-06-11T04:31:42+00:00",
+      "url": "https://www.bilibili.com/video/av116729594256160",
+      "likes": 170,
+      "favorites": 144,
+      "comments": 40,
+      "shares": 135,
+      "views": 5980,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-ACD7D8A7788944944474",
+      "retrieved_at": "2026-08-27T21:54:54.156815+00:00",
+      "platform_hot_score": 23.8,
+      "real_engagement_score": 23.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 62.9,
+      "viral_score": 62.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "bili",
+      "post_id": "115186627255324",
+      "title": "震撼的火神话🔥非遗AI创意短片【AI影像征集大赛-中国非遗赛道】",
+      "content": "据彝文古籍记载，火把节起源于纪念彝族先祖运用火种勇斗天神，最终战胜天降虫灾，获得胜利的日子。《火焰是人类唯一的誓言》，是关于“火”的幻想，一段神话的叙事。从先祖的烈焰，到今日的火把节，火焰从未熄灭。",
+      "author": "阿***r",
+      "published_at": "2025-09-12T04:05:00+00:00",
+      "url": "https://www.bilibili.com/video/av115186627255324",
+      "likes": 879,
+      "favorites": 812,
+      "comments": 33,
+      "shares": 301,
+      "views": 41638,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的B站搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-BILI-729E5D3950D42D52C6F0",
+      "retrieved_at": "2026-08-27T21:54:54.156859+00:00",
+      "platform_hot_score": 36.8,
+      "real_engagement_score": 36.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 62.3,
+      "viral_score": 62.3,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5273489973972060",
+      "title": "",
+      "content": "刚从只有河南回来，说点大实话……#2026家乡年##带着微博去旅行##新年马上出发# 来之前我一直以为——这里只有河南是很好看、很好拍的地方📷。看戏、拍夯土墙、打卡各种剧场，感觉已经很值了。结果逛了两天之后发现，我之前居然低估了一个地方：地坑院。真的太好逛，也太好吃了😆。很多人来这里只有河南，时间都花在刷剧场上，但地坑院其实特别有意思。地下一层的宋街，基本汇集了很多河南本地小吃，烟火气特别足。我比较推荐这几个：🥙 烧饼夹肉🥟 荆芥饺子🍲 牛肉汤还有几个很适合拍照的小吃📸：🌈 彩虹窝窝头🥤 黄河水饮料🥖 只有河南面包边逛边吃，感觉一下子从戏剧空间回到了真实的河南生活。当然，戏还是要看的。这里只有河南一共有21个剧场🎭，一天其实根本看不完。但说句实话——也不用执着于把所有戏刷完。我自己的建议是：✨ 三大主剧一定要看，其他小剧佛系就好。如果是第一次来，比较推荐的顺序：《火车站》→《李家村》→《幻城》🚂 《火车站》像一个入口，很多普通人在车站里的选择和挣扎，看完心里会有点沉。🌾 《李家村》行进式观演，跟着演员在村子里走。雪花落下来、麦浪翻滚的那一刻，很多人真的在抹眼泪。✨ 我最喜欢的是《幻城》舞台设计真的很夸张：旋转舞台、巨大的亭台楼阁缓缓升起，一面墙上全是历史人物。感觉像是一场关于河南五千年的光影史诗。至于小剧场，其实可以随缘看🎭。像《苏轼的河南》《第七机车车辆厂礼堂》《候车厅》《天子驾六遗址坑》《老院子》《李铭旦书场》都挺有意思，但不用给自己太大压力。慢慢看戏、拍拍照、逛逛地坑院，其实才是最舒服的节奏。如果时间允许，建议2天1晚慢慢逛🧳。三大主剧看完，小剧随缘刷。中间有空再去地坑院吃小吃、逛文创。布老虎、泥咕咕、年画这些河南非遗文创也很好逛🧸。走出幻城的时候会觉得，这里只有河南其实不只是一个景区。更像是一场关于土地、粮食和人的故事🌾。 郑州·只有河南·戏剧幻城",
+      "author": "L***行",
+      "published_at": "2026-03-06T07:17:29+00:00",
+      "url": "https://m.weibo.cn/detail/5273489973972060",
+      "likes": 2065,
+      "favorites": 0,
+      "comments": 241,
+      "shares": 347,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "旅行"
+      ],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-BE8DEEC0092754CDA15A",
+      "retrieved_at": "2026-08-27T21:56:41.952983+00:00",
+      "platform_hot_score": 78.6,
+      "real_engagement_score": 78.6,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 84.7,
+      "viral_score": 84.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5330148987508053",
+      "title": "",
+      "content": " 常州 ",
+      "author": "G***A",
+      "published_at": "2026-08-09T15:40:11+00:00",
+      "url": "https://m.weibo.cn/detail/5330148987508053",
+      "likes": 26,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-9FD2CBEC35D5972A0B34",
+      "retrieved_at": "2026-08-27T21:56:41.957474+00:00",
+      "platform_hot_score": 26.4,
+      "real_engagement_score": 26.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 66.2,
+      "viral_score": 66.2,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5326485478965781",
+      "title": "",
+      "content": "来石河子会展中心，把创意非遗文创带回家！#文化润疆非遗添彩##各地非遗来串门##2026非遗援疆主题展示活动# 新疆是个好地方V的微博视频 ",
+      "author": "新***V",
+      "published_at": "2026-07-30T13:02:42+00:00",
+      "url": "https://m.weibo.cn/detail/5326485478965781",
+      "likes": 13,
+      "favorites": 0,
+      "comments": 6,
+      "shares": 0,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-B724F711BBFB1584711D",
+      "retrieved_at": "2026-08-27T21:56:41.957570+00:00",
+      "platform_hot_score": 30.7,
+      "real_engagement_score": 30.7,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 67.7,
+      "viral_score": 67.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5327470230243562",
+      "title": "",
+      "content": "#许焱磊安徽一日店长活动#  #徽州古城# 非遗文创徽州好礼携手演员@许焱磊  ，以一日店长为媒，走进徽州古城，走近非遗文化，许老师认真工作的的样子好帅！（源:8.1现场粉丝拍摄）今天继续期待哦~@歙县文旅 @黄山文旅 我伦80岁演唱会门票给我留两张叭的微博视频 ",
+      "author": "我***叭",
+      "published_at": "2026-08-02T06:15:45+00:00",
+      "url": "https://m.weibo.cn/detail/5327470230243562",
+      "likes": 5,
+      "favorites": 0,
+      "comments": 3,
+      "shares": 1,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-CD064793E6798ACC39EA",
+      "retrieved_at": "2026-08-27T21:56:41.957664+00:00",
+      "platform_hot_score": 26.0,
+      "real_engagement_score": 26.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 65.7,
+      "viral_score": 65.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5323791748303172",
+      "title": "",
+      "content": "【#好Young济宁打卡运河青春市集#】夜幕下的市集沿河铺展、业态丰富多元。非遗文创区人气高涨，青年匠人带来运河主题漆扇、剪纸、手作饰品，将太白楼、古漕运等济宁元素融入原创好物，游客可现场体验拓印、手工编织；青春创业摊位由返乡青年、在校大学生主理，原创潮玩、香氛花艺、复古手办琳琅满目。 济宁新鲜事的微博视频",
+      "author": "济***事",
+      "published_at": "2026-07-23T02:38:47+00:00",
+      "url": "https://m.weibo.cn/detail/5323791748303172",
+      "likes": 3,
+      "favorites": 0,
+      "comments": 2,
+      "shares": 2,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "潮玩",
+      "product_category": "毛绒与触感产品",
+      "styles": [
+        "复古"
+      ],
+      "colors": [
+        "白"
+      ],
+      "materials": [
+        "纸"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-C8437B7873BD386DCD7A",
+      "retrieved_at": "2026-08-27T21:56:41.957729+00:00",
+      "platform_hot_score": 24.0,
+      "real_engagement_score": 24.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 50.2,
+      "viral_score": 50.2,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5306431130830569",
+      "title": "",
+      "content": "寻到一个超有氛围感的集市全国非遗文创+自主设计说这里陈列的手工艺作品是走遍全国2000多个村庄采集来的简直是民间艺术的迷你博览会看得我眼花缭乱泥塑皮影风筝竹编剪纸……每一件都精致独特充满了匠人的温度和时间的故事 ",
+      "author": "小***钻",
+      "published_at": "2026-06-05T04:53:53+00:00",
+      "url": "https://m.weibo.cn/detail/5306431130830569",
+      "likes": 64,
+      "favorites": 0,
+      "comments": 46,
+      "shares": 0,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [
+        "纸",
+        "竹"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-4FCCFF45DED268189308",
+      "retrieved_at": "2026-08-27T21:56:41.958311+00:00",
+      "platform_hot_score": 45.6,
+      "real_engagement_score": 45.6,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 72.5,
+      "viral_score": 72.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5328823866624528",
+      "title": "",
+      "content": "#山海潍坊世界相邀#  8月5日，“携手非洲・荟聚潍坊”鲁非产业合作对接会在潍坊举行。潍坊文旅全面推介优质文旅资源，参会文旅企业与外方代表团分组开展精准洽谈，共商合作举措。会场同步布设潍坊特色非遗文创展区，风筝、年画等展品吸引外宾驻足观摩。#龙象之城山海潍坊##更好潍坊##发现宝藏潍坊# 潍坊文旅的微博视频",
+      "author": "潍***旅",
+      "published_at": "2026-08-05T23:54:37+00:00",
+      "url": "https://m.weibo.cn/detail/5328823866624528",
+      "likes": 73,
+      "favorites": 0,
+      "comments": 204,
+      "shares": 0,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-6DD7C1D0880D07875258",
+      "retrieved_at": "2026-08-27T21:56:41.958415+00:00",
+      "platform_hot_score": 56.5,
+      "real_engagement_score": 56.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 79.6,
+      "viral_score": 79.6,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5328905254994345",
+      "title": "",
+      "content": "【图见贵阳 | 避暑客“追捧”贵阳非遗文创】#令人心动的guiyang# 8月5日，贵阳非遗文创持续火爆出圈，各大文旅街区的文创专区人气高涨。前来避暑的游客纷纷驻足挑选，工艺精巧的苗绣、纹样灵动的扎染、色彩浓郁的蜡染，还有印着民族元素的特色冰箱贴备受青睐。现场多款非遗DIY体验项目同样人气满满，不少游客亲手参与创作，沉浸式感受贵州民族文化的独特魅力。#来爽爽贵阳豆留一夏##贵阳洋芋diy爆火#（via.@贵阳网 ）",
+      "author": "息***办",
+      "published_at": "2026-08-06T05:18:01+00:00",
+      "url": "https://m.weibo.cn/detail/5328905254994345",
+      "likes": 2,
+      "favorites": 0,
+      "comments": 1,
+      "shares": 0,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "冰箱贴",
+      "product_category": "互动冰箱贴",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-305C8B3665DE795230F8",
+      "retrieved_at": "2026-08-27T21:56:41.958473+00:00",
+      "platform_hot_score": 11.5,
+      "real_engagement_score": 11.5,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 45.7,
+      "viral_score": 45.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5312703511920944",
+      "title": "",
+      "content": "#微博影像年微博影像年##带著微博去旅行# 重庆十八梯 （圖：@jiaxuan1234 拍攝提供）十八梯坐落于重庆渝中区，北连解放碑上半城、南临长江下半城，是连通山城高低城区的千年梯道，国家级旅游休闲街区 。名称源自古梯十八段石阶，南宋起便是老城交通要道，留存吊脚楼、古井与抗战大轰炸遗址，电影《从你的全世界路过》取景地。2021年改造开放，保留原生山城街巷肌理，融合老重庆市井、非遗文创与特色商业，青石板梯、古巷灯火是感受巴渝梯坎文化的核心地标，景区免费对外开放。",
+      "author": "譚***薏",
+      "published_at": "2026-06-22T12:18:04+00:00",
+      "url": "https://m.weibo.cn/detail/5312703511920944",
+      "likes": 36,
+      "favorites": 0,
+      "comments": 10,
+      "shares": 3,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "旅行"
+      ],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-1B743AB97351789043AC",
+      "retrieved_at": "2026-08-27T21:56:41.958553+00:00",
+      "platform_hot_score": 55.4,
+      "real_engagement_score": 55.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 77.4,
+      "viral_score": 77.4,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5316565617869791",
+      "title": "",
+      "content": "🐎🐎双马相遇，好戏开场！@宝马集团 开启BMW 中国文化之旅第20年旅程，一路从曲阜、泰安行至淄博，邂逅了山东非遗文创人气IP：“马彪彪”。宝马中国文化之旅20年秉持长期主义，践行企业社会责任，足迹遍布全国25个省份，赋能近1000位非遗传承人，助力440项非遗技艺走进现代生活，累计惠及2.58亿人次。这匹松弛感满满的潦草小马，取材于齐白石画作《如此千里》，在淄博软陶非遗传承人王枝手中，变成了备受年轻人追捧的文创产品。🎨同为“传承中创新” 的践行者，“马彪彪”与BMW X5 2026 款马年版的相遇，会和宝马新世代理念碰撞出哪些惊喜？速速“上马”，解锁这番奇遇！#文化之旅悦非遗# 新浪公益的微博视频",
+      "author": "星***盟",
+      "published_at": "2026-07-03T04:04:43+00:00",
+      "url": "https://m.weibo.cn/detail/5316565617869791",
+      "likes": 3074,
+      "favorites": 0,
+      "comments": 1988,
+      "shares": 7446,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "白"
+      ],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-5C0F5D3D6926459EC71F",
+      "retrieved_at": "2026-08-27T21:56:41.958643+00:00",
+      "platform_hot_score": 90.7,
+      "real_engagement_score": 90.7,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 93.7,
+      "viral_score": 93.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5324212093846654",
+      "title": "",
+      "content": "#菏泽清凉一夏# 【菏泽6家宝藏小店，请熟悉】  #毕业旅行解锁菏泽# #花样菏泽的宝藏搭子#  小浪山·梧桐小院，小院集主题民宿、乡村餐饮、非遗文创体验、夜游灯光秀和屋顶咖啡于一体。后续更是延展出游学栈道、国学堂及中草药种植园等多种模式。 ",
+      "author": "菏***游",
+      "published_at": "2026-07-24T06:29:05+00:00",
+      "url": "https://m.weibo.cn/detail/5324212093846654",
+      "likes": 26,
+      "favorites": 0,
+      "comments": 5,
+      "shares": 0,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [
+        "旅行"
+      ],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-21359F4D376775813EA3",
+      "retrieved_at": "2026-08-27T21:56:41.958730+00:00",
+      "platform_hot_score": 33.4,
+      "real_engagement_score": 33.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 68.7,
+      "viral_score": 68.7,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5313657030575136",
+      "title": "",
+      "content": "【内蒙古华服×新疆小羊，可爱具象化！】#内蒙古非遗文创遇见新疆小羊# 当内蒙古非遗文创遇见新疆爆火小羊，会带来怎样的惊喜？让我们跨越千里去会一会，从内蒙古到新疆，这一场跨越山河的握手，让我们看到了，不同地域文化之间的温暖链接，各美其美 美美与共，各族文化交相辉映，中华文化历久弥新！#团结路上幸福长# @内蒙古广播电视台 内蒙古广播电视台的微博视频",
+      "author": "青***媒",
+      "published_at": "2026-06-25T03:27:02+00:00",
+      "url": "https://m.weibo.cn/detail/5313657030575136",
+      "likes": 4,
+      "favorites": 0,
+      "comments": 3,
+      "shares": 2,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [
+        "可爱"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-0F93286F59D50BBE97DF",
+      "retrieved_at": "2026-08-27T21:56:41.958801+00:00",
+      "platform_hot_score": 27.6,
+      "real_engagement_score": 27.6,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 65.0,
+      "viral_score": 65.0,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5312200686439306",
+      "title": "",
+      "content": "#新疆文旅大会非遗文创卷疯了# “在新疆文旅大会邂逅非遗与萌宠的双向奔赴！‘新疆小羊’一身非遗配饰萌到心巴，还有各路非遗绝活轮番上演，这样的新疆谁不爱！#新疆是个好地方 # 新疆文旅大会 #非遗文创 # ”乌鲁木齐校园 via:兵团日报 乌鲁木齐校园的微博视频 ",
+      "author": "乌***园",
+      "published_at": "2026-06-21T03:00:02+00:00",
+      "url": "https://m.weibo.cn/detail/5312200686439306",
+      "likes": 6,
+      "favorites": 0,
+      "comments": 1,
+      "shares": 1,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [
+        "木"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-1F7979B735E421695293",
+      "retrieved_at": "2026-08-27T21:56:41.958880+00:00",
+      "platform_hot_score": 17.8,
+      "real_engagement_score": 17.8,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 60.5,
+      "viral_score": 60.5,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5306480409709896",
+      "title": "",
+      "content": "藏在东营非遗文创里的高考祝福#2026高考##东营身边事# 东营网官方微博的微博视频 ",
+      "author": "东***博",
+      "published_at": "2026-06-05T08:09:42+00:00",
+      "url": "https://m.weibo.cn/detail/5306480409709896",
+      "likes": 56,
+      "favorites": 0,
+      "comments": 32,
+      "shares": 60,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [
+        "祝福"
+      ],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-8E22F324251AF5CF19F8",
+      "retrieved_at": "2026-08-27T21:56:41.958946+00:00",
+      "platform_hot_score": 64.4,
+      "real_engagement_score": 64.4,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 80.9,
+      "viral_score": 80.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5306389482440207",
+      "title": "",
+      "content": "#河北文创亮相北京入境旅游发展大会#【河北非遗古法合香珠 亮相北京入境旅游发展大会】燕赵文创组团齐聚京城，亮相北京入境旅游发展大会，多款河北本土非遗文创集结参展，面向海内外来宾展示燕赵传统工艺底蕴。古法合香珠携千年传统香艺重磅亮相，凝古法炮制精髓，以天然香料凝珠成韵，方寸之间尽显中式香道美学，用一缕雅香诉说河北非遗故事，助力燕赵文旅走出河北、面向世界。#燕赵文创进京亮相文旅盛会##这么近那么美周末到河北# 河北省文化和旅游厅的微博视频",
+      "author": "河***厅",
+      "published_at": "2026-06-05T02:08:23+00:00",
+      "url": "https://m.weibo.cn/detail/5306389482440207",
+      "likes": 25,
+      "favorites": 0,
+      "comments": 8,
+      "shares": 8,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [],
+      "materials": [],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-24E2B59179CEF5A0BA1F",
+      "retrieved_at": "2026-08-27T21:56:41.959106+00:00",
+      "platform_hot_score": 48.7,
+      "real_engagement_score": 48.7,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 73.9,
+      "viral_score": 73.9,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "wb",
+      "post_id": "5336646843367608",
+      "title": "",
+      "content": "#电商助农福建在行动##福建电商助农联盟# 【2026福建电商助农联盟系列活动启幕！助八闽农特产乘“云”出圈】8月26日，由省委网信办牵头，联合省农业农村厅、省文旅厅、省妇联等部门共同主办的2026福建电商助农联盟系列活动暨“梦笔生花·诗画浦城”活动启动仪式在浦城县举办。现场，省农科院、中国移动福建分公司等新成员签约加盟，联盟选品库上线，京东“中国特产·福建优选馆”开馆，“闽宁情·山海助农”2026福建电商助农联盟系列活动宁夏专场直播启动；“浦城好物”线上平台发布。丹桂广场同步举办助农集市，设六大展区，汇聚非遗文创、地标农特产品及特色美食，7间实景直播间同步开播，线上线下人气旺盛。在福建电商助农联盟合作展区，兴业银行、福建省农科院、中国移动福建公司等多家协作单位展示了联盟“金融+科研+数字”的电商助农支撑体系。福建电商助农联盟成立一年来，共吸纳40余家单位加入，构建四级网络媒体联动传播矩阵，累计传播量近3.1亿次，协调京东在福建落地“中国特产优选馆”；组建350个产品资源库；组织100余名主播深入12个县区开展213场直播，携手东方甄选举办福建专场，带动销售额超1亿元。2026年，联盟将以首站活动为新起点，完善全链条服务体系，以“网络赋能”拓宽“富民路径”，用“电商流量”撬动“发展增量”。",
+      "author": "福***网",
+      "published_at": "2026-08-27T14:00:19+00:00",
+      "url": "https://m.weibo.cn/detail/5336646843367608",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [],
+      "search_keyword": "非遗文创",
+      "product_form": "未识别",
+      "product_category": "文创生活产品",
+      "styles": [],
+      "colors": [
+        "金",
+        "银"
+      ],
+      "materials": [
+        "银"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者"
+      ],
+      "price_range": "",
+      "usage_scenarios": [],
+      "emotional_values": [],
+      "verified_market_signal": "",
+      "verified_signal_strength": 0,
+      "metrics_verified": true,
+      "evidence_type": "social_signal",
+      "evidence_quality_score": 100,
+      "evidence_quality_reasons": [
+        "用户授权的微博搜索记录",
+        "互动字段按平台原始返回保存，缺失字段为0"
+      ],
+      "source_ref": "MPL-WB-56CBA9157FEABC01374F",
+      "retrieved_at": "2026-08-27T21:56:41.959203+00:00",
+      "platform_hot_score": 10.2,
+      "real_engagement_score": 10.2,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 59.6,
+      "viral_score": 59.6,
+      "viral_reasons": [
+        "social_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "Platform Hot Score 只在同平台样本内做百分位比较",
+        "同类形态在多个来源重复出现"
+      ]
+    },
+    {
+      "platform": "贵州省博物馆官网",
+      "post_id": "gzmuseum-20260224",
+      "title": "贵地宝藏互动冰箱贴与毛绒挂饰",
+      "content": "以贵州二字为框架容纳八件代表文物，加入滑动和旋转组件；书卷文物转成可佩戴毛绒挂饰，苗族银花冠凤鸟做Q版日常化表达。",
+      "author": "贵州省博物馆",
+      "published_at": "2026-02-24",
+      "url": "https://www.gzmuseum.com/gbyw/202602/1263.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "文创",
+        "互动",
+        "冰箱贴",
+        "毛绒",
+        "贵州"
+      ],
+      "search_keyword": "贵州 文创 互动 冰箱贴",
+      "product_form": "冰箱贴",
+      "product_category": "互动冰箱贴",
+      "styles": [
+        "传统元素现代化",
+        "Q版萌化",
+        "小型展览感"
+      ],
+      "colors": [
+        "翠绿",
+        "墨绿",
+        "红金",
+        "米白"
+      ],
+      "materials": [
+        "金属复合",
+        "磁吸件",
+        "毛绒",
+        "刺绣"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "博物馆游客",
+        "收藏爱好者"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "旅行纪念",
+        "桌面/冰箱陈列",
+        "随身包挂"
+      ],
+      "emotional_values": [
+        "可玩",
+        "收藏",
+        "治愈",
+        "地方记忆"
+      ],
+      "verified_market_signal": "馆方2026年新品，页面阅读量可见但不等同销量；互动结构与毛绒触感均有实物描述。",
+      "verified_signal_strength": 68,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 71,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M001",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 58.8,
+      "viral_score": 58.8,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "同类形态在多个来源重复出现",
+        "馆方2026年新品，页面阅读量可见但不等同销量；互动结构与毛绒触感均有实物描述。"
+      ]
+    },
+    {
+      "platform": "中国文化报",
+      "post_id": "ctnews-guizhou-20260722",
+      "title": "贵州四绣进入六类消费场景",
+      "content": "以苗绣、马尾绣、侗绣、布依绣为核心，覆盖景区、展馆、城市商业、线上数字、跨界生活与快闪市集，强调看得见、摸得到、亲手做、带回家。",
+      "author": "中国文化报",
+      "published_at": "2026-07-22",
+      "url": "https://tour.youth.cn/xw/202607/t20260722_16777153.htm",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "贵州",
+        "四绣",
+        "场景",
+        "体验",
+        "伴手礼"
+      ],
+      "search_keyword": "贵州 文创 四绣 场景",
+      "product_form": "未识别",
+      "product_category": "可追溯伴手礼",
+      "styles": [
+        "在地叙事",
+        "生活化",
+        "体验式"
+      ],
+      "colors": [
+        "多彩贵州"
+      ],
+      "materials": [
+        "刺绣",
+        "银饰",
+        "纸",
+        "数字内容"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "入黔游客",
+        "礼赠用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "景区",
+        "展馆",
+        "城市商业",
+        "线上",
+        "快闪",
+        "跨界生活"
+      ],
+      "emotional_values": [
+        "在地归属",
+        "参与感",
+        "故事感"
+      ],
+      "verified_market_signal": "2025年底贵州出台43条文创开发措施，报道披露企业以四绣布局六类场景。",
+      "verified_signal_strength": 82,
+      "metrics_verified": false,
+      "evidence_type": "media_signal",
+      "evidence_quality_score": 81,
+      "evidence_quality_reasons": [
+        "证据类型：media_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M002",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 71.0,
+      "viral_score": 71.0,
+      "viral_reasons": [
+        "media_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "2025年底贵州出台43条文创开发措施，报道披露企业以四绣布局六类场景。"
+      ]
+    },
+    {
+      "platform": "微博",
+      "post_id": "casetify-miao-20260727",
+      "title": "蝶绣生花苗绣合作系列",
+      "content": "品牌与苗绣传承人龙禄颖共创，从苗族古歌、创世传说与山川自然提取苗龙、鹡宇鸟、蝴蝶妈妈，进入手机壳、挂饰与旅行配件。",
+      "author": "CASETiFY官方微博",
+      "published_at": "2026-07-27",
+      "url": "https://www.sina.cn/news/detail/5325276839941484.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "苗绣",
+        "联名",
+        "手机壳",
+        "手机挂饰",
+        "旅行配件"
+      ],
+      "search_keyword": "苗绣 科技配件 联名",
+      "product_form": "挂件",
+      "product_category": "科技生活配件",
+      "styles": [
+        "潮流化",
+        "传统纹样新配色",
+        "品牌联名"
+      ],
+      "colors": [
+        "高饱和多彩",
+        "自然色"
+      ],
+      "materials": [
+        "印花保护壳",
+        "刺绣挂饰",
+        "旅行箱材质"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "数码配件用户",
+        "潮流联名收藏者"
+      ],
+      "price_range": "品牌中高价格带",
+      "usage_scenarios": [
+        "手机日用",
+        "随身表达",
+        "旅行"
+      ],
+      "emotional_values": [
+        "个性表达",
+        "祝福",
+        "女性力量",
+        "文化参与"
+      ],
+      "verified_market_signal": "品牌官方账号发布的2026年合作系列；未披露销量或互动数。",
+      "verified_signal_strength": 86,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 84,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M003",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 73.8,
+      "viral_score": 73.8,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "品牌官方账号发布的2026年合作系列；未披露销量或互动数。"
+      ]
+    },
+    {
+      "platform": "人民网",
+      "post_id": "shui-horsetail-20260210",
+      "title": "马尾绣文创订单排至2026年7月",
+      "content": "传统马尾绣结合现代产品与数字辅助设计，报道显示订单排期至2026年7月并带动女性就业。",
+      "author": "人民网贵州频道",
+      "published_at": "2026-02-10",
+      "url": "https://gz.people.com.cn/n2/2026/0210/c402972-41498475.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "马尾绣",
+        "订单",
+        "AI辅助",
+        "女性就业"
+      ],
+      "search_keyword": "贵州 非遗 文创 订单",
+      "product_form": "未识别",
+      "product_category": "刺绣饰品与礼赠",
+      "styles": [
+        "非遗手作",
+        "传统与科技协作"
+      ],
+      "colors": [
+        "红绿",
+        "蓝白"
+      ],
+      "materials": [
+        "马尾",
+        "丝线",
+        "织物"
+      ],
+      "target_audiences": [
+        "节庆礼赠用户",
+        "非遗收藏用户",
+        "游客"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "节庆礼赠",
+        "穿戴",
+        "家居"
+      ],
+      "emotional_values": [
+        "手工价值",
+        "吉祥",
+        "支持绣娘"
+      ],
+      "verified_market_signal": "报道明确写明订单排至2026年7月；未披露具体订单量。",
+      "verified_signal_strength": 84,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 83,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M004",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 67.5,
+      "viral_score": 67.5,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "报道明确写明订单排至2026年7月；未披露具体订单量。"
+      ]
+    },
+    {
+      "platform": "中国国家博物馆",
+      "post_id": "nmc-phoenix-magnet-20250325",
+      "title": "凤冠冰箱贴累计销量突破100万件",
+      "content": "以明代九龙九凤冠为原型，金属与木质两条产品线带动笔记本、毛绒、马面裙、音乐盒等二十余款长尾产品。",
+      "author": "中国国家博物馆",
+      "published_at": "2025-03-27",
+      "url": "https://www.mct.gov.cn/preview/whzx/zsdw/zggjbwg/202503/t20250327_959057.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "凤冠",
+        "冰箱贴",
+        "爆款",
+        "长尾IP"
+      ],
+      "search_keyword": "博物馆 文创 爆款 冰箱贴",
+      "product_form": "冰箱贴",
+      "product_category": "重工收藏冰箱贴",
+      "styles": [
+        "高还原",
+        "精工",
+        "国风华丽"
+      ],
+      "colors": [
+        "金",
+        "红",
+        "蓝",
+        "珍珠白"
+      ],
+      "materials": [
+        "金属",
+        "木",
+        "仿宝石与流苏组件"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "博物馆游客",
+        "收藏者"
+      ],
+      "price_range": "中价格带",
+      "usage_scenarios": [
+        "旅行纪念",
+        "收藏陈列",
+        "社交分享"
+      ],
+      "emotional_values": [
+        "把国宝带回家",
+        "华丽感",
+        "文化归属",
+        "收藏成就"
+      ],
+      "verified_market_signal": "截至2025-03-25累计销量突破100万件，系列销售额突破亿元。",
+      "verified_signal_strength": 100,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 95,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M005",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 72.7,
+      "viral_score": 72.7,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "截至2025-03-25累计销量突破100万件，系列销售额突破亿元。"
+      ]
+    },
+    {
+      "platform": "河南博物院",
+      "post_id": "henan-gourd-202507",
+      "title": "珐琅镶玉葫芦冰箱贴单日销量破千",
+      "content": "提取文物核心器形和文化意蕴，以锌合金浮雕与烤漆转成兼顾观赏和实用的日常冰箱贴。",
+      "author": "河南博物院/中国文化报",
+      "published_at": "2025-07-10",
+      "url": "https://www.mct.gov.cn/preview/whzx/qgwhxxlb/hn/202507/t20250710_961096.htm",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "葫芦",
+        "浮雕",
+        "烤漆",
+        "冰箱贴"
+      ],
+      "search_keyword": "博物馆 文创 浮雕 烤漆",
+      "product_form": "冰箱贴",
+      "product_category": "立体冰箱贴",
+      "styles": [
+        "核心元素提炼",
+        "现代简约",
+        "传统华彩"
+      ],
+      "colors": [
+        "多色珐琅感",
+        "金属金"
+      ],
+      "materials": [
+        "锌合金",
+        "烤漆"
+      ],
+      "target_audiences": [
+        "博物馆游客",
+        "年轻收藏用户"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "日常陈列",
+        "旅行纪念"
+      ],
+      "emotional_values": [
+        "吉祥",
+        "精致",
+        "可拥有的文物"
+      ],
+      "verified_market_signal": "2025年夏单日销量破千。",
+      "verified_signal_strength": 94,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 90,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M006",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 69.9,
+      "viral_score": 69.9,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "2025年夏单日销量破千。"
+      ]
+    },
+    {
+      "platform": "上海市政府门户",
+      "post_id": "twin-museum-20260731",
+      "title": "双馆限定文创带动跨区域集齐",
+      "content": "两家郊区博物馆以同源主题开发一对限定文创，依靠独家性和社交平台自传播，形成跨区打卡集齐闭环。",
+      "author": "上海市政府门户/解放日报",
+      "published_at": "2026-07-31",
+      "url": "https://www.shanghai.gov.cn/nw4411/20260731/d0fa4170511b4d43b5a460c3ff6ac4ca.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "限定",
+        "联动",
+        "集齐",
+        "社交传播"
+      ],
+      "search_keyword": "文创 限定 联动 社交传播",
+      "product_form": "未识别",
+      "product_category": "系列收藏品",
+      "styles": [
+        "成对",
+        "限定",
+        "地域联动"
+      ],
+      "colors": [
+        "金属金",
+        "馆藏原色"
+      ],
+      "materials": [
+        "金属复合"
+      ],
+      "target_audiences": [
+        "城市青年",
+        "博物馆打卡用户",
+        "收藏用户"
+      ],
+      "price_range": "未披露",
+      "usage_scenarios": [
+        "跨馆打卡",
+        "社交分享",
+        "集齐收藏"
+      ],
+      "emotional_values": [
+        "稀缺",
+        "成就",
+        "社交连接"
+      ],
+      "verified_market_signal": "政府门户称限定周边在社交平台发酵并吸引观众跨区集齐。",
+      "verified_signal_strength": 80,
+      "metrics_verified": false,
+      "evidence_type": "institutional_signal",
+      "evidence_quality_score": 70,
+      "evidence_quality_reasons": [
+        "证据类型：institutional_signal",
+        "来源链接可追溯",
+        "为方向性公开信号"
+      ],
+      "source_ref": "M007",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 80.0,
+      "derived_viral_score": 67.7,
+      "viral_score": 67.7,
+      "viral_reasons": [
+        "institutional_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "机构信号来自可追溯公开来源",
+        "政府门户称限定周边在社交平台发酵并吸引观众跨区集齐。"
+      ]
+    },
+    {
+      "platform": "央视网",
+      "post_id": "youth-museum-products-20250109",
+      "title": "超九成受访青年期待更多博物馆产品进入日常",
+      "content": "青年消费者偏好好看、好玩、有历史内涵、可记录分享的产品，并对考古体验箱、数实卡牌等参与式形式表现兴趣。",
+      "author": "中国青年报",
+      "published_at": "2025-01-09",
+      "url": "https://news.cctv.com/2025/01/09/ARTIITMHNcMexsr2Ka2zD1H1250109.shtml",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "青年",
+        "调查",
+        "生活化",
+        "体验",
+        "社交分享"
+      ],
+      "search_keyword": "年轻消费者 博物馆文创 偏好",
+      "product_form": "未识别",
+      "product_category": "生活用品与体验套件",
+      "styles": [
+        "好看好玩",
+        "有文化内涵",
+        "个性化"
+      ],
+      "colors": [
+        "多样"
+      ],
+      "materials": [
+        "多材料",
+        "数实结合"
+      ],
+      "target_audiences": [
+        "青年消费者",
+        "亲子用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "日常生活",
+        "学习",
+        "社交分享",
+        "亲子体验"
+      ],
+      "emotional_values": [
+        "文化认同",
+        "参与",
+        "分享",
+        "审美"
+      ],
+      "verified_market_signal": "调查报道标题与正文均指向超九成受访青年期待更多产品生活化。",
+      "verified_signal_strength": 88,
+      "metrics_verified": false,
+      "evidence_type": "institutional_signal",
+      "evidence_quality_score": 76,
+      "evidence_quality_reasons": [
+        "证据类型：institutional_signal",
+        "来源链接可追溯",
+        "为方向性公开信号"
+      ],
+      "source_ref": "M008",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 88.0,
+      "derived_viral_score": 61.8,
+      "viral_score": 61.8,
+      "viral_reasons": [
+        "institutional_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "机构信号来自可追溯公开来源",
+        "调查报道标题与正文均指向超九成受访青年期待更多产品生活化。"
+      ]
+    },
+    {
+      "platform": "人民日报",
+      "post_id": "emotion-economy-20260204",
+      "title": "小物件里的情绪消费与新国潮",
+      "content": "专题把包挂、香薰、文创与非遗手作体验放在悦己、陪伴、兴趣和文化认同的消费语境中，显示小型日常物需要由实际体验、审美与文化内涵共同支撑。",
+      "author": "人民日报",
+      "published_at": "2026-02-04",
+      "url": "https://paper.people.com.cn/rmrb/pc/attachement/202602/04/5f8b765c-215b-4f7d-b2ad-f74405557996.pdf",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "情绪消费",
+        "包挂",
+        "香薰",
+        "非遗手作",
+        "新国潮"
+      ],
+      "search_keyword": "情绪经济 非遗 文创 日常小物",
+      "product_form": "包挂",
+      "product_category": "情绪陪伴小物",
+      "styles": [
+        "轻量化",
+        "新国潮",
+        "悦己表达"
+      ],
+      "colors": [
+        "多样"
+      ],
+      "materials": [
+        "织物",
+        "香氛材料",
+        "手工材料"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "兴趣消费用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "随身陪伴",
+        "通勤",
+        "家居",
+        "手作体验"
+      ],
+      "emotional_values": [
+        "悦己",
+        "陪伴",
+        "兴趣认同",
+        "文化认同"
+      ],
+      "verified_market_signal": "人民日报2026年专题对消费现象的报道，不是特定产品销量或平台互动量证据。",
+      "verified_signal_strength": 76,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 77,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M009",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 62.3,
+      "viral_score": 62.3,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "人民日报2026年专题对消费现象的报道，不是特定产品销量或平台互动量证据。"
+      ]
+    },
+    {
+      "platform": "贵州产业",
+      "post_id": "guizhou-embroidery-sales-2025",
+      "title": "机绣提效、手绣保留细节的组合生产",
+      "content": "企业以机绣完成基础轮廓、手绣处理纹样细节，2025年销售各类文创46万件、产值1300多万元，并在景区设直营店。",
+      "author": "贵州地方产业报道",
+      "published_at": "2026-01-24",
+      "url": "https://www.gzdx.gov.cn/dwjl/21718",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "苗绣",
+        "机绣+手绣",
+        "景区零售",
+        "规模化"
+      ],
+      "search_keyword": "贵州 苗绣 文创 销售",
+      "product_form": "未识别",
+      "product_category": "刺绣生活产品",
+      "styles": [
+        "手工细节",
+        "规模化基础",
+        "景区零售"
+      ],
+      "colors": [
+        "多彩"
+      ],
+      "materials": [
+        "织物",
+        "绣线"
+      ],
+      "target_audiences": [
+        "游客",
+        "日常服饰与包袋用户"
+      ],
+      "price_range": "多价格带",
+      "usage_scenarios": [
+        "景区购买",
+        "日常穿戴",
+        "礼赠"
+      ],
+      "emotional_values": [
+        "手工温度",
+        "支持绣娘",
+        "在地纪念"
+      ],
+      "verified_market_signal": "报道披露2025年46万件、产值1300多万元；互动指标未披露。",
+      "verified_signal_strength": 92,
+      "metrics_verified": false,
+      "evidence_type": "institutional_signal",
+      "evidence_quality_score": 89,
+      "evidence_quality_reasons": [
+        "证据类型：institutional_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M010",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 92.0,
+      "derived_viral_score": 72.2,
+      "viral_score": 72.2,
+      "viral_reasons": [
+        "institutional_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "机构信号来自可追溯公开来源",
+        "报道披露2025年46万件、产值1300多万元；互动指标未披露。"
+      ]
+    },
+    {
+      "platform": "中国旅游报",
+      "post_id": "qian-gift-20250715",
+      "title": "非遗+健康与亲民首饰进入贵州手信",
+      "content": "刺梨与蜡染结合的香包兼具天然香氛与舒缓叙事，苗族水滴纹进入亲民银饰；门店提供文化溯源讲解与邮寄服务。",
+      "author": "中国旅游报",
+      "published_at": "2025-07-15",
+      "url": "https://www.ctnews.com.cn/paper/att/202507/15/b444c673-add0-4f31-9758-1fc9db2d95c9.pdf",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "非遗+健康",
+        "香包",
+        "香氛",
+        "银饰",
+        "溯源"
+      ],
+      "search_keyword": "贵州 文创 非遗 健康 首饰",
+      "product_form": "首饰",
+      "product_category": "轻礼赠与首饰",
+      "styles": [
+        "轻量化",
+        "自然疗愈感",
+        "可解释纹样"
+      ],
+      "colors": [
+        "靛蓝",
+        "银白",
+        "刺梨果色"
+      ],
+      "materials": [
+        "织物",
+        "植物香材",
+        "银"
+      ],
+      "target_audiences": [
+        "18-30岁年轻消费者",
+        "伴手礼用户"
+      ],
+      "price_range": "亲民至中价格带",
+      "usage_scenarios": [
+        "通勤穿戴",
+        "旅行伴手礼",
+        "家居香氛"
+      ],
+      "emotional_values": [
+        "疗愈",
+        "祝福",
+        "在地气味记忆"
+      ],
+      "verified_market_signal": "2025贵州旅游商品与文创大赛及线下门店案例。",
+      "verified_signal_strength": 77,
+      "metrics_verified": false,
+      "evidence_type": "media_signal",
+      "evidence_quality_score": 77,
+      "evidence_quality_reasons": [
+        "证据类型：media_signal",
+        "来源链接可追溯",
+        "包含可核对数量或时间"
+      ],
+      "source_ref": "M011",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 59.1,
+      "viral_score": 59.1,
+      "viral_reasons": [
+        "media_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "2025贵州旅游商品与文创大赛及线下门店案例。"
+      ]
+    },
+    {
+      "platform": "中国非遗网",
+      "post_id": "danzhai-paper-20231224",
+      "title": "皮纸从专业修复走向灯饰、书签和体验",
+      "content": "石桥皮纸同时进入古籍修复专业场景和花草纸、灯饰、书签、纸伞、手提袋等生活场景，形成古纸+文旅体验。",
+      "author": "人民日报",
+      "published_at": "2023-12-24",
+      "url": "https://www.ihchina.cn/project_details/28752.html",
+      "likes": 0,
+      "favorites": 0,
+      "comments": 0,
+      "shares": 0,
+      "views": 0,
+      "tags": [
+        "皮纸",
+        "灯饰",
+        "书签",
+        "修复",
+        "体验"
+      ],
+      "search_keyword": "贵州 非遗 皮纸 文创",
+      "product_form": "未识别",
+      "product_category": "纸艺生活产品",
+      "styles": [
+        "自然纤维",
+        "轻透",
+        "手作"
+      ],
+      "colors": [
+        "本白",
+        "花草色",
+        "暖光"
+      ],
+      "materials": [
+        "构皮纸",
+        "花草纤维",
+        "灯具组件"
+      ],
+      "target_audiences": [
+        "文具用户",
+        "家居用户",
+        "手作爱好者"
+      ],
+      "price_range": "亲民至中价格带",
+      "usage_scenarios": [
+        "阅读书写",
+        "家居照明",
+        "礼赠",
+        "手作体验"
+      ],
+      "emotional_values": [
+        "自然",
+        "慢工",
+        "知识保存",
+        "触感"
+      ],
+      "verified_market_signal": "国家非遗网/人民日报报道多个已落地品类，但未披露销量。",
+      "verified_signal_strength": 72,
+      "metrics_verified": false,
+      "evidence_type": "product_signal",
+      "evidence_quality_score": 64,
+      "evidence_quality_reasons": [
+        "证据类型：product_signal",
+        "来源链接可追溯",
+        "为方向性公开信号"
+      ],
+      "source_ref": "M012",
+      "retrieved_at": "",
+      "platform_hot_score": 0.0,
+      "real_engagement_score": 0.0,
+      "institutional_signal_score": 0.0,
+      "derived_viral_score": 49.7,
+      "viral_score": 49.7,
+      "viral_reasons": [
+        "product_signal 与证据质量分开计分",
+        "Derived Viral Score 是策划推导值，不是平台原生指标",
+        "国家非遗网/人民日报报道多个已落地品类，但未披露销量。"
+      ]
+    }
+  ]
+}

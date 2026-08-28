@@ -1,0 +1,2 @@
+"""The single QianCraft strategist."""
+
