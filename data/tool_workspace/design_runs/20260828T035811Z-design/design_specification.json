@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "design_id": "QD-D69DA9E0-MAGNET-01",
-  "generated_at": "2026-08-28T03:16:37.901032Z",
+  "generated_at": "2026-08-28T03:58:11.556095Z",
   "stage": "concept_visual_and_prototype_brief",
   "input_contract": {
-    "source_file": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/designer_handoff.json",
+    "source_file": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/tool_workspace/design_runs/20260828T035811Z-design/designer_handoff_draft.json",
     "source_sha256": "d69da9e0d5b439dd701dcc09e1a5d540d6aa4450b973ed427aed21fd7d1e7288",
     "schema_name": "DesignerHandoff",
     "ready": true,

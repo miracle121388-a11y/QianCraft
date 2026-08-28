@@ -236,6 +236,8 @@ def render_design_poster(
     package: DesignPackage,
     output_path: Path,
     hero_asset_path: Path | None = None,
+    *,
+    generated_now: bool = False,
 ) -> tuple[DesignRenderManifest, ComponentStatus]:
     width = package.poster_request.canvas_width_px
     height = package.poster_request.canvas_height_px
@@ -354,12 +356,20 @@ def render_design_poster(
     )
     status = ComponentStatus(
         component="poster_renderer",
-        mode="live" if hero_path else "cache",
+        mode="live" if hero_path or generated_now else "cache",
         engine=engine,
         ok=True,
         detail=(
             "已合成成品主视觉、文化元素、爆炸拆解、BOM和工艺路径；"
-            + ("使用项目内生成式主视觉素材。" if hero_path else "当前使用本地结构预览。")
+            + (
+                "使用项目内生成式主视觉素材。"
+                if hero_path
+                else (
+                    "本次根据设计规格实时绘制本地结构图。"
+                    if generated_now
+                    else "当前使用本地结构预览。"
+                )
+            )
         ),
     )
     return manifest, status

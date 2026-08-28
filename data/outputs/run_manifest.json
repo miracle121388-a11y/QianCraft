@@ -1,7 +1,7 @@
 {
-  "run_id": "20260827T225611Z-4f2a77ae",
-  "started_at": "2026-08-27T22:56:11.556800Z",
-  "finished_at": "2026-08-27T23:08:55.501838Z",
+  "run_id": "20260828T031637Z-fb206d5d",
+  "started_at": "2026-08-28T03:16:37.893810Z",
+  "finished_at": "2026-08-28T03:16:38.088644Z",
   "request": {
     "topic": "贵州苗绣",
     "region": "贵州",
@@ -11,24 +11,24 @@
   "components": [
     {
       "component": "culture_knowledge",
-      "mode": "live",
-      "engine": "LightRAG local KG",
+      "mode": "cache",
+      "engine": "QianCraft curated graph",
       "ok": true,
-      "detail": "已索引 612 个实体、697 条关系；主题节点与边查询成功。"
+      "detail": "结构化图谱命中 4 条文化记录；未启动外部运行时。"
     },
     {
       "component": "market_research",
       "mode": "cache",
       "engine": "QianCraft verified market evidence cache",
       "ok": true,
-      "detail": "四平台状态：xhs=cache(115)；dy=cache(14)；bili=cache(101)；wb=cache(148)。"
+      "detail": "四平台状态：xhs=unavailable(0)；dy=unavailable(0)；bili=unavailable(0)；wb=unavailable(0)。"
     },
     {
       "component": "strategist",
-      "mode": "live",
-      "engine": "GPT Researcher external-context writer",
+      "mode": "cache",
+      "engine": "QianCraft evidence-locked strategy baseline",
       "ok": true,
-      "detail": "已调用 deepseek-v4-flash；生成建议经过证据编号白名单和 Pydantic 契约校验。 已评分 8 条机会，LightRAG 二次核验高分候选，仅将通过门槛的 Top 3 交给设计阶段。"
+      "detail": "离线证据规则生成 8 条跨域机会；没有把缓存标记为实时模型结果。 已评分 8 条机会，LightRAG 二次核验高分候选，仅将通过门槛的 Top 3 交给设计阶段。"
     },
     {
       "component": "design_agent",
@@ -39,10 +39,10 @@
     },
     {
       "component": "poster_renderer",
-      "mode": "live",
-      "engine": "QianCraft exact-text compositor + generated hero asset",
+      "mode": "cache",
+      "engine": "QianCraft exact-text local concept renderer",
       "ok": true,
-      "detail": "已合成成品主视觉、文化元素、爆炸拆解、BOM和工艺路径；使用项目内生成式主视觉素材。"
+      "detail": "已合成成品主视觉、文化元素、爆炸拆解、BOM和工艺路径；当前使用本地结构预览。"
     }
   ],
   "market_source": {
@@ -57,7 +57,7 @@
       "wb"
     ],
     "live_post_count": 0,
-    "cache_post_count": 390,
+    "cache_post_count": 12,
     "keyword_count": 6,
     "keywords": [
       "贵州苗绣文创",
@@ -68,22 +68,22 @@
       "文创徽章"
     ],
     "raw_paths": [],
-    "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
-    "hotness_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
-    "detail": "四平台状态：xhs=cache(115)；dy=cache(14)；bili=cache(101)；wb=cache(148)。"
+    "derived_path": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/market/derived/market_evidence_20260828T031637Z.json",
+    "hotness_path": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/market/derived/product_form_hotness.json",
+    "detail": "四平台状态：xhs=unavailable(0)；dy=unavailable(0)；bili=unavailable(0)；wb=unavailable(0)。"
   },
   "market_platforms": {
     "xhs": {
-      "status": "cache",
+      "status": "unavailable",
       "login_state": "missing",
       "auth_method": "cdp",
       "platform": "xhs",
       "adapter_discovered": true,
       "login_ok": false,
       "search_ok": false,
-      "sample_size": 115,
+      "sample_size": 0,
       "live_post_count": 0,
-      "cache_post_count": 115,
+      "cache_post_count": 0,
       "keyword_count": 6,
       "keywords": [
         "贵州苗绣文创",
@@ -94,21 +94,21 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\xhs.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
-      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 115 条历史真实抓取快照。"
+      "canonical_path": "",
+      "derived_path": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/market/derived/market_evidence_20260828T031637Z.json",
+      "detail": "演示模式不发起平台访问。 没有可用的该平台真实快照。"
     },
     "dy": {
-      "status": "cache",
+      "status": "unavailable",
       "login_state": "missing",
       "auth_method": "cdp",
       "platform": "dy",
       "adapter_discovered": true,
       "login_ok": false,
       "search_ok": false,
-      "sample_size": 14,
+      "sample_size": 0,
       "live_post_count": 0,
-      "cache_post_count": 14,
+      "cache_post_count": 0,
       "keyword_count": 6,
       "keywords": [
         "贵州苗绣文创",
@@ -119,21 +119,21 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\dy.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
-      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 14 条历史真实抓取快照。"
+      "canonical_path": "",
+      "derived_path": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/market/derived/market_evidence_20260828T031637Z.json",
+      "detail": "演示模式不发起平台访问。 没有可用的该平台真实快照。"
     },
     "bili": {
-      "status": "cache",
+      "status": "unavailable",
       "login_state": "missing",
       "auth_method": "cdp",
       "platform": "bili",
       "adapter_discovered": true,
       "login_ok": false,
       "search_ok": false,
-      "sample_size": 101,
+      "sample_size": 0,
       "live_post_count": 0,
-      "cache_post_count": 101,
+      "cache_post_count": 0,
       "keyword_count": 6,
       "keywords": [
         "贵州苗绣文创",
@@ -144,21 +144,21 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\bili.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
-      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 101 条历史真实抓取快照。"
+      "canonical_path": "",
+      "derived_path": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/market/derived/market_evidence_20260828T031637Z.json",
+      "detail": "演示模式不发起平台访问。 没有可用的该平台真实快照。"
     },
     "wb": {
-      "status": "cache",
+      "status": "unavailable",
       "login_state": "missing",
       "auth_method": "cdp",
       "platform": "wb",
       "adapter_discovered": true,
       "login_ok": false,
       "search_ok": false,
-      "sample_size": 148,
+      "sample_size": 0,
       "live_post_count": 0,
-      "cache_post_count": 148,
+      "cache_post_count": 0,
       "keyword_count": 6,
       "keywords": [
         "贵州苗绣文创",
@@ -169,25 +169,25 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\wb.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260827T225613Z.json",
-      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 148 条历史真实抓取快照。"
+      "canonical_path": "",
+      "derived_path": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/market/derived/market_evidence_20260828T031637Z.json",
+      "detail": "演示模式不发起平台访问。 没有可用的该平台真实快照。"
     }
   },
   "outputs": {
-    "strategy_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\pre_design_strategy.json",
-    "strategy_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\pre_design_strategy.md",
-    "visual_reference_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\visual_reference_pack.json",
-    "visual_reference_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\visual_reference_pack.md",
-    "designer_handoff_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.json",
-    "designer_handoff_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.md",
-    "product_form_hotness": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
-    "design_specification_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_specification.json",
-    "design_specification_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_specification.md",
-    "poster_render_request": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\poster_render_request.json",
-    "design_poster": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_poster.png",
-    "design_render_manifest": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_render_manifest.json",
-    "manifest": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\run_manifest.json"
+    "strategy_json": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/pre_design_strategy.json",
+    "strategy_markdown": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/pre_design_strategy.md",
+    "visual_reference_json": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/visual_reference_pack.json",
+    "visual_reference_markdown": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/visual_reference_pack.md",
+    "designer_handoff_json": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/designer_handoff.json",
+    "designer_handoff_markdown": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/designer_handoff.md",
+    "product_form_hotness": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/market/derived/product_form_hotness.json",
+    "design_specification_json": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/design_specification.json",
+    "design_specification_markdown": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/design_specification.md",
+    "poster_render_request": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/poster_render_request.json",
+    "design_poster": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/design_poster.png",
+    "design_render_manifest": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/design_render_manifest.json",
+    "manifest": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/run_manifest.json"
   },
   "source_snapshot_date": "2026-08-28"
 }

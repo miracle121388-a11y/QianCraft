@@ -33,6 +33,7 @@
 |---|---|
 | 产品名称 | QianCraft｜黔艺前策 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
+| 本地工具工作台 | `web/` + `app/tool_api.py`；逐条查看文化/市场记录和来源、复算 8 条机会、自动或人工组装 Designer Handoff、编辑方案并真实触发设计规格与本地首样结构图生成；默认 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
 | GitHub 展示 | 300 行项目 README；原创横版 SVG 首屏、4 个真实静态徽章、成果海报、Mermaid 架构、快速开始、可信边界、路线图与许可证说明 |
 | 默认主题 | 贵州苗绣 |
 | 默认目标市场 | 18–30 岁年轻消费者 |
@@ -40,17 +41,17 @@
 | 苗绣检索 | 同时保留花溪挑花、剑河锡绣、松桃苗绣与雷山工艺差异 |
 | 视觉参考包 | 12 条权威参考、5 个 Pattern Primitive、3 组无伪造 HEX 的文字色彩关系；默认 `reference_only` |
 | 市场研究层 | 12 条结构化市场信号、12 条公开可追溯来源 |
-| 市场状态 | 授权正式复核为 3/4 live：xhs 115、bili 101、wb 148；dy 当轮及单独重试均无新内容，使用 14 条历史真实快照。四平台共保存 378 条真实快照；12 条公开核验基线不进入平台榜 |
-| 产品形态榜 | 378 条真实平台样本；Top 10 为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒；Top 5 为前五项 |
+| 市场状态 | 最新 demo 运行未访问平台，四平台均为 unavailable，当前运行只有 12 条公开核验基线；历史派生快照 `market_evidence_20260827T225613Z.json` 可核验 378 条社交记录（xhs 115、dy 14、bili 101、wb 148），但当前克隆缺少对应 `data/market/raw/*.jsonl`，因此工作台明确标记为“历史派生快照”，不标成当前实时抓取 |
+| 产品形态榜 | 当前 `product_form_hotness.json` 已被 demo 刷新为空榜，不能把历史 Top 10 冒充当前榜单；历史 378 条记录仍可在工作台逐条查看，重新形成榜单必须完成一次严格实时运行或显式选择历史快照重新派生 |
 | 对标案例 | 8 条 |
 | LightRAG 实机图 | 612 个实体、697 条关系；“贵州苗绣”节点查询通过 |
-| 策划输出 | 最新完整业务运行 `20260827T225611Z-4f2a77ae` 生成 8 条 Opportunity Signals；Top 3 为 OPP-006、OPP-002、OPP-004，均为 verified |
-| Design Agent | 从交接文件重载并校验 SHA-256；选择 OPP-006，缩窄为“针格模块｜花溪挑花互动冰箱贴（概念样）”，将 OPP-002 高敏感动植物母题留置社区审核 |
+| 策划输出 | 最新 demo 运行 `20260828T031637Z-fb206d5d` 含 8 条 Opportunity Signals；本轮 `generated_opportunities_accepted=0`，即 8 条全部来自代码内证据规则基线，随后真实执行六维评分与二次核验；Top 3 为 OPP-006、OPP-004、OPP-002 |
+| Design Agent | 自动模式从 Top 3 中选择 OPP-006，缩窄为“针格模块｜花溪挑花互动冰箱贴（概念样）”；工具支持人工从 8 条机会中选择 1–3 条、指定主机会、编辑交接/产品字段并生成带输入 SHA 的独立运行；没有匹配生成器时直接报错，不套用通用兜底模板 |
 | 工厂首样拆解 | 5 项原型尺寸、5 项 BOM、1 组原创网格应用、6 步装配、6 项质检、3 个文化门、3 个工程门与 5 个工厂问题；不宣称量产就绪 |
 | 设计海报 | 1800 × 2400；原创生成式成品/爆炸主视觉 + 本地精确中文排版；未使用 `reference_only` 馆藏像素 |
-| API | DeepSeek 可达；`deepseek-v4-flash` 模型探针通过 |
-| MediaCrawler | 四平台本人授权与保存会话已完成；正式复核中 xhs/bili/wb 登录、搜索和保存通过，dy 未产出新记录并诚实降级；授权资料可复用但会过期，不承诺永久有效 |
-| 自动测试 | 19/19 通过 |
+| API | 当前本机未配置 `LLM_API_KEY`；历史记录中的 DeepSeek 探针通过不代表本次会话可用。严格研究入口因此处于 BLOCKED，不会使用规则基线兜底 |
+| MediaCrawler | 当前克隆未安装 `.venv-qiancraft`、`MEDIACRAWLER_LIVE_ENABLED=false`，且原始四平台 JSONL 不存在；历史派生快照可查，但本机实时抓取未就绪 |
+| 自动测试 | 22/22 通过 |
 | 静态检查 | `ruff check app scripts tests` 通过 |
 | 凭证检查 | 交付目录未发现 `sk-` 密钥泄漏 |
 
@@ -122,6 +123,19 @@
 
 Culture DNA 与 Trend DNA 可并行取得；Strategist 必须在两者、Visual Reference Pack 和 Benchmark Case 完整后运行；Design Agent 必须在 Designer Handoff 原子落盘后重新从文件读取。生成模型不得反向改写文化事实、视觉权利状态或市场原始记录，也不得把参考图像像素带入概念视觉。
 
+本地工具工作流在上述正式流水线之外增加一层可审计交互，不改写事实源：
+
+```text
+真实文件 → Tool API 实时计数/分页读取 → Web 工作台逐条核验
+       └→ 机会分数按正式权重复算 → 系统 Top 3 或人工选择 1–3 条
+                                      └→ 落盘 DesignerHandoff 草稿 + SHA-256
+                                             └→ Design Agent 匹配真实生成器
+                                                    ├→ 有匹配：DesignPackage + 本地首样结构图 + 独立运行记录
+                                                    └→ 无匹配：明确失败，不套通用模板
+```
+
+工具的“严格实时研究”先检查 LLM、MediaCrawler 开关/运行时与 LightRAG；未就绪时阻断。即使预检通过，运行后也必须确认文化、市场、策划和四个平台全部为 `live`，否则该轮只保留失败审计，不晋级为可用结果。
+
 ## 3. 运行模式与降级
 
 | 模式 | 文化层 | 市场层 | 策划层 | 设计与海报 | 使用场景 |
@@ -129,6 +143,7 @@ Culture DNA 与 Trend DNA 可并行取得；Strategist 必须在两者、Visual 
 | `demo` | 结构化图谱 | 公开核验基线；四平台真实快照存在时只标 `cache` | 本地证据规则 | Design Agent 本地运行；无主视觉时几何海报标 `cache` | 离线验收、开发和稳定演示 |
 | `auto` | 尝试 LightRAG live，允许明确回退 | 仅在显式开关及授权登录态齐备时逐平台抓取 | 尝试 GPT Researcher + DeepSeek，允许明确回退 | 原创主视觉存在时海报标 `live` | 默认实机运行 |
 | `live` | 上游失败报错 | 未授权时仍使用合规缓存；授权失败写清状态 | 模型失败报错 | 保持同一证据锁与量产前门禁 | 严格集成测试 |
+| `tool-strict` | 必须 live | 四平台必须全部 live，任何 cache/unavailable 均失败 | 必须 live 且模型建议通过契约 | 只消费本轮通过的文件交接；无生成器即失败 | Web 工具中的“严格实时研究” |
 
 组件统一状态为 `live|cache|unavailable`，登录状态为 `authorized|missing|expired`，不能互相冒充。当前项目没有使用 mock 数据。
 
@@ -142,16 +157,19 @@ Culture DNA 与 Trend DNA 可并行取得；Strategist 必须在两者、Visual 
 | `app/strategist/` | 唯一策划师、固定任务提示与证据锁 | 不允许生成最终设计；文化/市场事实不可被模型覆盖 |
 | `app/designer/` | Design Agent、设计包 Markdown 与精确文字海报排版 | 只消费已落盘交接；不得使用 reference-only 像素或宣称量产就绪 |
 | `app/pipeline.py` | 端到端编排、原子输出和运行清单 | 新步骤必须说明顺序、失败策略与状态字段 |
+| `app/tool_api.py` | 本地工具 API、真实计数、分页来源查询、严格预检、工作区持久化与设计运行 | 只绑定回环地址；不得向前端返回凭证；历史、当前、live、cache 和规则基线必须分开标注 |
 | `data/culture/` | 文化图谱、视觉参考和 LightRAG 存储 | 事实先写结构化图谱；视觉图像权利与来源分开记录 |
 | `data/market/` | 核验基线、`raw/` 原始抓取、`derived/` 派生证据 | 未披露互动数保持为 0；原始与派生不可混写 |
 | `data/design/assets/` | 原创生成式成品/爆炸主视觉 | 不保存馆藏参考图像；每项正式使用资产必须进入渲染摘要 |
 | `data/benchmark/` | 对标案例 | 案例只提供方法启发，不直接变成产品答案 |
 | `data/demo_cache/` | 明确标注的稳定回退 | 缓存更新时间和生成模式必须可追踪 |
 | `data/outputs/` | 最新13项正式结果 | JSON 是机器契约；Markdown 从同一对象渲染；海报与输入摘要可复核 |
-| `scripts/` | 运行入口、环境探针、四平台 Smoke Test 与显式授权入口 | 登录命令变化同步维护本文件“标准命令” |
+| `data/tool_workspace/` | 人工选择、机会/设计覆盖字段、独立 DesignerHandoff 草稿与工具生成历史 | 每次设计运行单独保存输入 SHA、主机会、引擎、是否使用图像生成和输出路径；不得覆盖历史运行 |
+| `scripts/` | 正式流水线、工具 API/一键启动、环境探针、四平台 Smoke Test 与显式授权入口 | 登录和工具启动命令变化同步维护本文件“标准命令” |
 | `tests/` | 数据、证据、降级与端到端契约 | 修复缺陷时优先增加回归测试 |
 | `docs/` | 专题说明与阶段性产品材料 | 本文件保留总览，专题细节链接到 docs |
 | `docs/assets/` | GitHub README 等文档专用视觉资产 | 只放项目自有或已获许可素材；保持相对路径与无障碍文本 |
+| `web/` | QianCraft 本地工具前端：审计、信息仓库、机会池、人工选择/编辑、设计生成与运行记录 | 使用 Vinext/React/Sites 构建；页面不得硬编码事实计数，不把历史/cache 写成 live，不使用 `reference_only` 馆藏像素 |
 | 三个上游源码目录 | 许可证审计和可替换运行时 | 不删除版权信息；非必要不直接修改上游 |
 
 ## 5. 数据与证据规则
@@ -198,8 +216,9 @@ Culture DNA 与 Trend DNA 可并行取得；Strategist 必须在两者、Visual 
 
 ### 5.5 设计、制造拆解与海报
 
-- `designer_handoff.json` 是策划到设计的唯一机器输入；Design Agent 必须从文件重载 Pydantic 契约并记录 SHA-256，不得复用未落盘的内存旁路。
-- 主机会必须来自输入 Top 3；选案优先 `verified`、具体产品关系和较低文化敏感度。鸟、蝶、龙、祖源、祭祀、丧葬等高敏感母题在存在安全替代项时必须留置人工/社区复核。
+- 正式流水线使用 `designer_handoff.json`，工具人工流程使用每次独立落盘的 `designer_handoff_draft.json`；Design Agent 必须从文件重载 Pydantic 契约并记录 SHA-256，不得复用未落盘的内存旁路。
+- 自动主机会必须来自系统 Top 3；工具人工模式可以从当前 8 条非 rejected 机会中选择 1–3 条并指定主机会，但证据编号、原始评分与核验状态保持锁定。`warning` 机会若被人工选入，必须在设计包中保留文化复核警告。
+- Design Agent 只有在机会产品形态匹配已实现的毛绒/织物、模块收藏品或溯源档案生成器时才运行；没有匹配生成器时直接失败，不得套用通用“安全方案”冒充针对性设计。
 - 多地域或多支系机会进入首样前必须缩窄到一个明确地域/工艺方向，不得在同一概念中拼接专属工艺与完整纹样。
 - `DesignPackage` 必须同时保留输入白名单中的 `Cxxx` 与 `Mxxx`，并包含文化转译、首样尺寸、至少 5 项 BOM、图案应用、至少 5 步装配、至少 5 项质检、文化与工程审核门。
 - `reference_images_used_as_pixels` 与 `mass_production_ready` 必须为 false。馆藏图片、传承人作品和未授权图像不得作为生成输入、贴图、描摹底图或训练素材。
@@ -239,14 +258,28 @@ uv pip install --python ".\market-intel_agent\MediaCrawler-main\.venv-qiancraft\
 
 上游 `pyproject.toml` 当前使用不符合 PEP 621 校验的单数 `author` 字段，因此不做 editable install；QianCraft 直接调用源码入口。
 
-### 7.3 安装 API 与探针
+### 7.3 本地工具工作台
+
+```powershell
+# 首次安装前端依赖
+cd web
+pnpm install
+cd ..
+
+# 同时启动本地真实数据 API 与 Web 工作台
+.\.venv\Scripts\python.exe scripts\run_web_tool.py
+```
+
+工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`。也可以分别运行 `scripts/run_tool.py` 与 `web` 目录中的 `pnpm dev`。交付前执行 `cd web; pnpm build`。工具会持久化人工选择与独立设计运行，但严格实时研究仍要求完整上游配置；缺项时阻断，不走兜底。
+
+### 7.4 安装 API 与探针
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\check_environment.py --install-api --probe-api
 .\.venv\Scripts\python.exe scripts\check_environment.py --probe-mediacrawler
 ```
 
-### 7.4 运行与验收
+### 7.5 运行与验收
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\run_demo.py --mode demo
@@ -260,7 +293,7 @@ uv pip install --python ".\market-intel_agent\MediaCrawler-main\.venv-qiancraft\
 uvx ruff check app scripts tests
 ```
 
-### 7.5 四平台探测与用户显式授权
+### 7.6 四平台探测与用户显式授权
 
 ```powershell
 # 无交互状态探针，不打开浏览器
@@ -291,6 +324,95 @@ uvx ruff check app scripts tests
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-08-28｜可审计工具工作台｜真实来源、人工介入与无兜底生成
+
+变更：
+
+- 将原只读展示首页改造成五段式本地工具工作台：总览、来源仓库、机会池、设计工作台与运行记录；每一层都可以回看真实输入、证据 URL、状态和产物关系。
+- 新增只绑定回环地址的 `app/tool_api.py` 与 `scripts/run_tool.py`，把文化记录、历史/当前市场记录、8 条机会、评分复算、设计谱系、运行状态和本地图片作为结构化接口提供给前端。
+- 新增持久化工作区：默认自动选择当前评分最高的 Top 3；用户也可选择 1–3 条机会、指定主机会，并修改标题、为什么是现在、产品形态、关键词和设计简报。原始证据、原始分数及核验状态保持只读。
+- 设计生成改为显式操作：每次把当时的手工修改写入独立 Designer Handoff 草稿并计算 SHA-256，再生成独立设计规格、结构渲染图、清单和运行记录。手工主机会真实决定生成器；没有已实现生成器的品类直接报错，不套通用模板。
+- 新增严格研究入口：执行前先检查 LLM Key、四平台实抓开关和 MediaCrawler 隔离环境，执行后只接受全部组件与平台都为 `live` 的结果；任一条件不足就拒绝运行，不回退到 demo、cache 或公开基线。
+- 补充真实数据审计：22 条文化记录在当前图谱中确实存在；378 条平台记录只存在于历史派生快照，克隆仓库中没有对应 raw JSONL，不能称为当前实时抓取；8 条机会确实存在且分数可复算，但均来自代码中的证据规则基线，本轮模型生成接受数为 0。
+- 明示设计谱系：当前“针格模块”由 `OPP-006` 进入 Design Agent 后收窄到花溪挑花单一区域，再形成磁吸拼图概念；工具中同时展示这一收窄过程，不再让下游设计看起来凭空出现。
+- 新增 `scripts/run_web_tool.py`，可同时启动本地 API 和前端；保持本地运行，不做公网发布。
+
+原因：
+
+- 用户明确要求把 QianCraft 从对外展示页改为可操作工具，并要求所有数字、评分、机会、设计输入和生成结果都可检查、可介入且禁止兜底伪装。
+
+验证：
+
+- `pytest` 22/22 通过；新增覆盖真实计数、8 条评分逐项复算、手工选择 `OPP-002` 生成对应软偶方向，以及未实现生成器时必须失败。
+- `pnpm build` 通过，Vinext 的 client references、server references、RSC、client 与 SSR 五阶段全部完成。
+- 本地 API 健康检查通过；文化记录返回 22 条，历史小红书记录返回 115 条并支持分页，总历史平台记录为 378 条。
+- 严格研究接口在当前缺少 LLM Key、平台实抓开关和 MediaCrawler 环境时返回 422，并逐项报告阻断原因，没有启动任何假运行。
+- 真实创建工具设计运行 `20260828T035811Z-design`：主机会为 `OPP-006`，产物包含当次草稿哈希、设计规格、1800×2400 结构渲染图、渲染清单和运行清单；`image_generation_used=false` 如实记录未调用图像模型。
+
+边界：
+
+- 当前机器尚未配置本轮严格研究所需的 LLM Key、四平台实时抓取和 MediaCrawler 隔离环境，因此工具可以查阅历史证据，但不能宣称已经重新实时抓取。
+- 当前没有可从网页调用的图像生成服务；“AI 视觉图”按钮保持禁用并展示缺失原因。现有结构渲染图是真实由本地设计生成器创建的 SVG/PNG 产物，但不是图像模型效果图，也不是工厂可直接生产的工程图。
+- `OPP-004` 等没有对应产品生成器的机会只能参与研究与编辑，点击生成会明确失败；新增生成器后才能产出对应设计。
+- 本轮未发布公网，工具只在 `localhost` 使用；文化授权、社区共创、工艺测试和量产工程仍需线下流程。
+
+涉及文件：
+
+- `app/tool_api.py`、`app/designer/agent.py`、`app/designer/poster.py`
+- `scripts/run_tool.py`、`scripts/run_web_tool.py`
+- `web/app/page.tsx`、`web/app/workbench.tsx`、`web/app/globals.css`
+- `tests/test_tool_api.py`
+- `data/tool_workspace/`
+- `WORKFLOW.md`
+
+### 2026-08-28｜本地 Web 前端｜QianCraft 证据链与设计成果展示站
+
+变更：
+
+- 新增 `web/` 前端工程，使用 Vinext、React、Vite 与 Sites 本地开发流程；站点默认通过 `http://localhost:3000/` 访问。
+- 首页形成六个产品级区域：价值主张与真实数据概览、四段证据链、Top 3 机会方向、针格模块设计与 BOM、五组件运行状态以及边界声明。
+- 展示数据从当前正式产物核对：22 条文化记录、378 条仓库历史真实快照、13 项正式产物；Top 3 为 OPP-006 / OPP-004 / OPP-002，分数 83.4 / 79.6 / 79.2。
+- 展示已有原创产品主视觉与完整概念海报，没有引入 `reference_only` 馆藏像素；新增深墨绿、暖白、朱砂与金色的站点分享预览图 `web/public/og.png`。
+- 在 `pnpm-workspace.yaml` 中对脚手架已锁定的 `esbuild`、`sharp`、`unrs-resolver` 和 `workerd` 依赖构建脚本作显式精确允许，保持依赖安装可重复，没有开启宽泛脚本放行。
+
+原因：
+
+- 用户明确要求为现有 QianCraft 制作前端网页，并通过 localhost 在本地打开；原仓库只有命令行流水线与 PNG 产物，没有 Web 入口。
+
+验证：
+
+- `pnpm install` 通过，四个精确允许的原生依赖脚本完成。
+- `pnpm build` 通过，Vinext 的 client references、server references、RSC、client 与 SSR 五阶段均构建成功。
+- 开发服务在 `http://localhost:3000/` 启动，轻量 HTTP 健康检查返回 200。
+- 社交预览图经目视检查，站点标题“QianCraft｜黔艺前策”与副文案完整正确，未出现多余文字或馆藏素材。
+
+边界：
+
+- 本轮按用户要求保持本地运行，未发布到公网；网页是当前本地产物的只读展示层，尚未连接后端任务队列，不会从浏览器触发 Python 策划流水线。
+- 页面继续保留研究原型、cache/live 真实状态、量产前停止、馆藏参考图禁用和社区复核边界。
+
+### 2026-08-28｜本地启动验收｜新鲜克隆环境的离线 Demo
+
+变更：
+
+- 从 GitHub 克隆项目后，使用 Python 3.12.13 在 `.venv` 中安装根项目及测试依赖，未安装或启动 LightRAG、GPT Researcher 与 MediaCrawler 的可选外部运行时。
+- 执行 `scripts/run_demo.py --mode demo`，刷新 13 项正式输出及 demo/market 派生缓存；新运行编号为 `20260828T031637Z-fb206d5d`。
+- 本轮没有访问四个市场平台；四平台如实记录为 `unavailable`，文化、市场、策划与海报层的离线来源标记为 `cache`。
+
+原因：
+
+- 用户要求拉取并启动项目；优先使用不需要 API 凭证、平台登录或浏览器交互的 demo 模式完成安全可重复的首次启动。
+
+验证：
+
+- `.venv/bin/python -m pytest` 通过，19/19 项测试成功。
+- `.venv/bin/python scripts/run_demo.py --mode demo` 成功退出，生成 8 条机会信号、Top 3 Designer Handoff、Design Specification、1800 × 2400 海报与 RunManifest。
+
+边界：
+
+- 这是离线研究原型启动，不代表 LightRAG、DeepSeek 或四平台实时数据已接入；未创建 `.env`，未请求用户凭证，未打开浏览器授权。
+- 本次运行刷新了 `data/outputs/`、`data/demo_cache/pre_design_strategy.json`、`data/market/derived/latest.json`、`data/market/derived/product_form_hotness.json`，并新增 `data/market/derived/market_evidence_20260828T031637Z.json`。
 
 ### 2026-08-28｜README 展示层｜GitHub 首屏、成果证明与可信开源叙事
 

@@ -62,20 +62,43 @@ class DesignAgent:
         self.settings = settings
         self.prompt = (Path(__file__).with_name("prompt.md")).read_text(encoding="utf-8")
 
-    def create_from_file(self, handoff_path: Path) -> tuple[DesignPackage, ComponentStatus]:
+    def create_from_file(
+        self,
+        handoff_path: Path,
+        primary_opportunity_id: str | None = None,
+    ) -> tuple[DesignPackage, ComponentStatus]:
         resolved = handoff_path.resolve()
         handoff = DesignerHandoff.model_validate_json(resolved.read_text(encoding="utf-8"))
         if not handoff.ready:
             raise ValueError("DesignerHandoff is not ready")
 
-        primary = max(handoff.priority_opportunities, key=self._selection_score)
+        if primary_opportunity_id:
+            primary = next(
+                (
+                    item
+                    for item in handoff.priority_opportunities
+                    if item.opportunity_id == primary_opportunity_id
+                ),
+                None,
+            )
+            if primary is None:
+                raise ValueError(
+                    f"Selected opportunity {primary_opportunity_id} is not present in DesignerHandoff"
+                )
+        else:
+            primary = max(handoff.priority_opportunities, key=self._selection_score)
         supporting = self._supporting_opportunity(handoff, primary.opportunity_id)
         if self._is_plush_direction(primary):
             package = self._plush_package(handoff, resolved, primary, supporting)
         elif self._is_magnet_direction(primary):
             package = self._magnet_package(handoff, resolved, primary, supporting)
-        else:
+        elif self._is_provenance_direction(primary):
             package = self._provenance_package(handoff, resolved, primary, supporting)
+        else:
+            raise ValueError(
+                f"机会 {primary.opportunity_id} 尚无与其品类匹配的真实设计生成器；"
+                "请补充明确产品形态后再生成，系统不会套用通用兜底模板。"
+            )
 
         return package, ComponentStatus(
             component="design_agent",
@@ -140,6 +163,14 @@ class DesignAgent:
         text = " ".join(opportunity.potential_product_categories)
         return any(term in text for term in ("冰箱贴", "徽章", "包挂", "收藏", "绣片"))
 
+    @staticmethod
+    def _is_provenance_direction(opportunity: PriorityOpportunity) -> bool:
+        text = " ".join(opportunity.potential_product_categories)
+        return any(
+            term in text
+            for term in ("学习卡", "互动学习", "体验套件", "档案", "故事型礼赠")
+        )
+
     def _base_contract(self, handoff: DesignerHandoff, path: Path) -> DesignInputContract:
         return DesignInputContract(
             source_file=str(path),
@@ -170,6 +201,11 @@ class DesignAgent:
             else:
                 reason = "存在文化核验警告，未直接进入首版成品视觉。"
             held[item.opportunity_id] = reason
+        verification_reason = (
+            "主机会已通过文化二次核验。"
+            if primary.verification.status == "verified"
+            else "主机会由人工选定且带有文化核验警告，商品化前必须完成复核。"
+        )
         return DesignSelection(
             primary_opportunity_id=primary.opportunity_id,
             primary_verification=primary.verification.status,
@@ -177,7 +213,7 @@ class DesignAgent:
                 [supporting.opportunity_id] if supporting is not None else []
             ),
             selection_reason=[
-                "主机会已通过文化二次核验。",
+                verification_reason,
                 "产品关系具体，能够同时验证成品形象、材料层次和拆解结构。",
                 "首版只做单一地域/工艺方向，避免把多支系混成抽象苗绣风。",
             ],
@@ -383,7 +419,8 @@ class DesignAgent:
         primary: PriorityOpportunity,
         supporting: PriorityOpportunity | None,
     ) -> DesignPackage:
-        # Last-resort generic template keeps the interface working without inventing a motif.
+        # Explicit provenance/experience-kit generator. It is only selected when the
+        # opportunity categories request an archive, learning, or experience product.
         evidence = self._evidence(primary, supporting, handoff)
         design_id = f"QD-{_sha256(path)[:8].upper()}-KIT-01"
         product = ProductDesignSpec(

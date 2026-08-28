@@ -5,7 +5,7 @@
 ## 1. 输入接口
 
 - 设计 ID：`QD-D69DA9E0-MAGNET-01`
-- 输入：`/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/designer_handoff.json`
+- 输入：`/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/tool_workspace/design_runs/20260828T035811Z-design/designer_handoff_draft.json`
 - 输入 SHA-256：`d69da9e0d5b439dd701dcc09e1a5d540d6aa4450b973ed427aed21fd7d1e7288`
 - 主机会：`OPP-006`（verified）
 - 支持机会：无

@@ -1,0 +1,26 @@
+{
+  "run_id": "20260828T035811Z-design",
+  "started_at": "2026-08-28T03:58:11.552173+00:00",
+  "finished_at": "2026-08-28T03:58:11.752135+00:00",
+  "selection_mode": "auto",
+  "selected_opportunity_ids": [
+    "OPP-006",
+    "OPP-004",
+    "OPP-002"
+  ],
+  "primary_opportunity_id": "OPP-006",
+  "source_handoff_sha256": "d69da9e0d5b439dd701dcc09e1a5d540d6aa4450b973ed427aed21fd7d1e7288",
+  "design_id": "QD-D69DA9E0-MAGNET-01",
+  "design_engine": "QianCraft evidence-locked deterministic designer",
+  "render_engine": "QianCraft exact-text local concept renderer",
+  "render_kind": "deterministic_local_structure_render",
+  "image_generation_used": false,
+  "reference_only_images_used": false,
+  "product_name": "针格模块｜花溪挑花互动冰箱贴（概念样）",
+  "paths": {
+    "handoff": "data/tool_workspace/design_runs/20260828T035811Z-design/designer_handoff_draft.json",
+    "specification": "data/tool_workspace/design_runs/20260828T035811Z-design/design_specification.json",
+    "poster": "data/tool_workspace/design_runs/20260828T035811Z-design/design_poster.png",
+    "render_manifest": "data/tool_workspace/design_runs/20260828T035811Z-design/design_render_manifest.json"
+  }
+}
