@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "approved": true,
+  "approval": "Delegated to Codex after the user rejected an over-dense laboratory dashboard and an over-minimal showcase composition. The selected comp preserves a real tool canvas with progressive disclosure.",
+  "inputImage": "web/public/product-hero.png",
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity north-star comp for a 1440×900 desktop web application\nInput image: reference image 1 is the real QianCraft modular magnet concept. Preserve the object silhouette, dark indigo frame, exploded-parts logic and stitch-grid material. Use it only as the selected Concept A thumbnail; do not invent other products or reuse the image background as page styling.\nPrimary request: Design ‘QianCraft 文化文创智能工作台’ as a premium, highly usable creative tool—not a corporate website, not a landing page, not an ultra-minimal showcase, and not a cluttered analytics dashboard. Borrow the professional workspace logic of modern AI creation tools: a narrow global tool rail, a collapsible evidence library, a large central node canvas, and a contextual inspector. Density is medium and purposeful; every visible element supports the current task.\nComposition: 56px top command bar with project, five phase tabs, Human Decision v2 and Run; 64px graphite tool rail; 248px open evidence dock with concise culture and market rows; dominant pale node canvas with nine real workflow nodes; 320px contextual inspector with overview, sources and two actions.\nVisual direction: premium Chinese creative software, cool gray-white workspace, carbon text, graphite rail, deep natural indigo content, one clear cobalt interaction color. Neutral neo-grotesk Chinese type, 15–16px body, 24px panel titles, 30px selected-node title. Precise 1px seams, 10px corner radius only on controls and nodes, subtle elevation only on the selected node.\nSignature interaction: clicking a node pushes it half a step forward and rebinds the right inspector; clicking a rail icon slides one dock in while the canvas remains stable.\nConstraints: real daily-use tool; obvious hierarchy within three seconds; canvas dominant; no marketing hero, giant title, bento grid, dense number wall, nested cards, excessive pills, gradients, glass, decorative ethnic patterns, invented sales claims, dark cyberpunk, beige paper, lorem ipsum, device frame or watermark."
+}

@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
-  "design_id": "QD-8AD94C00-MAGNET-01",
-  "generated_at": "2026-08-28T03:30:15.748917Z",
+  "design_id": "QD-8A82B6C8-MAGNET-01",
+  "generated_at": "2026-08-28T06:05:07.262264Z",
   "stage": "concept_visual_and_prototype_brief",
   "input_contract": {
     "source_file": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.json",
-    "source_sha256": "8ad94c0097041042e844ed205ff2ad232ea03c42b28ae53d50f164c579e5aef5",
+    "source_sha256": "8a82b6c897800372d02f5e7d06f6792a70f1185955506d191a0807fa80e8799b",
     "schema_name": "DesignerHandoff",
     "ready": true,
     "input_stage": "designer_handoff",
@@ -246,7 +246,7 @@
     ]
   },
   "poster_request": {
-    "request_id": "PR-QD-8AD94C00-MAGNET-01",
+    "request_id": "PR-QD-8A82B6C8-MAGNET-01",
     "use_case": "product-mockup",
     "asset_type": "A2-style vertical design poster",
     "canvas_width_px": 1800,

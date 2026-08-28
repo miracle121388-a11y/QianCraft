@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qiancraft"
-version = "0.4.0"
+version = "0.7.0"
 description = "贵州非遗文化知识图谱、市场前策与概念设计系统"
 readme = "README.md"
 requires-python = ">=3.11"

@@ -14,10 +14,28 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
+from app.adapters.image_generation_adapter import image_provider_status
 from app.config import MARKET_PLATFORM_CODES, load_settings
 from app.designer import DesignAgent, render_design_package_markdown, render_design_poster
 from app.pipeline import run_pipeline
 from app.schemas import DemoRequest, DesignerHandoff, DesignPackage
+from app.workbench import (
+    BUNDLED_GENERATED_DIR,
+    GENERATED_DIR,
+    create_workbench_workspace,
+    duplicate_concept,
+    generate_more_concept,
+    list_workbench_workspaces,
+    load_workbench_workspace,
+    node_detail,
+    regenerate_concept,
+    run_workbench_node,
+    save_workbench_workspace,
+    set_active_concept,
+    update_decision_profile,
+    update_design_brief,
+    workbench_bootstrap,
+)
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 CULTURE_PATH = ROOT_DIR / "data" / "culture" / "knowledge_graph.json"
@@ -27,7 +45,12 @@ STRATEGY_PATH = ROOT_DIR / "data" / "outputs" / "pre_design_strategy.json"
 HANDOFF_PATH = ROOT_DIR / "data" / "outputs" / "designer_handoff.json"
 DESIGN_PATH = ROOT_DIR / "data" / "outputs" / "design_specification.json"
 RUN_MANIFEST_PATH = ROOT_DIR / "data" / "outputs" / "run_manifest.json"
-WORKSPACE_DIR = ROOT_DIR / "data" / "tool_workspace"
+WORKSPACE_DIR = Path(
+    os.environ.get(
+        "QIANCRAFT_TOOL_WORKSPACE_DIR",
+        str(ROOT_DIR / "data" / "tool_workspace"),
+    )
+).expanduser().resolve()
 WORKSPACE_PATH = WORKSPACE_DIR / "workspace.json"
 TOOL_RUNS_DIR = WORKSPACE_DIR / "design_runs"
 RESEARCH_RUNS_DIR = WORKSPACE_DIR / "research_runs"
@@ -75,6 +98,7 @@ def _historical_market_snapshot() -> tuple[Path | None, dict[str, Any], dict[str
 
 def _strict_preflight() -> dict[str, Any]:
     settings = load_settings()
+    image_status = image_provider_status(settings)
     checks = [
         {
             "id": "llm",
@@ -111,14 +135,14 @@ def _strict_preflight() -> dict[str, Any]:
         {
             "id": "image_provider",
             "label": "主视觉生成服务",
-            "ok": False,
-            "detail": "当前仓库未接入可由网页调用的图像生成服务",
+            "ok": image_status["configured"],
+            "detail": image_status["detail"],
         },
     ]
     blockers = [item["detail"] for item in checks[:4] if not item["ok"]]
     return {
         "research_ready": not blockers,
-        "image_generation_ready": False,
+        "image_generation_ready": image_status["configured"],
         "checks": checks,
         "blockers": blockers,
     }
@@ -674,10 +698,20 @@ def run_strict_research() -> dict[str, Any]:
 
 
 class ToolRequestHandler(BaseHTTPRequestHandler):
-    server_version = "QianCraftTool/0.1"
+    server_version = "QianCraftTool/0.2"
 
     def _cors(self) -> None:
-        self.send_header("Access-Control-Allow-Origin", "http://localhost:3000")
+        origin = self.headers.get("Origin", "")
+        allowed_origins = {
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+        }
+        self.send_header(
+            "Access-Control-Allow-Origin",
+            origin if origin in allowed_origins else "http://localhost:3000",
+        )
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
@@ -720,19 +754,49 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                 self._send_json(load_workspace())
             elif parsed.path == "/api/design":
                 self._send_json(design_state())
+            elif parsed.path == "/api/workbench/bootstrap":
+                workspace_id = parse_qs(parsed.query).get(
+                    "workspace_id", ["guizhou-miao-demo"]
+                )[0]
+                self._send_json(workbench_bootstrap(workspace_id))
+            elif parsed.path == "/api/workbench/workspaces":
+                self._send_json({"workspaces": list_workbench_workspaces()})
+            elif parsed.path == "/api/workbench/image-provider":
+                self._send_json(image_provider_status())
+            elif parsed.path.startswith("/api/workbench/workspaces/"):
+                parts = [part for part in parsed.path.split("/") if part]
+                if len(parts) == 4:
+                    self._send_json(load_workbench_workspace(parts[3]))
+                elif (
+                    len(parts) == 7
+                    and parts[4] == "nodes"
+                    and parts[6] == "detail"
+                ):
+                    self._send_json(node_detail(parts[3], parts[5]))
+                else:
+                    self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
             elif parsed.path == "/api/health":
                 self._send_json({"ok": True, "root": str(ROOT_DIR)})
             elif parsed.path.startswith("/assets/"):
                 self._send_asset(parsed.path)
             else:
                 self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
+        except FileNotFoundError as exc:
+            self._send_json({"error": str(exc)}, HTTPStatus.NOT_FOUND)
         except Exception as exc:  # noqa: BLE001 - API converts failures to explicit JSON
             self._send_json({"error": str(exc)}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def do_PUT(self) -> None:
+        parsed = urlparse(self.path)
         try:
-            if self.path == "/api/workspace":
+            if parsed.path == "/api/workspace":
                 self._send_json(save_workspace(self._read_json()))
+            elif parsed.path.startswith("/api/workbench/workspaces/"):
+                parts = [part for part in parsed.path.split("/") if part]
+                if len(parts) == 4:
+                    self._send_json(save_workbench_workspace(parts[3], self._read_json()))
+                else:
+                    self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
             else:
                 self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
         except (TypeError, ValueError) as exc:
@@ -741,21 +805,73 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
             self._send_json({"error": str(exc)}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def do_POST(self) -> None:
+        parsed = urlparse(self.path)
         try:
-            if self.path == "/api/design/generate":
+            if parsed.path == "/api/design/generate":
                 self._send_json(generate_design(), HTTPStatus.CREATED)
-            elif self.path == "/api/research/run":
+            elif parsed.path == "/api/research/run":
                 self._send_json(run_strict_research(), HTTPStatus.CREATED)
-            elif self.path == "/api/design/image":
+            elif parsed.path == "/api/workbench/workspaces":
+                self._send_json(
+                    create_workbench_workspace(self._read_json()), HTTPStatus.CREATED
+                )
+            elif parsed.path.startswith("/api/workbench/workspaces/"):
+                parts = [part for part in parsed.path.split("/") if part]
+                body = self._read_json()
+                if len(parts) == 5 and parts[4] == "decisions":
+                    self._send_json(
+                        update_decision_profile(
+                            parts[3], body.get("decision_profile", body)
+                        )
+                    )
+                elif len(parts) == 5 and parts[4] == "brief":
+                    self._send_json(update_design_brief(parts[3], body.get("brief", {})))
+                elif len(parts) == 5 and parts[4] == "active-concept":
+                    self._send_json(
+                        set_active_concept(parts[3], str(body.get("concept_id", "")))
+                    )
+                elif len(parts) == 7 and parts[4] == "nodes" and parts[6] == "run":
+                    self._send_json(run_workbench_node(parts[3], parts[5]))
+                elif (
+                    len(parts) == 7
+                    and parts[4] == "concepts"
+                    and parts[6] == "duplicate"
+                ):
+                    self._send_json(duplicate_concept(parts[3], parts[5]))
+                elif (
+                    len(parts) == 7
+                    and parts[4] == "concepts"
+                    and parts[6] == "regenerate"
+                ):
+                    self._send_json(regenerate_concept(parts[3], parts[5]))
+                elif (
+                    len(parts) == 7
+                    and parts[4] == "concepts"
+                    and parts[6] == "generate-more"
+                ):
+                    self._send_json(generate_more_concept(parts[3], parts[5]))
+                else:
+                    self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
+            elif parsed.path == "/api/design/image":
+                provider = image_provider_status()
                 self._send_json(
                     {
-                        "error": "未接入真实图像生成服务，请先配置 provider。"
+                        "error": (
+                            "图像服务已配置；请通过 VisualGenerationNode 运行 A/B/C。"
+                            if provider["configured"]
+                            else provider["detail"]
+                        ),
+                        "provider": provider,
                     },
-                    HTTPStatus.NOT_IMPLEMENTED,
+                    (
+                        HTTPStatus.UNPROCESSABLE_ENTITY
+                        if provider["configured"]
+                        else HTTPStatus.NOT_IMPLEMENTED
+                    ),
                 )
             else:
                 self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
-        except ValueError as exc:
+        except (TypeError, ValueError) as exc:
             self._send_json({"error": str(exc)}, HTTPStatus.UNPROCESSABLE_ENTITY)
         except RuntimeError as exc:
             self._send_json({"error": str(exc)}, HTTPStatus.CONFLICT)
@@ -773,6 +889,22 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
             run_id, filename = parts[2], parts[3]
             if run_id.replace("-", "").isalnum() and filename == "design-poster.png":
                 path = TOOL_RUNS_DIR / run_id / filename
+        elif len(parts) == 4 and parts[:2] == ["assets", "workbench"]:
+            workspace_id, filename = parts[2], parts[3]
+            safe_workspace = workspace_id.replace("-", "").isalnum()
+            safe_filename = (
+                filename.endswith(".png")
+                and filename.replace("-", "").replace(".", "").isalnum()
+            )
+            if safe_workspace and safe_filename:
+                candidates = (
+                    GENERATED_DIR / workspace_id / filename,
+                    BUNDLED_GENERATED_DIR / workspace_id / filename,
+                )
+                path = next(
+                    (candidate for candidate in candidates if candidate.is_file()),
+                    None,
+                )
         if path is None or not path.is_file():
             self._send_json({"error": "asset not found"}, HTTPStatus.NOT_FOUND)
             return

@@ -1,339 +1,1533 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+/* eslint-disable @next/next/no-img-element -- API-served workspace assets use runtime URLs. */
 
-const API = 'http://127.0.0.1:8787';
-const views = [
-  ['overview', '01', '总览与审计'],
-  ['sources', '02', '信息仓库'],
-  ['opportunities', '03', '机会池'],
-  ['design', '04', '设计工作台'],
-  ['runs', '05', '生成记录'],
+import '@xyflow/react/dist/style.css';
+
+import {
+  Background,
+  BackgroundVariant,
+  Controls,
+  MarkerType,
+  MiniMap,
+  ReactFlow,
+  type ReactFlowInstance,
+  useEdgesState,
+  useNodesState,
+} from '@xyflow/react';
+import {
+  ChevronDown,
+  History,
+  Images,
+  Library,
+  PanelRight,
+  Play,
+  Plus,
+  Save,
+  Scale,
+  Workflow,
+  X,
+} from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import {
+  API_BASE,
+  activateConcept,
+  createWorkspace,
+  duplicateConcept,
+  generateMoreConcept,
+  getBootstrap,
+  getDesignPackage,
+  runNode as runNodeRequest,
+  regenerateConcept,
+  saveDecisionProfile,
+  saveDesignBrief,
+  saveWorkspace,
+} from './workbench-api';
+import {
+  NODE_TYPE_LABELS,
+  STATUS_LABELS,
+  apiAssetUrl,
+  markNodeStatus,
+  orderedRunNodeIds,
+  updatePosterSection,
+  type CultureRecordSummary,
+  type DecisionCatalog,
+  type DecisionProfile,
+  type DesignBrief,
+  type ImageProviderStatus,
+  type KnowledgeCenterData,
+  type PosterConfig,
+  type WorkbenchEdge,
+  type WorkbenchNode,
+  type WorkbenchNodeType,
+  type WorkbenchWorkspace,
+  type WorkspaceSummary,
+} from './workbench-model';
+import { nodeTypes } from './workbench-nodes';
+import { DecisionStudio, type DecisionStage } from './decision-studio';
+
+type Toast = { tone: 'success' | 'error' | 'neutral'; message: string } | null;
+type InspectorTab =
+  | 'info'
+  | 'inputs'
+  | 'parameters'
+  | 'outputs'
+  | 'sources'
+  | 'history'
+  | 'actions';
+type ConceptDraft = { title: string; summary: string; direction: string; prompt: string };
+type ToolDock = 'evidence' | 'assets' | 'history' | null;
+
+const PLATFORM_LABELS: Record<string, string> = {
+  xhs: '小红书',
+  dy: '抖音',
+  bili: 'B站',
+  wb: '微博',
+};
+
+const POSTER_SECTION_LABELS: Record<string, string> = {
+  hero: '成品主视觉',
+  culture: '文化元素与转译',
+  breakdown: '结构拆解',
+  bom: '用料 / BOM',
+  process: '工艺路径',
+};
+
+const PHASE_NAVIGATION = [
+  { id: 'culture', label: '文化', nodeId: 'culture' },
+  { id: 'market', label: '市场', nodeId: 'market' },
+  { id: 'strategy', label: '策略', nodeId: 'strategy' },
+  { id: 'design', label: '设计', nodeId: 'brief' },
+  { id: 'delivery', label: '交付', nodeId: 'poster' },
 ] as const;
 
-type ViewId = (typeof views)[number][0];
-type Json = Record<string, unknown>;
-
-type Summary = {
-  project: { topic: string; run_id: string; finished_at: string };
-  repositories: Array<{
-    id: string; name: string; count: number; unit: string; secondary: string;
-    status: string; source_file: string;
-  }>;
-  truth_audit: {
-    culture: { actual: number; verified: boolean };
-    market: { actual: number; meaning: string; raw_files_present: boolean };
-    opportunities: { actual: number; model_generated: number; rule_baseline: number; meaning: string };
-  };
-  current_run: {
-    market_status: string; live_post_count: number; cache_post_count: number;
-    components: Array<{ component: string; mode: string; engine: string; detail: string; ok: boolean }>;
-  };
-  preflight: {
-    research_ready: boolean; image_generation_ready: boolean;
-    checks: Array<{ id: string; label: string; ok: boolean; detail: string }>;
-    blockers: string[];
-  };
-  historical_snapshot: {
-    file: string; generated_at: string; social_record_count: number;
-    public_baseline_count: number; platform_counts: Record<string, number>;
-  };
-};
-
-type Opportunity = {
-  opportunity_id: string; culture_element: string; culture_meaning: string;
-  trend_element: string; market_signal: string; match_reason: string;
-  potential_product_categories: string[]; design_keywords: string[];
-  cultural_constraints: string[]; evidence_refs: string[]; overall_score: number;
-  culture_fit: number; market_pull: number; novelty: number; visual_potential: number;
-  social_shareability: number; product_feasibility: number; cultural_risk: number;
-  verification: { status: string; warnings: string[]; branch_region_findings: string[]; notes: string[] };
-  origin: string; design_generator: string | null;
-  score_audit: { stored: number; recomputed: number; matches: boolean };
-  evidence_details: Array<{ source_id: string; source_title: string; source_url: string; publisher: string }>;
-};
-
-type OpportunityPayload = {
-  count: number; generated_accepted: number; baseline_count: number;
-  weights: Record<string, number>; ranked_ids: string[]; auto_top3_ids: string[];
-  opportunities: Opportunity[];
-};
-
-type Workspace = {
-  selection_mode: 'auto' | 'manual'; selected_opportunity_ids: string[];
-  primary_opportunity_id: string; opportunity_edits: Record<string, Record<string, unknown>>;
-  design_overrides: Record<string, unknown>; manual_brief: string;
-  last_design_run_id: string; updated_at: string;
-};
-
-type DesignState = {
-  selected_run_id: string; poster_url: string;
-  image_generation: { available: boolean; reason: string };
-  design: Record<string, any>;
-  runs: Array<Record<string, any>>;
-};
-
-const emptyWorkspace: Workspace = {
-  selection_mode: 'auto', selected_opportunity_ids: [], primary_opportunity_id: '',
-  opportunity_edits: {}, design_overrides: {}, manual_brief: '',
-  last_design_run_id: '', updated_at: '',
-};
-
-async function jsonRequest<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(`${API}${url}`, { cache: 'no-store', ...options });
-  const payload = await response.json();
-  if (!response.ok) throw new Error(payload.error || `请求失败：${response.status}`);
-  return payload;
+function phaseForNode(nodeId: string) {
+  if (nodeId === 'culture' || nodeId.startsWith('culture-')) return 'culture';
+  if (nodeId === 'market' || nodeId.startsWith('market-')) return 'market';
+  if (nodeId === 'strategy') return 'strategy';
+  if (nodeId === 'poster') return 'delivery';
+  return 'design';
 }
 
-function tags(value: unknown): string[] {
-  if (Array.isArray(value)) return value.map(String);
-  return String(value || '').split(/[，,\n]/).map((item) => item.trim()).filter(Boolean);
+const NODE_DECISION_STAGE: Record<WorkbenchNodeType, DecisionStage> = {
+  CultureGraphNode: 'culture',
+  MarketRadarNode: 'market',
+  StrategyNode: 'score',
+  DesignBriefNode: 'brief',
+  VisualGenerationNode: 'visual',
+  ConceptNode: 'concept',
+  PosterBoardNode: 'poster',
+};
+
+const STAGE_LABELS: Record<DecisionStage, string> = {
+  culture: '文化记录选择',
+  market: '平台与形态范围',
+  score: '评分权重与候选机会',
+  brief: '目标人群与设计意图',
+  visual: '视觉参考与生成方向',
+  concept: '概念比较与当前采用',
+  poster: '海报主题与展示板块',
+};
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
 }
 
-function statusName(status: string) {
-  return ({ file_verified: '文件核验', historical_snapshot: '历史快照', live: '实时', cache: '缓存', unavailable: '不可用' } as Record<string, string>)[status] || status;
+function downloadJson(payload: unknown, filename: string) {
+  downloadBlob(
+    new Blob([`${JSON.stringify(payload, null, 2)}\n`], { type: 'application/json' }),
+    filename,
+  );
 }
 
-function generatorName(value: string | null) {
-  return ({ magnet: '模块收藏品生成器', plush: '织物挂偶生成器', provenance: '溯源档案生成器' } as Record<string, string>)[value || ''] || '尚无匹配生成器';
+function loadCanvasImage(url: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error('概念图载入失败'));
+    image.src = url;
+  });
 }
 
-export default function Workbench() {
-  const [active, setActive] = useState<ViewId>('overview');
-  const [summary, setSummary] = useState<Summary | null>(null);
-  const [opportunityData, setOpportunityData] = useState<OpportunityPayload | null>(null);
-  const [workspace, setWorkspace] = useState<Workspace>(emptyWorkspace);
-  const [designState, setDesignState] = useState<DesignState | null>(null);
-  const [cultureData, setCultureData] = useState<Record<string, any> | null>(null);
-  const [marketData, setMarketData] = useState<Record<string, any> | null>(null);
-  const [sourceType, setSourceType] = useState<'culture' | 'market'>('culture');
-  const [marketSource, setMarketSource] = useState<'historical' | 'current'>('historical');
-  const [platform, setPlatform] = useState('');
-  const [query, setQuery] = useState('');
-  const [marketOffset, setMarketOffset] = useState(0);
-  const [editingOpportunityId, setEditingOpportunityId] = useState('');
-  const [busy, setBusy] = useState('');
-  const [notice, setNotice] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
-  const [fatal, setFatal] = useState('');
-
-  const refreshCore = async () => {
-    try {
-      const [nextSummary, nextOpportunities, nextWorkspace, nextDesign] = await Promise.all([
-        jsonRequest<Summary>('/api/summary'),
-        jsonRequest<OpportunityPayload>('/api/opportunities'),
-        jsonRequest<Workspace>('/api/workspace'),
-        jsonRequest<DesignState>('/api/design'),
-      ]);
-      setSummary(nextSummary);
-      setOpportunityData(nextOpportunities);
-      setWorkspace(nextWorkspace);
-      setDesignState(nextDesign);
-      setEditingOpportunityId((current) => current || nextOpportunities.opportunities[0]?.opportunity_id || '');
-      setFatal('');
-    } catch (reason) {
-      setFatal(String(reason));
+function drawWrappedText(
+  context: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number,
+  maxLines: number,
+): number {
+  const characters = [...String(text)];
+  const lines: string[] = [];
+  let line = '';
+  for (const character of characters) {
+    const next = line + character;
+    if (line && context.measureText(next).width > maxWidth) {
+      lines.push(line);
+      line = character;
+    } else {
+      line = next;
     }
+  }
+  if (line) lines.push(line);
+  const visible = lines.slice(0, maxLines);
+  if (lines.length > maxLines && visible.length) {
+    visible[visible.length - 1] = `${visible[visible.length - 1].slice(0, -1)}…`;
+  }
+  visible.forEach((value, index) => context.fillText(value, x, y + index * lineHeight));
+  return y + visible.length * lineHeight;
+}
+
+async function exportPosterPng(
+  poster: PosterConfig,
+  activeConcept: WorkbenchNode | undefined,
+) {
+  const width = 1800;
+  const height = 2400;
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('浏览器未提供 Canvas 2D 能力。');
+
+  const paper = '#f4f1e9';
+  const white = '#fcfbf7';
+  const ink = '#172033';
+  const muted = '#6e746f';
+  const indigo = '#142b43';
+  const red = '#bf493f';
+  const line = '#d7d0c1';
+  context.fillStyle = paper;
+  context.fillRect(0, 0, width, height);
+  context.strokeStyle = 'rgba(20,43,67,.075)';
+  context.lineWidth = 1;
+  for (let x = 0; x < width; x += 48) {
+    context.beginPath();
+    context.moveTo(x, 0);
+    context.lineTo(x, height);
+    context.stroke();
+  }
+  for (let y = 0; y < height; y += 48) {
+    context.beginPath();
+    context.moveTo(0, y);
+    context.lineTo(width, y);
+    context.stroke();
+  }
+
+  context.fillStyle = indigo;
+  context.fillRect(0, 0, width, 270);
+  context.fillStyle = red;
+  context.fillRect(88, 72, 14, 118);
+  context.fillStyle = white;
+  context.font = '700 76px "Microsoft YaHei", sans-serif';
+  context.fillText(poster.title || 'QianCraft 概念提案', 140, 130);
+  context.font = '400 28px "Microsoft YaHei", sans-serif';
+  drawWrappedText(context, poster.subtitle, 144, 190, 1140, 38, 2);
+  context.font = '700 22px Arial, sans-serif';
+  context.fillText('QIANCRAFT / CULTURAL PRODUCT CONCEPT', 1270, 90);
+  context.fillStyle = '#aab5be';
+  context.font = '400 17px Arial, sans-serif';
+  context.fillText('EDITABLE POSTER BOARD · CONCEPT STAGE', 1270, 130);
+
+  const visibleSections = poster.sections.filter(
+    (section) => !poster.hiddenSections.includes(section),
+  );
+  const sectionWeights: Record<string, number> = {
+    hero: 3.15,
+    culture: 1.25,
+    breakdown: 1.35,
+    bom: 1.65,
+    process: 1.5,
   };
+  const availableHeight = 1980;
+  const totalWeight = visibleSections.reduce(
+    (sum, section) => sum + (sectionWeights[section] ?? 1),
+    0,
+  );
+  let y = 315;
+  let heroImage: HTMLImageElement | null = null;
+  const heroUrl = apiAssetUrl(activeConcept?.data.imageUrl, API_BASE);
+  if (heroUrl) heroImage = await loadCanvasImage(heroUrl).catch(() => null);
 
-  useEffect(() => { refreshCore(); }, []);
+  for (const [index, section] of visibleSections.entries()) {
+    const sectionHeight = Math.max(
+      180,
+      Math.round((availableHeight * (sectionWeights[section] ?? 1)) / totalWeight) - 18,
+    );
+    const x = 88;
+    const sectionWidth = width - 176;
+    context.fillStyle = white;
+    context.strokeStyle = line;
+    context.lineWidth = 2;
+    context.beginPath();
+    context.roundRect(x, y, sectionWidth, sectionHeight, 28);
+    context.fill();
+    context.stroke();
+    context.fillStyle = red;
+    context.beginPath();
+    context.roundRect(x + 30, y + 28, 58, 38, 19);
+    context.fill();
+    context.fillStyle = white;
+    context.font = '700 18px Arial, sans-serif';
+    context.fillText(`0${index + 1}`, x + 47, y + 54);
+    context.fillStyle = ink;
+    context.font = '700 27px "Microsoft YaHei", sans-serif';
+    context.fillText(POSTER_SECTION_LABELS[section] ?? section, x + 112, y + 57);
 
-  const loadCulture = async () => {
-    if (!cultureData) setCultureData(await jsonRequest('/api/culture'));
-  };
-
-  const loadMarket = async (nextOffset = marketOffset) => {
-    const params = new URLSearchParams({ source: marketSource, offset: String(nextOffset), limit: '30' });
-    if (platform) params.set('platform', platform);
-    if (query) params.set('q', query);
-    setMarketData(await jsonRequest(`/api/market?${params}`));
-    setMarketOffset(nextOffset);
-  };
-
-  useEffect(() => {
-    if (active === 'sources' && sourceType === 'culture') loadCulture().catch((error) => setNotice({ kind: 'error', text: String(error) }));
-  }, [active, sourceType]);
-
-  useEffect(() => {
-    if (active === 'sources' && sourceType === 'market') loadMarket(0).catch((error) => setNotice({ kind: 'error', text: String(error) }));
-  }, [active, sourceType, marketSource, platform]);
-
-  const persistWorkspace = async (next: Workspace, success = '工作区已保存') => {
-    setBusy('save');
-    try {
-      const saved = await jsonRequest<Workspace>('/api/workspace', {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(next),
+    if (section === 'hero') {
+      if (heroImage) {
+        const target = { x: x + 34, y: y + 88, w: sectionWidth - 68, h: sectionHeight - 120 };
+        const ratio = Math.min(target.w / heroImage.width, target.h / heroImage.height);
+        const imageWidth = heroImage.width * ratio;
+        const imageHeight = heroImage.height * ratio;
+        context.drawImage(
+          heroImage,
+          target.x + (target.w - imageWidth) / 2,
+          target.y + (target.h - imageHeight) / 2,
+          imageWidth,
+          imageHeight,
+        );
+      } else {
+        context.fillStyle = '#e9e4d9';
+        context.fillRect(x + 34, y + 88, sectionWidth - 68, sectionHeight - 120);
+        context.fillStyle = muted;
+        context.font = '500 24px "Microsoft YaHei", sans-serif';
+        context.fillText('等待当前概念主视觉', x + 74, y + 148);
+      }
+    } else if (section === 'culture') {
+      context.fillStyle = indigo;
+      context.font = '700 38px "Microsoft YaHei", sans-serif';
+      context.fillText(poster.cultureElement, x + 36, y + 120);
+      context.fillStyle = ink;
+      context.font = '400 23px "Microsoft YaHei", sans-serif';
+      drawWrappedText(context, poster.cultureRule, x + 36, y + 170, sectionWidth - 72, 36, 5);
+    } else if (section === 'breakdown') {
+      const parts = poster.materials.slice(0, 5);
+      const gap = (sectionWidth - 150) / Math.max(parts.length, 1);
+      parts.forEach((part, partIndex) => {
+        const center = x + 78 + gap * partIndex + gap / 2;
+        context.fillStyle = partIndex % 2 ? '#263e55' : indigo;
+        context.beginPath();
+        context.roundRect(center - 54, y + 100, 108, 96, 24);
+        context.fill();
+        context.fillStyle = red;
+        context.beginPath();
+        context.arc(center, y + 228, 20, 0, Math.PI * 2);
+        context.fill();
+        context.fillStyle = white;
+        context.font = '700 16px Arial, sans-serif';
+        context.fillText(String(partIndex + 1), center - 5, y + 234);
+        context.fillStyle = ink;
+        context.font = '500 17px "Microsoft YaHei", sans-serif';
+        drawWrappedText(context, part, center - 90, y + 270, 180, 25, 3);
       });
-      setWorkspace(saved);
-      setNotice({ kind: 'ok', text: success });
-      return saved;
-    } catch (error) {
-      setNotice({ kind: 'error', text: String(error) });
-      throw error;
-    } finally { setBusy(''); }
-  };
-
-  const switchMode = async (mode: 'auto' | 'manual') => {
-    if (!opportunityData) return;
-    const selected = mode === 'auto' ? opportunityData.auto_top3_ids : (workspace.selected_opportunity_ids.length ? workspace.selected_opportunity_ids : opportunityData.auto_top3_ids);
-    const next = { ...workspace, selection_mode: mode, selected_opportunity_ids: selected, primary_opportunity_id: mode === 'manual' ? (workspace.primary_opportunity_id || selected[0]) : '' };
-    await persistWorkspace(next, mode === 'auto' ? '已恢复系统 Top 3 自动选择' : '已切换为人工选择');
-  };
-
-  const toggleOpportunity = async (id: string) => {
-    if (workspace.selection_mode !== 'manual') return;
-    const selected = workspace.selected_opportunity_ids.includes(id)
-      ? workspace.selected_opportunity_ids.filter((item) => item !== id)
-      : [...workspace.selected_opportunity_ids, id];
-    if (selected.length > 3) { setNotice({ kind: 'error', text: 'Designer Handoff 最多选择 3 条机会。' }); return; }
-    if (!selected.length) { setNotice({ kind: 'error', text: '至少保留 1 条机会。' }); return; }
-    const primary = selected.includes(workspace.primary_opportunity_id) ? workspace.primary_opportunity_id : selected[0];
-    await persistWorkspace({ ...workspace, selected_opportunity_ids: selected, primary_opportunity_id: primary }, '人工选择已保存');
-  };
-
-  const updateOpportunityEdit = (id: string, key: string, value: unknown) => {
-    setWorkspace((current) => ({ ...current, opportunity_edits: { ...current.opportunity_edits, [id]: { ...(current.opportunity_edits[id] || {}), [key]: value } } }));
-  };
-
-  const generateDesign = async () => {
-    setBusy('generate'); setNotice(null);
-    try {
-      const saved = await jsonRequest<Workspace>('/api/workspace', {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(workspace),
+    } else if (section === 'bom') {
+      context.font = '500 20px "Microsoft YaHei", sans-serif';
+      poster.materials.slice(0, 6).forEach((material, materialIndex) => {
+        const rowY = y + 92 + materialIndex * 54;
+        context.fillStyle = materialIndex % 2 ? '#f2efe7' : '#e9e4d9';
+        context.fillRect(x + 34, rowY, sectionWidth - 68, 44);
+        context.fillStyle = red;
+        context.font = '700 17px Arial, sans-serif';
+        context.fillText(`B${String(materialIndex + 1).padStart(2, '0')}`, x + 54, rowY + 29);
+        context.fillStyle = ink;
+        context.font = '500 20px "Microsoft YaHei", sans-serif';
+        context.fillText(material, x + 140, rowY + 29);
       });
-      setWorkspace(saved);
-      const result = await jsonRequest<Record<string, any>>('/api/design/generate', { method: 'POST' });
-      const nextDesign = await jsonRequest<DesignState>('/api/design');
-      setDesignState(nextDesign);
-      setWorkspace(await jsonRequest<Workspace>('/api/workspace'));
-      setNotice({ kind: 'ok', text: `已真实生成 ${result.product_name} 的设计规格与本地结构图。` });
-    } catch (error) { setNotice({ kind: 'error', text: String(error) }); }
-    finally { setBusy(''); }
-  };
+    } else if (section === 'process') {
+      poster.process.slice(0, 6).forEach((step, stepIndex) => {
+        const rowY = y + 94 + stepIndex * 62;
+        context.fillStyle = indigo;
+        context.beginPath();
+        context.arc(x + 58, rowY, 19, 0, Math.PI * 2);
+        context.fill();
+        context.fillStyle = white;
+        context.font = '700 15px Arial, sans-serif';
+        context.fillText(String(stepIndex + 1), x + 53, rowY + 5);
+        context.fillStyle = ink;
+        context.font = '400 19px "Microsoft YaHei", sans-serif';
+        drawWrappedText(context, step, x + 94, rowY - 12, sectionWidth - 140, 29, 2);
+      });
+    }
+    y += sectionHeight + 18;
+  }
 
-  const runResearch = async () => {
-    setBusy('research'); setNotice(null);
-    try {
-      const result = await jsonRequest<Record<string, any>>('/api/research/run', { method: 'POST' });
-      setNotice({ kind: result.status === 'live_verified' ? 'ok' : 'error', text: result.detail || `研究任务状态：${result.status}` });
-      await refreshCore();
-    } catch (error) { setNotice({ kind: 'error', text: String(error) }); }
-    finally { setBusy(''); }
-  };
+  context.fillStyle = ink;
+  context.fillRect(0, height - 78, width, 78);
+  context.fillStyle = white;
+  context.font = '400 18px "Microsoft YaHei", sans-serif';
+  context.fillText(
+    poster.boundary || '概念视觉与工厂首样沟通输入｜不是量产定稿',
+    90,
+    height - 32,
+  );
+  context.textAlign = 'right';
+  context.fillStyle = '#aab5be';
+  context.fillText(new Date().toLocaleDateString('zh-CN'), width - 90, height - 32);
+  context.textAlign = 'left';
 
-  const activeOpportunity = opportunityData?.opportunities.find((item) => item.opportunity_id === editingOpportunityId) || null;
-  const selectedPrimary = workspace.selection_mode === 'manual'
-    ? workspace.primary_opportunity_id
-    : designState?.design?.selection?.primary_opportunity_id || '';
-  const primaryOpportunity = opportunityData?.opportunities.find((item) => item.opportunity_id === selectedPrimary);
+  const blob = await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (value) => (value ? resolve(value) : reject(new Error('PNG 导出失败'))),
+      'image/png',
+      1,
+    );
+  });
+  downloadBlob(blob, `QianCraft-${poster.title || 'concept-poster'}.png`);
+}
 
-  if (fatal) return <FatalState message={fatal} onRetry={refreshCore} />;
+function KnowledgeCenter({
+  knowledge,
+  profile,
+  onOpenGraph,
+  onOpenDecisions,
+}: {
+  knowledge: KnowledgeCenterData;
+  profile: DecisionProfile;
+  onOpenGraph: () => void;
+  onOpenDecisions: (stage: DecisionStage) => void;
+}) {
+  const [query, setQuery] = useState('');
+  const records = useMemo(() => {
+    const keyword = query.trim().toLowerCase();
+    if (!keyword) return knowledge.culture.records.slice(0, 3);
+    return knowledge.culture.records
+      .filter((record) =>
+        [record.name, record.category, ...record.region, ...record.crafts, ...record.patterns]
+          .join(' ')
+          .toLowerCase()
+          .includes(keyword),
+      )
+              .slice(0, 6);
+  }, [knowledge.culture.records, query]);
 
   return (
-    <div className="tool-shell">
-      <aside className="sidebar">
-        <div className="tool-brand"><span>黔</span><div><strong>QianCraft</strong><small>证据设计工作台</small></div></div>
-        <nav aria-label="工具模块">
-          {views.map(([id, number, label]) => <button key={id} className={active === id ? 'active' : ''} onClick={() => setActive(id)}><i>{number}</i>{label}</button>)}
-        </nav>
-        <div className="sidebar-truth"><strong>NO FALLBACK</strong><span>缺数据就停止，不用缓存伪装实时</span></div>
-        <div className="sidebar-foot"><span className="status-dot" />本地真实数据服务</div>
-      </aside>
+    <aside className="knowledge-center">
+      <div className="panel-heading">
+        <div>
+          <span>KNOWLEDGE CENTER</span>
+          <h2>证据中心</h2>
+        </div>
+        <div className="panel-heading__actions"><b>{knowledge.culture.recordCount + knowledge.market.ranking.length}</b><button type="button" onClick={() => onOpenDecisions('culture')}>人工选材</button></div>
+      </div>
 
-      <main className="workspace-main">
-        <WorkspaceHeader summary={summary} active={active} busy={busy} onRefresh={refreshCore} onRun={runResearch} />
-        {notice && <div className={`notice ${notice.kind}`}><span>{notice.kind === 'ok' ? '✓' : '!'}</span>{notice.text}<button onClick={() => setNotice(null)}>×</button></div>}
-        {!summary || !opportunityData || !designState ? <section className="loading-state">正在从真实项目文件计算工作区…</section> : (
-          <>
-            {active === 'overview' && <Overview summary={summary} setActive={setActive} />}
-            {active === 'sources' && <SourcesView sourceType={sourceType} setSourceType={setSourceType} cultureData={cultureData} marketData={marketData} marketSource={marketSource} setMarketSource={setMarketSource} platform={platform} setPlatform={setPlatform} query={query} setQuery={setQuery} loadMarket={loadMarket} marketOffset={marketOffset} />}
-            {active === 'opportunities' && <OpportunityView data={opportunityData} workspace={workspace} activeOpportunity={activeOpportunity} setEditingOpportunityId={setEditingOpportunityId} switchMode={switchMode} toggleOpportunity={toggleOpportunity} persistWorkspace={persistWorkspace} setWorkspace={setWorkspace} updateOpportunityEdit={updateOpportunityEdit} busy={busy} />}
-            {active === 'design' && <DesignView data={opportunityData} workspace={workspace} setWorkspace={setWorkspace} designState={designState} primaryOpportunity={primaryOpportunity || null} generateDesign={generateDesign} busy={busy} />}
-            {active === 'runs' && <RunsView summary={summary} designState={designState} />}
-          </>
-        )}
-      </main>
+      <section className="knowledge-section">
+        <div className="section-title-row">
+          <div>
+            <i className="section-icon section-icon--market">M</i>
+            <span>市场雷达</span>
+          </div>
+          <button type="button" onClick={() => onOpenDecisions('market')}>调整范围</button>
+        </div>
+        <div className="platform-grid">
+          {Object.entries(knowledge.market.platforms).map(([code, platform]) => (
+            <div className={profile.marketPlatforms.includes(code) ? 'is-selected' : ''} key={code} title={platform.detail}>
+              <span>{PLATFORM_LABELS[code] ?? code}</span>
+              <strong>{platform.sample_size}</strong>
+              <i className={`platform-state platform-state--${platform.status}`} />
+            </div>
+          ))}
+        </div>
+        <div className="market-total">
+          <span>已验证历史样本</span>
+          <strong>{knowledge.market.sampleSize}</strong>
+        </div>
+        <div className="market-ranking">
+          {knowledge.market.ranking.slice(0, 3).map((item) => (
+            <div
+              className={profile.marketProductForms.includes(item.name) ? 'is-selected' : ''}
+              draggable
+              key={item.name}
+              onDragStart={(event) => {
+                event.dataTransfer.setData(
+                  'application/qiancraft-knowledge',
+                  JSON.stringify({ kind: 'market', item }),
+                );
+                event.dataTransfer.effectAllowed = 'copy';
+              }}
+            >
+              <b>0{item.rank}</b>
+              <span>{item.name}</span>
+              <i>
+                <em style={{ width: `${Math.min(100, item.score)}%` }} />
+              </i>
+              <strong>{item.score}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="knowledge-section knowledge-section--culture">
+        <div className="section-title-row">
+          <div>
+            <i className="section-icon section-icon--culture">C</i>
+            <span>贵州在地文化</span>
+          </div>
+          <div className="section-title-actions"><button type="button" onClick={onOpenGraph}>展开图谱</button><button type="button" onClick={() => onOpenDecisions('culture')}>选择记录</button></div>
+        </div>
+        <label className="knowledge-search">
+          <span aria-hidden="true">⌕</span>
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="搜索工艺、地域、纹样…"
+          />
+        </label>
+        <div className="culture-list">
+          {records.map((record) => (
+            <article
+              className={profile.cultureRecordIds.includes(record.id) ? 'is-selected' : ''}
+              draggable
+              key={record.id}
+              onDragStart={(event) => {
+                event.dataTransfer.setData(
+                  'application/qiancraft-knowledge',
+                  JSON.stringify({ kind: 'culture', item: record }),
+                );
+                event.dataTransfer.effectAllowed = 'copy';
+              }}
+            >
+              <div>
+                <span>{record.category || '在地文化'}</span>
+                <small>{record.sourceRefs.length} refs</small>
+              </div>
+              <h3>{record.name}</h3>
+              <p>{record.region.slice(0, 2).join(' · ')}</p>
+              <div className="tag-row">
+                {record.crafts.slice(0, 3).map((craft) => (
+                  <em key={craft}>{craft}</em>
+                ))}
+              </div>
+              <small className="culture-selection-state">{profile.cultureRecordIds.includes(record.id) ? '✓ 本轮使用' : '未选用'}</small>
+            </article>
+          ))}
+        </div>
+        <p className="drag-hint">拖到画布，可创建证据节点</p>
+      </section>
+    </aside>
+  );
+}
+
+function AssetDock({
+  nodes,
+  onSelect,
+}: {
+  nodes: WorkbenchNode[];
+  onSelect: (nodeId: string) => void;
+}) {
+  const assets = nodes.filter((node) => node.type === 'ConceptNode' || node.type === 'PosterBoardNode');
+
+  return (
+    <aside className="asset-dock">
+      <header className="dock-heading">
+        <div><span>ASSET LIBRARY</span><h2>方案资产</h2></div>
+        <b>{assets.length}</b>
+      </header>
+      <p className="dock-intro">比较概念方向与当前海报。点击资产会在画布中定位并打开对应 Inspector。</p>
+      <div className="asset-dock__list">
+        {assets.map((node) => {
+          const imageUrl = String(node.data.imageUrl ?? '');
+          return (
+            <button className={node.data.active ? 'is-active' : ''} key={node.id} type="button" onClick={() => onSelect(node.id)}>
+              {imageUrl ? <img alt="" src={apiAssetUrl(imageUrl, API_BASE)} /> : <span className="asset-dock__empty">{String(node.data.label ?? '板')}</span>}
+              <span><small>{NODE_TYPE_LABELS[node.type]}</small><strong>{node.data.title}</strong><em>{STATUS_LABELS[node.data.status]}</em></span>
+            </button>
+          );
+        })}
+      </div>
+    </aside>
+  );
+}
+
+function HistoryDock({ node }: { node: WorkbenchNode | undefined }) {
+  const history = node?.data.history ?? [];
+
+  return (
+    <aside className="history-dock">
+      <header className="dock-heading">
+        <div><span>ACTIVITY</span><h2>节点历史</h2></div>
+        <b>{history.length}</b>
+      </header>
+      {node ? (
+        <>
+          <div className="history-dock__subject"><span>{NODE_TYPE_LABELS[node.type]}</span><strong>{node.data.title}</strong><em>{STATUS_LABELS[node.data.status]}</em></div>
+          <div className="history-dock__list">
+            {history.length ? history.map((item, index) => (
+              <article key={`${item.at}-${index}`}><i /><p>{item.event}</p><time>{new Date(item.at).toLocaleString('zh-CN')}</time></article>
+            )) : <p className="dock-empty">当前节点尚无独立历史记录。</p>}
+          </div>
+        </>
+      ) : <p className="dock-empty">先在画布中选择一个节点。</p>}
+    </aside>
+  );
+}
+
+function CultureGraphOverlay({
+  records,
+  onClose,
+}: {
+  records: CultureRecordSummary[];
+  onClose: () => void;
+}) {
+  const [selectedId, setSelectedId] = useState(records[0]?.id ?? '');
+  const selected = records.find((record) => record.id === selectedId) ?? records[0];
+  return (
+    <div className="graph-overlay" role="dialog" aria-modal="true" aria-label="贵州文化图谱">
+      <header>
+        <div>
+          <span>CULTURAL EVIDENCE GRAPH</span>
+          <h2>贵州文化知识图谱</h2>
+          <p>地域、工艺、纹样与使用边界保持证据引用，不把支系差异压扁成一种风格。</p>
+        </div>
+        <button type="button" onClick={onClose} aria-label="关闭图谱">×</button>
+      </header>
+      <div className="graph-overlay__body">
+        <div className="culture-orbit">
+          <div className="orbit-core">
+            <span>GUIZHOU</span>
+            <strong>贵州在地文化</strong>
+            <small>{records.length} records</small>
+          </div>
+          {records.slice(0, 14).map((record, index) => (
+            <button
+              className={record.id === selected?.id ? 'is-active' : ''}
+              key={record.id}
+              style={{ '--orbit-index': index } as React.CSSProperties}
+              type="button"
+              onClick={() => setSelectedId(record.id)}
+            >
+              {record.name.replace('贵州', '')}
+            </button>
+          ))}
+        </div>
+        {selected ? (
+          <article className="culture-detail">
+            <span>{selected.category}</span>
+            <h3>{selected.name}</h3>
+            <p>{selected.region.join(' · ')}</p>
+            <h4>工艺</h4>
+            <div className="tag-row">
+              {selected.crafts.map((item) => <em key={item}>{item}</em>)}
+            </div>
+            <h4>纹样 / 结构</h4>
+            <div className="tag-row">
+              {selected.patterns.map((item) => <em key={item}>{item}</em>)}
+            </div>
+            <h4>边界</h4>
+            {selected.boundaries.map((item) => <p className="boundary-item" key={item}>{item}</p>)}
+            <div className="source-strip">{selected.sourceRefs.join(' · ')}</div>
+          </article>
+        ) : null}
+      </div>
     </div>
   );
 }
 
-function FatalState({ message, onRetry }: { message: string; onRetry: () => void }) {
-  return <div className="fatal-full"><strong>真实数据服务未连接</strong><p>{message}</p><small>页面不会使用静态假数据替代。</small><button onClick={onRetry}>重新连接</button></div>;
-}
-
-function WorkspaceHeader({ summary, active, busy, onRefresh, onRun }: { summary: Summary | null; active: ViewId; busy: string; onRefresh: () => void; onRun: () => void }) {
-  const label = views.find(([id]) => id === active)?.[2];
-  return <header className="workspace-header"><div><span className="crumb">WORKSPACE / {active.toUpperCase()}</span><h1>{label} · {summary?.project.topic || '加载中'}</h1></div><div className="header-actions"><span className="run-id">{summary?.project.run_id || '—'}</span><button className="outline-button" onClick={onRefresh}>刷新真实文件</button><button className="primary-button" disabled={!summary?.preflight.research_ready || busy === 'research'} onClick={onRun}>{busy === 'research' ? '运行中…' : '开始严格实时研究'}</button></div></header>;
-}
-
-function Overview({ summary, setActive }: { summary: Summary; setActive: (view: ViewId) => void }) {
-  return <>
-    <section className="audit-banner"><div><span className="audit-kicker">TRUTH AUDIT</span><h2>先看数据是真是假，再开始做设计。</h2></div><div className="audit-facts"><p><i className="ok" />22 条文化记录：<strong>文件中实有 {summary.truth_audit.culture.actual} 条</strong></p><p><i className="warn" />378 条市场记录：<strong>历史快照，不是当前实时抓取</strong></p><p><i className="warn" />8 条机会：<strong>{summary.truth_audit.opportunities.model_generated} 条模型生成，{summary.truth_audit.opportunities.rule_baseline} 条规则基线</strong></p><p><i className="blocked" />当前实时市场记录：<strong>{summary.current_run.live_post_count} 条</strong></p></div></section>
-    <section className="repo-section"><SectionTitle code="01 / EVIDENCE REPOSITORIES" title="信息仓库" description="数字在每次加载时从真实文件重新计算，不在页面里写死。" /><div className="repo-grid">{summary.repositories.map((repo) => <button className="repo-card" key={repo.id} onClick={() => setActive('sources')}><div className="repo-card-head"><span className={`source-badge ${repo.status}`}>{statusName(repo.status)}</span><b>↗</b></div><h3>{repo.name}</h3><div className="repo-count"><strong>{repo.count}</strong><span>{repo.unit}</span></div><p>{repo.secondary}</p><code>{repo.source_file}</code></button>)}</div></section>
-    <section className="truth-detail-section"><SectionTitle code="02 / WHAT THE NUMBERS MEAN" title="数字的真实含义" description="把可验证事实与当前缺口放在同一张表里。" /><div className="truth-table"><div><strong>文化记录</strong><span>22 / 22</span><p>来自 knowledge_graph.json；每条记录都有 Cxxx 来源编号。</p><b className="truth-ok">可逐条核验</b></div><div><strong>市场社交记录</strong><span>378</span><p>{summary.truth_audit.market.meaning}；原始 JSONL 当前{summary.truth_audit.market.raw_files_present ? '存在' : '缺失'}。</p><b className="truth-warn">历史派生快照</b></div><div><strong>机会池</strong><span>8</span><p>{summary.truth_audit.opportunities.meaning}</p><b className="truth-warn">规则基线</b></div><div><strong>当前实时抓取</strong><span>{summary.current_run.live_post_count}</span><p>严格模式未就绪时不会自动使用历史记录冒充本轮抓取。</p><b className="truth-blocked">未就绪</b></div></div></section>
-    <section className="preflight-section"><SectionTitle code="03 / STRICT MODE PREFLIGHT" title="严格模式就绪检查" description="有一项未就绪，就不启动实时任务，也不会改用缓存兜底。" /><div className="check-list">{summary.preflight.checks.map((check) => <div className="check-row" key={check.id}><i className={check.ok ? 'ok' : 'blocked'} /><strong>{check.label}</strong><span>{check.detail}</span><small>{check.ok ? 'READY' : 'BLOCKED'}</small></div>)}</div></section>
-  </>;
-}
-
-function SectionTitle({ code, title, description }: { code: string; title: string; description: string }) {
-  return <div className="section-title"><div><span>{code}</span><h2>{title}</h2></div><p>{description}</p></div>;
-}
-
-function SourcesView(props: {
-  sourceType: 'culture' | 'market'; setSourceType: (value: 'culture' | 'market') => void;
-  cultureData: Record<string, any> | null; marketData: Record<string, any> | null;
-  marketSource: 'historical' | 'current'; setMarketSource: (value: 'historical' | 'current') => void;
-  platform: string; setPlatform: (value: string) => void; query: string; setQuery: (value: string) => void;
-  loadMarket: (offset?: number) => Promise<void>; marketOffset: number;
+function DecisionEntry({
+  profile,
+  stage,
+  onOpen,
+}: {
+  profile: DecisionProfile;
+  stage: DecisionStage;
+  onOpen: (stage: DecisionStage) => void;
 }) {
-  const { sourceType, setSourceType, cultureData, marketData, marketSource, setMarketSource, platform, setPlatform, query, setQuery, loadMarket, marketOffset } = props;
-  return <section className="module-page"><SectionTitle code="02 / SOURCE EXPLORER" title="逐条查验信息" description="这里展示文件中的原始字段、来源 URL、平台指标与派生分数。" /><div className="segmented"><button className={sourceType === 'culture' ? 'active' : ''} onClick={() => setSourceType('culture')}>文化记录</button><button className={sourceType === 'market' ? 'active' : ''} onClick={() => setSourceType('market')}>市场记录</button></div>
-    {sourceType === 'culture' ? <div className="source-panel"><div className="panel-summary"><strong>{cultureData?.count ?? '—'}</strong><span>条文化记录</span><small>{cultureData?.source_count ?? '—'} 个登记来源 · 更新 {cultureData?.updated_at || '—'}</small></div><div className="record-list">{cultureData?.records?.map((record: Record<string, any>) => <details className="record-row" key={record.culture_id}><summary><span>{record.culture_id}</span><strong>{record.culture_name}</strong><small>{record.region?.join(' / ')}</small><b>{record.source_refs?.length} 个来源</b></summary><div className="record-detail"><DataGroup label="工艺" values={record.crafts} /><DataGroup label="纹样与符号" values={[...(record.patterns || []), ...(record.symbols || [])]} /><DataGroup label="文化边界" values={[...(record.cultural_taboos || []), ...(record.non_transferable_elements || [])]} /><div className="evidence-links"><h4>来源证据</h4>{record.source_details?.map((source: Record<string, any>) => <a key={source.source_id} href={source.source_url} target="_blank" rel="noreferrer"><span>{source.source_id}</span><strong>{source.source_title}</strong><small>{source.publisher}</small><b>↗</b></a>)}</div></div></details>)}</div></div> : <div className="source-panel"><div className="source-toolbar"><select value={marketSource} onChange={(event) => setMarketSource(event.target.value as 'historical' | 'current')}><option value="historical">历史真实快照</option><option value="current">当前运行数据</option></select><select value={platform} onChange={(event) => setPlatform(event.target.value)}><option value="">全部平台</option><option value="xhs">小红书</option><option value="dy">抖音</option><option value="bili">B站</option><option value="wb">微博</option></select><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索标题、内容、关键词…" /><button className="primary-button" onClick={() => loadMarket(0)}>查询真实记录</button></div><div className="market-meta"><strong>{marketData?.total ?? '—'}</strong><span>条匹配记录</span><code>{marketData?.source_file}</code></div><div className="market-list">{marketData?.records?.map((record: Record<string, any>) => <details className="market-row" key={`${record.platform}-${record.post_id}`}><summary><span className={`platform-tag ${record.platform}`}>{record.platform}</span><div><strong>{record.title || '(无标题)'}</strong><small>{record.search_keyword} · {record.published_at || '时间未披露'}</small></div><div className="metrics"><span>赞 {record.likes || 0}</span><span>藏 {record.favorites || 0}</span><span>评 {record.comments || 0}</span><b>{Number(record.platform_hot_score || 0).toFixed(1)}</b></div></summary><div className="market-detail"><p>{record.content || '没有正文内容'}</p><div className="market-field-grid"><span>产品形态<strong>{record.product_form || '未识别'}</strong></span><span>证据类型<strong>{record.evidence_type}</strong></span><span>真实互动分<strong>{Number(record.real_engagement_score || 0).toFixed(2)}</strong></span><span>派生传播分<strong>{Number(record.derived_viral_score || 0).toFixed(2)}</strong></span></div>{record.url && <a href={record.url} target="_blank" rel="noreferrer">打开原始页面 ↗</a>}</div></details>)}</div><div className="pagination"><button disabled={marketOffset === 0} onClick={() => loadMarket(Math.max(0, marketOffset - 30))}>上一页</button><span>{marketOffset + 1}–{Math.min(marketOffset + 30, marketData?.total || 0)} / {marketData?.total || 0}</span><button disabled={marketOffset + 30 >= (marketData?.total || 0)} onClick={() => loadMarket(marketOffset + 30)}>下一页</button></div></div>}
-  </section>;
+  const stageLabel = STAGE_LABELS[stage];
+  return (
+    <section className="inspector-decision-card">
+      <div><span>HUMAN DECISION</span><em>v{profile.version}</em></div>
+      <strong>{stageLabel}</strong>
+      <p>当前为{profile.mode === 'manual' ? '人工配置' : '系统建议'}；修改会建立新版本并保留事实原件。</p>
+      <button type="button" onClick={() => onOpen(stage)}>打开人工决策配置 ↗</button>
+    </section>
+  );
 }
 
-function DataGroup({ label, values }: { label: string; values: string[] }) {
-  return <div className="data-group"><h4>{label}</h4><div>{values?.length ? values.map((value) => <span key={value}>{value}</span>) : <small>无记录</small>}</div></div>;
-}
-
-function OpportunityView({ data, workspace, activeOpportunity, setEditingOpportunityId, switchMode, toggleOpportunity, persistWorkspace, setWorkspace, updateOpportunityEdit, busy }: {
-  data: OpportunityPayload; workspace: Workspace; activeOpportunity: Opportunity | null;
-  setEditingOpportunityId: (value: string) => void; switchMode: (mode: 'auto' | 'manual') => Promise<void>;
-  toggleOpportunity: (id: string) => Promise<void>; persistWorkspace: (value: Workspace, success?: string) => Promise<Workspace>;
-  setWorkspace: React.Dispatch<React.SetStateAction<Workspace>>; updateOpportunityEdit: (id: string, key: string, value: unknown) => void; busy: string;
+function InspectorPanel({
+  node,
+  nodes,
+  edges,
+  provider,
+  decisionProfile,
+  busy,
+  onRun,
+  onRunFromHere,
+  onSaveBrief,
+  onSavePoster,
+  onActivateConcept,
+  onDuplicateConcept,
+  onGenerateMoreConcept,
+  onRegenerateConcept,
+  onSaveConcept,
+  onExportPoster,
+  onDownloadPackage,
+  onOpenDecisions,
+}: {
+  node: WorkbenchNode | undefined;
+  nodes: WorkbenchNode[];
+  edges: WorkbenchEdge[];
+  provider: ImageProviderStatus;
+  decisionProfile: DecisionProfile;
+  busy: boolean;
+  onRun: (nodeId: string) => void;
+  onRunFromHere: (nodeId: string) => void;
+  onSaveBrief: (brief: DesignBrief) => void;
+  onSavePoster: (poster: PosterConfig) => void;
+  onActivateConcept: (nodeId: string) => void;
+  onDuplicateConcept: (nodeId: string) => void;
+  onGenerateMoreConcept: (nodeId: string) => void;
+  onRegenerateConcept: (nodeId: string) => void;
+  onSaveConcept: (nodeId: string, concept: ConceptDraft) => void;
+  onExportPoster: () => void;
+  onDownloadPackage: () => void;
+  onOpenDecisions: (stage: DecisionStage) => void;
 }) {
-  const edit = activeOpportunity ? workspace.opportunity_edits[activeOpportunity.opportunity_id] || {} : {};
-  return <section className="module-page"><SectionTitle code="03 / OPPORTUNITY POOL" title="八条机会，逐条可查" description={`当前 ${data.generated_accepted} 条来自模型，${data.baseline_count} 条来自规则基线；评分按文件内权重重新计算。`} />
-    <div className="selection-control"><div><strong>进入 Designer Handoff 的方式</strong><p>系统模式自动使用评分 Top 3；人工模式允许选择 1–3 条并指定主机会。</p></div><div className="segmented"><button className={workspace.selection_mode === 'auto' ? 'active' : ''} onClick={() => switchMode('auto')}>系统 Top 3</button><button className={workspace.selection_mode === 'manual' ? 'active' : ''} onClick={() => switchMode('manual')}>人工选择</button></div></div>
-    <div className="opportunity-layout"><div className="opportunity-list">{data.opportunities.map((item, index) => { const selected = workspace.selected_opportunity_ids.includes(item.opportunity_id); const primary = workspace.primary_opportunity_id === item.opportunity_id; return <article className={`opportunity-tool-card ${selected ? 'selected' : ''}`} key={item.opportunity_id}><div className="op-card-summary"><button className="op-check" disabled={workspace.selection_mode !== 'manual'} onClick={() => toggleOpportunity(item.opportunity_id)} aria-label={`${selected ? '取消' : '选择'} ${item.opportunity_id}`}>{selected ? '✓' : ''}</button><span className="op-rank">{String(index + 1).padStart(2, '0')}</span><button className="op-title-button" onClick={() => setEditingOpportunityId(item.opportunity_id)}><strong>{item.culture_element}</strong><small>{item.trend_element}</small></button><div className="op-badges"><span className={`verify ${item.verification.status}`}>{item.verification.status}</span><span>{item.origin === 'rule_baseline' ? '规则基线' : '模型/规则混合'}</span></div><div className="op-score"><strong>{item.overall_score.toFixed(1)}</strong><small>复算 {item.score_audit.recomputed.toFixed(1)} {item.score_audit.matches ? '✓' : '!'}</small></div>{workspace.selection_mode === 'manual' && selected && <label className="primary-radio"><input type="radio" checked={primary} onChange={() => persistWorkspace({ ...workspace, primary_opportunity_id: item.opportunity_id }, '主机会已更新')} />主机会</label>}</div><details><summary>展开评分、证据与核验结果</summary><div className="op-audit"><ScoreGrid item={item} /><div className="op-explanation"><p><strong>为什么匹配</strong>{item.match_reason}</p><p><strong>市场信号</strong>{item.market_signal}</p><p><strong>文化约束</strong>{item.cultural_constraints.join('；')}</p><p><strong>生成能力</strong>{generatorName(item.design_generator)}</p></div><div className="evidence-chip-list">{item.evidence_details.map((source) => <a key={source.source_id} href={source.source_url} target="_blank" rel="noreferrer"><span>{source.source_id}</span>{source.source_title || source.publisher} ↗</a>)}</div></div></details></article>; })}</div>
-      <aside className="op-editor"><div className="editor-sticky"><span className="editor-kicker">MANUAL INTERVENTION</span><h3>{activeOpportunity?.opportunity_id || '选择机会'}</h3><p className="editor-origin">分数与证据编号锁定不可手改；标题、设计方向和产品形态可以形成工作区草稿。</p>{activeOpportunity && <><label>设计交接标题<input value={String(edit.title || `${activeOpportunity.culture_element} × ${activeOpportunity.trend_element}`)} onChange={(event) => updateOpportunityEdit(activeOpportunity.opportunity_id, 'title', event.target.value)} /></label><label>为什么现在做<textarea rows={4} value={String(edit.why_now || activeOpportunity.match_reason)} onChange={(event) => updateOpportunityEdit(activeOpportunity.opportunity_id, 'why_now', event.target.value)} /></label><label>产品形态（逗号分隔）<input value={tags(edit.potential_product_categories || activeOpportunity.potential_product_categories).join('，')} onChange={(event) => updateOpportunityEdit(activeOpportunity.opportunity_id, 'potential_product_categories', tags(event.target.value))} /></label><label>设计关键词（逗号分隔）<input value={tags(edit.design_keywords || activeOpportunity.design_keywords).join('，')} onChange={(event) => updateOpportunityEdit(activeOpportunity.opportunity_id, 'design_keywords', tags(event.target.value))} /></label><label>人工设计简报<textarea rows={5} value={workspace.manual_brief} onChange={(event) => setWorkspace({ ...workspace, manual_brief: event.target.value })} placeholder="写下希望保留、修改或验证的设计方向…" /></label><button className="primary-button wide" disabled={busy === 'save'} onClick={() => persistWorkspace(workspace, '机会草稿与选择已保存')}>{busy === 'save' ? '保存中…' : '保存人工修改'}</button></>}</div></aside>
-    </div>
-  </section>;
+  const [tab, setTab] = useState<InspectorTab>('info');
+  const [briefDraft, setBriefDraft] = useState<DesignBrief | null>(() =>
+    node?.data.brief ? structuredClone(node.data.brief) : null,
+  );
+  const [posterDraft, setPosterDraft] = useState<PosterConfig | null>(() =>
+    node?.data.poster ? structuredClone(node.data.poster) : null,
+  );
+  const [conceptDraft, setConceptDraft] = useState<ConceptDraft | null>(() =>
+    node?.type === 'ConceptNode'
+      ? {
+          title: node.data.title,
+          summary: node.data.summary,
+          direction: String(node.data.direction ?? ''),
+          prompt: String(node.data.prompt ?? ''),
+        }
+      : null,
+  );
+
+  if (!node) {
+    return (
+      <aside className="inspector inspector--empty">
+        <div className="empty-inspector-mark">⌁</div>
+        <h2>选择一个节点</h2>
+        <p>查看输入、参数、证据来源与运行历史。</p>
+      </aside>
+    );
+  }
+
+  const upstreamIds = edges.filter((edge) => edge.target === node.id).map((edge) => edge.source);
+  const upstream = nodes.filter((item) => upstreamIds.includes(item.id));
+  const tabs: Array<[InspectorTab, string]> = [
+    ['info', '概览'],
+    ['inputs', '输入'],
+    ['parameters', '参数'],
+    ['outputs', '输出'],
+    ['sources', '来源'],
+    ['history', '历史'],
+    ['actions', '操作'],
+  ];
+  const isBrief = node.type === 'DesignBriefNode';
+  const isPoster = node.type === 'PosterBoardNode';
+  const isConcept = node.type === 'ConceptNode';
+  const decisionStage = NODE_DECISION_STAGE[node.type];
+
+  return (
+    <aside className="inspector">
+      <header className="inspector__header">
+        <div className={`inspector-icon inspector-icon--${node.type}`}>
+          {node.type === 'ConceptNode' ? String(node.data.label ?? 'C').slice(-1) : node.data.eyebrow[0]}
+        </div>
+        <div>
+          <span>{NODE_TYPE_LABELS[node.type]}</span>
+          <h2>{node.data.title}</h2>
+        </div>
+        <i className={`inspector-state inspector-state--${node.data.status}`} />
+      </header>
+      <nav className="inspector-tabs" aria-label="节点详情">
+        {tabs.map(([id, label]) => (
+          <button className={tab === id ? 'is-active' : ''} key={id} type="button" onClick={() => setTab(id)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+      <div className="inspector__content">
+        {tab === 'info' ? (
+          <>
+            <section className="inspector-section">
+              <span>STATUS</span>
+              <div className="inspector-status-row">
+                <strong>{STATUS_LABELS[node.data.status]}</strong>
+                <em>{node.data.status}</em>
+              </div>
+            </section>
+            <section className="inspector-section">
+              <span>SUMMARY</span>
+              <p>{node.data.summary}</p>
+            </section>
+            {node.data.stats?.length ? (
+              <section className="inspector-metrics">
+                {node.data.stats.map((stat) => (
+                  <div key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></div>
+                ))}
+              </section>
+            ) : null}
+            {node.type === 'VisualGenerationNode' ? (
+              <section className="provider-card">
+                <div><i className={provider.configured ? 'is-ready' : ''} /><strong>{provider.configured ? '图像服务已就绪' : '图像服务未配置'}</strong></div>
+                <p>{provider.detail}</p>
+                <dl>
+                  <div><dt>Provider</dt><dd>{provider.provider}</dd></div>
+                  <div><dt>Model</dt><dd>{provider.model || '—'}</dd></div>
+                </dl>
+              </section>
+            ) : null}
+          </>
+        ) : null}
+
+        {tab === 'inputs' ? (
+          <section className="inspector-section">
+            <span>UPSTREAM NODES</span>
+            {upstream.length ? (
+              <div className="input-list">
+                {upstream.map((item) => (
+                  <div key={item.id}>
+                    <i className={`inspector-state inspector-state--${item.data.status}`} />
+                    <p><strong>{item.data.title}</strong><span>{NODE_TYPE_LABELS[item.type]}</span></p>
+                  </div>
+                ))}
+              </div>
+            ) : <p>该节点是链路起点，直接读取证据仓。</p>}
+          </section>
+        ) : null}
+
+        {tab === 'parameters' ? (
+          <DecisionEntry profile={decisionProfile} stage={decisionStage} onOpen={onOpenDecisions} />
+        ) : null}
+
+        {tab === 'parameters' && isBrief && briefDraft ? (
+          <form className="inspector-form" onSubmit={(event) => { event.preventDefault(); onSaveBrief(briefDraft); }}>
+            <label><span>方案标题</span><input value={briefDraft.title} onChange={(event) => setBriefDraft({ ...briefDraft, title: event.target.value })} /></label>
+            <label><span>设计目标</span><textarea rows={5} value={briefDraft.objective} onChange={(event) => setBriefDraft({ ...briefDraft, objective: event.target.value })} /></label>
+            <label><span>目标人群</span><input value={briefDraft.audience} onChange={(event) => setBriefDraft({ ...briefDraft, audience: event.target.value })} /></label>
+            <label><span>产品形态</span><input value={briefDraft.productType} onChange={(event) => setBriefDraft({ ...briefDraft, productType: event.target.value })} /></label>
+            <label><span>设计约束（每行一项）</span><textarea rows={7} value={briefDraft.constraints.join('\n')} onChange={(event) => setBriefDraft({ ...briefDraft, constraints: event.target.value.split('\n').filter(Boolean) })} /></label>
+            <button className="primary-button" disabled={busy} type="submit">保存为 v{(node.data.version ?? 1) + 1}</button>
+            <p className="form-note">保存只会让下游节点变为 stale，不会自动运行或产生费用。</p>
+          </form>
+        ) : null}
+
+        {tab === 'parameters' && isPoster && posterDraft ? (
+          <form className="inspector-form" onSubmit={(event) => { event.preventDefault(); onSavePoster(posterDraft); }}>
+            <label><span>海报标题</span><input value={posterDraft.title} onChange={(event) => setPosterDraft({ ...posterDraft, title: event.target.value })} /></label>
+            <label><span>海报副标题</span><textarea rows={4} value={posterDraft.subtitle} onChange={(event) => setPosterDraft({ ...posterDraft, subtitle: event.target.value })} /></label>
+            <fieldset className="poster-order">
+              <legend>板块显示与顺序</legend>
+              {posterDraft.sections.map((section, index) => {
+                const visible = !posterDraft.hiddenSections.includes(section);
+                return (
+                  <div key={section}>
+                    <label><input checked={visible} type="checkbox" onChange={(event) => setPosterDraft(updatePosterSection(posterDraft, section, event.target.checked))} /><span>{POSTER_SECTION_LABELS[section] ?? section}</span></label>
+                    <button disabled={index === 0} type="button" onClick={() => { const sections = [...posterDraft.sections]; [sections[index - 1], sections[index]] = [sections[index], sections[index - 1]]; setPosterDraft({ ...posterDraft, sections }); }}>↑</button>
+                    <button disabled={index === posterDraft.sections.length - 1} type="button" onClick={() => { const sections = [...posterDraft.sections]; [sections[index + 1], sections[index]] = [sections[index], sections[index + 1]]; setPosterDraft({ ...posterDraft, sections }); }}>↓</button>
+                  </div>
+                );
+              })}
+            </fieldset>
+            <button className="primary-button" disabled={busy} type="submit">保存海报版式</button>
+            <button className="secondary-button" type="button" onClick={onExportPoster}>导出当前 PNG</button>
+          </form>
+        ) : null}
+
+        {tab === 'parameters' && isConcept && conceptDraft ? (
+          <form className="inspector-form" onSubmit={(event) => { event.preventDefault(); onSaveConcept(node.id, conceptDraft); }}>
+            <label><span>概念标题</span><input value={conceptDraft.title} onChange={(event) => setConceptDraft({ ...conceptDraft, title: event.target.value })} /></label>
+            <label><span>概念说明</span><textarea rows={4} value={conceptDraft.summary} onChange={(event) => setConceptDraft({ ...conceptDraft, summary: event.target.value })} /></label>
+            <label><span>视觉方向</span><textarea rows={3} value={conceptDraft.direction} onChange={(event) => setConceptDraft({ ...conceptDraft, direction: event.target.value })} /></label>
+            <label><span>生成提示词</span><textarea rows={8} value={conceptDraft.prompt} onChange={(event) => setConceptDraft({ ...conceptDraft, prompt: event.target.value })} /></label>
+            <button className="primary-button" disabled={busy} type="submit">保存概念编辑</button>
+            <div className="concept-parameter-actions">
+              <button className="secondary-button" type="button" onClick={() => onActivateConcept(node.id)}>{node.data.active ? '当前采用方向' : '设为当前方向'}</button>
+              <button className="secondary-button" type="button" onClick={() => onDuplicateConcept(node.id)}>Duplicate</button>
+              <button className="secondary-button" disabled={busy} type="button" onClick={() => onRegenerateConcept(node.id)}>Regenerate</button>
+              <button className="secondary-button" disabled={busy} type="button" onClick={() => onGenerateMoreConcept(node.id)}>Generate More</button>
+            </div>
+          </form>
+        ) : null}
+
+        {tab === 'parameters' && !isBrief && !isPoster && !isConcept ? (
+          <section className="inspector-section">
+            <span>PARAMETERS</span>
+            <dl className="parameter-list">
+              <div><dt>状态</dt><dd>{node.data.status}</dd></div>
+              <div><dt>节点类型</dt><dd>{node.type}</dd></div>
+              {node.data.version !== undefined ? <div><dt>版本</dt><dd>v{node.data.version}</dd></div> : null}
+            </dl>
+          </section>
+        ) : null}
+
+        {tab === 'outputs' ? (
+          <section className="inspector-section">
+            <span>NODE OUTPUT</span>
+            <pre>{JSON.stringify(node.data.outputs ?? node.data.brief ?? node.data.poster ?? { title: node.data.title, summary: node.data.summary, status: node.data.status, imageUrl: node.data.imageUrl }, null, 2)}</pre>
+            <button className="secondary-button" type="button" onClick={onDownloadPackage}>下载 DesignPackage JSON</button>
+          </section>
+        ) : null}
+
+        {tab === 'sources' ? (
+          <section className="inspector-section">
+            <span>EVIDENCE SOURCES</span>
+            <div className="source-list">{(node.data.sourceRefs ?? []).length ? node.data.sourceRefs?.map((source) => <code key={source}>{source}</code>) : <p>该节点没有独立来源，读取上游输出。</p>}</div>
+          </section>
+        ) : null}
+
+        {tab === 'history' ? (
+          <section className="inspector-section">
+            <span>VERSION HISTORY</span>
+            <div className="history-list">
+              {(node.data.history ?? []).map((item, index) => (
+                <div key={`${item.at}-${index}`}><i /><p>{item.event}</p><time>{new Date(item.at).toLocaleString('zh-CN')}</time></div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {tab === 'actions' ? (
+          <section className="inspector-actions">
+            <button disabled={busy} type="button" onClick={() => onRun(node.id)}><span>▶</span><p><strong>{node.data.status === 'idle' ? 'Run node' : 'Re-run node'}</strong><small>仅运行当前节点</small></p></button>
+            <button disabled={busy} type="button" onClick={() => onRunFromHere(node.id)}><span>↳</span><p><strong>Run from here</strong><small>按依赖顺序运行当前节点与下游</small></p></button>
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onActivateConcept(node.id)}><span>◎</span><p><strong>Use this concept</strong><small>设为海报当前概念</small></p></button> : null}
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onDuplicateConcept(node.id)}><span>⧉</span><p><strong>Duplicate concept</strong><small>保留当前版本并创建独立分支</small></p></button> : null}
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onRegenerateConcept(node.id)}><span>↻</span><p><strong>Regenerate</strong><small>只重生成当前方向；需真实图像服务</small></p></button> : null}
+            {isConcept ? <button disabled={busy} type="button" onClick={() => onGenerateMoreConcept(node.id)}><span>＋</span><p><strong>Generate more</strong><small>建立新方向；服务就绪时立即生成</small></p></button> : null}
+            {isPoster ? <button type="button" onClick={onExportPoster}><span>⇩</span><p><strong>Export PNG</strong><small>按当前板块配置输出 1800 × 2400</small></p></button> : null}
+          </section>
+        ) : null}
+      </div>
+      <footer className="inspector__footer"><span>NODE ID</span><code>{node.id}</code></footer>
+    </aside>
+  );
 }
 
-function ScoreGrid({ item }: { item: Opportunity }) {
-  const scores = [['文化契合', item.culture_fit], ['市场拉力', item.market_pull], ['新颖度', item.novelty], ['视觉潜力', item.visual_potential], ['社交传播', item.social_shareability], ['产品可行', item.product_feasibility], ['文化风险', item.cultural_risk]] as const;
-  return <div className="score-grid">{scores.map(([label, score]) => <div key={label}><span>{label}</span><div><i style={{ width: `${score}%` }} /></div><strong>{score}</strong></div>)}</div>;
+function LoadingScreen({ error, onRetry }: { error: string; onRetry: () => void }) {
+  return (
+    <main className="loading-screen">
+      <div className="loading-mark">Q</div>
+      <span>QIANCRAFT CREATIVE INTELLIGENCE</span>
+      {error ? (
+        <><h1>工作台 API 尚未连接</h1><p>{error}</p><code>python -m app.tool_api --port 8787</code><button type="button" onClick={onRetry}>重新连接</button></>
+      ) : (
+        <><h1>正在装载文化与市场证据</h1><div className="loading-line"><i /></div></>
+      )}
+    </main>
+  );
 }
 
-function DesignView({ workspace, setWorkspace, designState, primaryOpportunity, generateDesign, busy }: {
-  data: OpportunityPayload; workspace: Workspace; setWorkspace: React.Dispatch<React.SetStateAction<Workspace>>;
-  designState: DesignState; primaryOpportunity: Opportunity | null; generateDesign: () => Promise<void>; busy: string;
-}) {
-  const design = designState.design;
-  const product = design.product || {};
-  const overrides = workspace.design_overrides || {};
-  const updateOverride = (key: string, value: unknown) => setWorkspace((current) => ({ ...current, design_overrides: { ...current.design_overrides, [key]: value } }));
-  const manualPrimary = workspace.selection_mode === 'manual' ? workspace.primary_opportunity_id : design.selection?.primary_opportunity_id;
-  const canGenerate = workspace.selection_mode === 'auto' || Boolean(primaryOpportunity?.design_generator);
-  return <section className="module-page"><SectionTitle code="04 / DESIGN WORKBENCH" title="从机会到设计，血缘必须完整" description="生成器只消费已保存的 Designer Handoff；每次运行记录输入 SHA、主机会、覆盖字段和输出文件。" />
-    <div className="lineage-bar"><div><span>机会池</span><strong>{workspace.selected_opportunity_ids.join(' / ')}</strong></div><b>→</b><div><span>主机会</span><strong>{manualPrimary || '系统自动判定'}</strong></div><b>→</b><div><span>地域缩窄</span><strong>{design.cultural_elements?.[0]?.region || '待生成'}</strong></div><b>→</b><div><span>真实产物</span><strong>{product.product_name || '待生成'}</strong></div></div>
-    <div className="design-workspace"><div className="design-editor"><div className="design-truth-note"><strong>“针格模块”从哪里来？</strong><p>{design.selection?.primary_opportunity_id} 提出“{primaryOpportunity?.culture_element || '支系差异'} × {primaryOpportunity?.trend_element || '可替换收藏'}”；Design Agent 为避免多支系混用，把首版缩窄到 {design.cultural_elements?.[0]?.region}，再生成“{product.product_name}”。</p></div><label>产品名称<input value={String(overrides.product_name || product.product_name || '')} onChange={(event) => updateOverride('product_name', event.target.value)} /></label><label>产品类型<input value={String(overrides.product_type || product.product_type || '')} onChange={(event) => updateOverride('product_type', event.target.value)} /></label><label>概念说明<textarea rows={4} value={String(overrides.concept_statement || product.concept_statement || '')} onChange={(event) => updateOverride('concept_statement', event.target.value)} /></label><label>形态说明<textarea rows={4} value={String(overrides.form_description || product.form_description || '')} onChange={(event) => updateOverride('form_description', event.target.value)} /></label><label>使用场景（逗号分隔）<input value={tags(overrides.use_scenarios || product.use_scenarios || []).join('，')} onChange={(event) => updateOverride('use_scenarios', tags(event.target.value))} /></label><label>海报标题<input value={String(overrides.poster_title || design.poster_request?.exact_copy?.title || '')} onChange={(event) => updateOverride('poster_title', event.target.value)} /></label><div className="generation-actions"><button className="primary-button wide" disabled={!canGenerate || busy === 'generate'} onClick={generateDesign}>{busy === 'generate' ? '真实生成中…' : '生成设计规格 + 首样结构图'}</button><button className="outline-button wide" disabled={!designState.image_generation.available} title={designState.image_generation.reason}>生成 / 重绘 AI 主视觉</button></div>{!canGenerate && <p className="blocked-copy">当前主机会没有匹配的真实设计生成器。请在机会池中补充明确产品形态；系统不会套用通用兜底模板。</p>}<p className="image-provider-note">主视觉状态：{designState.image_generation.available ? '服务已配置' : designState.image_generation.reason}</p></div>
-      <div className="design-output"><div className="output-head"><div><span>{designState.selected_run_id === 'official' ? 'OFFICIAL OUTPUT' : 'TOOL RUN'}</span><strong>{design.design_id}</strong></div><a href={`${API}${designState.poster_url}`} target="_blank" rel="noreferrer">打开原图 ↗</a></div><img src={`${API}${designState.poster_url}?v=${encodeURIComponent(workspace.updated_at || design.generated_at || '')}`} alt={`${product.product_name || '当前设计'}结构与首样海报`} /><div className="output-tabs"><details open><summary>BOM / {design.manufacturing?.bill_of_materials?.length || 0} 项</summary><div className="bom-table">{design.manufacturing?.bill_of_materials?.map((item: Record<string, any>) => <div key={item.part_id}><span>{item.part_id}</span><strong>{item.component}</strong><small>{item.material}</small><b>{item.tolerance_or_target}</b></div>)}</div></details><details><summary>装配步骤 / {design.manufacturing?.assembly_steps?.length || 0} 步</summary><ol>{design.manufacturing?.assembly_steps?.map((step: string) => <li key={step}>{step}</li>)}</ol></details><details><summary>文化与工程门禁</summary><ul>{[...(design.cultural_review_gates || []), ...(design.engineering_review_gates || [])].map((gate: string) => <li key={gate}>{gate}</li>)}</ul></details></div></div>
-    </div>
-  </section>;
+export function Workbench() {
+  const [workspace, setWorkspace] = useState<WorkbenchWorkspace | null>(null);
+  const [knowledge, setKnowledge] = useState<KnowledgeCenterData | null>(null);
+  const [decisionCatalog, setDecisionCatalog] = useState<DecisionCatalog | null>(null);
+  const [provider, setProvider] = useState<ImageProviderStatus | null>(null);
+  const [workspaceList, setWorkspaceList] = useState<WorkspaceSummary[]>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<WorkbenchNode>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<WorkbenchEdge>([]);
+  const [selectedNodeId, setSelectedNodeId] = useState('');
+  const [flowInstance, setFlowInstance] = useState<ReactFlowInstance<WorkbenchNode, WorkbenchEdge> | null>(null);
+  const [connectionError, setConnectionError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [toast, setToast] = useState<Toast>(null);
+  const [showGraph, setShowGraph] = useState(false);
+  const [activeDock, setActiveDock] = useState<ToolDock>('evidence');
+  const [showInspector, setShowInspector] = useState(true);
+  const [dialog, setDialog] = useState<'new' | 'rename' | null>(null);
+  const [dialogName, setDialogName] = useState('');
+  const [showDecisionStudio, setShowDecisionStudio] = useState(false);
+  const [decisionStage, setDecisionStage] = useState<DecisionStage>('culture');
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dockPanelRef = useRef<HTMLDivElement>(null);
+  const inspectorPanelRef = useRef<HTMLDivElement>(null);
+  const dockTriggerRef = useRef<HTMLElement | null>(null);
+  const inspectorTriggerRef = useRef<HTMLElement | null>(null);
+  const previousDockRef = useRef<ToolDock>(activeDock);
+  const previousInspectorRef = useRef(showInspector);
+
+  const showToast = useCallback((next: Toast) => {
+    setToast(next);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 3600);
+  }, []);
+
+  const applyWorkspace = useCallback((next: WorkbenchWorkspace) => {
+    setWorkspace(next);
+    setNodes(next.nodes);
+    setEdges(next.edges);
+    setSelectedNodeId((current) => next.nodes.some((node) => node.id === current) ? current : next.selected_node_id || next.nodes[0]?.id || '');
+  }, [setEdges, setNodes]);
+
+  const load = useCallback(async (workspaceId?: string) => {
+    setConnectionError('');
+    try {
+      const payload = await getBootstrap(workspaceId);
+      applyWorkspace(payload.workspace);
+      setKnowledge(payload.knowledge);
+      setDecisionCatalog(payload.decisionCatalog);
+      setProvider(payload.imageProvider);
+      setWorkspaceList(payload.workspaces);
+    } catch (error) {
+      setConnectionError(error instanceof Error ? error.message : String(error));
+    }
+  }, [applyWorkspace]);
+
+  useEffect(() => {
+    const requestedWorkspace = new URLSearchParams(window.location.search).get('workspace');
+    const requestedDecision = new URLSearchParams(window.location.search).get('decision');
+    const initialLoad = window.setTimeout(
+      () => {
+        if (requestedDecision && requestedDecision in STAGE_LABELS) {
+          setDecisionStage(requestedDecision as DecisionStage);
+          setShowDecisionStudio(true);
+        }
+        void load(requestedWorkspace || undefined);
+      },
+      0,
+    );
+    return () => {
+      window.clearTimeout(initialLoad);
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+    };
+  }, [load]);
+
+  useEffect(() => {
+    const compactViewport = window.matchMedia('(max-width: 760px)');
+    const collapsePeripheralPanels = (event?: MediaQueryListEvent) => {
+      if ((event ?? compactViewport).matches) {
+        setActiveDock(null);
+        setShowInspector(false);
+      }
+    };
+    collapsePeripheralPanels();
+    compactViewport.addEventListener('change', collapsePeripheralPanels);
+    return () => compactViewport.removeEventListener('change', collapsePeripheralPanels);
+  }, []);
+
+  useEffect(() => {
+    const previousDock = previousDockRef.current;
+    previousDockRef.current = activeDock;
+    if (!window.matchMedia('(max-width: 760px)').matches) return undefined;
+    const focusFrame = window.requestAnimationFrame(() => {
+      if (activeDock) {
+        const target = dockPanelRef.current?.querySelector<HTMLElement>(
+          'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? dockPanelRef.current;
+        target?.focus();
+      } else if (previousDock) {
+        dockTriggerRef.current?.focus();
+      }
+    });
+    return () => window.cancelAnimationFrame(focusFrame);
+  }, [activeDock]);
+
+  useEffect(() => {
+    const wasOpen = previousInspectorRef.current;
+    previousInspectorRef.current = showInspector;
+    if (!window.matchMedia('(max-width: 760px)').matches) return undefined;
+    const focusFrame = window.requestAnimationFrame(() => {
+      if (showInspector) {
+        const target = inspectorPanelRef.current?.querySelector<HTMLElement>(
+          'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? inspectorPanelRef.current;
+        target?.focus();
+      } else if (wasOpen) {
+        inspectorTriggerRef.current?.focus();
+      }
+    });
+    return () => window.cancelAnimationFrame(focusFrame);
+  }, [showInspector]);
+
+  useEffect(() => {
+    const handleOverlayEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape'
+        || !window.matchMedia('(max-width: 760px)').matches
+        || showDecisionStudio
+        || showGraph
+        || dialog) return;
+      if (showInspector) {
+        event.preventDefault();
+        setShowInspector(false);
+      } else if (activeDock) {
+        event.preventDefault();
+        setActiveDock(null);
+      }
+    };
+    document.addEventListener('keydown', handleOverlayEscape);
+    return () => document.removeEventListener('keydown', handleOverlayEscape);
+  }, [activeDock, dialog, showDecisionStudio, showGraph, showInspector]);
+
+  const currentDecisionCatalog = useMemo(() => decisionCatalog ? {
+    ...decisionCatalog,
+    concepts: nodes
+      .filter((node) => node.type === 'ConceptNode')
+      .map((node) => ({
+        id: node.id,
+        label: String(node.data.label ?? node.id),
+        title: node.data.title,
+        imageUrl: String(node.data.imageUrl ?? ''),
+      })),
+  } : null, [decisionCatalog, nodes]);
+
+  useEffect(() => {
+    if (flowInstance && workspace?.viewport) void flowInstance.setViewport(workspace.viewport, { duration: 300 });
+  }, [flowInstance, workspace?.workspace_id, workspace?.viewport]);
+
+  useEffect(() => {
+    setNodes((current) => current.map((node) => {
+      const selected = node.id === selectedNodeId;
+      return node.selected === selected ? node : { ...node, selected };
+    }));
+  }, [selectedNodeId, setNodes]);
+
+  const snapshotWorkspace = useCallback((overrides?: Partial<WorkbenchWorkspace>): WorkbenchWorkspace => {
+    if (!workspace) throw new Error('工作区尚未载入。');
+    return { ...workspace, ...overrides, nodes, edges, viewport: flowInstance?.getViewport() ?? workspace.viewport, selected_node_id: selectedNodeId };
+  }, [edges, flowInstance, nodes, selectedNodeId, workspace]);
+
+  const persist = useCallback(async (overrides?: Partial<WorkbenchWorkspace>, quiet = false) => {
+    const saved = await saveWorkspace(snapshotWorkspace(overrides));
+    applyWorkspace(saved);
+    if (!quiet) showToast({ tone: 'success', message: '工作区已保存到本地 JSON。' });
+    return saved;
+  }, [applyWorkspace, showToast, snapshotWorkspace]);
+
+  const openDecisionStudio = useCallback((stage: DecisionStage) => {
+    setDecisionStage(stage);
+    setShowDecisionStudio(true);
+    const url = new URL(window.location.href);
+    url.searchParams.set('decision', stage);
+    window.history.replaceState({}, '', url);
+  }, []);
+
+  const closeDecisionStudio = useCallback(() => {
+    setShowDecisionStudio(false);
+    const url = new URL(window.location.href);
+    url.searchParams.delete('decision');
+    window.history.replaceState({}, '', url);
+  }, []);
+
+  const openWorkspace = useCallback(async (workspaceId: string) => {
+    await load(workspaceId);
+    setShowDecisionStudio(false);
+    const url = new URL(window.location.href);
+    url.searchParams.set('workspace', workspaceId);
+    url.searchParams.delete('decision');
+    window.history.replaceState({}, '', url);
+  }, [load]);
+
+  const handleSaveDecisionProfile = useCallback(async (profile: DecisionProfile) => {
+    if (!workspace || busy) return;
+    setBusy(true);
+    try {
+      await persist(undefined, true);
+      const updated = await saveDecisionProfile(workspace.workspace_id, profile);
+      applyWorkspace(updated);
+      closeDecisionStudio();
+      showToast({
+        tone: 'success',
+        message: `人工决策配置已保存为 v${updated.metadata.decision_profile.version}；后续节点已标记待确认。`,
+      });
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally {
+      setBusy(false);
+    }
+  }, [applyWorkspace, busy, closeDecisionStudio, persist, showToast, workspace]);
+
+  const runSequence = useCallback(async (startId: string | undefined, fromHere: boolean) => {
+    if (!workspace || busy) return;
+    setBusy(true);
+    let runningNodeId = '';
+    try {
+      let current = await persist(undefined, true);
+      const ids = startId
+        ? fromHere
+          ? orderedRunNodeIds(current.nodes, current.edges, startId)
+          : [startId]
+        : orderedRunNodeIds(current.nodes, current.edges);
+      for (const nodeId of ids) {
+        runningNodeId = nodeId;
+        setNodes((currentNodes) => markNodeStatus(currentNodes, nodeId, 'running'));
+        current = await runNodeRequest(current.workspace_id, nodeId);
+        applyWorkspace(current);
+      }
+      showToast({ tone: 'success', message: fromHere ? `已按依赖顺序完成 ${ids.length} 个节点。` : '节点运行完成。' });
+    } catch (error) {
+      if (runningNodeId) {
+        setNodes((currentNodes) => markNodeStatus(currentNodes, runningNodeId, 'error'));
+      }
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally {
+      setBusy(false);
+    }
+  }, [applyWorkspace, busy, persist, setNodes, showToast, workspace]);
+
+  const activate = useCallback(async (nodeId: string) => {
+    if (!workspace || busy) return;
+    setBusy(true);
+    try {
+      await persist(undefined, true);
+      const updated = await activateConcept(workspace.workspace_id, nodeId);
+      applyWorkspace(updated);
+      showToast({ tone: 'success', message: '已切换当前概念，海报节点已标记待刷新。' });
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally { setBusy(false); }
+  }, [applyWorkspace, busy, persist, showToast, workspace]);
+
+  useEffect(() => {
+    const listener = (event: Event) => {
+      const detail = (event as CustomEvent<{ nodeId: string; action: string }>).detail;
+      if (detail.action === 'open') {
+        window.location.assign(`/nodes/${encodeURIComponent(detail.nodeId)}?workspace=${encodeURIComponent(workspace?.workspace_id ?? 'guizhou-miao-demo')}`);
+      } else if (detail.action === 'activate') void activate(detail.nodeId);
+      else void runSequence(detail.nodeId, detail.action === 'run-from-here');
+    };
+    window.addEventListener('qiancraft:node-action', listener);
+    return () => window.removeEventListener('qiancraft:node-action', listener);
+  }, [activate, runSequence, workspace?.workspace_id]);
+
+  const selectedNode = nodes.find((node) => node.id === selectedNodeId);
+  const activeConcept = nodes.find((node) => node.type === 'ConceptNode' && node.data.active);
+  const activePhase = phaseForNode(selectedNodeId);
+
+  const handleSaveBrief = useCallback(async (brief: DesignBrief) => {
+    if (!workspace || busy) return;
+    setBusy(true);
+    try {
+      await persist(undefined, true);
+      const updated = await saveDesignBrief(workspace.workspace_id, brief);
+      applyWorkspace(updated);
+      showToast({ tone: 'success', message: `任务书已保存为 v${updated.metadata.brief_version}。` });
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally { setBusy(false); }
+  }, [applyWorkspace, busy, persist, showToast, workspace]);
+
+  const mutateConcept = useCallback(async (nodeId: string, mode: 'duplicate' | 'regenerate' | 'generate-more') => {
+    if (!workspace || busy) return;
+    setBusy(true);
+    try {
+      await persist(undefined, true);
+      const updated = mode === 'duplicate'
+        ? await duplicateConcept(workspace.workspace_id, nodeId)
+        : mode === 'generate-more'
+          ? await generateMoreConcept(workspace.workspace_id, nodeId)
+          : await regenerateConcept(workspace.workspace_id, nodeId);
+      applyWorkspace(updated);
+      if (mode === 'duplicate' || mode === 'generate-more') {
+        setSelectedNodeId(updated.selected_node_id);
+        const created = updated.nodes.find((item) => item.id === updated.selected_node_id);
+        showToast({
+          tone: created?.data.status === 'warning' ? 'neutral' : 'success',
+          message: mode === 'duplicate'
+            ? '已复制为独立概念分支。'
+            : created?.data.status === 'warning'
+              ? '新方向已建立；图像服务未配置，没有生成假图片。'
+              : '已生成新的概念方向。',
+        });
+      } else {
+        const concept = updated.nodes.find((item) => item.id === nodeId);
+        showToast({
+          tone: concept?.data.status === 'warning' ? 'neutral' : 'success',
+          message: concept?.data.status === 'warning'
+            ? '图像服务未配置；已记录 warning，没有生成假图片。'
+            : '当前概念已生成新版本。',
+        });
+      }
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally { setBusy(false); }
+  }, [applyWorkspace, busy, persist, showToast, workspace]);
+
+  const handleSaveConcept = useCallback(async (nodeId: string, concept: ConceptDraft) => {
+    if (!workspace || busy) return;
+    setBusy(true);
+    try {
+      const nextNodes = nodes.map((node) => {
+        if (node.id === nodeId) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              ...concept,
+              status: 'stale' as const,
+              history: [{ at: new Date().toISOString(), event: '编辑概念文本与生成参数；等待重生成' }, ...(node.data.history ?? [])],
+            },
+          };
+        }
+        if (node.type === 'PosterBoardNode' && nodes.find((item) => item.id === nodeId)?.data.active) {
+          return { ...node, data: { ...node.data, status: 'stale' as const } };
+        }
+        return node;
+      });
+      const saved = await saveWorkspace({ ...snapshotWorkspace(), nodes: nextNodes });
+      applyWorkspace(saved);
+      showToast({ tone: 'success', message: '概念编辑已保存；视觉与海报按需重跑。' });
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally { setBusy(false); }
+  }, [applyWorkspace, busy, nodes, showToast, snapshotWorkspace, workspace]);
+
+  const handleSavePoster = useCallback(async (poster: PosterConfig) => {
+    if (!workspace || busy) return;
+    setBusy(true);
+    try {
+      const nextNodes = nodes.map((node) => node.type === 'PosterBoardNode' ? { ...node, data: { ...node.data, title: poster.title, summary: poster.subtitle, poster, status: 'success' as const, history: [{ at: new Date().toISOString(), event: '保存海报标题、板块显示与顺序' }, ...(node.data.history ?? [])] } } : node);
+      setNodes(nextNodes);
+      const saved = await saveWorkspace({ ...snapshotWorkspace(), nodes: nextNodes });
+      applyWorkspace(saved);
+      showToast({ tone: 'success', message: '海报版式已保存。' });
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally { setBusy(false); }
+  }, [applyWorkspace, busy, nodes, setNodes, showToast, snapshotWorkspace, workspace]);
+
+  const handleExportPoster = useCallback(async () => {
+    const poster = nodes.find((node) => node.type === 'PosterBoardNode')?.data.poster;
+    if (!poster) return;
+    try {
+      await exportPosterPng(poster, activeConcept);
+      showToast({ tone: 'success', message: '已按当前版式导出 1800 × 2400 PNG。' });
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    }
+  }, [activeConcept, nodes, showToast]);
+
+  const handleDownloadPackage = useCallback(async () => {
+    try { downloadJson(await getDesignPackage(), 'QianCraft-DesignPackage.json'); }
+    catch (error) { showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) }); }
+  }, [showToast]);
+
+  const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    if (!flowInstance) return;
+    const raw = event.dataTransfer.getData('application/qiancraft-knowledge');
+    if (!raw) return;
+    try {
+      const payload = JSON.parse(raw) as { kind: 'culture' | 'market'; item: CultureRecordSummary | { name: string; score: number; sampleSize: number } };
+      const type: WorkbenchNodeType = payload.kind === 'culture' ? 'CultureGraphNode' : 'MarketRadarNode';
+      const template = nodes.find((node) => node.type === type);
+      if (!template) return;
+      const name = payload.item.name;
+      const next: WorkbenchNode = {
+        ...structuredClone(template),
+        id: `${payload.kind}-${Date.now().toString(36)}`,
+        position: flowInstance.screenToFlowPosition({ x: event.clientX, y: event.clientY }),
+        selected: true,
+        data: {
+          ...structuredClone(template.data),
+          title: name,
+          summary: payload.kind === 'culture' ? `来自文化证据中心的 ${name} 专题节点。` : `来自四平台产品形态排序的 ${name} 专题节点。`,
+          status: 'cached',
+          sourceRefs: payload.kind === 'culture' ? (payload.item as CultureRecordSummary).sourceRefs : template.data.sourceRefs,
+        },
+      };
+      setNodes((current) => [...current.map((node) => ({ ...node, selected: false })), next]);
+      setSelectedNodeId(next.id);
+      showToast({ tone: 'neutral', message: `已在画布创建“${name}”证据节点，保存后持久化。` });
+    } catch { showToast({ tone: 'error', message: '拖拽数据无法解析。' }); }
+  }, [flowInstance, nodes, setNodes, showToast]);
+
+  const focusNode = useCallback((nodeId: string) => {
+    if (!flowInstance || !nodes.some((node) => node.id === nodeId)) return;
+    if (document.activeElement instanceof HTMLElement) inspectorTriggerRef.current = document.activeElement;
+    setSelectedNodeId(nodeId);
+    setShowInspector(true);
+    void flowInstance.fitView({
+      nodes: [{ id: nodeId }],
+      padding: 0.24,
+      minZoom: 0.82,
+      maxZoom: 1.05,
+      duration: 420,
+    });
+  }, [flowInstance, nodes]);
+
+  const selectNode = useCallback((nodeId: string) => {
+    if (document.activeElement instanceof HTMLElement) inspectorTriggerRef.current = document.activeElement;
+    setSelectedNodeId(nodeId);
+    setShowInspector(true);
+    if (!flowInstance || !nodes.some((node) => node.id === nodeId)) return;
+    void flowInstance.fitView({
+      nodes: [{ id: nodeId }],
+      padding: 0.32,
+      minZoom: 0.76,
+      maxZoom: 0.96,
+      duration: 360,
+    });
+  }, [flowInstance, nodes]);
+
+  const initializeFlow = useCallback((instance: ReactFlowInstance<WorkbenchNode, WorkbenchEdge>) => {
+    setFlowInstance(instance);
+    if (!window.matchMedia('(max-width: 760px)').matches || !selectedNodeId) return;
+    window.setTimeout(() => {
+      void instance.fitView({
+        nodes: [{ id: selectedNodeId }],
+        padding: 0.28,
+        minZoom: 0.72,
+        maxZoom: 0.88,
+        duration: 0,
+      });
+    }, 120);
+  }, [selectedNodeId]);
+
+  const submitDialog = useCallback(async () => {
+    if (!dialog || !dialogName.trim() || busy) return;
+    setBusy(true);
+    try {
+      if (dialog === 'new') {
+        const created = await createWorkspace(dialogName.trim());
+        await openWorkspace(created.workspace_id);
+        showToast({ tone: 'success', message: '已创建并打开新工作区。' });
+      } else {
+        await persist({ name: dialogName.trim() });
+        setWorkspaceList((current) => current.map((item) => item.workspace_id === workspace?.workspace_id ? { ...item, name: dialogName.trim() } : item));
+      }
+      setDialog(null);
+    } catch (error) {
+      showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) });
+    } finally { setBusy(false); }
+  }, [busy, dialog, dialogName, openWorkspace, persist, showToast, workspace?.workspace_id]);
+
+  if (!workspace || !knowledge || !provider || !currentDecisionCatalog) return <LoadingScreen error={connectionError} onRetry={() => void load()} />;
+
+  return (
+    <main className="workbench-shell workbench-shell--instrument">
+      <header className="app-bar">
+        <div className="brand-lockup"><div className="brand-mark">Q</div><strong>QianCraft</strong></div>
+        <details className="workspace-command">
+          <summary><span>{workspace.name}</span><ChevronDown aria-hidden="true" size={15} /></summary>
+          <div className="workspace-command__popover">
+            <label><span>当前工作区</span><select value={workspace.workspace_id} onChange={(event) => void openWorkspace(event.target.value)} aria-label="切换工作区">{workspaceList.map((item) => <option key={item.workspace_id} value={item.workspace_id}>{item.name}</option>)}</select></label>
+            <div>
+              <button type="button" onClick={() => { setDialogName('新文化文创工作区'); setDialog('new'); }}><Plus aria-hidden="true" size={14} />新建</button>
+              <button type="button" onClick={() => { setDialogName(workspace.name); setDialog('rename'); }}>重命名</button>
+              <button disabled={busy} type="button" onClick={() => void persist()}><Save aria-hidden="true" size={14} />{busy ? '保存中' : '保存'}</button>
+            </div>
+            <p title={`${API_BASE}/api/health`}><i />API 已连接 · 本地 JSON 持久化</p>
+          </div>
+        </details>
+        <nav className="phase-switcher" aria-label="工作流阶段">
+          {PHASE_NAVIGATION.map((phase) => (
+            <button className={activePhase === phase.id ? 'is-active' : ''} key={phase.id} type="button" onClick={() => focusNode(phase.nodeId)}>{phase.label}</button>
+          ))}
+        </nav>
+        <div className="app-bar__actions">
+          <button className="human-decision-button" type="button" onClick={() => openDecisionStudio(NODE_DECISION_STAGE[selectedNode?.type ?? 'CultureGraphNode'])}><Scale aria-hidden="true" size={17} /><span>人工决策</span><em>v{workspace.metadata.decision_profile.version}</em></button>
+          <button className="run-all-button" disabled={busy} type="button" onClick={() => void runSequence(undefined, true)}><Play aria-hidden="true" fill="currentColor" size={16} /><span>{busy ? '运行中' : '运行链路'}</span></button>
+        </div>
+      </header>
+
+      <div className={`workbench-grid ${activeDock ? 'workbench-grid--dock-open' : ''} ${showInspector ? 'workbench-grid--inspector-open' : ''}`}>
+        <nav className="tool-rail" aria-label="工作台工具">
+          <div>
+            <button aria-label="证据库" aria-pressed={activeDock === 'evidence'} className={activeDock === 'evidence' ? 'is-active' : ''} title="证据库" type="button" onClick={(event) => { dockTriggerRef.current = event.currentTarget; setActiveDock((current) => current === 'evidence' ? null : 'evidence'); }}><Library aria-hidden="true" size={21} /></button>
+            <button aria-label="专注画布" aria-pressed={!activeDock} className={!activeDock ? 'is-active' : ''} title="专注画布" type="button" onClick={(event) => { dockTriggerRef.current = event.currentTarget; setActiveDock(null); }}><Workflow aria-hidden="true" size={21} /></button>
+            <button aria-label="人工决策" title="人工决策" type="button" onClick={() => openDecisionStudio(NODE_DECISION_STAGE[selectedNode?.type ?? 'CultureGraphNode'])}><Scale aria-hidden="true" size={21} /></button>
+            <button aria-label="方案资产" aria-pressed={activeDock === 'assets'} className={activeDock === 'assets' ? 'is-active' : ''} title="方案资产" type="button" onClick={(event) => { dockTriggerRef.current = event.currentTarget; setActiveDock((current) => current === 'assets' ? null : 'assets'); }}><Images aria-hidden="true" size={21} /></button>
+            <button aria-label="节点历史" aria-pressed={activeDock === 'history'} className={activeDock === 'history' ? 'is-active' : ''} title="节点历史" type="button" onClick={(event) => { dockTriggerRef.current = event.currentTarget; setActiveDock((current) => current === 'history' ? null : 'history'); }}><History aria-hidden="true" size={21} /></button>
+          </div>
+          <button aria-label={showInspector ? '收起 Inspector' : '打开 Inspector'} aria-pressed={showInspector} className={showInspector ? 'is-active' : ''} title={showInspector ? '收起 Inspector' : '打开 Inspector'} type="button" onClick={(event) => { inspectorTriggerRef.current = event.currentTarget; setShowInspector((current) => !current); }}><PanelRight aria-hidden="true" size={21} /></button>
+        </nav>
+
+        <div aria-label="上下文工具面板" className={`tool-dock ${activeDock ? 'is-open' : ''}`} ref={dockPanelRef} role="region" tabIndex={-1}>
+          {activeDock ? <div className="tool-dock__mobile-toolbar"><span>{activeDock === 'evidence' ? '证据库' : activeDock === 'assets' ? '方案资产' : '节点历史'}</span><button aria-label="关闭上下文工具面板" type="button" onClick={() => setActiveDock(null)}><X aria-hidden="true" size={17} /></button></div> : null}
+          {activeDock === 'evidence' ? <KnowledgeCenter knowledge={knowledge} profile={workspace.metadata.decision_profile} onOpenGraph={() => setShowGraph(true)} onOpenDecisions={openDecisionStudio} /> : null}
+          {activeDock === 'assets' ? <AssetDock nodes={nodes} onSelect={selectNode} /> : null}
+          {activeDock === 'history' ? <HistoryDock node={selectedNode} /> : null}
+        </div>
+
+        <section className="flow-stage" onDrop={handleDrop} onDragOver={(event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; }}>
+          <ReactFlow<WorkbenchNode, WorkbenchEdge>
+            nodes={nodes}
+            edges={edges}
+            nodeTypes={nodeTypes}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onInit={initializeFlow}
+            onNodeClick={(event, node) => { if (event.currentTarget instanceof HTMLElement) inspectorTriggerRef.current = event.currentTarget; setSelectedNodeId(node.id); setShowInspector(true); }}
+            onNodeDoubleClick={(_, node) => window.location.assign(`/nodes/${encodeURIComponent(node.id)}?workspace=${encodeURIComponent(workspace.workspace_id)}`)}
+            onPaneClick={() => setShowInspector(false)}
+            defaultViewport={workspace.viewport}
+            defaultEdgeOptions={{ type: 'smoothstep', markerEnd: { type: MarkerType.ArrowClosed, color: '#8b8984', width: 14, height: 14 }, style: { stroke: '#d4d3d0', strokeWidth: 1.25 } }}
+            minZoom={0.3}
+            maxZoom={1.65}
+            nodesConnectable={false}
+            deleteKeyCode={null}
+            selectionOnDrag
+            panOnDrag={[1, 2]}
+          >
+            <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#dedbd4" />
+            <Controls position="bottom-left" showInteractive={false} />
+            <MiniMap pannable zoomable position="bottom-right" nodeBorderRadius={4} nodeColor={(node) => { if (node.type === 'CultureGraphNode') return '#6f8fa4'; if (node.type === 'MarketRadarNode') return '#bd8a76'; if (node.type === 'ConceptNode') return '#6d77a7'; if (node.type === 'PosterBoardNode') return '#1d2836'; return '#9b9994'; }} maskColor="rgba(252, 251, 248, .84)" />
+          </ReactFlow>
+          <div className="canvas-context"><div><span>当前链路</span><strong>{workspace.metadata.topic}</strong></div><p>{nodes.length} 个节点 · {edges.length} 条关系</p><button type="button" onClick={() => openDecisionStudio('score')}>{workspace.metadata.decision_profile.mode === 'manual' ? '人工配置' : '系统建议'} v{workspace.metadata.decision_profile.version}</button></div>
+          <div className="canvas-legend"><span><i className="legend-success" />已就绪</span><span><i className="legend-cached" />证据快照</span><span><i className="legend-stale" />待更新</span></div>
+          {showGraph ? <CultureGraphOverlay records={knowledge.culture.records} onClose={() => setShowGraph(false)} /> : null}
+        </section>
+
+        <div aria-label="节点 Inspector" className={`inspector-slot ${showInspector ? 'is-open' : ''}`} ref={inspectorPanelRef} role="region" tabIndex={-1}>
+          {showInspector ? (
+            <>
+              <div className="inspector-slot__toolbar"><span>INSPECTOR</span><button aria-label="收起 Inspector" type="button" onClick={() => setShowInspector(false)}><X aria-hidden="true" size={17} /></button></div>
+              <InspectorPanel
+                key={`${selectedNode?.id ?? 'empty'}-${selectedNode?.data.version ?? workspace.updated_at}`}
+                node={selectedNode}
+                nodes={nodes}
+                edges={edges}
+                provider={provider}
+                decisionProfile={workspace.metadata.decision_profile}
+                busy={busy}
+                onRun={(nodeId) => void runSequence(nodeId, false)}
+                onRunFromHere={(nodeId) => void runSequence(nodeId, true)}
+                onSaveBrief={(brief) => void handleSaveBrief(brief)}
+                onSavePoster={(poster) => void handleSavePoster(poster)}
+                onActivateConcept={(nodeId) => void activate(nodeId)}
+                onDuplicateConcept={(nodeId) => void mutateConcept(nodeId, 'duplicate')}
+                onGenerateMoreConcept={(nodeId) => void mutateConcept(nodeId, 'generate-more')}
+                onRegenerateConcept={(nodeId) => void mutateConcept(nodeId, 'regenerate')}
+                onSaveConcept={(nodeId, concept) => void handleSaveConcept(nodeId, concept)}
+                onExportPoster={() => void handleExportPoster()}
+                onDownloadPackage={() => void handleDownloadPackage()}
+                onOpenDecisions={openDecisionStudio}
+              />
+            </>
+          ) : null}
+        </div>
+      </div>
+
+      {toast ? <div className={`toast toast--${toast.tone}`}>{toast.message}</div> : null}
+      {dialog ? (
+        <div className="dialog-backdrop" role="presentation" onMouseDown={() => setDialog(null)}>
+          <form className="workspace-dialog" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => { event.preventDefault(); void submitDialog(); }}>
+            <span>{dialog === 'new' ? 'NEW WORKSPACE' : 'RENAME WORKSPACE'}</span>
+            <h2>{dialog === 'new' ? '创建新的文化文创链路' : '重命名当前工作区'}</h2>
+            <input autoFocus maxLength={80} value={dialogName} onChange={(event) => setDialogName(event.target.value)} />
+            <div><button type="button" onClick={() => setDialog(null)}>取消</button><button className="primary-button" disabled={!dialogName.trim() || busy} type="submit">{dialog === 'new' ? '创建并打开' : '保存名称'}</button></div>
+          </form>
+        </div>
+      ) : null}
+      {showDecisionStudio ? (
+        <DecisionStudio
+          busy={busy}
+          catalog={currentDecisionCatalog}
+          initialStage={decisionStage}
+          profile={workspace.metadata.decision_profile}
+          onClose={closeDecisionStudio}
+          onSave={(profile) => void handleSaveDecisionProfile(profile)}
+        />
+      ) : null}
+    </main>
+  );
 }
 
-function RunsView({ summary, designState }: { summary: Summary; designState: DesignState }) {
-  return <section className="module-page"><SectionTitle code="05 / RUN HISTORY" title="每一次生成都有记录" description="这里不只显示成功，也保留模式、引擎、输入 SHA 和明确的失败原因。" /><div className="run-layout"><div><h3>当前正式流水线</h3><div className="component-list">{summary.current_run.components.map((item) => <div key={item.component}><i className={item.mode === 'live' ? 'live' : item.mode === 'cache' ? 'cache' : 'blocked'} /><div><strong>{item.component}</strong><small>{item.engine}</small><p>{item.detail}</p></div><span>{item.mode.toUpperCase()}</span></div>)}</div></div><div><h3>工具内设计生成</h3>{designState.runs.length ? <div className="tool-run-list">{designState.runs.map((run) => <article key={run.run_id}><div><span>{run.run_id}</span><strong>{run.product_name}</strong></div><p>{run.primary_opportunity_id} · {run.design_engine}</p><div><code>{run.source_handoff_sha256?.slice(0, 16)}…</code><b>{run.render_kind}</b></div></article>)}</div> : <div className="empty-panel">尚未从工具内触发新的设计生成。当前显示的是仓库正式输出。</div>}</div></div></section>;
-}
+export default Workbench;

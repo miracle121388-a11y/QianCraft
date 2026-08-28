@@ -1,0 +1,48 @@
+# Zeabur 生产部署
+
+QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 API 分别转发到容器内的 Vinext 和 Python 进程。站点默认启用 HTTP Basic Auth，`/healthz` 仅用于平台健康检查。
+
+## 已上线实例
+
+- 入口：<https://qiancraft-studio-2026.zeabur.app>
+- 区域：California 专用服务器
+- 拓扑：Nginx（公网端口）→ Vinext `127.0.0.1:3000` / Tool API `127.0.0.1:8787`
+- 访问控制：除 `/healthz` 外统一启用 Basic Auth；凭证由项目维护者单独分发。
+- 持久化：Zeabur Volume `qiancraft-runtime` 挂载到 `/app/data/runtime`。
+
+2026-08-28 的发布验收覆盖匿名 401、健康检查 200、认证后首页/API/九个节点详情页 200、引用解析、节点独立运行和运行目录挂载状态。0.5.2 部署 `6a91944713d3d467215e63e3` 进一步验证两套 Noto 中文字体 CSS 与 WOFF2 为 200，并把持久化默认视口迁移为 `x=20, y=210, zoom=0.82`。0.6.0 部署 `6a91a4a7db37f2e6ddbc0c40` 在同一受保护实例增加七阶段人工决策、DecisionProfile 1.1 与节点展示页深链接；线上容器报告应用版本 0.6.0，默认工作区已无损持久化迁移为 Schema 1.1，Decision Catalog 为 22 条文化记录、4 个平台、8 条机会、12 条视觉参考和 3 个概念，九个节点 API 与九个前端详情页均返回 200，非法决策 ID 返回 422。
+
+2026-08-29 的最终 0.7.0 部署 `6a91ccc4ac2577a93d22028e` 把暖纸色 Creative Instrument Workbench、五阶段导航、上下文证据/资产/历史 Dock、React Flow 主画布、320px Inspector、移动端覆盖层和焦点闭环发布到同一实例。远端 Vinext 五阶段构建和 Docker 镜像构建通过，安装日志确认 `qiancraft-0.7.0`，部署状态为 `RUNNING`；公网 `/healthz` 返回 200、匿名 `/` 返回 401。当前执行环境没有站点 Basic Auth 凭证，因此本轮没有把本地九页/九 API 结果冒充为 0.7.0 的认证公网结果；完整业务与响应式交互已在本地生产构建中验收。该实例始终是受保护的产品验证环境，不承担无需登录的公众营销站职责。
+
+## 必需配置
+
+- 服务端口：使用平台注入的 `PORT`。
+- 持久卷：挂载到 `/app/data/runtime`。
+- `QIANCRAFT_WEB_USERNAME`、`QIANCRAFT_WEB_PASSWORD`：站点入口凭证。
+- `LLM_API_KEY`：策划与设计模型凭证。
+- `LLM_BASE_URL`、`LLM_MODEL`：模型接口与名称。
+- `ALLOW_API_TXT_FALLBACK=false`：生产环境禁止读取本地密钥文件。
+
+图像服务必须单独配置 `IMAGE_PROVIDER`、`IMAGE_API_KEY`、`IMAGE_BASE_URL` 与 `IMAGE_MODEL`；未配置时，工作台保留已有 A/B/C 方案并明确显示 warning，不伪造新生成结果。
+
+## 数据边界
+
+`/app/data/runtime/workbench` 保存画布、任务书、概念版本和海报编辑状态；`/app/data/runtime/tool_workspace` 保存旧版工具工作区与设计运行产物。文化图谱、市场证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线。
+
+当前线上容器面向产品工作台和设计验证。四平台实时采集仍受平台登录态、授权用途和独立浏览器运行时约束，不在无交互服务器中冒充可用；线上保留已经核验并标明时间边界的 378 条历史市场快照。
+
+## 本地构建
+
+```bash
+docker build -t qiancraft:0.7.0 .
+docker run --rm -p 8080:8080 \
+  -e QIANCRAFT_WEB_USERNAME=qiancraft \
+  -e QIANCRAFT_WEB_PASSWORD='<set-in-secret-manager>' \
+  -e LLM_API_KEY='<set-in-secret-manager>' \
+  -v qiancraft-runtime:/app/data/runtime \
+  qiancraft:0.7.0
+```
+
+生产密钥只应通过 Zeabur 的变量管理界面注入，不写入 Dockerfile、仓库或部署日志。
+
+Zeabur CLI 上传会跳过点号目录；Dockerfile 因此会在远端构建阶段确保存在不含密钥的 `.openai/hosting.json`。实际 D1/R2 绑定仍以部署环境配置为准，不能把该占位清单当作生产凭证或数据配置。0.7.0 使用隔离发布副本，只保留当前市场快照，并仅在副本中对随镜像发布的展示 PNG 做无尺寸变化压缩；工作区原始高清资产不改动，PNG 尺寸和必要的文本/物理尺寸元数据块得到保留。最终副本为 86 个文件、5,589,358 字节，敏感路径和长 `sk-` 模式扫描均为 0 命中。首次直接从项目根上传因 Windows `node_modules` pnpm junction 无法打包而停止，第二个较大副本在对象存储上传阶段超时；压缩后的隔离副本上传、远端构建与发布成功。

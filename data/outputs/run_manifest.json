@@ -1,7 +1,7 @@
 {
-  "run_id": "20260828T033015Z-b570c979",
-  "started_at": "2026-08-28T03:30:15.591548Z",
-  "finished_at": "2026-08-28T03:30:16.500458Z",
+  "run_id": "20260828T060200Z-e44240e3",
+  "started_at": "2026-08-28T06:02:00.362090Z",
+  "finished_at": "2026-08-28T06:05:08.014543Z",
   "request": {
     "topic": "贵州苗绣",
     "region": "贵州",
@@ -11,10 +11,10 @@
   "components": [
     {
       "component": "culture_knowledge",
-      "mode": "cache",
-      "engine": "QianCraft curated graph",
+      "mode": "live",
+      "engine": "LightRAG local KG",
       "ok": true,
-      "detail": "结构化图谱命中 4 条文化记录；未启动外部运行时。"
+      "detail": "已索引 612 个实体、697 条关系；主题节点与边查询成功。"
     },
     {
       "component": "market_research",
@@ -25,10 +25,10 @@
     },
     {
       "component": "strategist",
-      "mode": "cache",
-      "engine": "QianCraft evidence-locked strategy baseline",
+      "mode": "live",
+      "engine": "GPT Researcher external-context writer",
       "ok": true,
-      "detail": "离线证据规则生成 8 条跨域机会；没有把缓存标记为实时模型结果。 已评分 8 条机会，LightRAG 二次核验高分候选，仅将通过门槛的 Top 3 交给设计阶段。"
+      "detail": "已调用 deepseek-v4-flash；生成建议经过证据编号白名单和 Pydantic 契约校验。 已评分 8 条机会，LightRAG 二次核验高分候选，仅将通过门槛的 Top 3 交给设计阶段。"
     },
     {
       "component": "design_agent",
@@ -68,7 +68,7 @@
       "文创徽章"
     ],
     "raw_paths": [],
-    "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
+    "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
     "hotness_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
     "detail": "四平台状态：xhs=cache(115)；dy=cache(14)；bili=cache(101)；wb=cache(148)。"
   },
@@ -95,8 +95,8 @@
       ],
       "raw_paths": [],
       "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\xhs.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-      "detail": "演示模式不发起平台访问。 使用 115 条历史真实抓取快照。"
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 115 条历史真实抓取快照。"
     },
     "dy": {
       "status": "cache",
@@ -120,8 +120,8 @@
       ],
       "raw_paths": [],
       "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\dy.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-      "detail": "演示模式不发起平台访问。 使用 14 条历史真实抓取快照。"
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 14 条历史真实抓取快照。"
     },
     "bili": {
       "status": "cache",
@@ -145,8 +145,8 @@
       ],
       "raw_paths": [],
       "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\bili.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-      "detail": "演示模式不发起平台访问。 使用 101 条历史真实抓取快照。"
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 101 条历史真实抓取快照。"
     },
     "wb": {
       "status": "cache",
@@ -170,8 +170,8 @@
       ],
       "raw_paths": [],
       "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\wb.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-      "detail": "演示模式不发起平台访问。 使用 148 条历史真实抓取快照。"
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 148 条历史真实抓取快照。"
     }
   },
   "outputs": {

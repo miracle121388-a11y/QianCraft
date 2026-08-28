@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28T03:30:15.683053+00:00",
+  "generated_at": "2026-08-28T06:02:06.585088+00:00",
   "platforms": [
     "xhs",
     "dy",
@@ -33,7 +33,7 @@
       },
       "sample_size": 89,
       "high_hot_post_ratio": 0.146,
-      "freshness_score": 67.0,
+      "freshness_score": 66.9,
       "why_hot": [
         "覆盖 4/4 个平台",
         "小红书平台内平均热度 52.7",
@@ -270,7 +270,7 @@
       },
       "sample_size": 33,
       "high_hot_post_ratio": 0.091,
-      "freshness_score": 61.9,
+      "freshness_score": 61.8,
       "why_hot": [
         "覆盖 4/4 个平台",
         "微博平台内平均热度 36.1",
@@ -953,8 +953,8 @@
           ],
           "source_ref": "MPL-WB-08D51A1EF9DFB7D0FBB9",
           "retrieved_at": "2026-08-27T22:20:55.516269+00:00",
-          "platform_hot_score": 28.5,
-          "real_engagement_score": 28.5,
+          "platform_hot_score": 28.6,
+          "real_engagement_score": 28.6,
           "institutional_signal_score": 0.0,
           "derived_viral_score": 53.3,
           "viral_score": 53.3,
@@ -974,7 +974,7 @@
       "platform_coverage": 2,
       "platform_scores": {
         "xhs": 59.0,
-        "wb": 18.1
+        "wb": 18.2
       },
       "platform_post_counts": {
         "xhs": 4,
@@ -1124,12 +1124,12 @@
     {
       "rank": 7,
       "product_form": "香氛",
-      "cross_platform_hot_score": 43.7,
+      "cross_platform_hot_score": 43.8,
       "platform_coverage": 3,
       "platform_scores": {
         "xhs": 52.0,
         "bili": 54.9,
-        "wb": 7.5
+        "wb": 7.6
       },
       "platform_post_counts": {
         "xhs": 3,
@@ -1317,11 +1317,11 @@
           ],
           "source_ref": "MPL-WB-5987BB5450FA39F4DCDF",
           "retrieved_at": "2026-08-27T22:20:55.523119+00:00",
-          "platform_hot_score": 7.5,
-          "real_engagement_score": 7.5,
+          "platform_hot_score": 7.6,
+          "real_engagement_score": 7.6,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 43.7,
-          "viral_score": 43.7,
+          "derived_viral_score": 43.8,
+          "viral_score": 43.8,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -1339,7 +1339,7 @@
       "platform_scores": {
         "xhs": 49.3,
         "bili": 26.8,
-        "wb": 22.8
+        "wb": 22.9
       },
       "platform_post_counts": {
         "xhs": 3,
@@ -1506,11 +1506,11 @@
           ],
           "source_ref": "MPL-WB-B79DAA30C867A796380A",
           "retrieved_at": "2026-08-27T22:20:55.518253+00:00",
-          "platform_hot_score": 22.8,
-          "real_engagement_score": 22.8,
+          "platform_hot_score": 22.9,
+          "real_engagement_score": 22.9,
           "institutional_signal_score": 0.0,
-          "derived_viral_score": 55.5,
-          "viral_score": 55.5,
+          "derived_viral_score": 55.6,
+          "viral_score": 55.6,
           "viral_reasons": [
             "social_signal 与证据质量分开计分",
             "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -1676,7 +1676,7 @@
       "platform_coverage": 2,
       "platform_scores": {
         "xhs": 35.6,
-        "wb": 12.4
+        "wb": 12.5
       },
       "platform_post_counts": {
         "xhs": 8,
@@ -1748,8 +1748,8 @@
           ],
           "source_ref": "MPL-XHS-0A643FC34F73416F8C15",
           "retrieved_at": "2026-08-27T22:09:59.570985+00:00",
-          "platform_hot_score": 82.0,
-          "real_engagement_score": 82.0,
+          "platform_hot_score": 81.9,
+          "real_engagement_score": 81.9,
           "institutional_signal_score": 0.0,
           "derived_viral_score": 67.7,
           "viral_score": 67.7,
@@ -1804,8 +1804,8 @@
           ],
           "source_ref": "MPL-WB-1617EB0D2FAC88CDD970",
           "retrieved_at": "2026-08-27T22:20:55.517119+00:00",
-          "platform_hot_score": 12.4,
-          "real_engagement_score": 12.4,
+          "platform_hot_score": 12.5,
+          "real_engagement_score": 12.5,
           "institutional_signal_score": 0.0,
           "derived_viral_score": 46.9,
           "viral_score": 46.9,

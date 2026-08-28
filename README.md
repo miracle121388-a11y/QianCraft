@@ -8,10 +8,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.4.0-cb3f35?style=flat-square" alt="Version 0.4.0">
+  <img src="https://img.shields.io/badge/version-0.7.0-276bff?style=flat-square" alt="Version 0.7.0">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-19%20passed-2f7358?style=flat-square" alt="19 tests passed">
-  <img src="https://img.shields.io/badge/status-research%20prototype-d08b32?style=flat-square" alt="Research prototype">
+  <img src="https://img.shields.io/badge/tests-42%20passed-2f7358?style=flat-square" alt="42 tests passed">
+  <img src="https://img.shields.io/badge/status-deployed%20prototype-d08b32?style=flat-square" alt="Deployed prototype">
 </p>
 
 <p align="center">
@@ -26,13 +26,15 @@
 > [!IMPORTANT]
 > QianCraft 当前是可运行的研究原型：输出可用于概念展示、工厂报价与首样沟通，但不是生产工程图、合规证书、商业文化授权或“爆款保证”。
 
+受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，访问凭证由项目维护者单独提供；运行态工作区写入持久卷，密钥不进入前端或仓库。
+
 ## 一眼看懂
 
 QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何把文化出处、地域差异、当下市场信号、设计判断和制造假设放进同一个可审计流程。系统从贵州文化知识图谱出发，经过四平台市场归一化、双证据锁定的机会评分和 LightRAG 二次核验，最终由 Design Agent 形成一个完整的概念设计包与艺术化海报。
 
-| 文化证据 | 市场证据 | 设计交付 | 可审计性 |
+| 文化证据 | 市场证据 | 空间工作台 | 设计交付 |
 |---|---|---|---|
-| 22 条结构化文化记录<br>32 条文化/伦理/法律/视觉来源 | 378 条四平台真实快照<br>平台内热度 + 跨平台形态榜 | Top 3 机会 → 1 个主概念<br>尺寸、BOM、装配、质检、海报 | 13 个正式输出<br>输入与渲染 SHA-256、逐组件状态 |
+| 22 条结构化文化记录<br>32 条文化/伦理/法律/视觉来源 | 378 条四平台真实快照<br>平台内热度 + 跨平台形态榜 | 9 个实例 / 7 类节点、独立展示页、Inspector<br>工作区 JSON 可持久保存 | Top 3 机会 → A/B/C 概念<br>尺寸、BOM、装配、质检、可编辑海报 |
 
 ## 核心能力
 
@@ -43,6 +45,10 @@ QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何�
 | **可解释机会选择** | 每个机会必须同时引用文化与市场证据，经过六维评分、文化风险扣分和 LightRAG 二次核验。 |
 | **从 JSON 到概念产品** | Design Agent 重新读取 `designer_handoff.json`、校验摘要并输出文化转译、成品形态、尺寸、BOM、工艺和审核门。 |
 | **展示与制造信息同屏** | 原创产品主视觉与本地精确中文排版合成 1800 × 2400 海报，同时保留机器可读 DesignPackage。 |
+| **空间化创作工作台** | 五阶段导航、按需证据/资产/历史 Dock、文化图谱、四平台雷达、机会策略、设计任务书、A/B/C 概念视觉与海报板在同一无限画布中编排；Inspector 只显示当前节点的参数、来源、历史和动作。 |
+| **七阶段人工决策** | 人工可选择文化记录、平台/品类、六维评分权重与候选机会，并继续指定设计意图、视觉参照、概念比较组和海报结构；每次保存形成独立版本，不覆盖事实原件。 |
+| **九节点专业展示页** | 每个实例可单击或双击进入独立页面；文化关系、市场原记录、六维量分、任务书、视觉提示、概念成品、BOM 和海报分别拥有专用视图，并附可回到原始网页的证据台账。 |
+| **暖纸色编辑系统** | 用户提供的 parchment / warm sand / linen / charcoal / interaction indigo 令牌统一颜色、间距、圆角、焦点和轻量内阴影；本地 Noto Sans SC / Noto Serif SC 负责真实中文覆盖，不依赖外部字体 CDN。 |
 | **诚实的运行状态** | 文化、市场、策划、设计、渲染分别记录 `live / cache / unavailable`；缓存不冒充实时数据。 |
 
 ## 成果展示
@@ -54,6 +60,12 @@ QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何�
     <img src="data/outputs/design_poster.png" width="760" alt="针格模块——花溪挑花互动冰箱贴概念设计海报">
   </a>
 </p>
+
+三条方向在同一任务书下保持不同产品定位：A 验证核心结构，B 收敛轻量礼赠，C 扩展为可收藏的替换面板系统。
+
+| Concept A · 核心结构 | Concept B · 轻量礼赠 | Concept C · 系列收藏 |
+|---|---|---|
+| <img src="web/public/product-hero.png" width="260" alt="针格模块核心概念产品图"> | <img src="data/workbench/generated/guizhou-miao-demo/concept-b-v1.png" width="260" alt="轻量礼赠版概念产品图"> | <img src="data/workbench/generated/guizhou-miao-demo/concept-c-v1.png" width="260" alt="系列收藏版概念产品图"> |
 
 | 继续查看 | 文件 |
 |---|---|
@@ -73,6 +85,30 @@ uv run python scripts/run_demo.py --mode demo
 ```
 
 `demo` 模式不调用外部 API，也不会打开浏览器；它会使用结构化图谱与明确标记的本地证据完成端到端验收。默认主题为“贵州苗绣”，结果写入 `data/outputs/`。
+
+### 启动 Creative Intelligence Workbench
+
+工作台前端通过 HTTP 读取真实 Python API，不在浏览器里复制一套假数据。分别启动两个终端：
+
+```powershell
+# Terminal 1 · QianCraft API
+uv run python -m app.tool_api --port 8787
+
+# Terminal 2 · Web Workbench
+cd web
+pnpm install
+pnpm dev
+```
+
+打开 `http://localhost:3000`。默认工作区会载入“贵州苗绣 → 四平台市场雷达 → 策略 → 任务书 → 视觉 A/B/C → 海报”的完整链路，三套概念视觉均可直接比较；画布位置、视口、当前概念与编辑版本保存在 `data/workbench/workspaces/`。
+
+需要以已构建的 production server 使用网站时，在 `web` 目录执行 `pnpm build` 后运行 `pnpm start:local`；它只绑定 `127.0.0.1:3000`，并继续使用同一真实 API。
+
+每张节点卡都可以进入完整展示页，双击节点也可直达；详情页支持独立运行、从此处运行、编辑保存、结构化导出和相邻节点跳转。文化、市场与策略页会把 `Cxxx / Mxxx / MPL-xxx / Vxxx` 解析为完整引用卡，并区分事实来源、平台历史记录、视觉研究参考和策略推导。
+
+画布右上角的 Flow Map 可直接定位文化、市场、策略、任务书、A/B/C 与海报节点，不必手动在大画布中寻找。若网站前端与 API 不在同一台机器，把 `web/.env.example` 复制为 `web/.env.local`，设置 `NEXT_PUBLIC_QIANCRAFT_API_URL`；需要覆盖公开站点元数据时设置 `NEXT_PUBLIC_QIANCRAFT_SITE_URL`。这两个公开变量只能放 URL，不能放任何密钥。
+
+项目已内置本轮确认过的 A/B/C 概念资产。后续一键生成或单方向重生成使用独立适配器：只有同时配置 `IMAGE_PROVIDER`、`IMAGE_API_KEY`、`IMAGE_BASE_URL` 与 `IMAGE_MODEL` 时才会启用；缺项会在节点与 Inspector 中明确显示 `warning`，不会把既有资产冒充为新调用结果。
 
 接入项目内原创产品主视觉：
 
@@ -118,6 +154,12 @@ flowchart LR
     PR --> POSTER
     DP --> POSTER
     POSTER --> OUT[设计海报 + RenderManifest]
+
+    CD --> WB[QianCraft Workbench]
+    TD --> WB
+    DH --> WB
+    DP --> WB
+    WB --> CANVAS[7 类节点 / Inspector / Workspace JSON]
 ```
 
 关键接口不是内存对象，而是已落盘的 [`designer_handoff.json`](data/outputs/designer_handoff.json)。Design Agent 会重新载入 Pydantic 契约并记录文件 SHA-256，避免策划与设计之间出现不可追踪的旁路输入。
@@ -131,6 +173,7 @@ flowchart LR
 | Strategist | Culture + Trend + Benchmark | 机会池、Top 3 Handoff | 每项同时具备 `Cxxx` 与 `Mxxx` |
 | Design Agent | 文件级 Designer Handoff | DesignPackage、PosterRenderRequest | 主机会来自 Top 3，高敏感母题留置审核 |
 | Poster Renderer | DesignPackage、可选原创主视觉 | PNG、RenderManifest | 精确文字本地绘制，参考图像像素禁用 |
+| Creative Workbench | 文化、市场、策略、DesignPackage、图像适配器 | 空间画布、版本化任务书、A/B/C、可编辑海报 | 前端仅经 HTTP API 读写；上游更新只标记下游 stale |
 
 ### 运行模式
 
@@ -222,16 +265,21 @@ QianCraft/
 │   ├── adapters/          # LightRAG / MediaCrawler / GPT Researcher 隔离层
 │   ├── strategist/        # 双证据锁、评分与 Designer Handoff
 │   ├── designer/          # Design Agent、工厂简报与海报排版
+│   ├── workbench.py       # 7 类节点、工作区持久化、版本与运行语义
 │   ├── pipeline.py        # 端到端编排和原子输出
 │   └── schemas.py         # 全系统唯一数据契约
 ├── data/
 │   ├── culture/           # 贵州文化图谱、视觉参考、LightRAG 存储
 │   ├── market/            # raw 平台快照与 derived 派生证据
 │   ├── design/assets/     # 原创产品主视觉
+│   ├── workbench/         # 工作区 JSON 与受控生成图
 │   └── outputs/           # 最新 13 项正式结果
+├── web/                   # 暖纸色 Creative Instrument 工作台、节点详情与 PNG 导出
 ├── scripts/               # Demo、Design Agent、环境与授权入口
 ├── tests/                 # 契约、证据、降级与端到端回归
 ├── docs/                  # 架构、图谱、市场、设计与实机报告
+├── PRODUCT.md             # 产品定位、用户任务、成功标准与边界
+├── DESIGN.md              # 可执行界面令牌、组件与响应式规范
 └── WORKFLOW.md            # 当前状态与只追加更新台账
 ```
 
@@ -253,24 +301,34 @@ QianCraft/
 
 ```powershell
 uv run pytest
-uvx ruff check app scripts tests
+uv run ruff check app tests
+cd web
+pnpm test
+pnpm typecheck
+pnpm lint
+pnpm build
 ```
 
 当前基线：
 
 ```text
-19 passed
+37 Python tests passed
+5 Web tests passed
 All checks passed!
 ```
 
-当前可重复离线启动运行号为 `20260828T033015Z-b570c979`；五组件状态为 `cache / cache / cache / live / live`。最近一次 LightRAG / DeepSeek 外部运行时完整验收为 `20260827T225611Z-4f2a77ae`，状态为 `live / cache / live / live / live`。详细的 API、运行时、四平台与契约证据见 [`docs/real_machine_test.md`](docs/real_machine_test.md)。
+最新实机运行号为 `20260828T060200Z-e44240e3`：LightRAG、DeepSeek 策略、Design Agent 与 Poster Renderer 均为 `live`，市场层使用 378 条历史真实快照并标记为 `cache`。默认 Workbench 已绑定该运行号；详细的 API、运行时、四平台与契约证据见 [`docs/real_machine_test.md`](docs/real_machine_test.md)。
 
 ## 文档地图
 
 | 文档 | 内容 |
 |---|---|
 | [`WORKFLOW.md`](WORKFLOW.md) | 项目唯一工作流、当前状态与每次更新台账 |
+| [`PRODUCT.md`](PRODUCT.md) | 工具定位、核心用户任务、当前能力与非量产边界 |
+| [`DESIGN.md`](DESIGN.md) | 暖纸色工作台令牌、布局、组件、可访问性与视觉禁区 |
 | [`docs/architecture.md`](docs/architecture.md) | 模块边界、证据锁、降级与设计接口 |
+| [`docs/human_decision_workflow.md`](docs/human_decision_workflow.md) | 七阶段人工决策、版本语义、API 与下游失效规则 |
+| [`docs/typography_system.md`](docs/typography_system.md) | Flipbook 调研、中文字体阶梯、画布比例与响应式验收 |
 | [`docs/design_agent.md`](docs/design_agent.md) | 选案、制造拆解、海报渲染与量产前门禁 |
 | [`docs/knowledge_graph.md`](docs/knowledge_graph.md) | 22 条贵州文化记录、32 条来源与田野空白 |
 | [`docs/market_intelligence.md`](docs/market_intelligence.md) | 四平台字段、Platform Hot Score 与跨平台公式 |

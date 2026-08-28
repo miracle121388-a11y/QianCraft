@@ -1,0 +1,747 @@
+{
+  "schema_version": "1.1",
+  "workspace_id": "guizhou-miao-demo",
+  "name": "贵州苗绣 · 文创机会工作台",
+  "created_at": "2026-08-28T06:06:11.378436+00:00",
+  "updated_at": "2026-08-28T22:58:00+08:00",
+  "viewport": {
+    "x": 20,
+    "y": 210,
+    "zoom": 0.82
+  },
+  "selected_node_id": "brief",
+  "metadata": {
+    "topic": "贵州苗绣",
+    "region": "贵州",
+    "target_market": "18-30岁年轻消费者",
+    "source_run_id": "20260828T060200Z-e44240e3",
+    "selected_concept_id": "concept-a",
+    "brief_version": 1,
+    "node_types": [
+      "CultureGraphNode",
+      "MarketRadarNode",
+      "StrategyNode",
+      "DesignBriefNode",
+      "VisualGenerationNode",
+      "ConceptNode",
+      "PosterBoardNode"
+    ],
+    "product_stage": "concept_visual_and_prototype_brief",
+    "stop_before": "production_release_and_factory_order",
+    "concept_visual_run": {
+      "at": "2026-08-28T06:17:21.9506930Z",
+      "source": "codex_builtin_imagegen",
+      "concepts": [
+        "concept-b",
+        "concept-c"
+      ],
+      "image_api_automation": "unconfigured"
+    },
+    "decision_profile": {
+      "version": 1,
+      "mode": "guided",
+      "cultureRecordIds": [
+        "GZ-MIAO-HUAXI",
+        "GZ-MIAO-JIANHE-TIN",
+        "GZ-MIAO-SONGTAO",
+        "GZ-MIAO-EMBROIDERY"
+      ],
+      "marketPlatforms": ["xhs", "dy", "bili", "wb"],
+      "marketProductForms": ["冰箱贴", "徽章", "盲盒", "包挂", "伴手礼"],
+      "opportunityIds": ["OPP-006", "OPP-002", "OPP-004"],
+      "scoreWeights": {
+        "culture_fit": 0.2,
+        "market_pull": 0.2,
+        "novelty": 0.2,
+        "visual_potential": 0.15,
+        "social_shareability": 0.15,
+        "product_feasibility": 0.1
+      },
+      "culturalRiskPenalty": 0.2,
+      "designIntent": {
+        "targetAudience": "18-30岁年轻消费者",
+        "preferredProductForms": ["可替换织物面板冰箱贴"],
+        "priceBand": "待用户与渠道共同确认",
+        "useScenarios": ["家居陈列", "系列收藏", "旅行礼赠"],
+        "materialPriorities": ["可追溯", "可拆解", "首样可验证"]
+      },
+      "visualDirection": {
+        "referenceIds": ["V001"],
+        "styleKeywords": ["模块化", "像素化", "清晰网格", "克制强对比"],
+        "imageSize": "1024x1024",
+        "notes": "仅提取结构、节奏与材料关系，不复用 reference_only 像素。"
+      },
+      "conceptCompareIds": ["concept-a", "concept-b", "concept-c"],
+      "activeConceptId": "concept-a",
+      "posterTheme": "editorial",
+      "posterSections": ["hero", "culture", "breakdown", "bom", "process"],
+      "notes": "",
+      "updatedAt": "2026-08-28T22:58:00+08:00"
+    }
+  },
+  "nodes": [
+    {
+      "id": "culture",
+      "type": "CultureGraphNode",
+      "position": {
+        "x": -520,
+        "y": -235
+      },
+      "data": {
+        "label": "文化图谱",
+        "eyebrow": "CULTURE DNA",
+        "title": "贵州苗绣文化图谱",
+        "summary": "从地域、工艺、纹样语义与禁忌边界提取可验证的文化设计输入。",
+        "status": "success",
+        "stats": [
+          {
+            "label": "文化记录",
+            "value": 22
+          },
+          {
+            "label": "登记来源",
+            "value": 32
+          }
+        ],
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C029"
+        ],
+        "outputs": {
+          "topic": "贵州国家级非遗与具有代表性的在地文化；首个深描主题为贵州苗绣",
+          "keyCrafts": [
+            "平绣",
+            "挑花",
+            "贴绣",
+            "打籽绣",
+            "锁绣",
+            "皱绣"
+          ],
+          "boundaries": [
+            "不存在适用于全部苗族支系的统一纹样释义；不得把一个地区的解释冒充所有支系的共同意义。",
+            "涉及祖源神话、祭祀、丧葬、鼓社或支系身份的完整图式，进入商品化前须向对应社区、保护单位或传承人核验。",
+            "不要拆取神圣或身份性符号后赋予相反、猎奇或污名化含义；不要把机器印花冒充手工苗绣。"
+          ]
+        },
+        "history": [
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "载入策展式文化图谱"
+          }
+        ]
+      }
+    },
+    {
+      "id": "market",
+      "type": "MarketRadarNode",
+      "position": {
+        "x": -520,
+        "y": 195
+      },
+      "data": {
+        "label": "市场雷达",
+        "eyebrow": "MARKET RADAR",
+        "title": "四平台形态热度",
+        "summary": "基于已保存的真实平台历史快照比较产品形态，不把缓存标成实时趋势。",
+        "status": "cached",
+        "stats": [
+          {
+            "label": "历史样本",
+            "value": 378
+          },
+          {
+            "label": "平台",
+            "value": 4
+          }
+        ],
+        "platforms": {
+          "xhs": {
+            "status": "cache",
+            "login_state": "missing",
+            "auth_method": "cdp",
+            "platform": "xhs",
+            "adapter_discovered": true,
+            "login_ok": false,
+            "search_ok": false,
+            "sample_size": 115,
+            "live_post_count": 0,
+            "cache_post_count": 115,
+            "keyword_count": 6,
+            "keywords": [
+              "贵州苗绣文创",
+              "非遗文创",
+              "博物馆文创",
+              "文创包挂",
+              "文创冰箱贴",
+              "文创徽章"
+            ],
+            "raw_paths": [],
+            "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\xhs.jsonl",
+            "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+            "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 115 条历史真实抓取快照。"
+          },
+          "dy": {
+            "status": "cache",
+            "login_state": "missing",
+            "auth_method": "cdp",
+            "platform": "dy",
+            "adapter_discovered": true,
+            "login_ok": false,
+            "search_ok": false,
+            "sample_size": 14,
+            "live_post_count": 0,
+            "cache_post_count": 14,
+            "keyword_count": 6,
+            "keywords": [
+              "贵州苗绣文创",
+              "非遗文创",
+              "博物馆文创",
+              "文创包挂",
+              "文创冰箱贴",
+              "文创徽章"
+            ],
+            "raw_paths": [],
+            "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\dy.jsonl",
+            "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+            "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 14 条历史真实抓取快照。"
+          },
+          "bili": {
+            "status": "cache",
+            "login_state": "missing",
+            "auth_method": "cdp",
+            "platform": "bili",
+            "adapter_discovered": true,
+            "login_ok": false,
+            "search_ok": false,
+            "sample_size": 101,
+            "live_post_count": 0,
+            "cache_post_count": 101,
+            "keyword_count": 6,
+            "keywords": [
+              "贵州苗绣文创",
+              "非遗文创",
+              "博物馆文创",
+              "文创包挂",
+              "文创冰箱贴",
+              "文创徽章"
+            ],
+            "raw_paths": [],
+            "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\bili.jsonl",
+            "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+            "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 101 条历史真实抓取快照。"
+          },
+          "wb": {
+            "status": "cache",
+            "login_state": "missing",
+            "auth_method": "cdp",
+            "platform": "wb",
+            "adapter_discovered": true,
+            "login_ok": false,
+            "search_ok": false,
+            "sample_size": 148,
+            "live_post_count": 0,
+            "cache_post_count": 148,
+            "keyword_count": 6,
+            "keywords": [
+              "贵州苗绣文创",
+              "非遗文创",
+              "博物馆文创",
+              "文创包挂",
+              "文创冰箱贴",
+              "文创徽章"
+            ],
+            "raw_paths": [],
+            "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\wb.jsonl",
+            "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+            "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 148 条历史真实抓取快照。"
+          }
+        },
+        "topForms": [
+          {
+            "name": "冰箱贴",
+            "score": 57.3,
+            "sampleSize": 89
+          },
+          {
+            "name": "徽章",
+            "score": 52.1,
+            "sampleSize": 33
+          },
+          {
+            "name": "盲盒",
+            "score": 51.5,
+            "sampleSize": 3
+          },
+          {
+            "name": "包挂",
+            "score": 47.8,
+            "sampleSize": 28
+          },
+          {
+            "name": "伴手礼",
+            "score": 47.1,
+            "sampleSize": 6
+          }
+        ],
+        "sourceRefs": [
+          "MPL-XHS-ADD1A725C83693E55392",
+          "MPL-WB-BEF9FDE469E113008D8D",
+          "MPL-BILI-CE60CB67717280F3E0A9",
+          "MPL-DY-27944D91D522C338411B"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "载入四平台历史证据快照"
+          }
+        ]
+      }
+    },
+    {
+      "id": "strategy",
+      "type": "StrategyNode",
+      "position": {
+        "x": -85,
+        "y": -15
+      },
+      "data": {
+        "label": "机会策略",
+        "eyebrow": "OPPORTUNITY",
+        "title": "文化 × 市场机会排序",
+        "summary": "综合文化适配、市场拉力、原创空间、视觉潜力与风险惩罚。",
+        "status": "success",
+        "stats": [
+          {
+            "label": "候选机会",
+            "value": 8
+          },
+          {
+            "label": "进入设计",
+            "value": 3
+          }
+        ],
+        "opportunities": [
+          {
+            "id": "OPP-006",
+            "title": "花溪、剑河、松桃、雷山等支系差异 × 可替换、可集齐并带学习线索的收藏系统",
+            "score": 79.4,
+            "verification": "verified"
+          },
+          {
+            "id": "OPP-002",
+            "title": "鸟纹、蝶纹与动植物复合构图 × 可互动、可把玩、可集齐的小型收藏形态",
+            "score": 76.6,
+            "verification": "verified"
+          },
+          {
+            "id": "OPP-004",
+            "title": "剑河锡绣的金属锡线与迷宫式几何纹 × 金属感科技配件、反光细节与材料对比",
+            "score": 74.5,
+            "verification": "verified"
+          }
+        ],
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C005",
+          "C006",
+          "M007",
+          "C004",
+          "M001",
+          "M005",
+          "C009",
+          "M003"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "完成证据锁定与二次核验"
+          }
+        ]
+      }
+    },
+    {
+      "id": "brief",
+      "type": "DesignBriefNode",
+      "position": {
+        "x": 345,
+        "y": -15
+      },
+      "data": {
+        "label": "设计任务书",
+        "eyebrow": "DESIGN BRIEF",
+        "title": "针格模块｜花溪挑花互动冰箱贴（概念样）",
+        "summary": "以原创数纱网格模块展示针脚秩序，面板可拆换并连接溯源卡。",
+        "status": "success",
+        "version": 1,
+        "brief": {
+          "title": "针格模块｜花溪挑花互动冰箱贴（概念样）",
+          "objective": "以原创数纱网格模块展示针脚秩序，面板可拆换并连接溯源卡。",
+          "audience": "18-30岁年轻消费者",
+          "productType": "可替换织物面板冰箱贴",
+          "scenarios": [
+            "家居陈列",
+            "系列收藏",
+            "旅行礼赠"
+          ],
+          "style": [
+            "模块化",
+            "像素化",
+            "清晰网格",
+            "克制强对比"
+          ],
+          "constraints": [
+            "只转译数纱结构，不复制完整馆藏纹样。",
+            "磁体和小部件风险须按最终销售年龄与地区验证；当前不按儿童玩具宣称。",
+            "塑料、磁体镀层、油墨和胶黏剂的受限物质要求由供应商和检测机构确认。"
+          ],
+          "factoryBoundary": "当前仅用于概念视觉、工厂询价与首样沟通，不构成量产定稿。"
+        },
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C005",
+          "C006",
+          "M007",
+          "C029"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "建立可编辑任务书 v1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "visual",
+      "type": "VisualGenerationNode",
+      "position": {
+        "x": 790,
+        "y": -15
+      },
+      "data": {
+        "label": "视觉生成",
+        "eyebrow": "VISUAL GENERATION",
+        "title": "概念方向 A / B / C",
+        "summary": "Concept A / B / C 已具备可展示视觉；DeepSeek 实机文本链路已通过，一键图像重生成仍需独立 Images API。",
+        "status": "warning",
+        "provider": {
+          "provider": "unconfigured",
+          "model": "",
+          "base_url_configured": false,
+          "credential_configured": false,
+          "configured": false,
+          "detail": "未配置 IMAGE_PROVIDER / IMAGE_API_KEY / IMAGE_BASE_URL / IMAGE_MODEL。"
+        },
+        "size": "1024x1024",
+        "prompts": [
+          "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.",
+          "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.\nVariant B: warm gray frame, restrained low-contrast threads, travel gift positioning.",
+          "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.\nVariant C: numbered collectible system, archival presentation, modular inserts."
+        ],
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C005",
+          "C006",
+          "M007",
+          "C029"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "未配置 IMAGE_PROVIDER / IMAGE_API_KEY / IMAGE_BASE_URL / IMAGE_MODEL。"
+          }
+        ],
+        "importedConcepts": [
+          "concept-b-v1.png",
+          "concept-c-v1.png"
+        ]
+      }
+    },
+    {
+      "id": "concept-a",
+      "type": "ConceptNode",
+      "position": {
+        "x": 1240,
+        "y": -350
+      },
+      "data": {
+        "label": "A",
+        "eyebrow": "CONCEPT A",
+        "title": "针格模块｜花溪挑花互动冰箱贴（概念样）",
+        "summary": "以原创数纱网格模块展示针脚秩序，面板可拆换并连接溯源卡。",
+        "status": "success",
+        "imageUrl": "/assets/official/product-hero.png",
+        "direction": "深靛框体 × 原创数纱网格 × 可替换织物面板",
+        "prompt": "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.",
+        "version": 1,
+        "active": true,
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C005",
+          "C006",
+          "M007",
+          "C029"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "载入现有项目概念视觉"
+          }
+        ]
+      }
+    },
+    {
+      "id": "concept-b",
+      "type": "ConceptNode",
+      "position": {
+        "x": 1240,
+        "y": -15
+      },
+      "data": {
+        "label": "B",
+        "eyebrow": "CONCEPT B",
+        "title": "轻量礼赠版",
+        "summary": "保留可替换结构，探索更轻的礼赠包装和低对比线色。",
+        "status": "success",
+        "imageUrl": "/assets/workbench/guizhou-miao-demo/concept-b-v1.png",
+        "direction": "暖灰框体 × 低对比针格 × 旅行礼赠",
+        "prompt": "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.\nVariant B: warm gray frame, restrained low-contrast threads, travel gift positioning.",
+        "version": 1,
+        "active": false,
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C005",
+          "C006",
+          "M007",
+          "C029"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T06:17:21.9506930Z",
+            "event": "依据 Design Brief 与该方向提示生成概念视觉并接入工作区"
+          },
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "建立待生成方向"
+          }
+        ],
+        "generation": {
+          "provider": "codex_builtin_imagegen",
+          "mode": "project_asset",
+          "sha256": "d5665f294dc833bc52fafd378531efd743b630ba676b9325d6792da2321a736d",
+          "generated_at": "2026-08-28T06:17:21.9506930Z"
+        }
+      }
+    },
+    {
+      "id": "concept-c",
+      "type": "ConceptNode",
+      "position": {
+        "x": 1240,
+        "y": 320
+      },
+      "data": {
+        "label": "C",
+        "eyebrow": "CONCEPT C",
+        "title": "系列收藏版",
+        "summary": "以编号与面板收藏系统扩展支系学习，但不混用地域纹样。",
+        "status": "success",
+        "imageUrl": "/assets/workbench/guizhou-miao-demo/concept-c-v1.png",
+        "direction": "系列编号 × 面板档案 × 学习收藏",
+        "prompt": "Use case: product-mockup\nAsset type: source visual for an A2-style vertical industrial design poster\nPrimary request: Create one original manufacturable 76 mm modular fridge magnet concept based only on counted-thread grid construction logic associated with a Huaxi cross-stitch pilot, together with a clean exploded view of its parts. This is a new original grid composition, not a traditional motif.\nScene/backdrop: warm off-white premium industrial-design presentation board with restrained deep-indigo textile accents.\nSubject: a rounded-square matte deep-indigo frame holding a removable 58 mm cotton-twill embroidered insert. The insert uses a completely original abstract grid of simple cross-stitch units, mirror rhythm, and visible counted-thread direction—no animal, plant, ancestor, sacred, or garment motif. Beside it show a clear exploded view: front frame, removable embroidered textile insert, thin support plate, fully enclosed circular magnet, back plate, and small provenance label area.\nStyle/medium: polished premium product visualization, realistic textile grain and raised machine-embroidery, contemporary Chinese industrial design presentation, artistic but technically legible.\nComposition/framing: portrait presentation board; large three-quarter hero product plus front, side, back, and exploded components; generous clean margins for exact labels that will be added later outside this image.\nLighting/mood: soft museum-grade studio lighting, calm, precise, collectible.\nColor palette: display-only deep indigo frame and textile ground, restrained red and warm-white thread accents, matte dark back plate. Do not imply a standardized traditional palette.\nMaterials/textures: matte injection-molded polymer frame, cotton twill, visibly raised machine-embroidered thread, enclosed magnet, crisp removable fit.\nConstraints: entirely original geometry; no text, no numbers, no letters, no logos, no watermark; magnet must be enclosed and not visible on the finished product; clear seams, reasonable part thickness and attachment logic; no copied traditional motif, museum work, clothing, or sacred imagery.\nAvoid: butterflies, birds, dragons, fish, frogs, flowers, ancestor motifs, sacred symbols, ethnic costume silhouettes, silver-horn headdresses, complete traditional borders, museum imagery, cheap sequins, fake handmade appearance, souvenir-shop cliché.\nVariant C: numbered collectible system, archival presentation, modular inserts.",
+        "version": 1,
+        "active": false,
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C005",
+          "C006",
+          "M007",
+          "C029"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T06:17:21.9506930Z",
+            "event": "依据 Design Brief 与该方向提示生成概念视觉并接入工作区"
+          },
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "建立待生成方向"
+          }
+        ],
+        "generation": {
+          "provider": "codex_builtin_imagegen",
+          "mode": "project_asset",
+          "sha256": "04a9f4a0ff8bc4e0f0bee8d2bb23926279e389a097c72e5182b707970d60aef9",
+          "generated_at": "2026-08-28T06:17:21.9506930Z"
+        }
+      }
+    },
+    {
+      "id": "poster",
+      "type": "PosterBoardNode",
+      "position": {
+        "x": 1700,
+        "y": -15
+      },
+      "data": {
+        "label": "概念海报",
+        "eyebrow": "POSTER BOARD",
+        "title": "针格模块",
+        "summary": "花溪挑花数纱结构启发的互动冰箱贴｜概念样",
+        "status": "cached",
+        "imageUrl": "/assets/official/design-poster.png",
+        "poster": {
+          "title": "针格模块",
+          "subtitle": "花溪挑花数纱结构启发的互动冰箱贴｜概念样",
+          "sections": [
+            "hero",
+            "culture",
+            "breakdown",
+            "bom",
+            "process"
+          ],
+          "hiddenSections": [],
+          "cultureElement": "数纱十字网格",
+          "cultureRule": "重新设计原创网格单元，不复制完整馆藏纹样。",
+          "materials": [
+            "外框｜ABS或经工厂验证的替代材料",
+            "织物面板｜棉质斜纹布",
+            "背板｜ABS",
+            "磁体｜烧结钕铁硼或合规替代物",
+            "溯源标签｜合成纸"
+          ],
+          "process": [
+            "确认框体、背板和织物面板纸样，校核圆角、缝份与磁体封闭空间。",
+            "注塑/机加工B01与B03首样，去毛边并检验卡合间隙和平面度。",
+            "完成B02原创网格机器刺绣、裁切和包边，检验套位后装入框体。",
+            "按安全方案把B04磁体完全封闭在B03内，不使用外露磁片。",
+            "卡合或可逆固定B01/B03，验证面板可拆换且无锐边、夹手点。",
+            "粘贴B05并录入批次、地域、实际工艺、参与者和护理信息。"
+          ],
+          "boundary": "当前仅用于概念视觉、工厂询价与首样沟通，不构成量产定稿。"
+        },
+        "sourceRefs": [
+          "C001",
+          "C002",
+          "C003",
+          "C005",
+          "C006",
+          "M007",
+          "C029"
+        ],
+        "history": [
+          {
+            "at": "2026-08-28T14:06:11.378436+08:00",
+            "event": "载入可编辑固定版式"
+          }
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "culture-strategy",
+      "source": "culture",
+      "target": "strategy",
+      "type": "smoothstep",
+      "data": {
+        "relation": "文化证据"
+      }
+    },
+    {
+      "id": "market-strategy",
+      "source": "market",
+      "target": "strategy",
+      "type": "smoothstep",
+      "data": {
+        "relation": "市场证据"
+      }
+    },
+    {
+      "id": "strategy-brief",
+      "source": "strategy",
+      "target": "brief",
+      "type": "smoothstep",
+      "data": {
+        "relation": "机会输入"
+      }
+    },
+    {
+      "id": "brief-visual",
+      "source": "brief",
+      "target": "visual",
+      "type": "smoothstep",
+      "data": {
+        "relation": "设计约束"
+      }
+    },
+    {
+      "id": "visual-concept-a",
+      "source": "visual",
+      "target": "concept-a",
+      "type": "smoothstep",
+      "data": {
+        "relation": "方向 A"
+      }
+    },
+    {
+      "id": "visual-concept-b",
+      "source": "visual",
+      "target": "concept-b",
+      "type": "smoothstep",
+      "data": {
+        "relation": "方向 B"
+      }
+    },
+    {
+      "id": "visual-concept-c",
+      "source": "visual",
+      "target": "concept-c",
+      "type": "smoothstep",
+      "data": {
+        "relation": "方向 C"
+      }
+    },
+    {
+      "id": "concept-a-poster",
+      "source": "concept-a",
+      "target": "poster",
+      "type": "smoothstep",
+      "data": {
+        "relation": "当前采用"
+      }
+    },
+    {
+      "id": "concept-b-poster",
+      "source": "concept-b",
+      "target": "poster",
+      "type": "smoothstep",
+      "data": {
+        "relation": "候选"
+      }
+    },
+    {
+      "id": "concept-c-poster",
+      "source": "concept-c",
+      "target": "poster",
+      "type": "smoothstep",
+      "data": {
+        "relation": "候选"
+      }
+    }
+  ]
+}

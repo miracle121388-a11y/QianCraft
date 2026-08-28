@@ -214,7 +214,7 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
+      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
       "hotness_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
       "detail": "四平台状态：xhs=cache(115)；dy=cache(14)；bili=cache(101)；wb=cache(148)。"
     },
@@ -241,8 +241,8 @@
         ],
         "raw_paths": [],
         "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\xhs.jsonl",
-        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-        "detail": "演示模式不发起平台访问。 使用 115 条历史真实抓取快照。",
+        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+        "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 115 条历史真实抓取快照。",
         "crawl_attempted": false
       },
       "dy": {
@@ -267,8 +267,8 @@
         ],
         "raw_paths": [],
         "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\dy.jsonl",
-        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-        "detail": "演示模式不发起平台访问。 使用 14 条历史真实抓取快照。",
+        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+        "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 14 条历史真实抓取快照。",
         "crawl_attempted": false
       },
       "bili": {
@@ -293,8 +293,8 @@
         ],
         "raw_paths": [],
         "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\bili.jsonl",
-        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-        "detail": "演示模式不发起平台访问。 使用 101 条历史真实抓取快照。",
+        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+        "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 101 条历史真实抓取快照。",
         "crawl_attempted": false
       },
       "wb": {
@@ -319,8 +319,8 @@
         ],
         "raw_paths": [],
         "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\wb.jsonl",
-        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T033015Z.json",
-        "detail": "演示模式不发起平台访问。 使用 148 条历史真实抓取快照。",
+        "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+        "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 148 条历史真实抓取快照。",
         "crawl_attempted": false
       }
     },
@@ -344,7 +344,7 @@
         },
         "sample_size": 89,
         "high_hot_post_ratio": 0.146,
-        "freshness_score": 67.0,
+        "freshness_score": 66.9,
         "why_hot": [
           "覆盖 4/4 个平台",
           "小红书平台内平均热度 52.7",
@@ -581,7 +581,7 @@
         },
         "sample_size": 33,
         "high_hot_post_ratio": 0.091,
-        "freshness_score": 61.9,
+        "freshness_score": 61.8,
         "why_hot": [
           "覆盖 4/4 个平台",
           "微博平台内平均热度 36.1",
@@ -1264,8 +1264,8 @@
             ],
             "source_ref": "MPL-WB-08D51A1EF9DFB7D0FBB9",
             "retrieved_at": "2026-08-27T22:20:55.516269+00:00",
-            "platform_hot_score": 28.5,
-            "real_engagement_score": 28.5,
+            "platform_hot_score": 28.6,
+            "real_engagement_score": 28.6,
             "institutional_signal_score": 0.0,
             "derived_viral_score": 53.3,
             "viral_score": 53.3,
@@ -1285,7 +1285,7 @@
         "platform_coverage": 2,
         "platform_scores": {
           "xhs": 59.0,
-          "wb": 18.1
+          "wb": 18.2
         },
         "platform_post_counts": {
           "xhs": 4,
@@ -1435,12 +1435,12 @@
       {
         "rank": 7,
         "product_form": "香氛",
-        "cross_platform_hot_score": 43.7,
+        "cross_platform_hot_score": 43.8,
         "platform_coverage": 3,
         "platform_scores": {
           "xhs": 52.0,
           "bili": 54.9,
-          "wb": 7.5
+          "wb": 7.6
         },
         "platform_post_counts": {
           "xhs": 3,
@@ -1628,11 +1628,11 @@
             ],
             "source_ref": "MPL-WB-5987BB5450FA39F4DCDF",
             "retrieved_at": "2026-08-27T22:20:55.523119+00:00",
-            "platform_hot_score": 7.5,
-            "real_engagement_score": 7.5,
+            "platform_hot_score": 7.6,
+            "real_engagement_score": 7.6,
             "institutional_signal_score": 0.0,
-            "derived_viral_score": 43.7,
-            "viral_score": 43.7,
+            "derived_viral_score": 43.8,
+            "viral_score": 43.8,
             "viral_reasons": [
               "social_signal 与证据质量分开计分",
               "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -1650,7 +1650,7 @@
         "platform_scores": {
           "xhs": 49.3,
           "bili": 26.8,
-          "wb": 22.8
+          "wb": 22.9
         },
         "platform_post_counts": {
           "xhs": 3,
@@ -1817,11 +1817,11 @@
             ],
             "source_ref": "MPL-WB-B79DAA30C867A796380A",
             "retrieved_at": "2026-08-27T22:20:55.518253+00:00",
-            "platform_hot_score": 22.8,
-            "real_engagement_score": 22.8,
+            "platform_hot_score": 22.9,
+            "real_engagement_score": 22.9,
             "institutional_signal_score": 0.0,
-            "derived_viral_score": 55.5,
-            "viral_score": 55.5,
+            "derived_viral_score": 55.6,
+            "viral_score": 55.6,
             "viral_reasons": [
               "social_signal 与证据质量分开计分",
               "Derived Viral Score 是策划推导值，不是平台原生指标",
@@ -1987,7 +1987,7 @@
         "platform_coverage": 2,
         "platform_scores": {
           "xhs": 35.6,
-          "wb": 12.4
+          "wb": 12.5
         },
         "platform_post_counts": {
           "xhs": 8,
@@ -2059,8 +2059,8 @@
             ],
             "source_ref": "MPL-XHS-0A643FC34F73416F8C15",
             "retrieved_at": "2026-08-27T22:09:59.570985+00:00",
-            "platform_hot_score": 82.0,
-            "real_engagement_score": 82.0,
+            "platform_hot_score": 81.9,
+            "real_engagement_score": 81.9,
             "institutional_signal_score": 0.0,
             "derived_viral_score": 67.7,
             "viral_score": 67.7,
@@ -2115,8 +2115,8 @@
             ],
             "source_ref": "MPL-WB-1617EB0D2FAC88CDD970",
             "retrieved_at": "2026-08-27T22:20:55.517119+00:00",
-            "platform_hot_score": 12.4,
-            "real_engagement_score": 12.4,
+            "platform_hot_score": 12.5,
+            "real_engagement_score": 12.5,
             "institutional_signal_score": 0.0,
             "derived_viral_score": 46.9,
             "viral_score": 46.9,
@@ -2218,8 +2218,9 @@
       "overall_score": 79.4,
       "verification": {
         "status": "verified",
-        "retrieval_mode": "LightRAG structured KG query",
+        "retrieval_mode": "LightRAG local KG",
         "queries": [
+          "苗绣",
           "苗绣"
         ],
         "culture_evidence_refs": [
@@ -2246,7 +2247,8 @@
         "warnings": [],
         "conflicts": [],
         "notes": [
-          "结构化图谱匹配 4 条记录。"
+          "结构化图谱匹配 4 条记录。",
+          "LightRAG 节点命中，关联边 1 条。"
         ]
       },
       "evidence_refs": [
@@ -2292,11 +2294,12 @@
       "overall_score": 76.6,
       "verification": {
         "status": "verified",
-        "retrieval_mode": "LightRAG structured KG query",
+        "retrieval_mode": "LightRAG local KG",
         "queries": [
           "苗绣",
           "鸟",
-          "鸟纹"
+          "鸟纹",
+          "苗绣"
         ],
         "culture_evidence_refs": [
           "C004",
@@ -2312,7 +2315,8 @@
         "warnings": [],
         "conflicts": [],
         "notes": [
-          "结构化图谱匹配 2 条记录。"
+          "结构化图谱匹配 2 条记录。",
+          "LightRAG 节点命中，关联边 1 条。"
         ]
       },
       "evidence_refs": [
@@ -2356,8 +2360,9 @@
       "overall_score": 74.5,
       "verification": {
         "status": "verified",
-        "retrieval_mode": "LightRAG structured KG query",
+        "retrieval_mode": "LightRAG local KG",
         "queries": [
+          "锡绣",
           "锡绣"
         ],
         "culture_evidence_refs": [
@@ -2377,7 +2382,8 @@
         "warnings": [],
         "conflicts": [],
         "notes": [
-          "结构化图谱匹配 22 条记录。"
+          "结构化图谱匹配 22 条记录。",
+          "LightRAG 节点命中，关联边 1 条。"
         ]
       },
       "evidence_refs": [
@@ -2882,6 +2888,11 @@
     "明确标注地域、支系、工艺和材料",
     "重要纹样释义必须回到对应社区或传承人核验",
     "共同创作、署名并建立公平收益机制",
+    "明确标注地域、支系、工艺和材料（花溪挑花/剑河锡绣/松桃苗绣/雷山具体针法）。",
+    "重要纹样释义必须回到对应社区或传承人核验；保留来源卡、绣娘署名和公平收益机制。",
+    "祭祀、丧葬、祖源、古歌、史诗等高风险内容设置社区复核门槛。",
+    "如实标注手工组成：机绣+手绣、锡丝条、破线/辫绣等不得混淆。",
+    "尊重完整旗帜服与整套盛装构图，不拆改、不跨支系移用。",
     "任何产品叙事都同时标注贵州具体地域、苗族支系、针法和材料来源",
     "真实手工、机器生产和授权衍生必须明确区分",
     "未经核验的祭祀与丧葬专用图式",
@@ -2894,6 +2905,12 @@
     "以廉价亮片冒充锡绣的虚假工艺叙述",
     "绕过当地绣娘的图案挪用",
     "仅提取符号却不让社区获得署名与收益的商业化",
+    "未经核验的祭祀/丧葬/鼓社专用图式、祖源身份性完整构图。",
+    "把支系专属工艺词张冠李戴（如剑河迷宫式/锡丝条与花溪十字挑花混用）。",
+    "机器印花冒充手工苗绣，廉价亮片冒充锡绣，未授权使用传承人姓名/作品。",
+    "水书、巫辞等秘密或限制性知识作为公共装饰素材。",
+    "把‘苗绣’做成无差别的单一风格，或把四绣混成一种贵州纹样。",
+    "仅提取符号却不让社区获得署名与收益的商业化。",
     "把多地、多支系纹样混称为一种抽象的‘苗绣风’",
     "未经许可复制传承人完整作品，或声称并不存在的传承人联名"
   ],
@@ -2913,14 +2930,15 @@
     "经共同创作确认的自然纹样",
     "绣片与现代生活用品结合",
     "在地住宿与体验场景",
-    "支系可辨",
-    "真实触感",
-    "模块化",
-    "可追溯",
-    "日常高频",
-    "共创署名",
-    "可维修升级",
-    "系列收藏"
+    "非仪式场景中的局部纹样节奏、几何网格、数纱方法、色彩对比。",
+    "可替换绣片、模块化配件、互动结构、溯源卡/故事卡。",
+    "传统强对比色进入当代日常配色系统，但保留来源说明。",
+    "破线绣/辫绣的触觉层次与毛绒、流苏、织带结合。",
+    "与贵州皮纸、银饰、竹木等材料做透明、双方共创的小批量实验（M012）。",
+    "经社区授权的工艺过程教育与DIY体验，不直接复刻传承人作品。",
+    "小尺度高细节",
+    "可替换绣片",
+    "支系差异可辨识"
   ],
   "creative_brief": "面向18-30岁年轻消费者，围绕花溪、剑河、松桃、雷山等支系差异、鸟纹、蝶纹与动植物复合构图、剑河锡绣的金属锡线与迷宫式几何纹三个已通过证据门槛的方向，探索一组能进入日常高频场景、又能让地域与支系差异被看见的贵州苗绣概念。视觉上从数纱秩序、真实绣线触感、金属与织物层次、可替换和可收集关系出发，不直接复制馆藏完整纹样，也不先锁定造型、尺寸或SKU。每个方向须同时说明文化出处、市场假设、材料真实性、互动逻辑及待社区复核点；所有参考图仅用于研究。下一步以多方案草图和低保真材料实验比较用户理解度、制作可行性与合作边界，为后续共同设计保留充分选择空间。",
   "output_requirements": {

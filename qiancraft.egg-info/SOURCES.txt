@@ -4,8 +4,11 @@ app/__init__.py
 app/config.py
 app/pipeline.py
 app/schemas.py
+app/tool_api.py
+app/workbench.py
 app/adapters/__init__.py
 app/adapters/gpt_researcher_adapter.py
+app/adapters/image_generation_adapter.py
 app/adapters/lightrag_adapter.py
 app/adapters/media_crawler_adapter.py
 app/adapters/mediacrawler_runner.py
@@ -20,3 +23,5 @@ qiancraft.egg-info/dependency_links.txt
 qiancraft.egg-info/requires.txt
 qiancraft.egg-info/top_level.txt
 tests/test_demo_pipeline.py
+tests/test_tool_api.py
+tests/test_workbench.py

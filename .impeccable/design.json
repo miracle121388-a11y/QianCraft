@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-29T01:41:05.1362634+08:00",
+  "title": "Design System: QianCraft",
+  "extensions": {
+    "colorMeta": {
+      "interaction-indigo": {
+        "role": "primary",
+        "displayName": "Interaction Indigo",
+        "canonical": "#3451b2",
+        "tonalRamp": ["oklch(15% 0.070 270)", "oklch(26% 0.100 270)", "oklch(38% 0.130 270)", "oklch(50% 0.155 270)", "oklch(62% 0.145 270)", "oklch(74% 0.105 270)", "oklch(86% 0.058 270)", "oklch(95% 0.020 270)"]
+      },
+      "parchment": {
+        "role": "neutral",
+        "displayName": "Parchment",
+        "canonical": "#fcfbf8",
+        "tonalRamp": ["oklch(15% 0.012 90)", "oklch(26% 0.014 90)", "oklch(38% 0.016 90)", "oklch(50% 0.017 90)", "oklch(62% 0.016 90)", "oklch(74% 0.014 90)", "oklch(86% 0.011 90)", "oklch(95% 0.006 90)"]
+      },
+      "warm-sand": {
+        "role": "neutral",
+        "displayName": "Warm Sand",
+        "canonical": "#f7f4ed",
+        "tonalRamp": ["oklch(15% 0.018 88)", "oklch(26% 0.021 88)", "oklch(38% 0.024 88)", "oklch(50% 0.026 88)", "oklch(62% 0.024 88)", "oklch(74% 0.020 88)", "oklch(86% 0.015 88)", "oklch(95% 0.008 88)"]
+      },
+      "linen-border": {
+        "role": "neutral",
+        "displayName": "Linen Border",
+        "canonical": "#eceae4",
+        "tonalRamp": ["oklch(15% 0.014 88)", "oklch(26% 0.016 88)", "oklch(38% 0.018 88)", "oklch(50% 0.020 88)", "oklch(62% 0.018 88)", "oklch(74% 0.015 88)", "oklch(86% 0.011 88)", "oklch(95% 0.006 88)"]
+      },
+      "stone": {
+        "role": "neutral",
+        "displayName": "Stone",
+        "canonical": "#d4d3d0",
+        "tonalRamp": ["oklch(15% 0.009 80)", "oklch(26% 0.010 80)", "oklch(38% 0.011 80)", "oklch(50% 0.012 80)", "oklch(62% 0.011 80)", "oklch(74% 0.009 80)", "oklch(86% 0.007 80)", "oklch(95% 0.004 80)"]
+      },
+      "dim-gray": {
+        "role": "neutral",
+        "displayName": "Dim Gray",
+        "canonical": "#5f5f5d",
+        "tonalRamp": ["oklch(15% 0.006 80)", "oklch(26% 0.007 80)", "oklch(38% 0.008 80)", "oklch(50% 0.009 80)", "oklch(62% 0.008 80)", "oklch(74% 0.007 80)", "oklch(86% 0.005 80)", "oklch(95% 0.003 80)"]
+      },
+      "faint-text": {
+        "role": "neutral",
+        "displayName": "Faint Text",
+        "canonical": "#85847f",
+        "tonalRamp": ["oklch(15% 0.010 80)", "oklch(26% 0.011 80)", "oklch(38% 0.012 80)", "oklch(50% 0.013 80)", "oklch(62% 0.012 80)", "oklch(74% 0.010 80)", "oklch(86% 0.007 80)", "oklch(95% 0.004 80)"]
+      },
+      "charcoal": {
+        "role": "neutral",
+        "displayName": "Charcoal",
+        "canonical": "#1c1c1c",
+        "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(50% 0 0)", "oklch(62% 0 0)", "oklch(74% 0 0)", "oklch(86% 0 0)", "oklch(95% 0 0)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#030303",
+        "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(50% 0 0)", "oklch(62% 0 0)", "oklch(74% 0 0)", "oklch(86% 0 0)", "oklch(95% 0 0)"]
+      },
+      "culture-indigo": {
+        "role": "secondary",
+        "displayName": "Guizhou Indigo",
+        "canonical": "#17283f",
+        "tonalRamp": ["oklch(15% 0.045 250)", "oklch(26% 0.060 250)", "oklch(38% 0.072 250)", "oklch(50% 0.080 250)", "oklch(62% 0.070 250)", "oklch(74% 0.052 250)", "oklch(86% 0.030 250)", "oklch(95% 0.012 250)"]
+      },
+      "culture-teal": {
+        "role": "secondary",
+        "displayName": "Loom Teal",
+        "canonical": "#16745f",
+        "tonalRamp": ["oklch(15% 0.055 165)", "oklch(26% 0.075 165)", "oklch(38% 0.092 165)", "oklch(50% 0.100 165)", "oklch(62% 0.088 165)", "oklch(74% 0.065 165)", "oklch(86% 0.038 165)", "oklch(95% 0.015 165)"]
+      },
+      "culture-rust": {
+        "role": "secondary",
+        "displayName": "Dyed Rust",
+        "canonical": "#a8654f",
+        "tonalRamp": ["oklch(15% 0.060 35)", "oklch(26% 0.082 35)", "oklch(38% 0.100 35)", "oklch(50% 0.115 35)", "oklch(62% 0.105 35)", "oklch(74% 0.076 35)", "oklch(86% 0.042 35)", "oklch(95% 0.016 35)"]
+      },
+      "culture-violet": {
+        "role": "secondary",
+        "displayName": "Archive Violet",
+        "canonical": "#6d6f9f",
+        "tonalRamp": ["oklch(15% 0.050 285)", "oklch(26% 0.066 285)", "oklch(38% 0.080 285)", "oklch(50% 0.090 285)", "oklch(62% 0.080 285)", "oklch(74% 0.060 285)", "oklch(86% 0.035 285)", "oklch(95% 0.014 285)"]
+      },
+      "status-success": {
+        "role": "tertiary",
+        "displayName": "Verified Green",
+        "canonical": "#45a17b",
+        "tonalRamp": ["oklch(15% 0.055 155)", "oklch(26% 0.075 155)", "oklch(38% 0.090 155)", "oklch(50% 0.102 155)", "oklch(62% 0.090 155)", "oklch(74% 0.066 155)", "oklch(86% 0.038 155)", "oklch(95% 0.015 155)"]
+      },
+      "status-cached": {
+        "role": "tertiary",
+        "displayName": "Snapshot Slate",
+        "canonical": "#6f8498",
+        "tonalRamp": ["oklch(15% 0.028 245)", "oklch(26% 0.038 245)", "oklch(38% 0.046 245)", "oklch(50% 0.052 245)", "oklch(62% 0.047 245)", "oklch(74% 0.036 245)", "oklch(86% 0.022 245)", "oklch(95% 0.009 245)"]
+      },
+      "status-warning": {
+        "role": "tertiary",
+        "displayName": "Pending Amber",
+        "canonical": "#b7791f",
+        "tonalRamp": ["oklch(15% 0.060 75)", "oklch(26% 0.085 75)", "oklch(38% 0.105 75)", "oklch(50% 0.120 75)", "oklch(62% 0.108 75)", "oklch(74% 0.078 75)", "oklch(86% 0.043 75)", "oklch(95% 0.017 75)"]
+      },
+      "status-danger": {
+        "role": "tertiary",
+        "displayName": "Failure Red",
+        "canonical": "#bd4a4a",
+        "tonalRamp": ["oklch(15% 0.070 25)", "oklch(26% 0.095 25)", "oklch(38% 0.118 25)", "oklch(50% 0.132 25)", "oklch(62% 0.118 25)", "oklch(74% 0.085 25)", "oklch(86% 0.047 25)", "oklch(95% 0.018 25)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Registered for future approved brand environments; not used by the current workbench." },
+      "heading-large": { "displayName": "Heading Large", "purpose": "Large detail or approved brand title." },
+      "heading": { "displayName": "Heading", "purpose": "Node-detail title and major decision task." },
+      "heading-small": { "displayName": "Heading Small", "purpose": "Dock, Inspector, decision and detail section heading." },
+      "subheading": { "displayName": "Subheading", "purpose": "Explanatory subtitle and local task heading." },
+      "body": { "displayName": "Body", "purpose": "Evidence descriptions, summaries and editable content." },
+      "caption": { "displayName": "Caption", "purpose": "Controls, stages, field labels and metadata." }
+    },
+    "shadows": [
+      { "name": "inset-edge-strong", "value": "oklch(0 0 0 / 0.25) 0 0 0 0.5px inset", "purpose": "Selected node and Decision Studio structural edge; no drop shadow." },
+      { "name": "inset-edge-soft", "value": "oklch(0 0 0 / 0.16) 0 0 0 0.5px inset", "purpose": "Ordinary buttons, inputs, nodes, warm cards and detail surfaces." },
+      { "name": "compact-dock-overlay", "value": "14px 0 30px rgba(18, 24, 32, 0.16)", "purpose": "True reversible mobile Dock overlay only." },
+      { "name": "compact-inspector-overlay", "value": "-14px 0 30px rgba(18, 24, 32, 0.16)", "purpose": "True reversible mobile Inspector overlay only." }
+    ],
+    "motion": [
+      { "name": "node-select", "value": "160ms ease", "purpose": "Coordinates selected-node translation, border and inset edge." },
+      { "name": "panel-reflow", "value": "180ms ease", "purpose": "Desktop grid-column transition when Dock or Inspector opens." },
+      { "name": "running-pulse", "value": "900ms ease infinite alternate", "purpose": "Running status dot only; render static under reduced motion." },
+      { "name": "reduced-motion", "value": "none", "purpose": "Disables node and layout transitions and freezes status pulse when prefers-reduced-motion is active." }
+    ],
+    "breakpoints": [
+      { "name": "wide-panel-compression", "value": "1280px" },
+      { "name": "detail-action-wrap", "value": "1100px" },
+      { "name": "decision-fullscreen", "value": "980px" },
+      { "name": "compact-workbench", "value": "760px" },
+      { "name": "compact-decision", "value": "680px" }
+    ],
+    "brandEnvironments": [
+      {
+        "name": "rainbow-hero-gradient",
+        "displayName": "Rainbow Hero Gradient",
+        "value": "linear-gradient(90deg, rgb(28, 28, 28) 0%, rgb(28, 28, 28) 33.33%, rgb(130, 188, 255) 40%, rgb(36, 131, 255) 45%, rgb(255, 102, 244) 50%, rgb(255, 48, 41) 55%, rgb(254, 123, 2) 60%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%)",
+        "purpose": "Registered brand-environment token for a future approved marketing or brand hero.",
+        "currentWorkbenchUsage": "none"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single charcoal pill action in a task region.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><path d=\"M8 5v14l11-7z\"/></svg><span>运行链路</span></button>",
+      "css": ".ds-btn-primary{display:inline-flex;height:36px;align-items:center;justify-content:center;gap:8px;padding:0 16px;border:1px solid #1c1c1c;border-radius:9999px;color:#fcfbf8;background:rgba(0,0,0,.88);box-shadow:oklch(0 0 0/.16) 0 0 0 .5px inset;font:400 14px/1.45 'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif;transition:background 160ms ease}.ds-btn-primary svg{width:16px;height:16px;fill:currentColor}.ds-btn-primary:hover{background:#030303}.ds-btn-primary:active{background:#1c1c1c}.ds-btn-primary:focus-visible{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:2px}@media(max-width:760px){.ds-btn-primary{min-height:44px}}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Warm parchment pill for cancel, restore and non-primary commands.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">取消</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;height:36px;align-items:center;justify-content:center;padding:0 16px;border:1px solid #eceae4;border-radius:9999px;color:#1c1c1c;background:#fcfbf8;box-shadow:oklch(0 0 0/.16) 0 0 0 .5px inset;font:400 14px/1.45 'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif;transition:background 160ms ease,border-color 160ms ease}.ds-btn-secondary:hover{border-color:#d4d3d0;background:#f7f4ed}.ds-btn-secondary:active{background:#eceae4}.ds-btn-secondary:focus-visible{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:2px}@media(max-width:760px){.ds-btn-secondary{min-height:44px}}"
+    },
+    {
+      "name": "Tool Rail Button",
+      "kind": "nav",
+      "refersTo": "tool-rail-button-active",
+      "description": "Pill-shaped contextual tool trigger with indigo pressed state.",
+      "html": "<button class=\"ds-tool-button is-active\" type=\"button\" aria-label=\"证据库\" aria-pressed=\"true\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><path d=\"M4 19.5V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14.5a1.5 1.5 0 0 0-1.5-1.5H6A2 2 0 0 0 4 20z\"/><path d=\"M8 7h8M8 11h8\"/></svg></button>",
+      "css": ".ds-tool-button{display:grid;width:40px;height:40px;place-items:center;border:0;border-radius:9999px;color:#5f5f5d;background:transparent}.ds-tool-button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ds-tool-button:hover{color:#1c1c1c;background:#fcfbf8}.ds-tool-button.is-active{color:#3451b2;background:color-mix(in srgb,#3451b2 9%,#fcfbf8);box-shadow:inset 2px 0 #3451b2}.ds-tool-button:focus-visible{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:2px}@media(max-width:760px){.ds-tool-button{width:44px;height:44px}}"
+    },
+    {
+      "name": "Phase Navigation Item",
+      "kind": "nav",
+      "description": "Warm top-level workflow phase with an indigo active keyline.",
+      "html": "<button class=\"ds-phase is-active\" type=\"button\" aria-current=\"step\">设计</button>",
+      "css": ".ds-phase{position:relative;min-width:68px;height:56px;padding:0 16px;border:0;color:#5f5f5d;background:transparent;font:400 14px/1.45 'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif}.ds-phase:hover,.ds-phase.is-active{color:#1c1c1c;background:#f7f4ed}.ds-phase.is-active{font-weight:480}.ds-phase.is-active::after{position:absolute;right:16px;bottom:0;left:16px;height:2px;background:#3451b2;content:''}.ds-phase:focus-visible{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:-3px}"
+    },
+    {
+      "name": "Selected Flow Node",
+      "kind": "custom",
+      "refersTo": "flow-node",
+      "description": "The canvas focus moment: expanded content and a stronger inset edge without a drop shadow.",
+      "html": "<article class=\"ds-flow-node is-selected\"><header><div><span>DESIGN BRIEF</span><h3>针格模块｜花溪挑花互动冰箱贴</h3></div><em>HUMAN v1</em></header><div class=\"ds-flow-node-body\"><p>以原创数纱网格模块展示针脚秩序，面板可拆换并连接溯源卡。</p><dl><div><dt>目标人群</dt><dd>18–30岁年轻消费者</dd></div><div><dt>产品形态</dt><dd>可替换织物面板冰箱贴</dd></div></dl></div><footer><button type=\"button\">查看展示页</button><button type=\"button\">Run from here</button></footer></article>",
+      "css": ".ds-flow-node{width:300px;overflow:hidden;border:1px solid #eceae4;border-radius:16px;color:#1c1c1c;background:#fcfbf8;box-shadow:oklch(0 0 0/.16) 0 0 0 .5px inset;font-family:'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif;transition:transform 160ms ease,border-color 160ms ease,box-shadow 160ms ease}.ds-flow-node.is-selected{border-color:#3451b2;box-shadow:oklch(0 0 0/.25) 0 0 0 .5px inset;transform:translateY(-4px)}.ds-flow-node header{display:flex;min-height:68px;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid #eceae4}.ds-flow-node header span{color:#85847f;font-size:12px;font-weight:400;letter-spacing:.08em}.ds-flow-node h3{margin:4px 0 0;font-size:16px;font-weight:480;letter-spacing:-.025em}.ds-flow-node header em{padding:4px 8px;border-radius:9999px;color:#5f5f5d;background:#f7f4ed;font-size:11px;font-style:normal}.ds-flow-node-body{padding:16px}.ds-flow-node-body p{margin:0 0 12px;color:#5f5f5d;font-size:14px;line-height:1.6}.ds-flow-node dl{margin:0}.ds-flow-node dl div{display:grid;grid-template-columns:72px 1fr;gap:8px;padding:8px 0;border-top:1px solid #eceae4;font-size:12px}.ds-flow-node dt{color:#85847f}.ds-flow-node dd{margin:0;font-weight:600}.ds-flow-node footer{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #eceae4;background:#f7f4ed}.ds-flow-node footer button{min-height:36px;border:0;border-right:1px solid #eceae4;color:#5f5f5d;background:transparent;font-size:12px}.ds-flow-node footer button:hover{color:#3451b2;background:#fcfbf8}.ds-flow-node button:focus-visible{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:-2px}@media(prefers-reduced-motion:reduce){.ds-flow-node{transition:none}}"
+    },
+    {
+      "name": "Decision Stage Item",
+      "kind": "nav",
+      "description": "Numbered Human Decision Studio stage with parchment active state and current-step semantics.",
+      "html": "<button class=\"ds-decision-stage is-active\" type=\"button\" aria-current=\"step\"><b>04</b><span><strong>设计意图</strong><small>人群、价格、场景与材料偏好</small></span><em>1</em></button>",
+      "css": ".ds-decision-stage{position:relative;display:grid;width:218px;min-height:64px;grid-template-columns:28px 1fr auto;align-items:center;gap:9px;padding:9px 12px;border:0;border-bottom:1px solid #eceae4;color:#5f5f5d;text-align:left;background:#f7f4ed;font-family:'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif}.ds-decision-stage:hover{background:color-mix(in srgb,#fcfbf8 60%,#f7f4ed)}.ds-decision-stage.is-active{color:#1c1c1c;background:#fcfbf8;box-shadow:inset 3px 0 #3451b2}.ds-decision-stage>b{display:grid;width:26px;height:26px;place-items:center;border:1px solid #d4d3d0;border-radius:9999px;color:#5f5f5d;background:#fcfbf8;font-size:10px}.ds-decision-stage.is-active>b{border-color:#3451b2;color:#fcfbf8;background:#3451b2}.ds-decision-stage>span{display:grid;gap:2px}.ds-decision-stage strong{font-size:14px;font-weight:480}.ds-decision-stage small{overflow:hidden;color:#85847f;font-size:11px;text-overflow:ellipsis;white-space:nowrap}.ds-decision-stage em{display:grid;min-width:24px;height:22px;place-items:center;border-radius:9999px;color:#3451b2;background:color-mix(in srgb,#3451b2 9%,#fcfbf8);font-size:10px;font-style:normal}.ds-decision-stage:focus-visible{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:-3px}@media(max-width:680px){.ds-decision-stage{width:auto;min-width:78px;min-height:54px;grid-template-columns:22px 1fr;padding:6px 8px;box-shadow:inset 0 -2px #3451b2}.ds-decision-stage small,.ds-decision-stage em{display:none}.ds-decision-stage>b{width:22px;height:22px}}"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Warm sand field with 8px radius, inset edge and explicit label.",
+      "html": "<label class=\"ds-field\"><span>目标人群</span><input type=\"text\" value=\"18–30岁年轻消费者\" /></label>",
+      "css": ".ds-field{display:grid;gap:8px;color:#1c1c1c;font:400 14px/1.45 'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif}.ds-field>span{color:#5f5f5d}.ds-field input{min-height:40px;padding:10px 12px;border:1px solid #eceae4;border-radius:8px;color:#1c1c1c;background:#f7f4ed;box-shadow:oklch(0 0 0/.16) 0 0 0 .5px inset;font:400 16px/1.45 'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif}.ds-field input:hover{border-color:#d4d3d0}.ds-field input:focus{border-color:#3451b2;outline:0}.ds-field input:focus-visible{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:2px}@media(max-width:760px){.ds-field input{min-height:44px}}"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "description": "Pill text-plus-dot operational state; color never carries meaning alone.",
+      "html": "<span class=\"ds-status ds-status-success\"><i aria-hidden=\"true\"></i>已完成</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid #eceae4;border-radius:9999px;color:#5f5f5d;background:#fcfbf8;box-shadow:oklch(0 0 0/.16) 0 0 0 .5px inset;font:400 12px/1.45 'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif}.ds-status i{width:6px;height:6px;border-radius:50%;background:#45a17b}.ds-status-cached i{background:#6f8498}.ds-status-warning i{background:#b7791f}.ds-status-danger i{background:#bd4a4a}.ds-status-running i{background:#16745f;animation:ds-status-pulse 900ms ease infinite alternate}@keyframes ds-status-pulse{to{opacity:.35}}@media(prefers-reduced-motion:reduce){.ds-status-running i{animation:none}}"
+    },
+    {
+      "name": "Warm Evidence Card",
+      "kind": "card",
+      "refersTo": "warm-card",
+      "description": "Independent warm reading surface with 24px radius and no drop shadow.",
+      "html": "<article class=\"ds-warm-card\"><span>EVIDENCE SNAPSHOT</span><h3>贵州苗绣</h3><p>历史快照与文化记录分层呈现，来源、时间与权利状态保持可见。</p></article>",
+      "css": ".ds-warm-card{padding:24px;border:1px solid #eceae4;border-radius:24px;color:#1c1c1c;background:#f7f4ed;box-shadow:oklch(0 0 0/.16) 0 0 0 .5px inset;font-family:'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif}.ds-warm-card>span{color:#85847f;font-size:12px;font-weight:400;letter-spacing:.08em}.ds-warm-card h3{margin:8px 0 0;font-size:20px;font-weight:480;letter-spacing:-.025em}.ds-warm-card p{margin:10px 0 0;color:#5f5f5d;font-size:16px;line-height:1.6}.ds-warm-card:focus-within{border-color:#3451b2}"
+    },
+    {
+      "name": "Product Image Frame",
+      "kind": "custom",
+      "description": "Twelve-pixel image frame for a project-owned concept asset with explicit provenance copy.",
+      "html": "<figure class=\"ds-image-frame\"><img alt=\"针格模块花溪挑花互动冰箱贴概念图\" src=\"/assets/official/product-hero.png\" /><figcaption>Concept A · 项目生成资产 · 来源已登记</figcaption></figure>",
+      "css": ".ds-image-frame{margin:0;color:#5f5f5d;font:400 14px/1.45 'Camera Plain Variable','Noto Sans SC Variable','Noto Sans SC','Microsoft YaHei',sans-serif}.ds-image-frame img{display:block;width:100%;aspect-ratio:4/3;border:1px solid #eceae4;border-radius:12px;object-fit:cover;box-shadow:oklch(0 0 0/.16) 0 0 0 .5px inset}.ds-image-frame figcaption{margin-top:8px}.ds-image-frame:focus-within img{outline:2px solid color-mix(in srgb,#3451b2 70%,transparent);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Warm Instrument Ledger / 暖纸仪器台账",
+    "overview": "QianCraft 是把文化证据、市场观察、人工决策和设计节点放到同一条可追溯链路上的专业创作仪器，不是营销首页，也不是替用户给出不可审计答案的自动生成器。暖羊皮纸、温砂色和炭黑文字让工作台接近一册正在被使用的研究台账；系统 chrome 安静退后，让当前节点、来源边界和下一步动作成为视觉中心。\n\n复杂度沿工作台边缘按需揭示：56px 阶段命令栏与 64px 工具轨稳定定位，主画布持续占据最大面积，情境 Dock 与 320px Inspector 只在任务需要时出现。Indigo 负责选择、焦点和路径；贵州文化色负责内容与身份；状态、时间、权利和人工/系统来源同时以文字与颜色表达。\n\n材质语言温暖但精确：普通表面不投下阴影，只用 0.5px inset edge、纸色差与语义圆角建立层级。RICOUI Design 只提供系统结构清晰度的参考，不提供可复制的代码、资产、文案或品牌表达。",
+    "keyCharacteristics": [
+      "羊皮纸画布、温砂表面、亚麻边线和炭黑文字构成低噪声暖色工作环境。",
+      "56px 阶段命令栏、64px 工具轨、情境 Dock、主画布与 320px Inspector 构成稳定仪器框架。",
+      "Indigo 只表达操作、选择与焦点；贵州文化色停留在内容、节点身份和概念素材。",
+      "标题字重 480、正文 400；按钮与徽章为 pill，输入 8px、图片 12px、容器 16px、暖面卡 24px。",
+      "桌面保留工作上下文；移动端以可逆覆盖层和至少 44px 触控目标维持可操作性。"
+    ],
+    "rules": [
+      { "name": "The Functional Indigo Rule", "body": "Interaction Indigo 只用于可操作、已选择、主路径和键盘焦点；同一视口不以 Indigo 装饰非交互内容。", "section": "colors" },
+      { "name": "The Culture Stays in Content Rule", "body": "靛青、锈色、青绿和紫罗兰只进入文化记录、节点身份、状态或概念素材，不染色全局导航与工作台底色。", "section": "colors" },
+      { "name": "The State Is Evidence Rule", "body": "成功、缓存、待更新、警告与错误必须保留各自的语义色和文字标签，不能只靠颜色传达。", "section": "colors" },
+      { "name": "The Gradient Boundary Rule", "body": "Rainbow Hero Gradient 是品牌环境而不是工作台 token；在当前工具界面中的任何使用都属于系统漂移。", "section": "colors" },
+      { "name": "The Honest Camera Rule", "body": "文档和 CSS 可以把 Camera Plain Variable 列为首选名称，但不能声称当前中文由 Camera Plain 渲染；中文事实来源是 Noto Sans SC fallback。", "section": "typography" },
+      { "name": "The 480/400 Rule", "body": "标题统一 480，正文统一 400，只有状态、主按钮或短关键值使用 600；不以 700–900 的黑重制造层级。", "section": "typography" },
+      { "name": "The Canvas First Rule", "body": "任何桌面或移动布局都先保护节点画布和当前任务，再决定外围面板能否常驻。", "section": "layout" },
+      { "name": "The Reversible Edge Rule", "body": "Dock、Inspector、Decision Studio 和详情关联条都是可逆上下文；打开必须有明确关闭方式，关闭后返回原任务与焦点。", "section": "layout" },
+      { "name": "The 44px Touch Rule", "body": "760px 及以下的图标按钮、顶栏动作和关键保存/取消动作，命中区域不得小于 44 × 44px。", "section": "layout" },
+      { "name": "The Inset Surface Rule", "body": "普通表面只能使用 inset edge；任何非 overlay 的 drop shadow 都是设计系统违例。", "section": "elevation" },
+      { "name": "The Overlay Exception Rule", "body": "单向 drop shadow 只服务于移动端可逆外围面板，关闭后必须消失且不得留下布局位移。", "section": "elevation" },
+      { "name": "The Semantic Radius Rule", "body": "8/12/16/24/pill 分别对应字段、图像、容器、暖面卡和动作/徽章，不按视觉心情混用。", "section": "shapes" },
+      { "name": "The Purposeful Pill Rule", "body": "Pill 只属于按钮、徽章、工具轨控件和短状态；长文本容器、证据卡和节点不能胶囊化。", "section": "shapes" },
+      { "name": "The Context-before-Density Rule", "body": "默认只显示完成当前任务所需的信息；详情、历史和人工配置通过一跳进入，而不是永久挤压主画布。", "section": "components" },
+      { "name": "The Provenance-before-Imagery Rule", "body": "一张图只有在来源、用途和权利边界可说明时才进入界面；缺图必须显示诚实空态，不能用参考图或 invented thumbnail 补位。", "section": "components" }
+    ],
+    "dos": [
+      "Do 让 Interaction Indigo 只承担主路径、选择、焦点和可操作链接，并在同一视口保持稀缺。",
+      "Do 用 parchment / warm sand 色差、亚麻线和 inset edge 组织高密度证据；让主画布始终是最大区域。",
+      "Do 按 8px 输入、12px 图片、16px 容器、24px 暖面卡和 pill 动作/徽章使用圆角。",
+      "Do 同时显示状态色与状态文字，明确 live、snapshot/cache、stale、warning 和 error 的差别。",
+      "Do 为图标控件使用 Lucide SVG、可读标签或 `aria-label`，并维护至少 44px 触控区域与可见键盘焦点。",
+      "Do 只使用有项目来源记录的产品图和概念图，保留 alt、节点关系、权利状态与用途边界。",
+      "Do 把 RICOUI Design 仅视为结构清晰度参考，重新建立 QianCraft 自己的内容、色彩、组件和交互语义。"
+    ],
+    "donts": [
+      "Don't 把贵州靛青、锈色、青绿或紫罗兰铺到全局顶栏、工具轨、按钮体系或页面底色。",
+      "Don't 在普通表面使用 drop shadow、玻璃拟态、硬偏移阴影或无语义的多层圆角；普通表面只能有 inset edge。",
+      "Don't 把 pill 用在长文本、节点、证据卡或大型容器；pill 只属于动作、工具和短状态。",
+      "Don't 在当前工作台使用 Rainbow Hero Gradient；它只是登记中的品牌环境 token。",
+      "Don't 隐藏失败、缺少图像 provider、缓存时间、下游 stale、机器建议或人工改写来源。",
+      "Don't 使用 approved comp 的 invented thumbnails/content、`reference_only` 像素、无来源 plush alternate 或遗留 `og.png` 填充产品界面。",
+      "Don't 复制 RICOUI Design 的代码、资产、文案或品牌表达，也不要从当前概念包声称量产、DFM、合规、社区授权或工厂下单就绪。"
+    ]
+  }
+}

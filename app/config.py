@@ -58,6 +58,11 @@ class Settings:
     llm_timeout_seconds: float
     llm_max_tokens: int
     embedding_model: str
+    image_provider: str
+    image_api_key: str
+    image_base_url: str
+    image_model: str
+    image_timeout_seconds: float
     gpt_researcher_path: Path
     mediacrawler_path: Path
     mediacrawler_python: Path
@@ -90,6 +95,15 @@ class Settings:
     @property
     def has_llm_key(self) -> bool:
         return bool(self.llm_api_key)
+
+    @property
+    def has_image_provider(self) -> bool:
+        return bool(
+            self.image_provider
+            and self.image_api_key
+            and self.image_base_url
+            and self.image_model
+        )
 
     def with_mode(self, mode: str) -> Settings:
         if mode == "demo":
@@ -125,6 +139,11 @@ def load_settings() -> Settings:
         llm_timeout_seconds=float(env("LLM_TIMEOUT_SECONDS", "180")),
         llm_max_tokens=int(env("LLM_MAX_TOKENS", "10000")),
         embedding_model=env("EMBEDDING_MODEL", "local-hash-384"),
+        image_provider=env("IMAGE_PROVIDER").strip().lower(),
+        image_api_key=env("IMAGE_API_KEY"),
+        image_base_url=env("IMAGE_BASE_URL").rstrip("/"),
+        image_model=env("IMAGE_MODEL"),
+        image_timeout_seconds=float(env("IMAGE_TIMEOUT_SECONDS", "180")),
         gpt_researcher_path=_resolve_path(
             env("GPT_RESEARCHER_PATH"), "researcher_agent/gpt-researcher-main"
         ),

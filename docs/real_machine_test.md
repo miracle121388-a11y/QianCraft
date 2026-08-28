@@ -1,10 +1,18 @@
 # QianCraft 实机验收记录
 
-验收日期：2026-08-28（Asia/Shanghai）
+验收日期：2026-08-29（Asia/Shanghai）
 
-最新完整业务运行：`20260827T225611Z-4f2a77ae`（运行号使用 UTC）；五个组件依次为 `live / cache / live / live / live`。市场层没有再次访问平台，而是消费本轮保存的 378 条真实平台快照，因此四路在该清单中均诚实标为 `cache`。Design Agent 随后以同一运行的 `designer_handoff.json` 重算并用原创产品主视觉完成最终海报，运行清单的设计与渲染状态已同步更新。
+最新完整业务运行：`20260828T060200Z-e44240e3`（运行号使用 UTC）；五个组件依次为 `live / cache / live / live / live`。Culture 使用本地 612 实体/697 关系图，Strategy 实际调用 `deepseek-v4-flash`，市场层没有再次访问平台，而是消费保存的 378 条历史真实平台快照，因此四路在该清单中均诚实标为 `cache`。Design Agent 随后以同一运行的 `designer_handoff.json` 重算并用项目原创产品主视觉完成最终海报，运行清单的设计与渲染状态已同步更新。
 
 四个平台在逐平台授权 Smoke Test 中都至少成功过一次：小红书 `live/20`、抖音 `live/14`、B站 `live/20`、微博 `live/16`。最新授权正式复核证据为 `market_evidence_20260827T222055Z.json`；同一次四平台复核中，小红书 `live/authorized/115`、B站 `live/authorized/101`、微博 `live/authorized/148`，抖音本次未产出新内容，使用 `cache/missing/14` 的历史真实快照。合计 364 条当轮实时记录、14 条历史真实平台记录，再加 12 条不参与平台榜的公开核验基线，共 390 条证据记录。随后单独重试抖音仍未产出新内容，没有把缓存误报为实时成功。
+
+本轮新增 Creative Intelligence Workbench 实机验收：本地 Python API 与 Web 前端真实连通，默认工作区为 `guizhou-miao-demo`，包含 9 个节点实例、10 条连线和严格 7 类节点。验证覆盖 Workspace 持久化、Brief v2、节点运行、下游 stale、Concept Use / Duplicate / Regenerate / Generate More、Poster 可逆编辑与 1800 × 2400 PNG 浏览器导出。验收产生的临时工作区已删除，默认工作区恢复为任务书 v1、Concept A 和最新实机运行号；本轮随后生成并接入 Concept B/C 两套审阅后的项目视觉。
+
+0.5.2 排版实机验收覆盖 1280 × 720 工作台、文化、市场和海报详情页，以及 390 × 844 海报详情：Noto Sans/Serif SC 均随站点自托管，7–10px 硬编码字号清零，默认画布改为 0.82 阅读比例；手机页 `scrollWidth=390`、无横向溢出，控制台 warning/error 为 0。Zeabur 线上九个页面与九个详情 API 均为 200，129 条引用缺失为 0，字体 WOFF2 抽查为 200。
+
+0.6.0 人工决策验收在隔离工作区实际完成七阶段操作：新增苗族蜡染记录、把四平台缩为三平台、将文化适配权重从 20 精确改为 35 并即时重排 8 条机会、把第三候选改为 OPP-007、修改目标人群和三种产品形态、加入 V009 研究参照并改为竖版画幅、将 Concept B 设为当前方向、移出 Concept C、采用工坊拆解主题并隐藏工艺板块。保存后版本由 v1→v2→v3，服务端将 115% 正向输入归一化为 `culture_fit=0.304348`，Brief/Visual/Concept/Poster 全部变为 `stale`；默认工作区未被验收数据污染，临时工作区已删除。详情页的人工决策深链接也已重载验证，能保留工作区 ID 并直接打开对应阶段。
+
+0.7.0 前端验收把工作台从展示型 Demo 收敛为暖纸色 Creative Instrument：56px 五阶段导航、64px 工具轨、按任务切换的证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 形成稳定工具骨架。用户提供的 Lovable DTCG 颜色、间距、圆角、字体和内阴影变量已转成普通 CSS 令牌；Hero 渐变仅登记而未滥用到操作工作台。桌面 1440 × 900 与手机 390 × 844 均实际检查了工作台、Decision Studio 和节点详情；移动端 Dock/Inspector 变为覆盖层，主要触控目标至少 44px。Decision Studio 实测打开后初始聚焦、Tab/Shift+Tab 焦点循环、Escape 关闭与焦点归还；Dock 与 Inspector 也分别实测打开聚焦、Escape 关闭及触发器焦点恢复。九个前端详情页与九个节点 API 本地均返回 200；Python 37/37、TypeScript 5/5、Ruff、typecheck、ESLint 和 Vinext 五阶段构建通过，Impeccable 最终只读复核为 PASS。
 
 ## 环境
 
@@ -23,7 +31,7 @@
 | LightRAG | 通过 | 本地图实际索引 612 个实体、697 条关系；“贵州苗绣”节点查询返回关联边 |
 | GPT Researcher | 通过 | external-context writer 实际调用目标模型并输出合法 JSON；最新完整业务运行经证据锁后得到 8 条机会 |
 | MediaCrawler | 授权复核 3/4 实时通过 | 小红书 115、B站 101、微博 148 条均完成登录、搜索、规范化与保存；抖音两次均未产出新内容，保留 14 条历史真实快照并标 `cache` |
-| 四平台统一与热度 | 通过 | 四个快照共 378 条真实平台记录；统一榜单样本数为 378，Top 10 依次为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒，Top 5 为前五项；分数范围 36.6–57.4，均在 0–100 内 |
+| 四平台统一与热度 | 通过 | 四个快照共 378 条真实平台记录；统一榜单样本数为 378，Top 10 依次为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒，Top 5 为前五项；本轮重算分数范围 36.6–57.3，均在 0–100 内 |
 | Visual Reference Pack | 通过 | 12 条官方/权威馆藏参考、5 个 Pattern Primitive、3 组无伪造 HEX 的颜色关系；全部未明权利图片标为 `reference_only` |
 | Opportunity Score | 通过 | 8–12 条机会均有六项正向分、文化风险和可解释综合分；20/20/20/15/15/10 加权后扣 20% 风险 |
 | LightRAG 二次核验 | 通过 | 高分候选实际重载本地图并逐项查询；输出 `verified/warning/rejected`，拒绝项不能进入设计交接 |
@@ -31,9 +39,20 @@
 | Design Agent 接口 | 通过 | 实际从文件重载 DesignerHandoff，输入 SHA-256 与当前文件一致；选择 OPP-006 并缩窄为花溪单一原型，OPP-002 高敏感动植物母题在社区确认前自动留置 |
 | 产品与工厂拆解 | 通过 | 输出“针格模块”互动冰箱贴概念样；5 项尺寸、5 项 BOM、1 组原创网格应用、6 步装配、6 项质检、3+3 审核门和 5 个工厂待确认问题完整，`mass_production_ready=false` |
 | 设计海报 | 通过 | 1800 × 2400 PNG 含文化元素/风格、成品主视觉、爆炸拆解、尺寸、BOM 与工艺；本地精确中文排版，海报和主视觉 SHA-256 均入清单，`reference_only_images_used=false` |
+| Workbench 数据契约 | 通过 | Bootstrap 返回 9 个实例、10 条边、7 种节点类型；左侧读取 22 条文化记录、四平台 cache 状态和实际 Top 10，未复制浏览器假数据 |
+| 人工决策数据契约 | 通过 | `schema_version=1.1`；Bootstrap 返回 22 文化/4 平台/10 品类/8 机会/12 视觉参照/3 概念，DecisionProfile 保存、权重归一化、人工排序、版本递增与非法 ID 拒绝均完成验证 |
+| 九节点独立展示页 | 通过 | 文化、市场、策略、任务书、视觉、A/B/C 与海报均由动态路由实际打开；节点 API 的文化/市场/策略引用分别解析 28/39/15 条且缺失为 0，设计页附文化、市场和 `reference_only` 馆藏来源 |
+| Workspace 与节点运行 | 通过 | HTTP 实测 New/Save/Load、Brief v2、Culture 节点、Concept 切换/复制/单体重生成/新增方向；节点状态与仅下游 stale 持久化到经过校验的 JSON |
+| Workbench 浏览器交互 | 通过 | 五阶段导航、工具轨、上下文证据/资产/历史 Dock、无限画布、小地图、Inspector、Concept 编辑动作、New Workspace 对话框和 Poster 参数均完成实际浏览器检查；阶段点击聚焦节点，资产点击联动画布与 Inspector；PNG 导出提示为 1800 × 2400，A/B/C 均显示实际图片 |
+| 七阶段人工交互 | 通过 | 浏览器实际完成文化、平台、权重、机会、任务书、视觉、方案与海报调整；保存后节点显示 HUMAN v3、人工分与系统分并列、下游 stale，展示页可深链返回对应决策阶段 |
+| 中文排版、令牌与响应式 | 通过 | 用户提供的暖纸色、沙色、亚麻边线、石灰、炭黑、墨黑和靛蓝令牌已映射到真实界面；字体栈保留 Camera Plain 设计命名并以实际自托管 Noto Sans/Serif SC 完成中文覆盖。1440 × 900 与 390 × 844 的工作台、Decision Studio、节点详情均完成目视复核，手机无页面级横向溢出且核心触控目标至少 44px |
+| Workbench production server | 通过 | Vinext 五阶段构建后以 `127.0.0.1:3000` 启动 production server；页面、真实 API、A/B/C 资产与 Flow Map 均重新验收，React Flow 合法最小 attribution 保留 |
+| Zeabur 线上实例 | 通过（分层验收） | 0.6.0 曾完成认证后首页、Bootstrap、9 个节点页/详情 API 与独立 Culture 公网验收；最终 0.7.0 部署 `6a91ccc4ac2577a93d22028e` 为 `RUNNING`，公网 `/healthz` 为 200、匿名入口为 401。本轮执行环境没有站点凭证，因此 0.7.0 的认证后页面/API 结论仅保留为待凭证复验，不以本地结果替代 |
+| 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
+| 图像生成边界 | 预期 warning | 独立 Images API 未配置；同一 DeepSeek 服务的 `/images/generations` 实测 HTTP 404。现有 A/B/C 可展示，但 Regenerate 与 Generate More 不会把项目资产冒充为一次新 API 结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 通过 | `pytest` 19/19；新增 DesignPackage、输入/渲染摘要、13 路输出和高敏感母题留置回归 |
-| 静态检查 | 通过 | `ruff check app scripts tests` 无错误 |
+| 自动测试 | 通过 | Python `pytest` 37/37；Workbench TypeScript 5/5；覆盖既有 DesignPackage 链路、DecisionProfile、人工评分/选择上限、工作区、节点、引用解析、Concept 与 Poster 状态回归 |
+| 静态检查与构建 | 通过 | `ruff check app tests`、TypeScript no-emit、ESLint 与 Vinext 五阶段 production build 均无错误；脚本入口的显式 `sys.path` bootstrap 不纳入 E402 检查 |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 
 ## 可复现命令
@@ -54,7 +73,18 @@
 # 四个平台完成授权后的正式小规模复核：
 .\.venv\Scripts\python.exe scripts\probe_market_platforms.py --platform all --method cdp --formal --authorize
 .\.venv\Scripts\python.exe -m pytest
-uvx ruff check app scripts tests
+uv run ruff check app tests
+
+# 启动本地 Workbench（自动协调 API 与前端）：
+.\.venv\Scripts\python.exe scripts\run_web_tool.py
+
+# 前端独立验收：
+cd web
+pnpm test
+pnpm typecheck
+pnpm lint
+pnpm build
+pnpm start:local
 ```
 
 ## 已识别边界
@@ -68,3 +98,7 @@ uvx ruff check app scripts tests
 7. 正式输出共 13 个路径：原 8 项加 DesignPackage JSON/Markdown、PosterRenderRequest、设计海报和 DesignRenderManifest。流水线现在进入概念视觉与工厂首样简报，但仍在量产发布前停止。
 8. 一次 CDP 授权通常可以复用本机浏览器资料，但不是永久授权；平台会话过期、主动退出、风控或资料目录被清理时需要本人重新登录。本轮抖音失败只证明当次搜索没有内容产物，不能据此把登录态断言为永久失效。
 9. 当前海报、尺寸和 BOM 只支持展示、报价和首样沟通；花溪社区确认、材料/结构实测、DFM、适用标准测试和商业授权未完成，不能据此宣称可直接量产。
+10. 当前四个平台的 378 条记录是历史真实快照，本轮 Workbench 验收没有重新访问平台；界面必须显示 `cache`，不能把曾经授权等同于永久实时授权。
+11. 独立图像生成自动化服务尚未配置。A/B/C 当前都有可展示项目资产，其中 B/C 来自本轮内置图像生成与人工目视复核；这不代表 DeepSeek 支持图片，也不代表界面内 Regenerate / Generate More 已获得外部图像端点。
+12. Workbench 已部署为受 Basic Auth 保护的远端产品验证环境；Vinext 与 Python API 在容器内仍只绑定回环地址，运行态由持久卷承载，密钥由部署变量注入。它不是无需登录的公众营销站；如需多人正式使用，仍应补用户级账户、权限审计、备份和密钥轮换流程。
+13. 本轮使用上传的 React Flow 源码核对集成版本和能力边界，但没有改写其源码、许可证或版权通知；产品界面统一使用 QianCraft 自有名称和业务语言。

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "workspace_id": "guizhou-miao-demo",
+  "generated_at": "2026-08-28T06:11:18Z",
+  "generation_mode": "codex_builtin_imagegen",
+  "automation_boundary": "The project-local Images API adapter remains unconfigured; these are reviewed project assets, not proof of automated provider availability.",
+  "cultural_boundary": "Original abstract counted-thread geometry only. No named sacred motif or museum reference pixels were requested.",
+  "assets": [
+    {
+      "concept_id": "concept-b",
+      "file": "concept-b-v1.png",
+      "generated_at": "2026-08-28T06:09:49Z",
+      "sha256": "d5665f294dc833bc52fafd378531efd743b630ba676b9325d6792da2321a736d",
+      "prompt": "Premium studio product visualization of a lightweight travel-gift edition modular refrigerator magnet inspired by the counted-thread structural logic of Huaxi Miao cross-stitch: warm-gray rounded frame, removable cotton-linen insert, restrained indigo/rust original geometry, subtle latch and provenance card; soft off-white studio, no logo, text, watermark, copied sacred or museum motif, or manufacturing claim."
+    },
+    {
+      "concept_id": "concept-c",
+      "file": "concept-c-v1.png",
+      "generated_at": "2026-08-28T06:11:18Z",
+      "sha256": "04a9f4a0ff8bc4e0f0bee8d2bb23926279e389a097c72e5182b707970d60aef9",
+      "prompt": "Premium studio product visualization of a collectible modular magnetic souvenir system inspired by the counted-thread structural logic of Huaxi Miao cross-stitch: deep-indigo hero frame, two distinct interchangeable textile panels, archival sleeve and brass-toned tabs; quiet museum-archive setting, original abstract geometry, no readable text, logo, watermark, copied sacred or museum motif, or manufacturing claim."
+    }
+  ]
+}

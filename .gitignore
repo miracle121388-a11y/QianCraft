@@ -6,6 +6,8 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.codex-zeabur-upload/
+.zeabur-stage-*/
 data/culture/lightrag_storage/
 data/market/raw/
 *.log
