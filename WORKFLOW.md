@@ -325,6 +325,35 @@ uvx ruff check app scripts tests
 
 ## 9. 更新日志
 
+### 2026-08-28｜GitHub 正式归并｜main 提交与推送完成
+
+变更：
+
+- 将上一条“GitHub 最新结果合并”形成正式提交 `99b44b4`（`feat: reconcile local evidence with auditable workbench`），并成功推送到 `origin/main`。
+- 提交共纳入 20 个文件：本机较新的正式策略/设计/海报结果、`market_evidence_20260828T033015Z.json`、工具 API 的 raw 文件动态审计兼容修复、对应回归测试、Ruff 整理以及 README/WORKFLOW 状态同步。
+- GitHub `main` 现同时包含提交 `86d7585` 的可审计 Web 工具工作台，以及本机 378 条历史真实快照形成的派生证据、Top 10 / Top 5 和最新正式设计结果。
+
+原因：
+
+- 用户要求尽快完成合并；上一轮只完成本地快进与冲突归并，本轮补齐正式提交和远端推送。
+
+验证：
+
+- 推送前重新执行 `git fetch --prune origin`，确认远端没有新增分叉提交。
+- `pytest` 22/22、`uvx ruff check app scripts tests` 与 `pnpm build` 均通过；Vinext 五阶段构建完成。
+- 对待提交代码、文档和输出执行密钥模式扫描，`sk-` 长密钥命中为 0；`git diff --cached --check` 通过。
+- `git push origin main` 成功：远端由 `86d7585` 前进到 `99b44b4`。
+
+边界：
+
+- `data/market/raw/*.jsonl` 继续按项目安全策略留在本机且不进入 Git；GitHub 中保存的是脱敏后的历史派生证据，因此新鲜克隆会如实报告 raw 文件缺失，而不会冒充当前实时抓取。
+- 合并前安全快照 `stash@{0}` 继续保留，未删除；本轮没有发布 Web 站点、没有访问四个平台或重新调用外部模型。
+
+涉及文件：
+
+- 上一提交 `99b44b4` 中的 20 个代码、测试、文档、派生数据与正式输出文件
+- `WORKFLOW.md`
+
 ### 2026-08-28｜GitHub 最新结果合并｜工具工作台与本机实测状态归并
 
 变更：
