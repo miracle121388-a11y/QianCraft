@@ -1,7 +1,7 @@
 # QianCraft 工作流程与持续更新记录
 
 > 文档性质：项目级唯一工作流说明、当前状态快照与追加式更新台账  
-> 当前版本：0.7.0
+> 当前版本：0.7.1
 > 最后维护：2026-08-29
 > 维护状态：强制持续维护
 
@@ -33,7 +33,7 @@
 |---|---|
 | 产品名称 | QianCraft Creative Intelligence Workbench｜文化文创智能工作台 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
-| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py`；暖纸色 Creative Instrument 工具骨架由 56px 五阶段导航、64px 工具轨、按需 248px 证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 组成，手机端把 Dock/Inspector 变为可逆覆盖层；默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio 贯通文化、市场、机会/量分、任务书、视觉、概念与海报；每个节点均有专用展示页、引用台账、独立 Run / Run from here / 编辑保存 / JSON 导出。用户提供的暖纸色 DTCG 令牌已映射到普通 CSS；Camera Plain 保留为设计字体栈命名，实际中文由自托管 Noto Sans SC / Noto Serif SC 覆盖。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
+| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py`；暖纸色 Creative Instrument 工具骨架由 56px 五阶段导航、64px 工具轨、按需 248px 证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 组成，手机端把 Dock/Inspector 变为可逆覆盖层；默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio 贯通文化、市场、机会/量分、任务书、视觉、概念与海报；每个节点均有专用展示页、引用台账、独立 Run / Run from here / 编辑保存 / JSON 导出。0.7.1 已把用户提供的 Parchment / Warm Sand / Linen / Stone / Dim Gray / Charcoal / Interaction Indigo 关系锁定到工作台、决策面板与节点详情全部 chrome；纯白和冷灰不再作为产品中性色，主动作保持 Charcoal，Indigo 只承担链接、选择、路径与焦点。Camera Plain 保留为设计字体栈命名，实际中文由自托管 Noto Sans SC / Noto Serif SC 覆盖。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
 | GitHub 展示 | 项目 README 包含原创横版 SVG 首屏、真实状态徽章、在线实例、成果海报、A/B/C 三方向视觉、Workbench 快速开始、Mermaid 架构、可信边界、路线图与许可证说明 |
 | 默认主题 | 贵州苗绣 |
 | 默认目标市场 | 18–30 岁年轻消费者 |
@@ -52,10 +52,10 @@
 | Workbench Workspace | 默认 `guizhou-miao-demo` 绑定运行 `20260828T060200Z-e44240e3`，Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept A、任务书 v1、A/B/C 三套概念视觉、可版本化 `DecisionProfile` 与机器/人工并列的 `decision_output`；New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；旧工作区读取时兼容迁移，线上运行态目录由持久卷承载，镜像中的证据基线不被覆盖 |
 | 图像生成适配 | Concept A 使用项目原创主视觉；Concept B/C 已通过内置图像生成能力制作、目视复核、SHA-256 登记并存入项目。独立 OpenAI-compatible Images API 自动化边界仍未配置，因此 Visual Generation 与单概念重生成继续诚实返回 `warning`，不会把内置资产冒充为 DeepSeek 新调用 |
 | API | 本机与 Zeabur 服务端 LLM Key 均通过私密环境变量配置且不回显；探针确认 DeepSeek 可达、返回 3 个模型且 `deepseek-v4-flash` 可用；完整 `auto` 链路已真实调用并成功。对同一服务的 `/images/generations` 实测为 HTTP 404，确认该密钥只承担文本模型链路 |
-| 线上发布 | 0.7.0 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；最终部署 `6a91ccc4ac2577a93d22028e` 已为 `RUNNING`，Nginx 统一 Basic Auth，`/healthz` 免鉴权，Vinext 与 Tool API 仅监听容器回环地址，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.7.0 认证后页面/API 保留待凭证复验；0.6.0 已完成的认证公网业务验收仍有记录 |
+| 线上发布 | 0.7.1 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；部署 `6a91d1a613d3d467215e74b8` 已为 `RUNNING`，Nginx 统一 Basic Auth，`/healthz` 免鉴权，Vinext 与 Tool API 仅监听容器回环地址，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.7.1 认证后页面/API 保留待凭证复验；0.6.0 已完成的认证公网业务验收仍有记录 |
 | MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb 等平台；四平台原始 JSONL 与历史快照存在。最新 `auto` 实机运行没有重新访问平台，后续仍须按当轮实际结果标记 `live/cache/unavailable` |
 | 自动测试 | Python 37/37、Workbench TypeScript 5/5 通过 |
-| 静态检查 | `ruff check app tests`、Web typecheck、ESLint、Vinext 五阶段 production build 与 `git diff --check` 通过；0.7.0 最终隔离发布包为 86 个文件、5,589,358 字节，敏感路径与长 `sk-` 模式均为 0 命中；最终 Impeccable 成品复核为 PASS |
+| 静态检查 | `ruff check app tests`、Web typecheck、ESLint、Vinext 五阶段 production build 与 `git diff --check` 通过；0.7.1 最终隔离发布包为 87 个文件、5,694,056 字节，敏感路径与长 `sk-` 模式均为 0 命中；1440 × 900 / 390 × 844 工作台、Human Decision Studio 与节点详情完成 Impeccable 实机复核 |
 | 凭证检查 | 交付目录未发现 `sk-` 密钥泄漏 |
 
 当前正式产物：
@@ -354,7 +354,7 @@ uv run ruff check app tests
 
 ```powershell
 # 本地存在 Docker 时可先构建同一生产镜像
-docker build -t qiancraft:0.7.0 .
+docker build -t qiancraft:0.7.1 .
 
 # Zeabur CLI 在已选择项目/环境/服务后上传精简发布目录
 npx --yes zeabur@latest deploy --service-id <service-id> --environment-id <environment-id> --interactive=false
@@ -385,6 +385,39 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-08-29｜0.7.1｜全表面暖纸色关系锁定
+
+变更：
+
+- 将用户给定的 Lovable 暖纸色关系从“局部 token 覆盖”升级为完整产品色彩系统：Parchment 统一页面、顶栏、节点和主面板，Warm Sand 统一画布、工具轨、输入与次级内容面，Linen / Stone 统一两级边界，Charcoal 统一主文字与主动作；清除工作台、Human Decision Studio 和节点详情中残留的纯白操作面、冷灰 chrome 与亮蓝主控。
+- Interaction Indigo 只保留在链接、选中、当前路径、图标焦点和键盘焦点；Human Decision 模式主选择和全局主动作改为 Charcoal。贵州靛青、锈色、青绿、紫罗兰以及成功/快照/警告/错误色继续只在内容身份和语义状态中使用，不扩散到全局界面。
+- 新增 `lovable-faint-gray`、Indigo soft 和 Parchment glass 语义变量；`faint-text` 与 Dim Gray 共用 `#5f5f5d`，避免 9–14px 元数据使用 3.62:1 的旧浅灰。同步更新设计宪法、Impeccable 机器规范、工作台简报、排版专题、README 徽章和 0.7.1 版本。
+- 更新桌面与手机最终截图，并将同一前端发布到现有 Zeabur 受保护实例；没有改变节点契约、文化图谱、市场证据、评分、Workspace、API 行为或生产前边界。
+
+原因：
+
+- 用户强调主体色彩搭配本身必须贴近其提供的参考系统。审计确认 0.7.0 虽已使用暖纸色外层，但内部仍混有 RICOUI 结构研究阶段留下的冷灰、纯白、亮蓝和旧深色，导致页面看起来像多套系统叠加；本轮以用户提供的明确色值和角色为唯一全局配色事实源。
+
+验证：
+
+- `uv run pytest -q` 37/37、`uv run ruff check app tests`、`pnpm test` 5/5、`pnpm typecheck`、`pnpm lint`、Vinext 五阶段 `pnpm build` 与 `git diff --check` 通过。
+- 浏览器在 1440 × 900 复核工作台、Human Decision Studio 和 Brief 节点详情，在 390 × 844 复核同三类界面；桌面与手机 `scrollWidth` 均等于视口宽度。移动端决策模式、关闭、恢复、取消、保存六个控件以及详情页四个动作均实测为 44px。
+- 核心对比度实测：Charcoal / Parchment 16.47:1、Dim Gray / Parchment 6.18:1、Dim Gray / Warm Sand 5.83:1、Indigo / Parchment 6.84:1；辅助小字不再使用旧 3.62:1 Faint Gray。
+- 隔离发布副本为 87 个文件、5,694,056 字节，敏感路径与长 `sk-` 模式均为 0 命中。第一次上传在对象存储连接层被远端重置且未触发部署；同一副本第二次上传成功，部署 `6a91d1a613d3d467215e74b8` 为 `RUNNING`。公网 `/healthz` 为 200，匿名 `/` 为 401。
+
+边界：
+
+- 用户提供的暖纸色 token 是本轮配色事实源；RICOUI 只用于理解工具结构和信息层级，没有复制其代码、资产、文案、品牌或像素页面。Hero gradient 仍只登记，不进入当前工具界面。
+- 当前会话没有站点 Basic Auth 凭证，因此没有声称完成 0.7.1 认证后公网页面/API 复验；完整 UI、响应式与交互在本地真实 HTTP 环境完成，线上只验证部署状态、免鉴权健康检查和匿名门禁。
+- 本轮没有修改 22 条文化事实、378 条历史平台快照的 `cache` 口径、机会量分或 `reference_only` 像素边界。独立 Images API 仍未配置；产品继续停在概念视觉、工厂询价/首样简报与展示海报阶段，不代表商业图稿批准、工厂下单、量产工程或合规就绪。
+
+涉及文件：
+
+- `web/app/variables.css`、`web/app/globals.css`、`web/package.json`
+- `DESIGN.md`、`.impeccable/design.json`、`.impeccable/workbench-brief.md`、`.impeccable/review/`
+- `README.md`、`docs/typography_system.md`、`docs/deployment_zeabur.md`
+- `app/__init__.py`、`pyproject.toml`、`uv.lock`、`qiancraft.egg-info/PKG-INFO`、`WORKFLOW.md`
 
 ### 2026-08-29｜0.7.0｜暖纸色 Creative Instrument Workbench 与全端收口
 

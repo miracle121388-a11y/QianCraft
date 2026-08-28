@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: qiancraft
-Version: 0.7.0
+Version: 0.7.1
 Summary: 贵州非遗文化知识图谱、市场前策与概念设计系统
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
@@ -24,7 +24,7 @@ Requires-Dist: pytest-asyncio>=1.2.0; extra == "test"
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.7.0-276bff?style=flat-square" alt="Version 0.7.0">
+  <img src="https://img.shields.io/badge/version-0.7.1-3451b2?style=flat-square" alt="Version 0.7.1">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
   <img src="https://img.shields.io/badge/tests-42%20passed-2f7358?style=flat-square" alt="42 tests passed">
   <img src="https://img.shields.io/badge/status-deployed%20prototype-d08b32?style=flat-square" alt="Deployed prototype">
@@ -61,10 +61,10 @@ QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何�
 | **可解释机会选择** | 每个机会必须同时引用文化与市场证据，经过六维评分、文化风险扣分和 LightRAG 二次核验。 |
 | **从 JSON 到概念产品** | Design Agent 重新读取 `designer_handoff.json`、校验摘要并输出文化转译、成品形态、尺寸、BOM、工艺和审核门。 |
 | **展示与制造信息同屏** | 原创产品主视觉与本地精确中文排版合成 1800 × 2400 海报，同时保留机器可读 DesignPackage。 |
-| **空间化创作工作台** | 文化图谱、四平台雷达、机会策略、设计任务书、A/B/C 三套概念视觉与海报板在同一无限画布中编排；右侧 Inspector 负责参数、来源、历史和动作。 |
+| **空间化创作工作台** | 五阶段导航、按需证据/资产/历史 Dock、文化图谱、四平台雷达、机会策略、设计任务书、A/B/C 概念视觉与海报板在同一无限画布中编排；Inspector 只显示当前节点的参数、来源、历史和动作。 |
 | **七阶段人工决策** | 人工可选择文化记录、平台/品类、六维评分权重与候选机会，并继续指定设计意图、视觉参照、概念比较组和海报结构；每次保存形成独立版本，不覆盖事实原件。 |
 | **九节点专业展示页** | 每个实例可单击或双击进入独立页面；文化关系、市场原记录、六维量分、任务书、视觉提示、概念成品、BOM 和海报分别拥有专用视图，并附可回到原始网页的证据台账。 |
-| **编辑型中文排版系统** | 参考 Flipbook 的大字号、低密度与纸张阅读感，以本地 Noto Sans SC / Noto Serif SC 建立 11–17px 界面阶梯、衬线标题层级与可读画布视口；不依赖外部字体 CDN。 |
+| **暖纸色编辑系统** | 用户提供的 parchment / warm sand / linen / charcoal / interaction indigo 令牌统一颜色、间距、圆角、焦点和轻量内阴影；本地 Noto Sans SC / Noto Serif SC 负责真实中文覆盖，不依赖外部字体 CDN。 |
 | **诚实的运行状态** | 文化、市场、策划、设计、渲染分别记录 `live / cache / unavailable`；缓存不冒充实时数据。 |
 
 ## 成果展示
@@ -290,10 +290,12 @@ QianCraft/
 │   ├── design/assets/     # 原创产品主视觉
 │   ├── workbench/         # 工作区 JSON 与受控生成图
 │   └── outputs/           # 最新 13 项正式结果
-├── web/                   # 三栏空间工作台、Inspector 与 PNG 导出
+├── web/                   # 暖纸色 Creative Instrument 工作台、节点详情与 PNG 导出
 ├── scripts/               # Demo、Design Agent、环境与授权入口
 ├── tests/                 # 契约、证据、降级与端到端回归
 ├── docs/                  # 架构、图谱、市场、设计与实机报告
+├── PRODUCT.md             # 产品定位、用户任务、成功标准与边界
+├── DESIGN.md              # 可执行界面令牌、组件与响应式规范
 └── WORKFLOW.md            # 当前状态与只追加更新台账
 ```
 
@@ -338,6 +340,8 @@ All checks passed!
 | 文档 | 内容 |
 |---|---|
 | [`WORKFLOW.md`](WORKFLOW.md) | 项目唯一工作流、当前状态与每次更新台账 |
+| [`PRODUCT.md`](PRODUCT.md) | 工具定位、核心用户任务、当前能力与非量产边界 |
+| [`DESIGN.md`](DESIGN.md) | 暖纸色工作台令牌、布局、组件、可访问性与视觉禁区 |
 | [`docs/architecture.md`](docs/architecture.md) | 模块边界、证据锁、降级与设计接口 |
 | [`docs/human_decision_workflow.md`](docs/human_decision_workflow.md) | 七阶段人工决策、版本语义、API 与下游失效规则 |
 | [`docs/typography_system.md`](docs/typography_system.md) | Flipbook 调研、中文字体阶梯、画布比例与响应式验收 |

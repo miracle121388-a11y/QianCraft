@@ -8,7 +8,7 @@ colors:
   linen-border: "#eceae4"
   stone: "#d4d3d0"
   dim-gray: "#5f5f5d"
-  faint-text: "#85847f"
+  faint-text: "#5f5f5d"
   charcoal: "#1c1c1c"
   ink: "#030303"
   culture-indigo: "#17283f"
@@ -151,6 +151,8 @@ QianCraft 是把文化证据、市场观察、人工决策和设计节点放到�
 
 材质语言温暖但精确：普通表面不投下阴影，只用 0.5px inset edge、纸色差与语义圆角建立层级。RICOUI Design 只提供系统结构清晰度的参考，不提供可复制的代码、资产、文案或品牌表达。
 
+0.7.1 将这套色彩关系锁定到全部产品表面：页面、顶栏、Dock、画布、节点、Inspector、Human Decision Studio 与九类详情内容不再混用纯白或冷灰；`faint-text` 与 Dim Gray 共用 `#5f5f5d`，确保 14px 以下辅助文字在 Parchment / Warm Sand 上仍达到 WCAG AA。Interaction Indigo 只标记链接、焦点、选择和当前路径，主动作继续使用 Charcoal。
+
 **Key Characteristics:**
 
 - 羊皮纸画布、温砂表面、亚麻边线和炭黑文字构成低噪声暖色工作环境。
@@ -186,7 +188,7 @@ QianCraft 是把文化证据、市场观察、人工决策和设计节点放到�
 - **Parchment** (`parchment`): 页面、命令栏、节点、Inspector 和决策面板的主底色。
 - **Warm Sand** (`warm-sand`): 主画布、工具轨、Dock 分区、输入区和暖面容器。
 - **Linen Border** (`linen-border`) 与 **Stone** (`stone`): 普通 1px 边界、hover 边界和弱分隔。
-- **Dim Gray** (`dim-gray`) 与 **Faint Text** (`faint-text`): 次要说明、元数据和短标签；关键动作不使用弱灰。
+- **Dim Gray** (`dim-gray`) 与 **Faint Text** (`faint-text`): 两个语义角色共用 `#5f5f5d`，用于次要说明、元数据和短标签；关键动作不使用弱灰，也不以更浅的冷灰牺牲小字对比度。
 - **Charcoal** (`charcoal`) 与 **Ink** (`ink`): 主文本、深色主按钮和极少量锁定上下文面。
 
 ### Brand Environment

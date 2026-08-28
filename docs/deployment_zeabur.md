@@ -14,6 +14,8 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 2026-08-29 的最终 0.7.0 部署 `6a91ccc4ac2577a93d22028e` 把暖纸色 Creative Instrument Workbench、五阶段导航、上下文证据/资产/历史 Dock、React Flow 主画布、320px Inspector、移动端覆盖层和焦点闭环发布到同一实例。远端 Vinext 五阶段构建和 Docker 镜像构建通过，安装日志确认 `qiancraft-0.7.0`，部署状态为 `RUNNING`；公网 `/healthz` 返回 200、匿名 `/` 返回 401。当前执行环境没有站点 Basic Auth 凭证，因此本轮没有把本地九页/九 API 结果冒充为 0.7.0 的认证公网结果；完整业务与响应式交互已在本地生产构建中验收。该实例始终是受保护的产品验证环境，不承担无需登录的公众营销站职责。
 
+同日的 0.7.1 部署 `6a91d1a613d3d467215e74b8` 把用户给定的 Parchment / Warm Sand / Linen / Stone / Dim Gray / Charcoal / Interaction Indigo 关系锁定到工作台、Human Decision Studio 与节点详情全表面；清除旧冷灰、纯白操作面和亮蓝主控残留，小字统一使用可达 AA 的 Dim Gray，主动作保持 Charcoal，Indigo 仅承担选择、焦点和路径。远端部署状态为 `RUNNING`，公网 `/healthz` 为 200、匿名 `/` 为 401；当前环境仍没有 Basic Auth 站点凭证，因此没有声称完成 0.7.1 认证后公网 UI/API 复验。
+
 ## 必需配置
 
 - 服务端口：使用平台注入的 `PORT`。
@@ -34,15 +36,15 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 ## 本地构建
 
 ```bash
-docker build -t qiancraft:0.7.0 .
+docker build -t qiancraft:0.7.1 .
 docker run --rm -p 8080:8080 \
   -e QIANCRAFT_WEB_USERNAME=qiancraft \
   -e QIANCRAFT_WEB_PASSWORD='<set-in-secret-manager>' \
   -e LLM_API_KEY='<set-in-secret-manager>' \
   -v qiancraft-runtime:/app/data/runtime \
-  qiancraft:0.7.0
+  qiancraft:0.7.1
 ```
 
 生产密钥只应通过 Zeabur 的变量管理界面注入，不写入 Dockerfile、仓库或部署日志。
 
-Zeabur CLI 上传会跳过点号目录；Dockerfile 因此会在远端构建阶段确保存在不含密钥的 `.openai/hosting.json`。实际 D1/R2 绑定仍以部署环境配置为准，不能把该占位清单当作生产凭证或数据配置。0.7.0 使用隔离发布副本，只保留当前市场快照，并仅在副本中对随镜像发布的展示 PNG 做无尺寸变化压缩；工作区原始高清资产不改动，PNG 尺寸和必要的文本/物理尺寸元数据块得到保留。最终副本为 86 个文件、5,589,358 字节，敏感路径和长 `sk-` 模式扫描均为 0 命中。首次直接从项目根上传因 Windows `node_modules` pnpm junction 无法打包而停止，第二个较大副本在对象存储上传阶段超时；压缩后的隔离副本上传、远端构建与发布成功。
+Zeabur CLI 上传会跳过点号目录；Dockerfile 因此会在远端构建阶段确保存在不含密钥的 `.openai/hosting.json`。实际 D1/R2 绑定仍以部署环境配置为准，不能把该占位清单当作生产凭证或数据配置。0.7.1 继续使用隔离发布副本，只保留当前市场快照，并仅在副本中对随镜像发布的展示 PNG 做无尺寸变化压缩；工作区原始高清资产不改动，PNG 尺寸和必要的文本/物理尺寸元数据块得到保留。当前副本为 87 个文件、5,694,056 字节，敏感路径和长 `sk-` 模式扫描均为 0 命中。首次上传在对象存储连接层被远端重置且未触发部署；同一已扫描副本第二次上传成功，随后远端构建与发布完成。

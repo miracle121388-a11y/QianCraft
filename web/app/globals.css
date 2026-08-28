@@ -8751,3 +8751,809 @@ body {
     grid-row: 2;
   }
 }
+
+/* QianCraft 0.7.1 — full warm-parchment palette lock ---------------------- */
+
+:root {
+  color-scheme: light;
+  accent-color: var(--lovable-indigo-accent);
+  caret-color: var(--lovable-charcoal);
+  --paper: var(--lovable-parchment);
+  --panel: var(--lovable-warm-sand);
+  --surface: var(--lovable-parchment);
+  --ink: var(--lovable-charcoal);
+  --muted: var(--lovable-dim-gray);
+  --faint: var(--lovable-faint-gray);
+  --line: var(--lovable-linen-border);
+  --line-strong: var(--lovable-stone);
+  --cobalt: var(--lovable-indigo-accent);
+  --graphite: var(--lovable-charcoal);
+  --node-cobalt: var(--lovable-indigo-accent);
+  --node-line: var(--lovable-linen-border);
+  --node-surface: var(--lovable-parchment);
+  --node-canvas: var(--lovable-parchment);
+}
+
+* {
+  scrollbar-color: var(--lovable-stone) transparent;
+}
+
+::placeholder {
+  color: var(--lovable-dim-gray);
+  opacity: 1;
+}
+
+a {
+  text-underline-offset: 0.18em;
+}
+
+.workbench-shell--instrument .app-bar {
+  border-bottom-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.workbench-shell--instrument .brand-mark,
+.detail-brand > b {
+  color: var(--lovable-parchment);
+  background: var(--lovable-charcoal);
+}
+
+.workbench-shell--instrument .brand-lockup,
+.workbench-shell--instrument .brand-lockup > strong,
+.workspace-command,
+.workspace-command > summary,
+.phase-switcher,
+.workbench-shell--instrument .app-bar__actions {
+  color: var(--lovable-charcoal);
+}
+
+.workspace-command > summary {
+  border-color: var(--lovable-linen-border);
+}
+
+.workspace-command[open] > summary,
+.workspace-command > summary:hover {
+  color: var(--lovable-ink);
+  background: var(--lovable-warm-sand);
+}
+
+.workspace-command__popover {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: var(--lovable-shadow-subtle-2);
+}
+
+.workspace-command__popover select,
+.workspace-command__popover button {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.workspace-command__popover button:hover {
+  border-color: var(--lovable-stone);
+  background: var(--lovable-parchment);
+}
+
+.phase-switcher button,
+.workbench-shell--instrument .app-bar__actions > button,
+.workbench-shell--instrument .app-bar__actions .human-decision-button {
+  color: var(--lovable-dim-gray);
+}
+
+.phase-switcher button:hover,
+.phase-switcher button.is-active {
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+}
+
+.workbench-shell--instrument .human-decision-button em {
+  color: var(--lovable-dim-gray);
+  background: var(--lovable-warm-sand);
+}
+
+.workbench-shell--instrument .app-bar__actions > button {
+  border-color: var(--lovable-linen-border);
+  background: var(--lovable-parchment);
+}
+
+.workbench-shell--instrument .app-bar__actions > button:hover {
+  border-color: var(--lovable-stone);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+}
+
+.workbench-shell--instrument .app-bar__actions > .run-all-button,
+.workbench-shell--instrument .app-bar__actions > .run-all-button:hover {
+  border-color: var(--lovable-charcoal);
+  color: var(--lovable-parchment);
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.tool-rail,
+.tool-dock,
+.tool-dock .knowledge-center,
+.asset-dock,
+.history-dock,
+.inspector-slot,
+.inspector-slot .inspector {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+}
+
+.tool-rail {
+  background: var(--lovable-warm-sand);
+}
+
+.tool-dock,
+.tool-dock .knowledge-center,
+.asset-dock,
+.history-dock,
+.inspector-slot,
+.inspector-slot .inspector {
+  background: var(--lovable-parchment);
+}
+
+.tool-rail button {
+  color: var(--lovable-dim-gray);
+}
+
+.tool-rail button:hover {
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.tool-rail button.is-active {
+  color: var(--lovable-indigo-accent);
+  background: var(--lovable-indigo-soft);
+  box-shadow: inset 2px 0 var(--lovable-indigo-accent);
+}
+
+.tool-dock .panel-heading,
+.dock-heading,
+.inspector-slot__toolbar,
+.inspector-slot .inspector__footer {
+  border-color: var(--lovable-linen-border);
+  background: var(--lovable-parchment-glass);
+}
+
+.tool-dock .panel-heading h2,
+.dock-heading h2,
+.tool-dock .section-title-row > div > span,
+.tool-dock .platform-grid strong,
+.tool-dock .market-total strong,
+.tool-dock .culture-list h3,
+.history-dock__subject strong,
+.asset-dock__list strong {
+  color: var(--lovable-charcoal);
+}
+
+.tool-dock .panel-heading span,
+.dock-heading span,
+.tool-dock .culture-list p,
+.tool-dock .market-total span,
+.tool-dock .market-ranking span,
+.tool-dock .market-ranking strong,
+.asset-dock__list small,
+.asset-dock__list em,
+.history-dock__subject span,
+.history-dock__subject em,
+.history-dock__list time,
+.dock-intro,
+.dock-empty {
+  color: var(--lovable-dim-gray);
+}
+
+.tool-dock .panel-heading__actions button,
+.tool-dock .section-title-row button,
+.tool-dock .section-title-actions button,
+.asset-dock__list > button.is-active strong {
+  color: var(--lovable-indigo-accent);
+}
+
+.tool-dock .platform-grid > div,
+.tool-dock .culture-list article,
+.dock-heading b,
+.asset-dock__list > button,
+.asset-dock__empty {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.tool-dock .culture-list article:hover,
+.tool-dock .market-ranking > div:hover,
+.asset-dock__list > button:hover {
+  border-color: var(--lovable-stone);
+  background: var(--lovable-parchment);
+}
+
+.asset-dock__list > button:hover,
+.asset-dock__list > button.is-active {
+  border-color: var(--lovable-indigo-accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lovable-indigo-accent) 18%, transparent);
+}
+
+.tool-dock .knowledge-search {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-dim-gray);
+  background: var(--lovable-warm-sand);
+}
+
+.workbench-shell--instrument .flow-stage {
+  background: var(--lovable-warm-sand);
+}
+
+.workbench-shell--instrument .flow-stage .react-flow__edge-path {
+  stroke: var(--lovable-stone);
+}
+
+.workbench-shell--instrument .flow-stage .react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--lovable-indigo-accent);
+}
+
+.workbench-shell--instrument .flow-stage .react-flow__controls,
+.workbench-shell--instrument .flow-stage .react-flow__minimap,
+.workbench-shell--instrument .canvas-context,
+.workbench-shell--instrument .canvas-legend {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment-glass);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.workbench-shell--instrument .flow-stage .react-flow__controls-button {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.workbench-shell--instrument .flow-stage .react-flow__controls-button:hover {
+  background: var(--lovable-warm-sand);
+}
+
+.workbench-shell--instrument .canvas-context span,
+.workbench-shell--instrument .canvas-context p,
+.workbench-shell--instrument .canvas-legend {
+  color: var(--lovable-dim-gray);
+}
+
+.workbench-shell--instrument .canvas-context strong {
+  color: var(--lovable-charcoal);
+}
+
+.workbench-shell--instrument .canvas-context button {
+  color: var(--lovable-indigo-accent);
+  background: var(--lovable-indigo-soft);
+}
+
+.workbench-shell--instrument .flow-node {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.workbench-shell--instrument .flow-node.is-selected {
+  border-color: var(--lovable-indigo-accent);
+  box-shadow: var(--lovable-shadow-subtle);
+}
+
+.workbench-shell--instrument .flow-node__header,
+.workbench-shell--instrument .flow-node__footer {
+  border-color: var(--lovable-linen-border);
+}
+
+.workbench-shell--instrument .flow-node__header h3 {
+  color: var(--lovable-charcoal);
+}
+
+.workbench-shell--instrument .flow-node__header p {
+  color: var(--lovable-faint-gray);
+}
+
+.workbench-shell--instrument .flow-node__footer {
+  background: var(--lovable-warm-sand);
+}
+
+.workbench-shell--instrument .flow-node__footer button {
+  color: var(--lovable-dim-gray);
+}
+
+.workbench-shell--instrument .flow-node__footer button:hover,
+.workbench-shell--instrument .flow-node__footer .flow-node__detail {
+  color: var(--lovable-indigo-accent);
+  background: var(--lovable-parchment);
+}
+
+.workbench-shell--instrument .flow-node .react-flow__handle {
+  border-color: var(--lovable-parchment);
+  background: var(--lovable-dim-gray);
+}
+
+.workbench-shell--instrument .flow-node.is-selected .react-flow__handle {
+  background: var(--lovable-indigo-accent);
+}
+
+.workbench-shell--instrument .node-human-tag {
+  color: var(--lovable-dim-gray);
+  background: var(--lovable-warm-sand);
+}
+
+.inspector-slot__toolbar,
+.inspector-slot .inspector__header,
+.inspector-slot .inspector-tabs,
+.inspector-slot .inspector__footer,
+.inspector-slot .inspector-section {
+  border-color: var(--lovable-linen-border);
+}
+
+.inspector-slot__toolbar button,
+.inspector-slot .inspector-tabs button,
+.inspector-slot .inspector-section > span,
+.inspector-slot .inspector-form > label > span {
+  color: var(--lovable-dim-gray);
+}
+
+.inspector-slot__toolbar button:hover {
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+}
+
+.inspector-slot .inspector-icon {
+  color: var(--lovable-indigo-accent);
+  background: var(--lovable-indigo-soft);
+}
+
+.inspector-slot .inspector__header h2,
+.inspector-slot .inspector-section > p,
+.inspector-slot .inspector-metrics strong {
+  color: var(--lovable-charcoal);
+}
+
+.inspector-slot .inspector-tabs {
+  background: var(--lovable-parchment);
+}
+
+.inspector-slot .inspector-tabs button.is-active {
+  color: var(--lovable-indigo-accent);
+}
+
+.inspector-slot .inspector-metrics div,
+.inspector-slot .inspector-decision-card,
+.inspector-slot .provider-card {
+  border-color: var(--lovable-linen-border);
+  background: var(--lovable-warm-sand);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.inspector-slot .inspector-form input,
+.inspector-slot .inspector-form textarea,
+.inspector-slot .decision-form-grid input,
+.inspector-slot .decision-form-grid textarea {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+}
+
+.inspector-slot .primary-button,
+.inspector-slot .secondary-button,
+.inspector-slot .inspector-actions > button {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.inspector-slot .primary-button {
+  border-color: var(--lovable-charcoal);
+  color: var(--lovable-parchment);
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.decision-backdrop {
+  background: rgba(28, 28, 28, 0.36);
+}
+
+.decision-studio,
+.decision-studio__header,
+.decision-studio__layout,
+.decision-stage-content,
+.decision-studio__footer {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.decision-studio {
+  box-shadow: var(--lovable-shadow-subtle-2);
+}
+
+.decision-studio__header > div:first-child > span,
+.decision-studio__header p,
+.decision-close,
+.decision-stage-nav > button,
+.decision-stage-nav small,
+.decision-panel > header p,
+.decision-panel > h4,
+.decision-search,
+.decision-search > em,
+.decision-studio__footer > div span,
+.decision-studio__footer > p {
+  color: var(--lovable-dim-gray);
+}
+
+.decision-mode-switch {
+  border-color: var(--lovable-linen-border);
+  background: var(--lovable-warm-sand);
+}
+
+.decision-mode-switch button {
+  color: var(--lovable-dim-gray);
+}
+
+.decision-mode-switch button.is-active {
+  color: var(--lovable-parchment);
+  background: var(--lovable-charcoal);
+}
+
+.decision-close:hover {
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+}
+
+.decision-stage-nav {
+  border-color: var(--lovable-linen-border);
+  background: var(--lovable-warm-sand);
+}
+
+.decision-stage-nav > button {
+  border-color: var(--lovable-linen-border);
+}
+
+.decision-stage-nav > button:hover {
+  color: var(--lovable-charcoal);
+  background: color-mix(in srgb, var(--lovable-parchment) 58%, var(--lovable-warm-sand));
+}
+
+.decision-stage-nav > button.is-active {
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: inset 3px 0 var(--lovable-indigo-accent);
+}
+
+.decision-stage-nav > button > b {
+  border-color: var(--lovable-stone);
+  color: var(--lovable-dim-gray);
+  background: var(--lovable-parchment);
+}
+
+.decision-stage-nav > button.is-active > b {
+  border-color: var(--lovable-indigo-accent);
+  color: var(--lovable-parchment);
+  background: var(--lovable-indigo-accent);
+}
+
+.decision-stage-nav em {
+  color: var(--lovable-dim-gray);
+  background: color-mix(in srgb, var(--lovable-stone) 35%, var(--lovable-warm-sand));
+}
+
+.decision-stage-nav .is-active em,
+.decision-panel > header > span,
+.decision-culture-grid button > em,
+.decision-theme-grid button > em {
+  color: var(--lovable-indigo-accent);
+}
+
+.decision-stage-nav .is-active em {
+  background: var(--lovable-indigo-soft);
+}
+
+.decision-panel > header,
+.decision-form-list,
+.decision-form-list > button,
+.decision-weight-editor > label,
+.decision-opportunity-list > button {
+  border-color: var(--lovable-linen-border);
+}
+
+.decision-search,
+.decision-form-grid input,
+.decision-form-grid textarea,
+.decision-form-grid select,
+.decision-notes textarea,
+.decision-weight-number,
+.decision-section-toggles {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.decision-culture-grid > button,
+.decision-reference-grid > button,
+.decision-theme-grid > button,
+.decision-platform-grid > button,
+.decision-form-list > button,
+.decision-opportunity-list > button,
+.decision-concept-grid > article {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.decision-culture-grid > button:hover,
+.decision-reference-grid > button:hover,
+.decision-theme-grid > button:hover,
+.decision-platform-grid > button:hover,
+.decision-form-list > button:hover,
+.decision-opportunity-list > button:hover {
+  border-color: var(--lovable-stone);
+  background: var(--lovable-warm-sand);
+}
+
+.decision-culture-grid > button.is-selected,
+.decision-reference-grid > button.is-selected,
+.decision-theme-grid > button.is-selected,
+.decision-platform-grid > button.is-selected,
+.decision-form-list > button.is-selected,
+.decision-opportunity-list > button.is-selected,
+.decision-concept-grid > article.is-selected,
+.decision-concept-grid > article.is-active {
+  border-color: var(--lovable-indigo-accent);
+  background: var(--lovable-indigo-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lovable-indigo-accent) 16%, transparent);
+}
+
+.decision-form-grid input:focus,
+.decision-form-grid textarea:focus,
+.decision-form-grid select:focus,
+.decision-notes textarea:focus {
+  border-color: var(--lovable-indigo-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lovable-indigo-accent) 12%, transparent);
+}
+
+.decision-studio__footer > button {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.decision-studio__footer > button:hover {
+  border-color: var(--lovable-stone);
+  background: var(--lovable-warm-sand);
+}
+
+.decision-studio__footer > button.decision-primary,
+.decision-studio__footer > button.decision-primary:hover {
+  border-color: var(--lovable-charcoal);
+  color: var(--lovable-parchment);
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.node-detail-page {
+  --node-cobalt: var(--lovable-indigo-accent);
+  --node-line: var(--lovable-linen-border);
+  --node-surface: var(--lovable-parchment);
+  --node-canvas: var(--lovable-parchment);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.detail-topbar,
+.detail-brand,
+.detail-breadcrumb,
+.detail-top-actions {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.detail-brand > svg,
+.detail-breadcrumb,
+.detail-breadcrumb a,
+.detail-breadcrumb span,
+.detail-breadcrumb i {
+  color: var(--lovable-faint-gray);
+}
+
+.detail-brand > strong,
+.detail-breadcrumb strong {
+  color: var(--lovable-charcoal);
+}
+
+.detail-top-actions button,
+.detail-decision-link,
+.detail-download,
+.detail-action-grid button {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.detail-top-actions button:hover,
+.detail-decision-link:hover,
+.detail-download:hover,
+.detail-action-grid button:hover {
+  border-color: var(--lovable-stone);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+}
+
+.detail-top-actions .detail-run-button,
+.detail-top-actions .detail-run-button:hover,
+.detail-primary {
+  border-color: var(--lovable-charcoal);
+  color: var(--lovable-parchment);
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.detail-hero h1,
+.detail-section-heading h2,
+.detail-editor header h2,
+.brief-context h2,
+.detail-related a strong,
+.opportunity-detail-card h2,
+.ranking-board h3,
+.culture-record-panel h2,
+.culture-record-panel h3,
+.market-post-grid h3,
+.poster-breakdown-grid h3,
+.concept-gallery h3 {
+  color: var(--lovable-charcoal);
+}
+
+.detail-hero > div:nth-child(2) > p,
+.detail-hero > aside > p,
+.detail-section-heading p,
+.detail-editor header p,
+.detail-related,
+.detail-related a small,
+.record-lead,
+.ranking-board p,
+.market-post-grid p,
+.market-post-grid small,
+.concept-gallery p,
+.poster-breakdown-grid p {
+  color: var(--lovable-dim-gray);
+}
+
+.hero-meta > * {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-dim-gray);
+  background: var(--lovable-warm-sand);
+}
+
+.detail-hero > aside,
+.detail-related,
+.detail-data-section,
+.citation-ledger,
+.ranking-board,
+.opportunity-list,
+.opportunity-detail-card,
+.detail-editor,
+.prompt-ledger,
+.market-method-card,
+.culture-detail-layout,
+.concept-gallery,
+.visual-provider-hero,
+.poster-breakdown-grid > article {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.detail-related > span,
+.detail-related a,
+.detail-section-heading,
+.record-block,
+.json-facts > div,
+.bom-row,
+.prompt-ledger article,
+.detail-footer {
+  border-color: var(--lovable-linen-border);
+}
+
+.detail-related a:hover {
+  background: var(--lovable-parchment);
+}
+
+.culture-graph-board,
+.culture-record-panel,
+.record-index-grid article,
+.market-kpi-row article,
+.market-post-grid article,
+.citation-grid article,
+.culture-element-grid article,
+.concept-gallery article,
+.bom-table,
+.poster-artboard,
+.detail-editor fieldset {
+  border-color: var(--lovable-linen-border);
+  background: var(--lovable-parchment);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.detail-editor input,
+.detail-editor textarea {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+  box-shadow: var(--lovable-shadow-subtle-3);
+}
+
+.detail-editor input:focus,
+.detail-editor textarea:focus {
+  border-color: var(--lovable-indigo-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lovable-indigo-accent) 12%, transparent);
+}
+
+.citation-link,
+.citation-badges a,
+.concept-gallery button,
+.detail-section-heading nav button.is-active {
+  color: var(--lovable-indigo-accent);
+}
+
+.brief-context {
+  border-color: var(--lovable-charcoal);
+  color: var(--lovable-parchment);
+  background: var(--lovable-charcoal);
+  box-shadow: none;
+}
+
+.brief-context h2,
+.brief-context h3,
+.brief-context p,
+.brief-context dt,
+.brief-context dd {
+  color: inherit;
+}
+
+.brief-context > span,
+.brief-context .json-facts dt {
+  color: color-mix(in srgb, var(--lovable-parchment) 66%, transparent);
+}
+
+.brief-context > p,
+.brief-context .json-facts dd {
+  color: color-mix(in srgb, var(--lovable-parchment) 88%, transparent);
+}
+
+.detail-footer {
+  color: var(--lovable-charcoal);
+  background: var(--lovable-parchment);
+}
+
+.detail-footer p,
+.detail-footer span {
+  color: var(--lovable-dim-gray);
+}
+
+.detail-footer button {
+  border-color: var(--lovable-linen-border);
+  color: var(--lovable-charcoal);
+  background: var(--lovable-warm-sand);
+}
+
+@media (max-width: 760px) {
+  .tool-dock {
+    box-shadow: 14px 0 30px rgba(28, 28, 28, 0.14);
+  }
+
+  .inspector-slot {
+    box-shadow: -14px 0 30px rgba(28, 28, 28, 0.14);
+  }
+
+  .decision-stage-nav > button.is-active {
+    box-shadow: inset 0 -2px var(--lovable-indigo-accent);
+  }
+}

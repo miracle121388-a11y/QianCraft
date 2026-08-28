@@ -23,11 +23,14 @@ QianCraft 是高密度创作工具，不是官网，也不是静态展示 Demo�
 | 发丝线 | `--lovable-linen-border` | `#eceae4` |
 | 禁用/强分隔 | `--lovable-stone` | `#d4d3d0` |
 | 辅助文字 | `--lovable-dim-gray` | `#5f5f5d` |
+| 微标签文字（别名） | `--lovable-faint-gray` | `#5f5f5d` |
 | 主文字 | `--lovable-charcoal` | `#1c1c1c` |
 | 最高强调 | `--lovable-ink` | `#030303` |
 | 链接/选择/焦点 | `--lovable-indigo-accent` | `#3451b2` |
 
 附带的 prismatic gradient 作为品牌环境 token 保留，但当前 Workbench 不使用：规范明确要求它只出现在 Hero 或紧凑发送控件，而 QianCraft 当前页面是操作工作台，不是营销 Hero。
+
+0.7.1 起，全局 chrome 不再以纯白或冷灰作为表面：Parchment 负责页面、顶栏、节点和主要面板，Warm Sand 负责画布、工具轨、字段与次级内容面，Linen / Stone 负责两级边界。状态色和贵州文化内容色仍保留语义，但不得替代全局中性色。
 
 ## 字体与字号
 
@@ -80,5 +83,5 @@ QianCraft 是高密度创作工具，不是官网，也不是静态展示 Demo�
 - Human Decision Studio 具备初始焦点、Tab 焦点闭环、Escape 关闭和关闭后焦点恢复。
 - 选择、缓存、待更新、警告和错误都同时使用文字与颜色，不只依赖色彩。
 - 当前浏览器验收覆盖 1440 × 900 工作台、决策工作室、节点详情，以及 390 × 844 三类对应页面。
-- 暖纸色切换后专项复核锁定上下文对比度；深色证据面板仍使用 charcoal / parchment 组合。
+- 暖纸色切换后专项复核锁定上下文对比度：Charcoal / Parchment 为 16.47:1、Dim Gray / Parchment 为 6.18:1、Dim Gray / Warm Sand 为 5.83:1、Indigo / Parchment 为 6.84:1；深色证据面板仍使用 Charcoal / Parchment 组合。
 - 当前自动基线为 Python 37/37、Workbench TypeScript 5/5；TypeScript、ESLint、Ruff 与 Vinext 五阶段生产构建均需在发布前通过。
