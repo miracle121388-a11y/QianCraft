@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from app.config import load_settings
+from app.config import MARKET_PLATFORM_CODES, load_settings
 from app.designer import DesignAgent
-from app.tool_api import HANDOFF_PATH, audit_summary, opportunities
+from app.tool_api import HANDOFF_PATH, ROOT_DIR, audit_summary, opportunities
 
 
 def test_truth_audit_uses_real_repository_files() -> None:
@@ -12,7 +12,17 @@ def test_truth_audit_uses_real_repository_files() -> None:
 
     assert summary["truth_audit"]["culture"]["actual"] == 22
     assert summary["truth_audit"]["market"]["actual"] == 378
-    assert summary["truth_audit"]["market"]["raw_files_present"] is False
+    raw_dir = ROOT_DIR / "data" / "market" / "raw"
+    raw_file_count = sum(
+        (raw_dir / f"{code}.jsonl").is_file() for code in MARKET_PLATFORM_CODES
+    )
+    assert summary["truth_audit"]["market"]["raw_file_count"] == raw_file_count
+    assert summary["truth_audit"]["market"]["raw_files_present"] is (
+        raw_file_count > 0
+    )
+    assert summary["truth_audit"]["market"]["raw_files_complete"] is (
+        raw_file_count == len(MARKET_PLATFORM_CODES)
+    )
     assert summary["truth_audit"]["opportunities"] == {
         "actual": 8,
         "model_generated": 0,

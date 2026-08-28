@@ -25,7 +25,7 @@ def main() -> int:
     if not pnpm:
         raise RuntimeError("pnpm is required to run the QianCraft web workbench")
 
-    api = subprocess.Popen(  # noqa: S603 - fixed local script and arguments
+    api = subprocess.Popen(
         [
             sys.executable,
             str(ROOT_DIR / "scripts" / "run_tool.py"),
@@ -36,7 +36,7 @@ def main() -> int:
         ],
         cwd=ROOT_DIR,
     )
-    web = subprocess.Popen(  # noqa: S603 - package manager path is resolved, no shell
+    web = subprocess.Popen(
         [
             pnpm,
             "dev",

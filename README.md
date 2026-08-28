@@ -263,7 +263,7 @@ uvx ruff check app scripts tests
 All checks passed!
 ```
 
-最新完整业务运行号为 `20260827T225611Z-4f2a77ae`；五组件状态为 `live / cache / live / live / live`。详细的 API、运行时、四平台与契约证据见 [`docs/real_machine_test.md`](docs/real_machine_test.md)。
+当前可重复离线启动运行号为 `20260828T033015Z-b570c979`；五组件状态为 `cache / cache / cache / live / live`。最近一次 LightRAG / DeepSeek 外部运行时完整验收为 `20260827T225611Z-4f2a77ae`，状态为 `live / cache / live / live / live`。详细的 API、运行时、四平台与契约证据见 [`docs/real_machine_test.md`](docs/real_machine_test.md)。
 
 ## 文档地图
 

@@ -1,19 +1,19 @@
 {
   "schema_version": "1.0",
-  "design_id": "QD-D69DA9E0-MAGNET-01",
-  "generated_at": "2026-08-28T03:16:37.901032Z",
+  "design_id": "QD-8AD94C00-MAGNET-01",
+  "generated_at": "2026-08-28T03:30:15.748917Z",
   "stage": "concept_visual_and_prototype_brief",
   "input_contract": {
-    "source_file": "/Users/jiangguangqun/Documents/Codex/2026-08-28/https-github-com-miracle121388-a11y-qiancraft/work/QianCraft/data/outputs/designer_handoff.json",
-    "source_sha256": "d69da9e0d5b439dd701dcc09e1a5d540d6aa4450b973ed427aed21fd7d1e7288",
+    "source_file": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.json",
+    "source_sha256": "8ad94c0097041042e844ed205ff2ad232ea03c42b28ae53d50f164c579e5aef5",
     "schema_name": "DesignerHandoff",
     "ready": true,
     "input_stage": "designer_handoff",
     "authorized_scope": "concept_visual_and_prototype_brief",
     "selected_opportunity_ids": [
       "OPP-006",
-      "OPP-004",
-      "OPP-002"
+      "OPP-002",
+      "OPP-004"
     ]
   },
   "selection": {
@@ -26,8 +26,8 @@
       "首版只做单一地域/工艺方向，避免把多支系混成抽象苗绣风。"
     ],
     "held_back_opportunities": {
-      "OPP-004": "保留为后续变体；当前海报只呈现一个可验证主方向。",
-      "OPP-002": "包含高敏感动植物或祖源母题，须先完成对应社区核验。"
+      "OPP-002": "包含高敏感动植物或祖源母题，须先完成对应社区核验。",
+      "OPP-004": "保留为后续变体；当前海报只呈现一个可验证主方向。"
     }
   },
   "cultural_elements": [
@@ -246,7 +246,7 @@
     ]
   },
   "poster_request": {
-    "request_id": "PR-QD-D69DA9E0-MAGNET-01",
+    "request_id": "PR-QD-8AD94C00-MAGNET-01",
     "use_case": "product-mockup",
     "asset_type": "A2-style vertical design poster",
     "canvas_width_px": 1800,

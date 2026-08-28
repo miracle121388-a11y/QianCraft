@@ -41,16 +41,16 @@
 | 苗绣检索 | 同时保留花溪挑花、剑河锡绣、松桃苗绣与雷山工艺差异 |
 | 视觉参考包 | 12 条权威参考、5 个 Pattern Primitive、3 组无伪造 HEX 的文字色彩关系；默认 `reference_only` |
 | 市场研究层 | 12 条结构化市场信号、12 条公开可追溯来源 |
-| 市场状态 | 最新 demo 运行未访问平台，四平台均为 unavailable，当前运行只有 12 条公开核验基线；历史派生快照 `market_evidence_20260827T225613Z.json` 可核验 378 条社交记录（xhs 115、dy 14、bili 101、wb 148），但当前克隆缺少对应 `data/market/raw/*.jsonl`，因此工作台明确标记为“历史派生快照”，不标成当前实时抓取 |
-| 产品形态榜 | 当前 `product_form_hotness.json` 已被 demo 刷新为空榜，不能把历史 Top 10 冒充当前榜单；历史 378 条记录仍可在工作台逐条查看，重新形成榜单必须完成一次严格实时运行或显式选择历史快照重新派生 |
+| 市场状态 | 最新 demo 运行未访问平台；当前 Windows 工作区保留四个平台原始 JSONL 与 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148），本轮统一标记为 `cache` 而非实时抓取；12 条公开核验基线不进入平台榜 |
+| 产品形态榜 | `product_form_hotness.json` 已由 378 条历史真实平台快照恢复：Top 10 为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒；Top 5 为前五项。该榜只代表有限历史样本，不代表当前全平台实时趋势 |
 | 对标案例 | 8 条 |
 | LightRAG 实机图 | 612 个实体、697 条关系；“贵州苗绣”节点查询通过 |
-| 策划输出 | 最新 demo 运行 `20260828T031637Z-fb206d5d` 含 8 条 Opportunity Signals；本轮 `generated_opportunities_accepted=0`，即 8 条全部来自代码内证据规则基线，随后真实执行六维评分与二次核验；Top 3 为 OPP-006、OPP-004、OPP-002 |
+| 策划输出 | 当前正式输出来自离线运行 `20260828T033015Z-b570c979`，含 8 条规则基线 Opportunity Signals，随后执行六维评分与二次核验；Top 3 为 OPP-006、OPP-002、OPP-004。最近外部运行时完整验收仍为 `20260827T225611Z-4f2a77ae` |
 | Design Agent | 自动模式从 Top 3 中选择 OPP-006，缩窄为“针格模块｜花溪挑花互动冰箱贴（概念样）”；工具支持人工从 8 条机会中选择 1–3 条、指定主机会、编辑交接/产品字段并生成带输入 SHA 的独立运行；没有匹配生成器时直接报错，不套用通用兜底模板 |
 | 工厂首样拆解 | 5 项原型尺寸、5 项 BOM、1 组原创网格应用、6 步装配、6 项质检、3 个文化门、3 个工程门与 5 个工厂问题；不宣称量产就绪 |
 | 设计海报 | 1800 × 2400；原创生成式成品/爆炸主视觉 + 本地精确中文排版；未使用 `reference_only` 馆藏像素 |
-| API | 当前本机未配置 `LLM_API_KEY`；历史记录中的 DeepSeek 探针通过不代表本次会话可用。严格研究入口因此处于 BLOCKED，不会使用规则基线兜底 |
-| MediaCrawler | 当前克隆未安装 `.venv-qiancraft`、`MEDIACRAWLER_LIVE_ENABLED=false`，且原始四平台 JSONL 不存在；历史派生快照可查，但本机实时抓取未就绪 |
+| API | 本机 LLM Key 已安全配置且不回显；本轮环境探针确认 DeepSeek 可达、返回 3 个模型，`deepseek-v4-flash` 可用 |
+| MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb 等平台；四平台原始 JSONL 与历史快照存在。最新 demo 没有重新访问平台，后续仍须按当轮实际结果标记 `live/cache/unavailable` |
 | 自动测试 | 22/22 通过 |
 | 静态检查 | `ruff check app scripts tests` 通过 |
 | 凭证检查 | 交付目录未发现 `sk-` 密钥泄漏 |
@@ -324,6 +324,81 @@ uvx ruff check app scripts tests
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-08-28｜GitHub 最新结果合并｜工具工作台与本机实测状态归并
+
+变更：
+
+- 从 GitHub `origin/main` 获取最新提交 `86d7585`，将本地 `main` 从 `b4eb9ac` 快进到该提交；纳入可审计工具 API、五段式 Web 工作台、人工选择/编辑、独立设计运行、无通用兜底生成器以及对应测试和工作区产物。
+- 合并前把本机未提交成果保存为可恢复 Git stash；快进后重新叠加，并逐项解决 `WORKFLOW.md` 与 13 项正式结果、Demo 缓存和市场派生文件的重叠。
+- 远端代码和 Web 工作台采用 GitHub 最新实现；正式业务结果保留本机较新的 `20260828T033015Z-b570c979` 运行、原创主视觉海报、四平台原始 JSONL、378 条历史真实快照及对应 Top 10 / Top 5，没有用远端新鲜克隆环境的空榜覆盖本机证据。
+- 归并两边追加式工作流历史：保留 GitHub 端的工具工作台、Web 前端和新鲜克隆验收记录，同时恢复本机“项目离线启动与当前产品形态复核”记录；当前状态改为描述本机合并后的真实环境。
+- 修复 GitHub 新测试对“raw 文件必定缺失”的环境假设：工具 API 现在按 xhs/dy/bili/wb 四个实际 JSONL 计算存在数和完整性，回归测试同时适用于新鲜克隆与保留实测快照的工作区；顺带按当前 Ruff 规则整理远端新增文件。
+
+原因：
+
+- 用户要求合并 GitHub 最新结果；远端新增实现与本机未提交的较新实测数据存在同名文件重叠，需要在不丢失任一侧成果的前提下完成合并。
+
+验证：
+
+- `git fetch --prune origin` 与 `git merge --ff-only origin/main` 成功；本地 `HEAD` 已指向 `86d7585`，远端新增的工具 API、脚本、测试、`web/` 和 `data/tool_workspace/` 均已落地。
+- `scripts/check_environment.py --probe-api --probe-mediacrawler` 通过：Python 3.13.9、三个上游入口、MediaCrawler 隔离运行时与平台导入正常；DeepSeek 可达且目标模型存在，密钥值未输出。
+- `pytest` 22/22 通过；`uvx ruff check app scripts tests` 通过。
+- 工具审计实测返回当前运行号 `20260828T033015Z-b570c979`、市场记录 378、raw 文件 4/4 完整、当前市场状态 `cache`；没有把历史文件标成当轮实时抓取。
+- `pnpm install --frozen-lockfile` 通过供应链策略检查并按锁文件安装 479 个包；`pnpm build` 通过 Vinext 的 client references、server references、RSC、client 与 SSR 五阶段构建。
+- `git diff --check` 通过；冲突标记扫描为 0，最终工作树不存在未合并路径。
+
+边界：
+
+- 本次只把 GitHub 最新结果合入当前本地工作区，没有发布网站、没有重新访问四个平台、没有重新调用外部模型，也没有推送本机重新叠加的运行结果。
+- `stash@{0}` 暂时保留为合并前安全快照，待用户确认无需回退后再决定是否清理；它不参与运行，也不会进入提交。
+- 当前产品仍停在概念视觉、工厂报价与首样沟通阶段，不代表量产、商业文化授权或制造合规就绪。
+
+涉及文件：
+
+- `app/tool_api.py`、`app/designer/agent.py`、`app/designer/poster.py`
+- `scripts/run_tool.py`、`scripts/run_web_tool.py`、`tests/test_tool_api.py`
+- `web/`、`data/tool_workspace/`
+- `README.md`、`WORKFLOW.md`
+- `data/demo_cache/pre_design_strategy.json`、`data/market/derived/`、`data/outputs/`
+
+### 2026-08-28｜0.4.0｜项目离线启动与当前产品形态复核
+
+变更：
+
+- 按项目快速开始入口，以 `demo` 模式接入现有原创主视觉 `huaxi_grid_magnet_hero_v1.png`，实际完成一次文化、市场、策划、Design Agent 与海报渲染的端到端启动；新运行号为 `20260828T033015Z-b570c979`。
+- 本次运行生成 8 条 Opportunity Signals，Top 3 仍为 OPP-006、OPP-002、OPP-004；Design Agent 继续选择 OPP-006，并保持“针格模块｜花溪挑花互动冰箱贴（概念样）”这一单一花溪方向。
+- 刷新 13 项正式输出、最新市场派生文件与 Demo 缓存；五组件状态为 `cache / cache / cache / live / live`，四平台分别复用 xhs 115、dy 14、bili 101、wb 148 条历史真实快照。
+- 复核当前交付形态：QianCraft 是一次运行、文件落盘的 Python CLI 研究原型，不是常驻 Web 服务；主要可视成果为 1800 × 2400 概念海报，机器交付为 JSON，说明与工厂首样简报为 Markdown。
+- 同步 README 的当前运行基线，明确区分本次离线可重复启动与最近一次 LightRAG / DeepSeek 外部运行时完整验收，避免把 Demo 缓存状态描述成 live。
+
+原因：
+
+- 用户要求启动项目并了解当前项目形式；需要以实际启动结果回答，同时保持运行清单、展示文档与项目级工作流台账一致。
+
+验证：
+
+- `.\.venv\Scripts\python.exe scripts\run_demo.py --mode demo --design-hero data\design\assets\huaxi_grid_magnet_hero_v1.png` 退出码 0；完成 8 条机会信号并写出运行清单。
+- 回读 `run_manifest.json`：13 个声明输出全部存在；组件状态为 culture `cache`、market `cache`、strategist `cache`、design `live`、poster `live`；四平台样本合计 378 条。
+- 回读并目视检查 `design_poster.png`：尺寸 1800 × 2400，主视觉、文化说明、尺寸用料、五件爆炸拆解、六步工艺和 BOM 区域完整可读。
+- `pytest` 19/19 通过；`ruff check app scripts tests` 通过。
+
+边界：
+
+- 本次为不调用外部 API、不启动浏览器的离线 Demo；没有重新访问 LightRAG 服务、DeepSeek 或四个平台，因此不能把前三个组件或平台数据表述为本轮 live。
+- 该命令是一次性批处理，完成后进程正常退出；仓库当前没有自研 Web/桌面交互前端或需要持续监听的应用服务器。
+- 当前海报、尺寸、材料与制造拆解仍只用于概念展示、工厂报价和首样沟通；不代表生产工程定稿、商业文化授权、平台全量趋势或量产/合规就绪。
+
+涉及文件：
+
+- `README.md`、`WORKFLOW.md`
+- `data/demo_cache/pre_design_strategy.json`
+- `data/market/derived/latest.json`、`data/market/derived/product_form_hotness.json`、`data/market/derived/market_evidence_20260828T033015Z.json`
+- `data/outputs/pre_design_strategy.json`、`data/outputs/pre_design_strategy.md`
+- `data/outputs/designer_handoff.json`、`data/outputs/designer_handoff.md`
+- `data/outputs/design_specification.json`、`data/outputs/design_specification.md`
+- `data/outputs/poster_render_request.json`、`data/outputs/design_poster.png`
+- `data/outputs/design_render_manifest.json`、`data/outputs/run_manifest.json`
 
 ### 2026-08-28｜可审计工具工作台｜真实来源、人工介入与无兜底生成
 

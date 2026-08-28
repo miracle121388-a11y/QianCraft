@@ -17,7 +17,7 @@ from urllib.parse import parse_qs, urlparse
 from app.config import MARKET_PLATFORM_CODES, load_settings
 from app.designer import DesignAgent, render_design_package_markdown, render_design_poster
 from app.pipeline import run_pipeline
-from app.schemas import DemoRequest, DesignPackage, DesignerHandoff
+from app.schemas import DemoRequest, DesignerHandoff, DesignPackage
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 CULTURE_PATH = ROOT_DIR / "data" / "culture" / "knowledge_graph.json"
@@ -136,6 +136,9 @@ def audit_summary() -> dict[str, Any]:
     opportunity_count = len(strategy.get("opportunity_signals", []))
     generated_count = int(strategy.get("metadata", {}).get("generated_opportunities_accepted", 0))
     raw_dir = ROOT_DIR / "data" / "market" / "raw"
+    raw_file_count = sum(
+        (raw_dir / f"{code}.jsonl").is_file() for code in MARKET_PLATFORM_CODES
+    )
     return {
         "project": {
             "topic": strategy.get("project", {}).get("topic", ""),
@@ -195,7 +198,9 @@ def audit_summary() -> dict[str, Any]:
                 "actual": social_count,
                 "verified": social_count == 378,
                 "meaning": "历史派生快照中的社交平台记录，不是本次实时抓取",
-                "raw_files_present": raw_dir.exists(),
+                "raw_files_present": raw_file_count > 0,
+                "raw_file_count": raw_file_count,
+                "raw_files_complete": raw_file_count == len(MARKET_PLATFORM_CODES),
             },
             "opportunities": {
                 "actual": opportunity_count,
@@ -446,7 +451,7 @@ def _priority_payload(
         "design_keywords",
         "cultural_constraints",
     ):
-        if key in edits and edits[key]:
+        if edits.get(key):
             payload[key] = edits[key]
     return payload
 
@@ -692,15 +697,15 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
             return {}
         payload = json.loads(self.rfile.read(length).decode("utf-8"))
         if not isinstance(payload, dict):
-            raise ValueError("request body must be a JSON object")
+            raise TypeError("request body must be a JSON object")
         return payload
 
-    def do_OPTIONS(self) -> None:  # noqa: N802
+    def do_OPTIONS(self) -> None:
         self.send_response(HTTPStatus.NO_CONTENT)
         self._cors()
         self.end_headers()
 
-    def do_GET(self) -> None:  # noqa: N802
+    def do_GET(self) -> None:
         parsed = urlparse(self.path)
         try:
             if parsed.path == "/api/summary":
@@ -724,18 +729,18 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
         except Exception as exc:  # noqa: BLE001 - API converts failures to explicit JSON
             self._send_json({"error": str(exc)}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    def do_PUT(self) -> None:  # noqa: N802
+    def do_PUT(self) -> None:
         try:
             if self.path == "/api/workspace":
                 self._send_json(save_workspace(self._read_json()))
             else:
                 self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
-        except ValueError as exc:
+        except (TypeError, ValueError) as exc:
             self._send_json({"error": str(exc)}, HTTPStatus.UNPROCESSABLE_ENTITY)
         except Exception as exc:  # noqa: BLE001
             self._send_json({"error": str(exc)}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         try:
             if self.path == "/api/design/generate":
                 self._send_json(generate_design(), HTTPStatus.CREATED)
