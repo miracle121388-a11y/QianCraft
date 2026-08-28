@@ -51,7 +51,8 @@ RUN pip install --no-cache-dir .
 COPY --from=web-builder /build/web ./web/
 COPY deploy/nginx.conf.template /app/deploy/nginx.conf.template
 COPY deploy/start-zeabur.sh /app/deploy/start-zeabur.sh
-RUN chmod 0755 /app/deploy/start-zeabur.sh \
+RUN sed -i 's/\r$//' /app/deploy/start-zeabur.sh \
+    && chmod 0755 /app/deploy/start-zeabur.sh \
     && mkdir -p /app/data/runtime/workbench /app/data/runtime/tool_workspace /app/runtime/auth
 
 EXPOSE 8080

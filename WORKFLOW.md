@@ -52,10 +52,10 @@
 | Workbench Workspace | 默认 `guizhou-miao-demo` 以仓库基线初始化，后续写入 `data/runtime/workbench/`；Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept、任务书、A/B/C、`DecisionProfile`、机器/人工并列的 `decision_output`、研究任务和设计运行引用。New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；研究晋级时保留仍有效的人工 ID，对消失的机会/品类只做带审计记录的补齐；源证据与运行态分离，页面操作不会覆盖仓库基线 |
 | 图像生成适配 | Concept A 使用项目原创主视觉；Concept B/C 已通过内置图像生成能力制作、目视复核、SHA-256 登记并存入项目。独立 OpenAI-compatible Images API 自动化边界仍未配置，因此 Visual Generation 与单概念重生成继续诚实返回 `warning`，不会把内置资产冒充为 DeepSeek 新调用 |
 | API | 本机与 Zeabur 服务端 LLM Key 均通过私密环境变量配置且不回显；探针确认 DeepSeek 可达、返回 3 个模型且 `deepseek-v4-flash` 可用。`POST /api/research/run` 返回 202 和持久化任务号，`GET /api/research/jobs/{id}` 提供回调轮询，API 重启会把未完成任务标为 interrupted 而不是成功；研究段与 Design Agent 已解耦，研究必须先完整保存组件/平台状态，设计再消费晋级后的交接。对同一服务的 `/images/generations` 实测为 HTTP 404，确认该密钥只承担文本模型链路 |
-| 线上发布 | 0.7.3 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；部署 `6a91df9a13d3d467215e7737` 已为 `RUNNING`，远端日志确认 `qiancraft-0.7.3` 安装成功且容器启动。Nginx 统一 Basic Auth，`/healthz` 免鉴权，Vinext 与 Tool API 仅监听容器回环地址，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.7.3 认证后页面/API 保留待凭证复验；0.6.0 已完成的认证公网业务验收仍有记录 |
+| 线上发布 | 0.8.0 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；部署 `6a91f49bac2577a93d22048d` 为 `RUNNING`，构建日志确认 Vinext 五阶段完成、`qiancraft-0.8.0` 安装成功，运行日志确认 Tool API 与 Vinext 分别监听容器回环地址。Nginx 统一 Basic Auth，`/healthz` 免鉴权，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.8.0 认证后页面/API 保留待凭证复验 |
 | MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb；正式探针与网页严格任务均实际访问过平台。非正式探针现写入隔离目录，不再覆盖 canonical raw/derived；单平台达到时间上限时，若已保存至少 5 条有效内容则终止继续翻页并以“本轮部分 live”保留，否则为 `unavailable`。任何平台不是 live 时整轮不晋级，378 条历史快照继续保持 cache |
 | 自动测试 | Python 46/46、Workbench TypeScript 5/5 通过 |
-| 静态检查 | `ruff check app tests scripts/probe_market_platforms.py`、Web typecheck、ESLint、Vinext 五阶段 production build 通过；九个节点页面共 129 条引用解析缺失为 0，454 个唯一外链实测 442 个直接返回、12 个因目标站连接/站点防护未直接返回但经官方搜索索引复核仍为真实页面。1440 × 960 与 390 × 844 页面无横向溢出，图片无破损；`git diff --check` 与最终发布包检查在交付前复核 |
+| 静态检查 | `ruff check app tests scripts/probe_market_platforms.py`、Web typecheck、ESLint、Vinext 五阶段 production build、`uv lock --check` 与 `git diff --check` 通过；九个节点页面共 129 条引用解析缺失为 0，454 个唯一外链实测 442 个直接返回、12 个因目标站连接/站点防护未直接返回但经官方搜索索引复核仍为真实页面。1440 × 960 与 390 × 844 页面无横向溢出，图片无破损；0.8.0 发布包 74 个文件、19,435,606 字节，敏感文件名与长 `sk-` 模式均为 0 命中 |
 | 凭证检查 | 交付目录未发现 `sk-` 密钥泄漏 |
 
 当前正式产物：
@@ -420,6 +420,7 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 - 隔离 HTTP 功能验收实际完成 New/Rename/Save、Decision v2、Brief v3、Design Agent、Concept 复制/重生成 warning 与 Poster 渲染；正式工作区的设计运行 `20260828T201228Z-e646561b` 选择 OPP-006 并保存 DesignPackage，服务端海报为 1800×2400、305,202 字节。研究节点普通 POST 返回 409，证明旧文件不能冒充本轮成功。
 - 九个详情页逐页打开，文化/市场/策略/任务书/视觉/A/B/C/海报引用数为 28/39/15/7/8/8/8/8/8，合计 129、缺失 0；无破图、无横向溢出。数据层 454 个唯一外链中 442 个直接可达，12 个受目标站连接/防护影响但经官方索引复核为真实页面。
 - `uv run pytest` 46/46、`uv run ruff check app tests scripts/probe_market_platforms.py`、Workbench TypeScript 5/5、TypeScript no-emit、ESLint、Vinext 五阶段 production build 与 `git diff --check` 通过。桌面九页及 390×844 的 Brief/Concept/Poster/主工作台复核无页面横向溢出。
+- 0.8.0 隔离发布包 `.zeabur-stage-080` 为 74 个文件、19,435,606 字节，不包含 `api.txt`、环境文件、Cookies、上游源码、测试或本地运行态；敏感文件名与长 `sk-` 模式均为 0 命中。首次部署 `6a91f23f13d3d467215e790c` 完成构建但因上传过程把 `start-zeabur.sh` 转成 CRLF 而无法启动；先用 `6a91f39a13d3d467215e7928` 恢复 0.7.3 服务，再在 Docker 构建时规范化脚本行尾。最终部署 `6a91f49bac2577a93d22048d` 为 `RUNNING`，日志确认 `qiancraft-0.8.0`、Tool API 与 Vinext 均启动，公网 `/healthz` 为 200、匿名 `/` 为 401。
 
 边界：
 
@@ -429,7 +430,7 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 
 涉及文件：
 
-- `.gitignore`、`README.md`、`WORKFLOW.md`、`pyproject.toml`、`uv.lock`、`app/__init__.py`
+- `.gitignore`、`Dockerfile`、`README.md`、`WORKFLOW.md`、`pyproject.toml`、`uv.lock`、`app/__init__.py`
 - `app/pipeline.py`、`app/tool_api.py`、`app/workbench.py`、`app/adapters/media_crawler_adapter.py`、`app/designer/agent.py`
 - `scripts/probe_market_platforms.py`、`tests/test_demo_pipeline.py`、`tests/test_tool_api.py`、`tests/test_workbench.py`
 - `web/app/workbench.tsx`、`web/app/node-detail.tsx`、`web/app/workbench-api.ts`、`web/app/workbench-model.ts`、`web/app/globals.css`、`web/app/variables.css`、`web/vite.config.ts`、`web/package.json`
