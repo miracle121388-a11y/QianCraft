@@ -47,6 +47,7 @@ QianCraft/
 │   ├── adapters/              # 上游隔离层；不向产品层泄漏各项目内部对象
 │   ├── strategist/            # 唯一策划师、证据锁和固定任务提示
 │   ├── designer/              # 设计选案、制造拆解、Markdown 与海报排版
+│   ├── collection.py          # 持久化文化巡检、候选队列与市场增量调度器
 │   ├── workbench.py           # 7 类节点、工作区 JSON、版本与运行语义
 │   ├── config.py              # 模式、路径、凭证、隔离运行时配置
 │   ├── pipeline.py            # 并行取证、顺序策划、原子化输出
@@ -62,7 +63,7 @@ QianCraft/
 ├── docs/                      # 架构、图谱、测试和下一阶段产品方向
 ├── scripts/                   # 唯一命令行入口与环境探针
 ├── tests/                     # 契约、证据、降级和输出测试
-├── web/                       # 三栏空间工作台、9 个节点详情页、证据台账与浏览器 PNG 导出
+├── web/                       # 黑白工具工作台、知识星图、采集控制面与 9 个节点详情页
 ├── deploy/                    # Nginx 鉴权/反代与 Zeabur 进程编排
 ├── Dockerfile                # Vinext + Python + Nginx 单服务生产镜像
 ├── flow/xyflow-main/          # 节点画布源码审计边界与原许可证
@@ -75,7 +76,7 @@ QianCraft/
 
 ## Creative Intelligence Workbench
 
-Workbench 使用固定三栏：左侧 Knowledge Center 只展示真实文化与市场证据，中间为可缩放/平移的空间画布并提供 Flow Map 节点直达，右侧 Inspector 负责 `Info / Inputs / Parameters / Outputs / Sources / History / Actions`。每张节点卡的“查看展示页”和双击动作会进入 `/nodes/{nodeId}?workspace={workspaceId}`；详情页按文化、市场、量分、任务书、视觉、概念与海报采用不同信息结构，同时保留独立运行、从此处运行、保存、导出和相邻节点跳转。前端不导入 Python 模块，所有事实读取、编辑保存与节点运行都经过 `app/tool_api.py` 的 HTTP API；API 地址可由 `NEXT_PUBLIC_QIANCRAFT_API_URL` 配置，但密钥只留在服务端。
+Workbench 桌面使用命令栏、工具轨、按需 Dock、可缩放/平移的空间画布和 Inspector；移动端把外周面板变为可逆覆盖层，不把桌面三栏机械缩小。画布支持空白区直接平移、节点拖动、键盘移动和 Flow Map 直达。每张节点卡的“查看展示页”和双击动作会进入 `/nodes/{nodeId}?workspace={workspaceId}`；详情页按文化、市场、量分、任务书、视觉、概念与海报采用不同信息结构，同时保留独立运行、从此处运行、保存、导出和相邻节点跳转。文化页以自定义 SVG 星图呈现 22 条记录、32 个来源和分类引力点，支持搜索聚焦、节点选择、桌面滚轮/拖动、键盘平移，以及触屏显式操作模式下的单指平移和双指缩放；默认触屏手势仍允许页面纵向滚动。前端不导入 Python 模块，所有事实读取、编辑保存与节点运行都经过 `app/tool_api.py` 的 HTTP API；API 地址可由 `NEXT_PUBLIC_QIANCRAFT_API_URL` 配置，但密钥只留在服务端。
 
 人工决策工作台覆盖文化选材、市场范围、评分与候选、设计意图、视觉方向、方案比较和海报呈现七个阶段。`guided` 系统建议与 `manual` 人工配置分开标识；系统原分、事实记录和引用保持只读，人工只保存 ID、权重、取舍和设计意图。保存后建立 `DecisionProfile` 新版本，并把任务书及视觉、概念、海报统一标记为 `stale`。完整字段与失效语义见 [`human_decision_workflow.md`](human_decision_workflow.md)。
 
@@ -85,11 +86,20 @@ Workbench 使用固定三栏：左侧 Knowledge Center 只展示真实文化与�
 
 工作区 JSON 位于 `data/workbench/workspaces/`，当前契约为 `schema_version: 1.1`，持久化 `nodes / edges / viewport / selected_node_id / selected_concept_id / brief_version / decision_profile / decision_output / metadata`。任务书保存会递增版本并只把可达下游标为 `stale`；不会自动执行、自动花费 API 或反向改写事实。New、Save、Load、Rename 与人工决策都经过同一校验器，连线端点、节点类型、状态或决策 ID 不合法时拒绝写盘。
 
+## 持续采集控制面
+
+`app/collection.py` 在 Tool API 进程内维护两条持久化通道。`culture_watch` 轮换巡检已登记文化来源，使用 HTTP 条件请求与内容哈希识别变化，只把同域相关文章写入候选队列；正式图谱仍要求人工完成字段级证据映射。`market_refresh` 先检查实时开关、MediaCrawler 和四平台授权，条件齐备才启动现有严格研究任务，且只接受 `live_verified`。调度配置、心跳、事件、候选和来源指纹写入 `data/runtime/tool_workspace/collection/`，不会覆盖仓库文化/市场基线。
+
+前端每 12 秒读取控制面；请求失败立即显示连接中断并禁用写操作，心跳超过 45 秒也视为离线。文化批次必须本轮所有来源成功才是 `healthy`，部分失败为 `degraded` 且连续失败不清零。市场历史证据先于折叠运维台展示，避免把 378 条历史快照与新一轮授权状态混在一起。完整运行条件、状态和 API 见 [`continuous_collection.md`](continuous_collection.md)。
+
 主要接口如下：
 
 | 接口 | 作用 |
 |---|---|
 | `GET /api/workbench/bootstrap` | 一次取得工作区、22 条文化摘要、四平台状态、Top 10、人工决策目录与图像服务状态 |
+| `GET /api/collection/status` | 调度心跳、两条通道、文化真实计数、候选计数和市场预检 |
+| `GET /api/collection/events`、`GET /api/collection/candidates` | 持久化运行审计与文化候选队列 |
+| `PUT /api/collection/schedule`、`POST /api/collection/run` | 暂停/恢复、修改间隔或立即排队；不绕过真实性门 |
 | `GET/PUT /api/workbench/workspaces/{id}` | 读取或原子保存完整画布 |
 | `POST /api/workbench/workspaces` | 从贵州苗绣默认链路创建新工作区 |
 | `POST .../{id}/decisions` | 校验并保存完整 DecisionProfile，计算人工排序并传播下游 stale |
@@ -100,7 +110,7 @@ Workbench 使用固定三栏：左侧 Knowledge Center 只展示真实文化与�
 
 图像适配器只接受独立的 `IMAGE_PROVIDER / IMAGE_API_KEY / IMAGE_BASE_URL / IMAGE_MODEL`。缺项时 Visual Generation Node 为 `warning`，内置 A/B/C 项目资产仍可作为 `success` 概念证据展示，但不会被说成当次 API 新生成。默认工作区会从版本化文件恢复 B/C 及其 SHA-256；可编辑海报由浏览器 Canvas 按标题、文案、板块显示与顺序实时导出 1800 × 2400 PNG，页脚始终保留概念/首样边界。
 
-生产环境采用一个容器：Nginx 在平台注入的端口统一处理 Basic Auth 和安全响应头，把 `/api`、`/assets` 转到回环地址的 Tool API，把其他请求转到回环地址的 Vinext；`/healthz` 单独免鉴权。`/app/data/runtime` 是唯一运行态持久卷，镜像内文化/市场证据只作为基线读取。部署细节见 [`deployment_zeabur.md`](deployment_zeabur.md)。
+生产环境采用一个容器：Nginx 在平台注入的端口统一处理 Basic Auth 和安全响应头，把 `/api`、`/assets` 转到回环地址的 Tool API，把其他请求转到回环地址的 Vinext；`/healthz` 单独免鉴权并转发真实 `/api/health`。启动脚本监控 Tool API、Vinext 与 Nginx，任一子进程退出就让容器失败；调度线程死亡或心跳超过 45 秒时健康 API 返回 503，Docker HEALTHCHECK 也失败，由已配置的平台重启策略恢复。`/app/data/runtime` 是唯一运行态持久卷，镜像内文化/市场证据只作为基线读取。该结构能在单副本持续调度，但不是分布式队列；多 API 副本前需增加唯一领导者。部署细节见 [`deployment_zeabur.md`](deployment_zeabur.md)。
 
 ## 运行和降级
 

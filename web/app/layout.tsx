@@ -3,11 +3,11 @@ import '@fontsource-variable/noto-sans-sc';
 import '@fontsource-variable/noto-serif-sc';
 import './globals.css';
 
-const impeccableDirectionContract = `THESIS: The node canvas is the instrument; tools open around it only when summoned. QianCraft refuses both the permanent wall of panels and the showcase homepage.
-OWN-WORLD: Warm parchment command surfaces, a warm-sand canvas, linen seams, charcoal working text, and one interaction-indigo active state; restrained inset edges, soft containers, one stable selected keyline.
-STORY: Choose a phase, inspect evidence, select or run a node, edit in its contextual inspector, then open the deep record only when needed.
-FIRST VIEWPORT: 56px command bar, 64px tool rail, optional 248px evidence dock, dominant node canvas, and 320px selected inspector; Run sits top-right, depth lives behind rail icons and tabs.
-FORM: User-pinned Creative Instrument Workbench, grounded direction 3, seed 599c7281; selection preserves node geometry while the Inspector takes over detail.
+const impeccableDirectionContract = `THESIS: The node canvas is a precision instrument, never a parchment moodboard or a showcase homepage.
+OWN-WORLD: Cool white working planes, soft-gray depth fields, graphite type, black selected states, hairline dividers, compact radii, and no chromatic interface accents.
+STORY: Choose a phase, inspect bounded evidence, select or run a node, edit in its contextual inspector, and open the deep record only when needed.
+FIRST VIEWPORT: A 60px white command bar and 56px gray tool rail frame the dominant plotting canvas; contextual Dock and Inspector appear at its edges while the black Run control remains top-right.
+FORM: User-pinned Monochrome Precision Instrument, grounded direction 3, seed a403e052; selection changes contrast, never node geometry.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance`;
 
 const impeccableContractScript = `document.currentScript?.parentNode?.insertBefore(document.createComment(${JSON.stringify(impeccableDirectionContract)}), document.currentScript);`;
@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <script data-impeccable-contract="599c7281" dangerouslySetInnerHTML={{ __html: impeccableContractScript }} />
+        <script data-impeccable-contract="a403e052" dangerouslySetInnerHTML={{ __html: impeccableContractScript }} />
         {children}
       </body>
     </html>

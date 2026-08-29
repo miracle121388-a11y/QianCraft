@@ -1,6 +1,7 @@
 'use client';
 
 import { Handle, Position, type NodeProps, type NodeTypes } from '@xyflow/react';
+import { memo } from 'react';
 
 import {
   NODE_TYPE_LABELS,
@@ -9,16 +10,16 @@ import {
   type WorkbenchNode,
 } from './workbench-model';
 
-function StatusBadge({ status }: { status: NodeStatus }) {
+const StatusBadge = memo(function StatusBadge({ status }: { status: NodeStatus }) {
   return (
     <span className={`node-status node-status--${status}`}>
       <i aria-hidden="true" />
       {STATUS_LABELS[status]}
     </span>
   );
-}
+});
 
-function NodeFrame({
+const NodeFrame = memo(function NodeFrame({
   node,
   selected,
   source = true,
@@ -56,35 +57,35 @@ function NodeFrame({
       {source ? <Handle type="source" position={Position.Right} /> : null}
     </article>
   );
-}
+});
 
-function CultureGraphNode(props: NodeProps<WorkbenchNode>) {
+const CultureGraphNode = memo(function CultureGraphNode(props: NodeProps<WorkbenchNode>) {
   return <NodeFrame node={props} selected={props.selected} target={false} />;
-}
+});
 
-function MarketRadarNode(props: NodeProps<WorkbenchNode>) {
+const MarketRadarNode = memo(function MarketRadarNode(props: NodeProps<WorkbenchNode>) {
   return <NodeFrame node={props} selected={props.selected} target={false} />;
-}
+});
 
-function StrategyNode(props: NodeProps<WorkbenchNode>) {
+const StrategyNode = memo(function StrategyNode(props: NodeProps<WorkbenchNode>) {
   return <NodeFrame node={props} selected={props.selected} />;
-}
+});
 
-function DesignBriefNode(props: NodeProps<WorkbenchNode>) {
+const DesignBriefNode = memo(function DesignBriefNode(props: NodeProps<WorkbenchNode>) {
   return <NodeFrame node={props} selected={props.selected} />;
-}
+});
 
-function VisualGenerationNode(props: NodeProps<WorkbenchNode>) {
+const VisualGenerationNode = memo(function VisualGenerationNode(props: NodeProps<WorkbenchNode>) {
   return <NodeFrame node={props} selected={props.selected} wide />;
-}
+});
 
-function ConceptNode(props: NodeProps<WorkbenchNode>) {
+const ConceptNode = memo(function ConceptNode(props: NodeProps<WorkbenchNode>) {
   return <NodeFrame node={props} selected={props.selected} wide />;
-}
+});
 
-function PosterBoardNode(props: NodeProps<WorkbenchNode>) {
+const PosterBoardNode = memo(function PosterBoardNode(props: NodeProps<WorkbenchNode>) {
   return <NodeFrame node={props} selected={props.selected} source={false} wide />;
-}
+});
 
 export const nodeTypes: NodeTypes = {
   CultureGraphNode,

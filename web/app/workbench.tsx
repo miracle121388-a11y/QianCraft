@@ -11,6 +11,8 @@ import {
   MarkerType,
   MiniMap,
   ReactFlow,
+  type AriaLabelConfig,
+  type NodeMouseHandler,
   type ReactFlowInstance,
   useEdgesState,
   useNodesState,
@@ -73,6 +75,7 @@ import {
 } from './workbench-model';
 import { nodeTypes } from './workbench-nodes';
 import { DecisionStudio, type DecisionStage } from './decision-studio';
+import { CultureConstellation } from './culture-constellation';
 
 type Toast = { tone: 'success' | 'error' | 'neutral'; message: string } | null;
 type InspectorTab =
@@ -85,6 +88,10 @@ type InspectorTab =
   | 'actions';
 type ConceptDraft = { title: string; summary: string; direction: string; prompt: string };
 type ToolDock = 'evidence' | 'assets' | 'history' | null;
+type KnowledgePayload = {
+  kind: 'culture' | 'market';
+  item: CultureRecordSummary | { name: string; score: number; sampleSize: number };
+};
 
 const PLATFORM_LABELS: Record<string, string> = {
   xhs: '小红书',
@@ -108,6 +115,111 @@ const PHASE_NAVIGATION = [
   { id: 'design', label: '设计', nodeId: 'brief' },
   { id: 'delivery', label: '交付', nodeId: 'poster' },
 ] as const;
+
+const FLOW_ARIA_LABELS: Partial<AriaLabelConfig> = {
+  'node.a11yDescription.default': '按 Enter 或空格选中节点。选中后可用方向键移动，按 Escape 取消；双击可进入节点详情。',
+  'node.a11yDescription.keyboardDisabled': '按 Enter 或空格选中节点；双击可进入节点详情。',
+  'node.a11yDescription.ariaLiveMessage': ({ direction, x, y }) => {
+    const directionLabel: Record<string, string> = {
+      left: '向左',
+      right: '向右',
+      up: '向上',
+      down: '向下',
+    };
+    return `已将所选节点${directionLabel[direction] ?? direction}移动到横坐标 ${Math.round(x)}、纵坐标 ${Math.round(y)}。`;
+  },
+  'edge.a11yDescription.default': '工作流关系为只读连接。',
+  'controls.ariaLabel': '画布视图控制',
+  'controls.zoomIn.ariaLabel': '放大画布',
+  'controls.zoomOut.ariaLabel': '缩小画布',
+  'controls.fitView.ariaLabel': '适配全部节点',
+  'controls.interactive.ariaLabel': '切换画布交互',
+  'minimap.ariaLabel': '工作流缩略图',
+  'handle.ariaLabel': '只读关系连接点',
+};
+
+const FLOW_DEFAULT_EDGE_OPTIONS = {
+  type: 'smoothstep',
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    color: '#8e8e93',
+    width: 14,
+    height: 14,
+  },
+  style: { stroke: '#c7c7cc', strokeWidth: 1.25 },
+};
+
+function flowMiniMapNodeColor(node: WorkbenchNode) {
+  if (node.type === 'CultureGraphNode') return '#8e8e93';
+  if (node.type === 'MarketRadarNode') return '#6e6e73';
+  if (node.type === 'ConceptNode') return '#3a3a3c';
+  if (node.type === 'PosterBoardNode') return '#000000';
+  return '#aeaeb2';
+}
+
+function motionDuration(duration: number) {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : duration;
+}
+
+const DIALOG_FOCUSABLE_SELECTOR = [
+  'button:not([disabled])',
+  'a[href]',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
+
+function useDialogFocusTrap<T extends HTMLElement>(onClose: () => void) {
+  const dialogRef = useRef<T>(null);
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    const focusFrame = window.requestAnimationFrame(() => {
+      const firstFocusable = dialogRef.current?.querySelector<HTMLElement>(DIALOG_FOCUSABLE_SELECTOR);
+      (firstFocusable ?? dialogRef.current)?.focus();
+    });
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab' || !dialogRef.current) return;
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(DIALOG_FOCUSABLE_SELECTOR),
+      ).filter((element) => element.offsetParent !== null);
+      if (focusable.length === 0) {
+        event.preventDefault();
+        dialogRef.current.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!dialogRef.current.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener('keydown', handleKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [onClose]);
+
+  return dialogRef;
+}
 
 function phaseForNode(nodeId: string) {
   if (nodeId === 'culture' || nodeId.startsWith('culture-')) return 'culture';
@@ -402,11 +514,13 @@ function KnowledgeCenter({
   profile,
   onOpenGraph,
   onOpenDecisions,
+  onAddEvidence,
 }: {
   knowledge: KnowledgeCenterData;
   profile: DecisionProfile;
   onOpenGraph: () => void;
   onOpenDecisions: (stage: DecisionStage) => void;
+  onAddEvidence: (payload: KnowledgePayload) => void;
 }) {
   const [query, setQuery] = useState('');
   const records = useMemo(() => {
@@ -471,6 +585,16 @@ function KnowledgeCenter({
                 <em style={{ width: `${Math.min(100, item.score)}%` }} />
               </i>
               <strong>{item.score}</strong>
+              <button
+                aria-label={`将市场证据“${item.name}”添加到画布`}
+                className="evidence-add-button"
+                draggable={false}
+                title="添加到画布"
+                type="button"
+                onClick={() => onAddEvidence({ kind: 'market', item })}
+              >
+                <Plus aria-hidden="true" size={14} />
+              </button>
             </div>
           ))}
         </div>
@@ -507,7 +631,19 @@ function KnowledgeCenter({
             >
               <div>
                 <span>{record.category || '在地文化'}</span>
-                <small>{record.sourceRefs.length} 条引用</small>
+                <div className="culture-card-actions">
+                  <small>{record.sourceRefs.length} 条引用</small>
+                  <button
+                    aria-label={`将文化证据“${record.name}”添加到画布`}
+                    className="evidence-add-button"
+                    draggable={false}
+                    title="添加到画布"
+                    type="button"
+                    onClick={() => onAddEvidence({ kind: 'culture', item: record })}
+                  >
+                    <Plus aria-hidden="true" size={14} />
+                  </button>
+                </div>
               </div>
               <h3>{record.name}</h3>
               <p>{record.region.slice(0, 2).join(' · ')}</p>
@@ -520,7 +656,7 @@ function KnowledgeCenter({
             </article>
           ))}
         </div>
-        <p className="drag-hint">拖到画布，可创建证据节点</p>
+        <p className="drag-hint">拖到画布，或按“添加到画布”创建证据节点</p>
       </section>
     </aside>
   );
@@ -547,7 +683,7 @@ function AssetDock({
           const imageUrl = String(node.data.imageUrl ?? '');
           return (
             <button className={node.data.active ? 'is-active' : ''} key={node.id} type="button" onClick={() => onSelect(node.id)}>
-              {imageUrl ? <img alt="" src={apiAssetUrl(imageUrl, API_BASE)} /> : <span className="asset-dock__empty">{String(node.data.label ?? '板')}</span>}
+              {imageUrl ? <img alt="" decoding="async" loading="lazy" src={apiAssetUrl(imageUrl, API_BASE)} /> : <span className="asset-dock__empty">{String(node.data.label ?? '板')}</span>}
               <span><small>{NODE_TYPE_LABELS[node.type]}</small><strong>{node.data.title}</strong><em>{STATUS_LABELS[node.data.status]}</em></span>
             </button>
           );
@@ -588,53 +724,31 @@ function CultureGraphOverlay({
   onClose: () => void;
 }) {
   const [selectedId, setSelectedId] = useState(records[0]?.id ?? '');
-  const selected = records.find((record) => record.id === selectedId) ?? records[0];
+  const dialogRef = useDialogFocusTrap<HTMLDivElement>(onClose);
   return (
-    <div className="graph-overlay" role="dialog" aria-modal="true" aria-label="贵州文化图谱">
+    <div
+      aria-describedby="culture-graph-description"
+      aria-labelledby="culture-graph-title"
+      aria-modal="true"
+      className="graph-overlay"
+      ref={dialogRef}
+      role="dialog"
+      tabIndex={-1}
+    >
       <header>
         <div>
-          <h2>贵州文化知识图谱</h2>
-          <p>地域、工艺、纹样与使用边界保持证据引用，不把支系差异压扁成一种风格。</p>
+          <h2 id="culture-graph-title">贵州文化知识图谱</h2>
+          <p id="culture-graph-description">地域、工艺、纹样与使用边界保持证据引用，不把支系差异压扁成一种风格。</p>
         </div>
-        <button type="button" onClick={onClose} aria-label="关闭图谱">×</button>
+        <button type="button" onClick={onClose} aria-label="关闭图谱"><X aria-hidden="true" size={18} /></button>
       </header>
       <div className="graph-overlay__body">
-        <div className="culture-orbit">
-          <div className="orbit-core">
-            <span>GUIZHOU</span>
-            <strong>贵州在地文化</strong>
-            <small>{records.length} records</small>
-          </div>
-          {records.slice(0, 14).map((record, index) => (
-            <button
-              className={record.id === selected?.id ? 'is-active' : ''}
-              key={record.id}
-              style={{ '--orbit-index': index } as React.CSSProperties}
-              type="button"
-              onClick={() => setSelectedId(record.id)}
-            >
-              {record.name.replace('贵州', '')}
-            </button>
-          ))}
-        </div>
-        {selected ? (
-          <article className="culture-detail">
-            <span>{selected.category}</span>
-            <h3>{selected.name}</h3>
-            <p>{selected.region.join(' · ')}</p>
-            <h4>工艺</h4>
-            <div className="tag-row">
-              {selected.crafts.map((item) => <em key={item}>{item}</em>)}
-            </div>
-            <h4>纹样 / 结构</h4>
-            <div className="tag-row">
-              {selected.patterns.map((item) => <em key={item}>{item}</em>)}
-            </div>
-            <h4>边界</h4>
-            {selected.boundaries.map((item) => <p className="boundary-item" key={item}>{item}</p>)}
-            <div className="source-strip">{selected.sourceRefs.join(' · ')}</div>
-          </article>
-        ) : null}
+        <CultureConstellation
+          compact
+          onSelectionChange={setSelectedId}
+          records={records}
+          selectedId={selectedId}
+        />
       </div>
     </div>
   );
@@ -915,6 +1029,71 @@ function InspectorPanel({
   );
 }
 
+function WorkspaceDialog({
+  mode,
+  name,
+  busy,
+  onNameChange,
+  onCancel,
+  onConfirm,
+}: {
+  mode: 'new' | 'rename';
+  name: string;
+  busy: boolean;
+  onNameChange: (name: string) => void;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const dialogRef = useDialogFocusTrap<HTMLDivElement>(onCancel);
+  const isNew = mode === 'new';
+
+  return (
+    <div className="dialog-backdrop" role="presentation" onMouseDown={onCancel}>
+      <div
+        aria-busy={busy}
+        aria-describedby="workspace-dialog-description"
+        aria-labelledby="workspace-dialog-title"
+        aria-modal="true"
+        className="workspace-dialog"
+        ref={dialogRef}
+        role="dialog"
+        tabIndex={-1}
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <form
+          className="workspace-dialog__form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            onConfirm();
+          }}
+        >
+          <span>{isNew ? 'NEW WORKSPACE' : 'RENAME WORKSPACE'}</span>
+          <h2 id="workspace-dialog-title">{isNew ? '创建新的文化文创链路' : '重命名当前工作区'}</h2>
+          <p id="workspace-dialog-description">
+            {isNew ? '输入一个便于识别的工作区名称；创建后会立即打开。' : '只修改显示名称，不改变当前节点、证据与版本。'}
+          </p>
+          <label className="workspace-dialog__field">
+            <span>工作区名称</span>
+            <input
+              aria-label="工作区名称"
+              maxLength={80}
+              required
+              value={name}
+              onChange={(event) => onNameChange(event.target.value)}
+            />
+          </label>
+          <div>
+            <button type="button" onClick={onCancel}>取消</button>
+            <button className="primary-button" disabled={!name.trim() || busy} type="submit">
+              {isNew ? '创建并打开' : '保存名称'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function LoadingScreen({ error, onRetry }: { error: string; onRetry: () => void }) {
   return (
     <main className="loading-screen">
@@ -963,6 +1142,10 @@ export function Workbench() {
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(null), 3600);
   }, []);
+
+  const openGraph = useCallback(() => setShowGraph(true), []);
+  const closeGraph = useCallback(() => setShowGraph(false), []);
+  const closeWorkspaceDialog = useCallback(() => setDialog(null), []);
 
   const applyWorkspace = useCallback((next: WorkbenchWorkspace) => {
     setWorkspace(next);
@@ -1147,7 +1330,9 @@ export function Workbench() {
   } : null, [decisionCatalog, nodes]);
 
   useEffect(() => {
-    if (flowInstance && workspace?.viewport) void flowInstance.setViewport(workspace.viewport, { duration: 300 });
+    if (flowInstance && workspace?.viewport) {
+      void flowInstance.setViewport(workspace.viewport, { duration: motionDuration(300) });
+    }
   }, [flowInstance, workspace?.workspace_id, workspace?.viewport]);
 
   useEffect(() => {
@@ -1466,21 +1651,28 @@ export function Workbench() {
     catch (error) { showToast({ tone: 'error', message: error instanceof Error ? error.message : String(error) }); }
   }, [showToast, workspace]);
 
-  const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    if (!flowInstance) return;
-    const raw = event.dataTransfer.getData('application/qiancraft-knowledge');
-    if (!raw) return;
+  const addEvidenceNode = useCallback((
+    payload: KnowledgePayload,
+    screenPosition?: { x: number; y: number },
+  ) => {
+    if (!flowInstance) {
+      showToast({ tone: 'error', message: '画布尚未就绪，请稍后再试。' });
+      return;
+    }
     try {
-      const payload = JSON.parse(raw) as { kind: 'culture' | 'market'; item: CultureRecordSummary | { name: string; score: number; sampleSize: number } };
       const type: WorkbenchNodeType = payload.kind === 'culture' ? 'CultureGraphNode' : 'MarketRadarNode';
       const template = nodes.find((node) => node.type === type);
       if (!template) return;
       const name = payload.item.name;
+      const stageBounds = document.querySelector<HTMLElement>('.flow-stage')?.getBoundingClientRect();
+      const targetScreenPosition = screenPosition ?? {
+        x: (stageBounds?.left ?? 0) + (stageBounds?.width ?? window.innerWidth) / 2,
+        y: (stageBounds?.top ?? 0) + (stageBounds?.height ?? window.innerHeight) / 2,
+      };
       const next: WorkbenchNode = {
         ...structuredClone(template),
         id: `${payload.kind}-${Date.now().toString(36)}`,
-        position: flowInstance.screenToFlowPosition({ x: event.clientX, y: event.clientY }),
+        position: flowInstance.screenToFlowPosition(targetScreenPosition),
         selected: true,
         data: {
           ...structuredClone(template.data),
@@ -1493,8 +1685,33 @@ export function Workbench() {
       setNodes((current) => [...current.map((node) => ({ ...node, selected: false })), next]);
       setSelectedNodeId(next.id);
       showToast({ tone: 'neutral', message: `已在画布创建“${name}”证据节点，保存后持久化。` });
-    } catch { showToast({ tone: 'error', message: '拖拽数据无法解析。' }); }
+      if (!screenPosition) {
+        if (window.matchMedia('(max-width: 760px)').matches) setActiveDock(null);
+        window.setTimeout(() => {
+          void flowInstance.fitView({
+            nodes: [{ id: next.id }],
+            padding: 0.32,
+            minZoom: 0.78,
+            maxZoom: 0.98,
+            duration: motionDuration(320),
+          });
+        }, 0);
+      }
+    } catch {
+      showToast({ tone: 'error', message: '证据节点创建失败，请重新添加。' });
+    }
   }, [flowInstance, nodes, setNodes, showToast]);
+
+  const handleDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const raw = event.dataTransfer.getData('application/qiancraft-knowledge');
+    if (!raw) return;
+    try {
+      addEvidenceNode(JSON.parse(raw) as KnowledgePayload, { x: event.clientX, y: event.clientY });
+    } catch {
+      showToast({ tone: 'error', message: '拖拽数据无法解析。' });
+    }
+  }, [addEvidenceNode, showToast]);
 
   const focusNode = useCallback((nodeId: string) => {
     if (!flowInstance || !nodes.some((node) => node.id === nodeId)) return;
@@ -1506,7 +1723,7 @@ export function Workbench() {
       padding: 0.24,
       minZoom: 0.82,
       maxZoom: 1.05,
-      duration: 420,
+      duration: motionDuration(420),
     });
   }, [flowInstance, nodes]);
 
@@ -1520,7 +1737,7 @@ export function Workbench() {
       padding: 0.32,
       minZoom: 0.76,
       maxZoom: 0.96,
-      duration: 360,
+      duration: motionDuration(360),
     });
   }, [flowInstance, nodes]);
 
@@ -1537,6 +1754,18 @@ export function Workbench() {
       });
     }, 120);
   }, [selectedNodeId]);
+
+  const handleFlowNodeClick = useCallback<NodeMouseHandler<WorkbenchNode>>((event, node) => {
+    if (event.currentTarget instanceof HTMLElement) inspectorTriggerRef.current = event.currentTarget;
+    setSelectedNodeId(node.id);
+    setShowInspector(true);
+  }, []);
+
+  const handleFlowNodeDoubleClick = useCallback<NodeMouseHandler<WorkbenchNode>>((_, node) => {
+    window.location.assign(`/nodes/${encodeURIComponent(node.id)}?workspace=${encodeURIComponent(workspace?.workspace_id ?? '')}`);
+  }, [workspace?.workspace_id]);
+
+  const handlePaneClick = useCallback(() => setShowInspector(false), []);
 
   const submitDialog = useCallback(async () => {
     if (!dialog || !dialogName.trim() || busy) return;
@@ -1561,7 +1790,7 @@ export function Workbench() {
   return (
     <main className="workbench-shell workbench-shell--instrument">
       <header className="app-bar">
-        <div className="brand-lockup"><div className="brand-mark">Q</div><strong>QianCraft</strong></div>
+        <div className="brand-lockup"><div className="brand-mark">Q</div><strong>QianCraft</strong><h1 className="sr-only">QianCraft 文化文创智能工作台</h1></div>
         <details className="workspace-command">
           <summary><span>{workspace.name}</span><ChevronDown aria-hidden="true" size={15} /></summary>
           <div className="workspace-command__popover">
@@ -1579,6 +1808,29 @@ export function Workbench() {
             <button className={activePhase === phase.id ? 'is-active' : ''} key={phase.id} type="button" onClick={() => focusNode(phase.nodeId)}>{phase.label}</button>
           ))}
         </nav>
+        <details className="mobile-phase-command">
+          <summary aria-label={`选择工作流阶段，当前${PHASE_NAVIGATION.find((phase) => phase.id === activePhase)?.label ?? '文化'}`}>
+            <Workflow aria-hidden="true" size={16} />
+            <span>{PHASE_NAVIGATION.find((phase) => phase.id === activePhase)?.label ?? '文化'}</span>
+            <ChevronDown aria-hidden="true" size={13} />
+          </summary>
+          <nav aria-label="移动端工作流阶段">
+            {PHASE_NAVIGATION.map((phase) => (
+              <button
+                className={activePhase === phase.id ? 'is-active' : ''}
+                key={phase.id}
+                type="button"
+                onClick={(event) => {
+                  focusNode(phase.nodeId);
+                  event.currentTarget.closest('details')?.removeAttribute('open');
+                }}
+              >
+                <span>{phase.label}</span>
+                <small>{activePhase === phase.id ? '当前' : '前往'}</small>
+              </button>
+            ))}
+          </nav>
+        </details>
         <div className="app-bar__actions">
           <button className="human-decision-button" type="button" onClick={() => openDecisionStudio(NODE_DECISION_STAGE[selectedNode?.type ?? 'CultureGraphNode'])}><Scale aria-hidden="true" size={17} /><span>人工决策</span><em>v{workspace.metadata.decision_profile.version}</em></button>
           <button
@@ -1606,34 +1858,41 @@ export function Workbench() {
 
         <div aria-label="上下文工具面板" className={`tool-dock ${activeDock ? 'is-open' : ''}`} ref={dockPanelRef} role="region" tabIndex={-1}>
           {activeDock ? <div className="tool-dock__mobile-toolbar"><span>{activeDock === 'evidence' ? '证据库' : activeDock === 'assets' ? '方案资产' : '节点历史'}</span><button aria-label="关闭上下文工具面板" type="button" onClick={() => setActiveDock(null)}><X aria-hidden="true" size={17} /></button></div> : null}
-          {activeDock === 'evidence' ? <KnowledgeCenter knowledge={knowledge} profile={workspace.metadata.decision_profile} onOpenGraph={() => setShowGraph(true)} onOpenDecisions={openDecisionStudio} /> : null}
+          {activeDock === 'evidence' ? <KnowledgeCenter knowledge={knowledge} profile={workspace.metadata.decision_profile} onAddEvidence={addEvidenceNode} onOpenGraph={openGraph} onOpenDecisions={openDecisionStudio} /> : null}
           {activeDock === 'assets' ? <AssetDock nodes={nodes} onSelect={selectNode} /> : null}
           {activeDock === 'history' ? <HistoryDock node={selectedNode} /> : null}
         </div>
 
-        <section className="flow-stage" onDrop={handleDrop} onDragOver={(event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; }}>
+        <section
+          className="flow-stage"
+          title="拖动空白区域平移画布；按 Shift 拖动框选；滚轮缩放"
+          onDrop={handleDrop}
+          onDragOver={(event) => { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; }}
+        >
           <ReactFlow<WorkbenchNode, WorkbenchEdge>
+            aria-label="可拖动画布：拖动空白区域平移，按 Shift 拖动框选，滚轮缩放"
+            ariaLabelConfig={FLOW_ARIA_LABELS}
             nodes={nodes}
             edges={edges}
             nodeTypes={nodeTypes}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onInit={initializeFlow}
-            onNodeClick={(event, node) => { if (event.currentTarget instanceof HTMLElement) inspectorTriggerRef.current = event.currentTarget; setSelectedNodeId(node.id); setShowInspector(true); }}
-            onNodeDoubleClick={(_, node) => window.location.assign(`/nodes/${encodeURIComponent(node.id)}?workspace=${encodeURIComponent(workspace.workspace_id)}`)}
-            onPaneClick={() => setShowInspector(false)}
+            onNodeClick={handleFlowNodeClick}
+            onNodeDoubleClick={handleFlowNodeDoubleClick}
+            onPaneClick={handlePaneClick}
             defaultViewport={workspace.viewport}
-            defaultEdgeOptions={{ type: 'smoothstep', markerEnd: { type: MarkerType.ArrowClosed, color: '#8b8984', width: 14, height: 14 }, style: { stroke: '#d4d3d0', strokeWidth: 1.25 } }}
+            defaultEdgeOptions={FLOW_DEFAULT_EDGE_OPTIONS}
+            edgesFocusable={false}
             minZoom={0.3}
             maxZoom={1.65}
             nodesConnectable={false}
             deleteKeyCode={null}
-            selectionOnDrag
-            panOnDrag={[1, 2]}
+            panOnDrag
           >
-            <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#dedbd4" />
+            <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#d1d1d6" />
             <Controls position="bottom-left" showInteractive={false} />
-            <MiniMap pannable zoomable position="bottom-right" nodeBorderRadius={4} nodeColor={(node) => { if (node.type === 'CultureGraphNode') return '#6f8fa4'; if (node.type === 'MarketRadarNode') return '#bd8a76'; if (node.type === 'ConceptNode') return '#6d77a7'; if (node.type === 'PosterBoardNode') return '#1d2836'; return '#9b9994'; }} maskColor="rgba(252, 251, 248, .84)" />
+            <MiniMap pannable zoomable position="bottom-right" nodeBorderRadius={4} nodeColor={flowMiniMapNodeColor} maskColor="rgba(245, 245, 247, .88)" />
           </ReactFlow>
           <div className="canvas-context"><div><span>当前链路</span><strong>{workspace.metadata.topic}</strong></div><p>{nodes.length} 个节点 · {edges.length} 条关系</p><button type="button" onClick={() => openDecisionStudio('score')}>{workspace.metadata.decision_profile.mode === 'manual' ? '人工配置' : '系统建议'} v{workspace.metadata.decision_profile.version}</button></div>
           {visibleResearchJob || researchBlockers.length ? (
@@ -1648,7 +1907,7 @@ export function Workbench() {
             </aside>
           ) : null}
           <div className="canvas-legend"><span><i className="legend-success" />已就绪</span><span><i className="legend-cached" />证据快照</span><span><i className="legend-stale" />待更新</span></div>
-          {showGraph ? <CultureGraphOverlay records={knowledge.culture.records} onClose={() => setShowGraph(false)} /> : null}
+          {showGraph ? <CultureGraphOverlay records={knowledge.culture.records} onClose={closeGraph} /> : null}
         </section>
 
         <div aria-label="节点 Inspector" className={`inspector-slot ${showInspector ? 'is-open' : ''}`} ref={inspectorPanelRef} role="region" tabIndex={-1}>
@@ -1682,17 +1941,8 @@ export function Workbench() {
         </div>
       </div>
 
-      {toast ? <div className={`toast toast--${toast.tone}`}>{toast.message}</div> : null}
-      {dialog ? (
-        <div className="dialog-backdrop" role="presentation" onMouseDown={() => setDialog(null)}>
-          <form className="workspace-dialog" onMouseDown={(event) => event.stopPropagation()} onSubmit={(event) => { event.preventDefault(); void submitDialog(); }}>
-            <span>{dialog === 'new' ? 'NEW WORKSPACE' : 'RENAME WORKSPACE'}</span>
-            <h2>{dialog === 'new' ? '创建新的文化文创链路' : '重命名当前工作区'}</h2>
-            <input autoFocus maxLength={80} value={dialogName} onChange={(event) => setDialogName(event.target.value)} />
-            <div><button type="button" onClick={() => setDialog(null)}>取消</button><button className="primary-button" disabled={!dialogName.trim() || busy} type="submit">{dialog === 'new' ? '创建并打开' : '保存名称'}</button></div>
-          </form>
-        </div>
-      ) : null}
+      {toast ? <div aria-atomic="true" className={`toast toast--${toast.tone}`} role={toast.tone === 'error' ? 'alert' : 'status'}>{toast.message}</div> : null}
+      {dialog ? <WorkspaceDialog busy={busy} mode={dialog} name={dialogName} onCancel={closeWorkspaceDialog} onConfirm={() => void submitDialog()} onNameChange={setDialogName} /> : null}
       {showDecisionStudio ? (
         <DecisionStudio
           busy={busy}

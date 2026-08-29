@@ -22,6 +22,8 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 0.8.0 部署 `6a91f49bac2577a93d22048d` 将持久化严格研究任务、刷新续接、真实 Design Agent、服务端海报渲染和无假回退语义发布到同一实例。第一次 0.8.0 部署 `6a91f23f13d3d467215e790c` 已完成 Python 与 Vinext 构建，但发布包中的 `start-zeabur.sh` 被转换为 CRLF，Linux 容器无法执行；随后先用 `6a91f39a13d3d467215e7928` 恢复已验证的 0.7.3，再在 Docker 构建阶段规范化脚本行尾并重新发布。最终构建日志确认 `qiancraft-0.8.0` 与 Vinext 五阶段完成，运行日志确认 Tool API 和 Vinext 分别监听容器回环地址；部署状态为 `RUNNING`，公网 `/healthz` 为 200、匿名 `/` 为 401。当前环境没有站点 Basic Auth 凭证，因此没有声称完成 0.8.0 认证后公网业务 UI/API 复验。
 
+0.9.0 当前只完成本地实现与验收，**尚未部署**。它新增进程内持续采集调度器、知识星图、文化候选审核、市场增量控制面和真实健康检查：Nginx 的 `/healthz` 转发 `/api/health`，响应包含调度线程、心跳新鲜度和总开关；线程死亡或心跳超过 45 秒返回 503，Docker HEALTHCHECK 随之失败；`start-zeabur.sh` 同时监控 Tool API、Vinext 与 Nginx，任一子进程退出即让容器失败。上述故障恢复仍依赖部署平台实际启用重启策略。不能把本地 0.9.0 截图或测试结果写成线上已升级；受保护实例仍以 0.8.0 为准。
+
 ## 必需配置
 
 - 服务端口：使用平台注入的 `PORT`。
@@ -30,25 +32,30 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 - `LLM_API_KEY`：策划与设计模型凭证。
 - `LLM_BASE_URL`、`LLM_MODEL`：模型接口与名称。
 - `ALLOW_API_TXT_FALLBACK=false`：生产环境禁止读取本地密钥文件。
+- `QIANCRAFT_CONTINUOUS_COLLECTION=true`：启动持续采集调度器。
+- `QIANCRAFT_CULTURE_WATCH_MINUTES=360`：文化来源巡检间隔。
+- `QIANCRAFT_MARKET_REFRESH_MINUTES=240`：四平台增量复检间隔。
 
 图像服务必须单独配置 `IMAGE_PROVIDER`、`IMAGE_API_KEY`、`IMAGE_BASE_URL` 与 `IMAGE_MODEL`；未配置时，工作台保留已有 A/B/C 方案并明确显示 warning，不伪造新生成结果。
 
 ## 数据边界
 
-`/app/data/runtime/workbench` 保存画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs 与旧版工具设计运行。文化图谱、市场证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；页面刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted。
+`/app/data/runtime/workbench` 保存画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs、旧版工具设计运行，以及 `collection/` 下的排程配置、心跳、事件、候选与来源指纹。文化图谱、市场证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；页面刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted。
+
+单容器、单 Tool API 副本可以按上述持久卷和平台重启策略持续调度；它不是分布式任务队列。扩到多个 API 副本前必须加入唯一领导者、分布式锁或外部队列，否则每个副本都会运行自己的排程。生产还需为心跳、连续失败、候选积压与授权过期配置外部告警和备份；页面显示“在线”不能代替平台级监控。
 
 当前线上容器面向产品工作台和设计验证。四平台实时采集仍受平台登录态、授权用途、MediaCrawler 源码与独立浏览器运行时约束；精简云端镜像不包含这些上游运行时，因此严格研究会在预检阶段明确阻断，不会用 378 条历史快照冒充本轮 live。完整实爬应在用户已授权浏览器的本机运行，再由核验门晋级到对应工作区。
 
 ## 本地构建
 
 ```bash
-docker build -t qiancraft:0.8.0 .
+docker build -t qiancraft:0.9.0 .
 docker run --rm -p 8080:8080 \
   -e QIANCRAFT_WEB_USERNAME=qiancraft \
   -e QIANCRAFT_WEB_PASSWORD='<set-in-secret-manager>' \
   -e LLM_API_KEY='<set-in-secret-manager>' \
   -v qiancraft-runtime:/app/data/runtime \
-  qiancraft:0.8.0
+  qiancraft:0.9.0
 ```
 
 生产密钥只应通过 Zeabur 的变量管理界面注入，不写入 Dockerfile、仓库或部署日志。

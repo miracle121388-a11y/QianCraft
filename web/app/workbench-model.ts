@@ -301,6 +301,83 @@ export interface ResearchRuntime {
   lastJob: ResearchJob | null;
 }
 
+export type CollectionLaneId = 'culture_watch' | 'market_refresh';
+export type CollectionLaneStatus =
+  | 'scheduled'
+  | 'running'
+  | 'healthy'
+  | 'degraded'
+  | 'blocked'
+  | 'failed'
+  | 'paused'
+  | 'interrupted';
+
+export interface CollectionLaneRuntime {
+  label: string;
+  enabled: boolean;
+  intervalMinutes: number;
+  status: CollectionLaneStatus;
+  lastAttemptAt: string;
+  lastSuccessAt: string;
+  nextRunAt: string;
+  detail: string;
+  consecutiveFailures: number;
+  runCount: number;
+  jobId: string;
+  metrics: Record<string, unknown>;
+}
+
+export interface CollectionRuntime {
+  schemaVersion: string;
+  enabled: boolean;
+  workspaceId: string;
+  scheduler: {
+    status: string;
+    instanceId: string;
+    startedAt: string;
+    heartbeatAt: string;
+    threadAlive: boolean;
+  };
+  lanes: Record<CollectionLaneId, CollectionLaneRuntime>;
+  culture: {
+    verifiedRecords: number;
+    verifiedSources: number;
+    candidateCounts: Record<string, number>;
+    sourceStateUpdatedAt: string;
+    lastMetrics: Record<string, unknown>;
+    promotionPolicy: string;
+  };
+  market: {
+    preflight: ResearchPreflight;
+    promotionPolicy: string;
+  };
+}
+
+export interface CollectionCandidate {
+  id: string;
+  url: string;
+  title: string;
+  publisher: string;
+  originSourceId: string;
+  reason: string;
+  status: 'pending_review' | 'ready_to_structure' | 'rejected';
+  discoveredAt: string;
+  lastSeenAt: string;
+  discoveryCount: number;
+  reviewNote: string;
+  reviewedAt: string;
+}
+
+export interface CollectionEvent {
+  id: string;
+  at: string;
+  lane: CollectionLaneId | 'system';
+  event: string;
+  status: string;
+  detail: string;
+  metadata: Record<string, unknown>;
+}
+
 export interface WorkbenchBootstrap {
   workspace: WorkbenchWorkspace;
   workspaces: WorkspaceSummary[];
@@ -308,6 +385,7 @@ export interface WorkbenchBootstrap {
   decisionCatalog: DecisionCatalog;
   imageProvider: ImageProviderStatus;
   researchRuntime: ResearchRuntime;
+  collectionRuntime?: CollectionRuntime;
   nodeTypes: WorkbenchNodeType[];
   statuses: NodeStatus[];
 }
@@ -331,6 +409,7 @@ export interface MarketPostSummary {
   platform: string;
   title: string;
   publishedAt: string;
+  retrievedAt: string;
   url: string;
   productForm: string;
   searchKeyword: string;

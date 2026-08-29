@@ -17,28 +17,41 @@ A user can move through Culture → Market → Strategy → Design → Delivery,
 
 ## Current operating proof
 
-- 22 structured Guizhou cultural records and 32 cultural, ethics, legal and collection references.
-- 378 clearly time-bounded historical platform samples across Xiaohongshu, Douyin, Bilibili and Weibo.
+- 22 verified Guizhou cultural records and 32 cultural, ethics, legal and collection references; discovered material stays in a separate human-review queue and never enters the formal graph automatically.
+- A searchable culture constellation connects records, categories and source references. Desktop users can select, pan, wheel-zoom and operate it from the keyboard; compact touch layouts preserve page scrolling until the user explicitly enters constellation-control mode, then support one-finger pan and two-finger zoom.
+- A persistent collection control surface exposes schedule, heartbeat, last attempt/success, partial failure, authorization blockers, candidate review and event history. A polling or heartbeat failure invalidates the previous online state instead of leaving stale success visible.
+- 378 clearly time-bounded historical platform samples across Xiaohongshu, Douyin, Bilibili and Weibo. Live market refresh is currently `blocked` because `MEDIACRAWLER_LIVE_ENABLED=false` and none of the four platform authorization sessions is connected; the historical evidence is not relabeled as a live update.
 - Eight scored opportunities, nine node instances, ten relationships and three comparable concept directions.
 - A seven-stage Human Decision Studio, editable node detail pages, workspace persistence, citations, deep links and honest live/cache/stale/warning/error states.
 - A working Design Agent handoff through `DesignPackage`, sample/quotation brief and 1800 × 2400 concept poster.
+- A repeatable desktop/mobile UI gate across the workbench and all nine node routes: Python 53 passed, frontend unit tests 5 passed, and Playwright 35 passed / 1 intentionally skipped, alongside typecheck, lint, production build, Ruff, shell syntax, lockfile and diff checks.
+- The 0.9.0 collection scheduler can keep working only while a single Tool API/container instance, persistent runtime volume, restart policy, network and required platform authorization remain available. It is not a distributed queue. Local 0.9.0 has not been deployed; the protected online instance remains 0.8.0.
 
 ## Experience direction
 
-Creative Instrument Workbench with warm editorial chrome:
+Monochrome Precision Instrument:
 
-- A parchment 56px phase command bar and a warm-sand 64px tool rail frame a dominant node canvas.
-- Evidence, assets and history use contextual docks; the 320px Inspector appears when it helps the selected task.
-- Linen hairlines, 400/480 type weights, inset edges and one indigo interaction/focus color keep the operating surface calm.
-- Indigo, rust, teal and violet are reserved for cultural content, node identity and concept material—not global chrome.
-- Inputs stay at 8px, core containers at 16px, warm content cards may reach 24px, and primary controls use a restrained pill shape.
-- Desktop keeps operational context visible; at 760px and below, peripheral panels become reversible overlays and controls maintain at least 44px touch targets.
-- The structural clarity of RICOUI Design is a reference, not a source of copied code, assets, copy or brand expression.
+- White is the working plane, cool neutral gray establishes depth, graphite carries text and pure black marks selection and the single primary action; beige, warm-paper and blue/indigo chrome are not part of the product UI.
+- A 60px desktop command bar and 56px tool rail frame a dominant node canvas. Evidence, assets and history use contextual docks; the 336px Inspector appears only when it helps the selected task.
+- System/SF-like sans typography, fine neutral rules, compact semantic radii and restrained overlay shadows make the surface feel precise without turning it into a marketing homepage.
+- Original product, evidence and concept imagery may retain source color, but navigation, status structure, controls, focus and selection remain achromatic and never rely on color alone.
+- The selected node keeps its geometry and advances through black contrast, keylines and bound Inspector context rather than expansion or decorative effects.
+- The canvas behaves as a direct-manipulation work surface: drag empty space with the primary pointer or one finger to pan, Shift-drag to box-select, wheel/pinch to zoom, and drag a node without moving the viewport.
+- The culture relationship view is the one deliberate black-canvas exception inside the otherwise white tool. It renders an operational constellation, not a decorative hero: search, category filter, record selection, evidence inspection and view controls remain visible.
+- On compact touch layouts the constellation defaults to `pan-y pinch-zoom` so the page remains scrollable. Only the explicit “操作星图” mode takes over one-finger pan and two-finger zoom, and “完成” returns control to the page.
+- Collection surfaces separate verified knowledge, pending candidates, historical snapshots and current runtime status. Market evidence and its date window appear before the expandable live-collection controls.
+- Every draggable evidence record also exposes a visible “add to canvas” control, so pointer dragging is never the only way to create a canvas node.
+- At 760px and below, the header keeps a compact current-phase selector and a 44px black Run action; the rail stays 56px, controls stay at least 44px, and peripheral panels become reversible overlays.
+- The Human Decision Studio keeps black Save as the sole primary action, groups secondary actions by content width and preserves the complete evidence-to-decision chain on desktop and mobile.
+- The Culture constellation overlay, Workspace dialog and Human Decision dialog move focus inside, keep keyboard focus contained, close with Escape and return focus to the invoking control; canvas announcements and movement instructions are localized in Chinese.
+- Reduced-motion, increased-contrast and Windows forced-colors preferences retain usable status, focus and selection semantics instead of erasing feedback.
 
 ## Non-negotiable boundaries
 
 - Preserve citations, evidence type, time boundary, rights status and machine-versus-human decisions.
 - Do not describe historical cached platform data as current live trends.
+- Do not promote a discovered URL into verified cultural knowledge without field-level evidence and human review.
+- Do not describe the scheduler as continuously producing live market material while the live switch or four platform authorizations are blocked; 7×24 operation is conditional on the single-instance runtime, persistent volume, restart policy, network and authorization.
 - Do not use `reference_only` collection pixels in generated or commercial artwork.
 - Do not conceal missing image providers, failed calls or stale downstream work.
 - Do not expose API keys, crawler cookies or site credentials in the client, repository, logs or documentation.
@@ -46,4 +59,4 @@ Creative Instrument Workbench with warm editorial chrome:
 
 ## Success criteria
 
-The workbench should feel like a restrained professional creative tool: the current task is obvious, important evidence stays one action away, every node can be inspected and operated independently, and complexity appears progressively instead of competing for attention all at once.
+The workbench should feel like a restrained professional creative tool: the current task is obvious, important evidence stays one action away, every node can be inspected and operated independently, and complexity appears progressively instead of competing for attention all at once. The culture constellation must remain explorable without trapping compact-page scrolling; collection status must remain honest when a source degrades, authorization blocks or the control plane disconnects. Material UI changes must pass the local quality workflow in `docs/frontend_quality_workflow.md`; an automated pass is evidence, not a claim of complete accessibility certification.

@@ -1,4 +1,8 @@
 import type {
+  CollectionCandidate,
+  CollectionEvent,
+  CollectionLaneId,
+  CollectionRuntime,
   DesignBrief,
   DecisionProfile,
   NodeDetailPayload,
@@ -72,6 +76,66 @@ export function startResearchRun(
 
 export function getResearchJob(jobId: string): Promise<ResearchJob> {
   return request<ResearchJob>(`/api/research/jobs/${encodeURIComponent(jobId)}`);
+}
+
+export function getCollectionRuntime(): Promise<CollectionRuntime> {
+  return request<CollectionRuntime>('/api/collection/status');
+}
+
+export function getCollectionEvents(limit = 60): Promise<{ events: CollectionEvent[] }> {
+  return request<{ events: CollectionEvent[] }>(`/api/collection/events?limit=${limit}`);
+}
+
+export function getCollectionCandidates(
+  status = '',
+  limit = 80,
+): Promise<{ candidates: CollectionCandidate[] }> {
+  const query = new URLSearchParams({ limit: String(limit) });
+  if (status) query.set('status', status);
+  return request<{ candidates: CollectionCandidate[] }>(`/api/collection/candidates?${query}`);
+}
+
+export function runCollectionLane(lane: CollectionLaneId | 'all'): Promise<CollectionRuntime> {
+  return request<CollectionRuntime>('/api/collection/run', {
+    method: 'POST',
+    body: JSON.stringify({ lane }),
+  });
+}
+
+export function updateCollectionSchedule(candidate: {
+  enabled?: boolean;
+  lanes?: Partial<Record<CollectionLaneId, { enabled?: boolean; intervalMinutes?: number }>>;
+}): Promise<CollectionRuntime> {
+  return request<CollectionRuntime>('/api/collection/schedule', {
+    method: 'PUT',
+    body: JSON.stringify(candidate),
+  });
+}
+
+export function addCollectionCandidate(candidate: {
+  url: string;
+  title?: string;
+  publisher?: string;
+  reason?: string;
+}): Promise<CollectionCandidate> {
+  return request<CollectionCandidate>('/api/collection/candidates', {
+    method: 'POST',
+    body: JSON.stringify(candidate),
+  });
+}
+
+export function reviewCollectionCandidate(
+  candidateId: string,
+  status: CollectionCandidate['status'],
+  note = '',
+): Promise<CollectionCandidate> {
+  return request<CollectionCandidate>(
+    `/api/collection/candidates/${encodeURIComponent(candidateId)}/review`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ status, note }),
+    },
+  );
 }
 
 export function getNodeDetail(

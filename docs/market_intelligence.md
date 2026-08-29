@@ -42,3 +42,11 @@ Cross-platform Hot Score
 - `unavailable`：本次未成功搜索，也没有该平台真实快照。
 
 四个平台状态分别写入 RunManifest 的 `market_platforms`。规范化快照位于 `data/market/raw/{platform}.jsonl`，上游原始文件位于 `data/market/raw/_upstream/`，最终榜单位于 `data/market/derived/product_form_hotness.json`。
+
+## 持续增量采集
+
+0.9.0 的 `market_refresh` 通道默认每 4 小时复检一次。每轮先执行严格预检：实时开关、MediaCrawler 隔离运行时、LLM/LightRAG 条件，以及 xhs / dy / bili / wb 四个平台的本人授权必须齐备。预检不通过时状态是 `blocked`，不会自动弹出登录、不会创建一个假任务，也不会把 378 条历史快照重新记为本轮 live。
+
+条件齐备时，调度器复用 `POST /api/research/run` 的隔离任务语义并持久化任务号。只有任务最终返回 `live_verified`，即文化、策划和四个平台本轮均为 live，通道才是 `healthy` 并允许晋级；部分 live、cache、unavailable、超时或执行错误均保留审计而不覆盖已核验快照。失败通道按连续失败次数缩短到有界复检间隔，但不会绕过授权门。
+
+市场详情页先展示 378 条历史记录、发布范围、检索日期、四平台样本量、派生排序和代表记录；持续采集控制面折叠在其后。这样“历史证据是什么”与“下一轮为什么尚未运行”同时可见但不混写。完整排程、API 和部署条件见 [`continuous_collection.md`](continuous_collection.md)。

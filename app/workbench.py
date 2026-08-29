@@ -2046,6 +2046,7 @@ def _market_post_summary(item: dict[str, Any]) -> dict[str, Any]:
         "platform": item.get("platform", ""),
         "title": item.get("title", "") or str(item.get("content", "")).replace("\n", " ")[:100],
         "publishedAt": item.get("published_at", ""),
+        "retrievedAt": item.get("retrieved_at", ""),
         "url": item.get("url", ""),
         "productForm": item.get("product_form", ""),
         "searchKeyword": item.get("search_keyword", ""),

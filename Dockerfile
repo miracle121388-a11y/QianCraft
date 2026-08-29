@@ -25,6 +25,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PORT=8080 \
     ALLOW_API_TXT_FALLBACK=false \
+    QIANCRAFT_CONTINUOUS_COLLECTION=true \
+    QIANCRAFT_CULTURE_WATCH_MINUTES=360 \
+    QIANCRAFT_MARKET_REFRESH_MINUTES=240 \
     QIANCRAFT_WORKBENCH_DIR=/app/data/runtime/workbench \
     QIANCRAFT_TOOL_WORKSPACE_DIR=/app/data/runtime/tool_workspace
 
@@ -56,5 +59,8 @@ RUN sed -i 's/\r$//' /app/deploy/start-zeabur.sh \
     && mkdir -p /app/data/runtime/workbench /app/data/runtime/tool_workspace /app/runtime/auth
 
 EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD node -e "fetch('http://127.0.0.1:8787/api/health').then((response) => { if (!response.ok) process.exit(1) }).catch(() => process.exit(1))"
 
 CMD ["/app/deploy/start-zeabur.sh"]

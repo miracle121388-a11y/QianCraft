@@ -1,7 +1,7 @@
 # QianCraft 工作流程与持续更新记录
 
 > 文档性质：项目级唯一工作流说明、当前状态快照与追加式更新台账  
-> 当前版本：0.8.0
+> 当前版本：0.9.0
 > 最后维护：2026-08-29
 > 维护状态：强制持续维护
 
@@ -33,15 +33,15 @@
 |---|---|
 | 产品名称 | QianCraft Creative Intelligence Workbench｜文化文创智能工作台 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
-| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py`；暖纸色 Creative Instrument 工具骨架由 56px 五阶段导航、64px 工具轨、按需 248px 证据/资产/历史 Dock、React Flow 主画布和 320px Inspector 组成，手机端把 Dock/Inspector 变为可逆覆盖层；默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio 贯通文化、市场、机会/量分、任务书、视觉、概念与海报；每个节点均有专用展示页、引用台账、独立运行/从此运行/编辑保存/JSON 导出。0.7.3 把九个画布实例固定为稳定横向索引条；0.8.0 将顶部、节点页和“从此运行”的研究动作统一接入持久化严格后台任务，页面刷新会自动续接轮询，只有文化、策划和 xhs/dy/bili/wb 四平台全部为本轮 `live` 才晋级。Brief 实际运行 Design Agent 并落盘 DesignPackage，Poster 实际服务端渲染 1800×2400 PNG；缺图像 provider 时 Concept 只保留上次成功资产并明确 warning。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
+| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py` + `app/collection.py`；0.9.0 的 Monochrome Precision Instrument 继续以白色工作面、冷中性灰层级、石墨文字和纯黑主动作/选中态组成工具 chrome，明确排除米色、暖纸色与蓝色/靛蓝系统配色。工作台 React Flow 空白画布支持主键/单指平移、`Shift + 拖动` 框选、滚轮/捏合缩放和节点独立拖动，并保留点击/键盘等价路径。文化详情升级为黑色关系画布例外：22 条正式记录、分类引力点和来源关系组成可搜索、选点、按钮/滚轮/键盘缩放平移的知识星图；手机默认保留页面纵向滚动，显式进入“操作星图”后才以单指平移、双指缩放接管画布。文化与市场详情均接入持续采集控制面、真实心跳、调度/暂停/立即运行、事件与候选审核；连接中断立即使旧在线状态失效并禁用写操作。市场页先展示 378 条历史证据、时间窗与四平台样本量，再按需展开实时控制。默认 9 个实例覆盖 7 类业务节点，七阶段 Human Decision Studio、节点详情、引用台账、独立运行/保存/导出、DesignPackage 和 1800×2400 Poster 仍保持现有边界。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
 | GitHub 展示 | 项目 README 包含原创横版 SVG 首屏、真实状态徽章、在线实例、成果海报、A/B/C 三方向视觉、Workbench 快速开始、Mermaid 架构、可信边界、路线图与许可证说明 |
 | 默认主题 | 贵州苗绣 |
 | 默认目标市场 | 18–30 岁年轻消费者 |
-| 文化知识图谱 | 22 条结构化文化记录、32 条文化/伦理/法律/馆藏视觉来源 |
+| 文化知识图谱 | 22 条已核验结构化记录、32 条文化/伦理/法律/馆藏视觉来源；来源巡检与正式知识分层，当前另有 1 条真实 `pending_review` 候选，候选须人工核验后才能进入结构化图谱 |
 | 苗绣检索 | 同时保留花溪挑花、剑河锡绣、松桃苗绣与雷山工艺差异 |
 | 视觉参考包 | 12 条权威参考、5 个 Pattern Primitive、3 组无伪造 HEX 的文字色彩关系；默认 `reference_only` |
 | 市场研究层 | 12 条结构化市场信号、12 条公开可追溯来源 |
-| 市场状态 | 当前 Windows 基线保留 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148）与 12 条不进榜公开核验记录。0.8.0 网页严格任务确实重新访问平台；最终轮 `20260828T202303Z-2bae17ff` 的 xhs/dy/bili/wb 均未产出可晋级实时内容，market=`cache`、整轮=`failed_no_fallback`，因此没有覆盖基线，也没有把“发起过爬取”写成 live |
+| 市场状态 | 当前 Windows 基线保留 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148）与 12 条不进榜公开核验记录。0.9.0 的市场刷新通道已具备持久调度、退避、立即运行与状态审计，但当前 `MEDIACRAWLER_LIVE_ENABLED=false` 且四平台没有已连接授权浏览器，所以真实状态为 `blocked`；没有创建假任务、没有改写 378 条历史证据，也没有把“已排期”写成实时产出 |
 | 产品形态榜 | `product_form_hotness.json` 已由 378 条历史真实平台快照恢复：Top 10 为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒；Top 5 为前五项。该榜只代表有限历史样本，不代表当前全平台实时趋势 |
 | 对标案例 | 8 条 |
 | LightRAG 实机图 | 612 个实体、697 条关系；“贵州苗绣”节点查询通过 |
@@ -51,11 +51,11 @@
 | 设计海报 | 1800 × 2400；原创生成式成品/爆炸主视觉 + 本地精确中文排版；未使用 `reference_only` 馆藏像素 |
 | Workbench Workspace | 默认 `guizhou-miao-demo` 以仓库基线初始化，后续写入 `data/runtime/workbench/`；Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept、任务书、A/B/C、`DecisionProfile`、机器/人工并列的 `decision_output`、研究任务和设计运行引用。New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；研究晋级时保留仍有效的人工 ID，对消失的机会/品类只做带审计记录的补齐；源证据与运行态分离，页面操作不会覆盖仓库基线 |
 | 图像生成适配 | Concept A 使用项目原创主视觉；Concept B/C 已通过内置图像生成能力制作、目视复核、SHA-256 登记并存入项目。独立 OpenAI-compatible Images API 自动化边界仍未配置，因此 Visual Generation 与单概念重生成继续诚实返回 `warning`，不会把内置资产冒充为 DeepSeek 新调用 |
-| API | 本机与 Zeabur 服务端 LLM Key 均通过私密环境变量配置且不回显；探针确认 DeepSeek 可达、返回 3 个模型且 `deepseek-v4-flash` 可用。`POST /api/research/run` 返回 202 和持久化任务号，`GET /api/research/jobs/{id}` 提供回调轮询，API 重启会把未完成任务标为 interrupted 而不是成功；研究段与 Design Agent 已解耦，研究必须先完整保存组件/平台状态，设计再消费晋级后的交接。对同一服务的 `/images/generations` 实测为 HTTP 404，确认该密钥只承担文本模型链路 |
-| 线上发布 | 0.8.0 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 部署在 Zeabur California 专用服务器；部署 `6a91f49bac2577a93d22048d` 为 `RUNNING`，构建日志确认 Vinext 五阶段完成、`qiancraft-0.8.0` 安装成功，运行日志确认 Tool API 与 Vinext 分别监听容器回环地址。Nginx 统一 Basic Auth，`/healthz` 免鉴权，`/app/data/runtime` 挂载持久卷；公网健康检查为 200、匿名入口为 401。本轮执行环境没有站点凭证，0.8.0 认证后页面/API 保留待凭证复验 |
-| MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb；正式探针与网页严格任务均实际访问过平台。非正式探针现写入隔离目录，不再覆盖 canonical raw/derived；单平台达到时间上限时，若已保存至少 5 条有效内容则终止继续翻页并以“本轮部分 live”保留，否则为 `unavailable`。任何平台不是 live 时整轮不晋级，378 条历史快照继续保持 cache |
-| 自动测试 | Python 46/46、Workbench TypeScript 5/5 通过 |
-| 静态检查 | `ruff check app tests scripts/probe_market_platforms.py`、Web typecheck、ESLint、Vinext 五阶段 production build、`uv lock --check` 与 `git diff --check` 通过；九个节点页面共 129 条引用解析缺失为 0，454 个唯一外链实测 442 个直接返回、12 个因目标站连接/站点防护未直接返回但经官方搜索索引复核仍为真实页面。1440 × 960 与 390 × 844 页面无横向溢出，图片无破损；0.8.0 发布包 74 个文件、19,435,606 字节，敏感文件名与长 `sk-` 模式均为 0 命中 |
+| API | 本机与 Zeabur 服务端 LLM Key 均通过私密环境变量配置且不回显；探针确认 DeepSeek 可达、返回 3 个模型且 `deepseek-v4-flash` 可用。0.9.0 增加 `/api/collection/status|events|candidates|config|actions` 与真实 `/api/health` 调度心跳；调度线程死亡或心跳超过 45 秒时健康端点返回 503，触发镜像 HEALTHCHECK 失败。配置、运行态、事件、候选和指纹持久化在 `data/runtime/tool_workspace/collection/`。API 重启把未完成采集标为 interrupted，条件不齐时返回 blocked/degraded 而非成功；研究任务、候选晋级和 Design Agent 仍保持各自审计边界 |
+| 线上发布 | 线上仍是 0.8.0 受保护实例 `https://qiancraft-studio-2026.zeabur.app`，部署 `6a91f49bac2577a93d22048d` 为 `RUNNING`。0.9.0 目前只在本地完成实现与验收，尚未发布；部署后若要称为 7×24 调度，必须确认 Tool API 单副本持续运行、`data/runtime` 持久卷、平台重启策略、网络和授权登录态。当前实现不是跨副本分布式任务队列 |
+| MediaCrawler | 隔离运行时存在并可导入 xhs/dy/bili/wb；0.9.0 市场通道默认每 240 分钟预检一次，只有实时开关、运行时与用户授权全部成立才创建严格任务。当前预检因实时开关关闭和四平台无授权而真实 `blocked`；失败会记录事件并退避，任何平台不是 live 时整轮不晋级，378 条历史快照继续保持 cache |
+| 自动测试 | Python 53/53、Workbench TypeScript 5/5、Playwright 桌面/手机 35 passed / 1 skipped。UI 门覆盖工作台与 9 个详情路由的 axe、结构、破图/alt、溢出、手机 44px、证据添加等价路径、弹层焦点、工作台画布、星图桌面滚轮/拖动/键盘、移动页面滚动/单触点/双触点、断线旧状态失效、初次连接恢复、forced-colors 与四张视觉快照；Python 门另覆盖线程死亡/心跳过期时健康端点 503。自动 axe 只覆盖部分无障碍问题，不等同 WCAG 认证 |
+| 静态检查 | `ruff check app tests scripts/probe_market_platforms.py`、`uv lock --check`、Web typecheck、ESLint、Vinext 五阶段 production build、Bash 语法与 `git diff --check` 通过；前端单测 5/5。Playwright CLI 对 10 个桌面路由和文化/市场手机关键状态完成截图复核，控制台为 0 error / 0 warning。文化真实巡检 4/4 登记来源可达且未把通用导航写入正式图谱；市场真实预检按缺少开关/授权进入 blocked。0.9.0 未部署，线上发布包与受保护实例仍保持 0.8.0 |
 | 凭证检查 | 交付目录未发现 `sk-` 密钥泄漏 |
 
 当前正式产物：
@@ -126,6 +126,23 @@
 
 Culture DNA 与 Trend DNA 可并行取得；Strategist 必须在两者、Visual Reference Pack 和 Benchmark Case 完整后运行；Design Agent 必须在 Designer Handoff 原子落盘后重新从文件读取。生成模型不得反向改写文化事实、视觉权利状态或市场原始记录，也不得把参考图像像素带入概念视觉。
 
+0.9.0 在正式流水线之前增加可持续素材入口，但不绕过事实与授权门：
+
+```text
+Tool API 启动 / 容器持续运行
+        └→ Collection Scheduler（持久配置、心跳、退避、事件）
+                ├→ culture_watch（默认 360 分钟）
+                │       ├→ 条件请求 / 指纹去重 / 同域候选发现
+                │       ├→ 全部来源成功 = healthy；部分失败 = degraded
+                │       └→ pending_review → 人工审核 → 结构化图谱（不自动晋级）
+                └→ market_refresh（默认 240 分钟）
+                        ├→ 实时开关、MediaCrawler 运行时与四平台授权预检
+                        ├→ 条件不齐 = blocked + 事件 + 下次调度
+                        └→ 条件齐备才创建严格研究任务；仅 live_verified 晋级
+```
+
+所谓 7×24 是“调度与状态持续运行”，前提是 Tool API/容器单副本常驻、`data/runtime` 持久卷、进程重启策略、网络和平台授权持续有效；它不是无条件保证每轮都有新素材，也不是跨副本分布式队列。文化候选必须人工核验，市场平台未授权时必须诚实阻断。
+
 Creative Intelligence Workbench 在上述正式流水线之外增加一层可审计交互，不改写事实源：
 
 ```text
@@ -136,8 +153,10 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
                   ├→ Strict Research Job：202 后台任务 → 持久化 job.json → 前端轮询/刷新续接
                   │          ├→ 每轮独立 outputs/raw/derived，不读取 demo fallback
                   │          └→ 文化 + 策划 + xhs/dy/bili/wb 全部 live 才原子晋级
-                  ├→ 证据中心：22 条文化记录 / 32 来源 / 四平台 378 快照 / Top 10
+                  ├→ 持续采集控制：真实心跳 / 调度暂停 / 立即运行 / 事件 / 候选审核 / 授权阻断
+                  ├→ 证据中心：22 条正式文化记录 / 32 来源 / 待核验候选 / 四平台 378 历史快照 / Top 10
                   ├→ React Flow：Culture + Market → Strategy → Brief → Visual → A/B/C → Poster
+                  ├→ Culture Constellation：黑色关系画布、搜索/选点、桌面拖动与移动显式触摸模式
                   ├→ Inspector：概览 / 输入 / 配置 / 结果 / 证据 / 记录 / 操作
                   ├→ Node Detail：9 个独立展示页 + 引用解析 + 相邻节点 + 独立运行/保存/导出
                   ├→ Human Decision Studio：文化选择 → 平台/品类 → 机会 → 权重/风险 → 任务书 → 视觉/概念 → 海报
@@ -174,7 +193,8 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 | `app/strategist/` | 唯一策划师、固定任务提示与证据锁 | 不允许生成最终设计；文化/市场事实不可被模型覆盖 |
 | `app/designer/` | Design Agent、设计包 Markdown 与精确文字海报排版 | 只消费已落盘交接；不得使用 reference-only 像素或宣称量产就绪 |
 | `app/pipeline.py` | 端到端编排、原子输出和运行清单 | 新步骤必须说明顺序、失败策略与状态字段 |
-| `app/tool_api.py` | 工具 API、真实计数、分页来源查询、节点专用详情、七阶段人工决策写入、严格预检、202 后台研究任务/轮询/中断恢复、设计运行与资产路由 | 本地或容器内只绑定回环地址并由受保护代理转发；不得向前端返回凭证；job 异常必须脱敏并持久化；历史、当前、live、cache、系统推荐和人工选择必须分开标注 |
+| `app/collection.py` | 文化来源巡检、市场严格任务预检、持久调度/心跳/退避、候选/指纹/事件与人工审核门 | 只有全部已探测文化来源成功才是 healthy，部分失败必须 degraded；候选不得自动写入正式图谱；市场缺开关、运行时或授权必须 blocked，不创建假任务 |
+| `app/tool_api.py` | 工具 API、真实计数、采集状态/事件/候选/配置/动作、真实健康心跳、分页来源查询、节点专用详情、七阶段人工决策写入、严格预检、202 后台研究任务/轮询/中断恢复、设计运行与资产路由 | 本地或容器内只绑定回环地址并由受保护代理转发；不得向前端返回凭证；job 异常必须脱敏并持久化；历史、当前、live、cache、系统推荐和人工选择必须分开标注；客户端断开不得把 BrokenPipe 误写为第二次响应 |
 | `app/workbench.py` | 7 类节点注册、默认贵州苗绣链路、Workspace Schema 1.1 校验/兼容迁移/原子保存、DecisionProfile 校验/人工排序/下游 stale、研究晋级、Concept 动作、真实 Poster 渲染、文化/市场/馆藏/平台记录引用目录与详情组装 | 只有隔离运行中的文化/市场/策划和四平台全部 live 才可晋级；人工选择只在新结果中 ID 消失时带审计补齐。节点类型、状态、连线、引用、Concept 与资产路径均须服务端校验；馆藏 `reference_only` 不得改写为可用像素 |
 | `data/culture/` | 文化图谱、视觉参考和 LightRAG 存储 | 事实先写结构化图谱；视觉图像权利与来源分开记录 |
 | `data/market/` | 核验基线、`raw/` 原始抓取、`derived/` 派生证据 | 未披露互动数保持为 0；原始与派生不可混写 |
@@ -185,15 +205,16 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 | `data/tool_workspace/` | 仓库随附的旧版工具基线与可审计示例 | 作为只读初始化/历史证据；新运行不再写入该目录 |
 | `data/workbench/` | 仓库随附的 Workspace Schema 1.1 与 A/B/C 概念视觉基线 | 作为首次启动模板；浏览器写入不得覆盖该目录 |
 | `data/runtime/workbench/` | 实际 Workspace、研究晋级产物、DesignPackage、概念版本与海报 | 被 Git 忽略并在容器挂载持久卷；每个工作区/运行使用受校验目录，JSON 原子写入，不保存 Base64 或凭证 |
-| `data/runtime/tool_workspace/` | 严格研究 `job.json`、每轮隔离 raw/derived/outputs 与旧版工具的实际设计运行 | 后台任务、失败审计和设计运行都保留独立 ID；非正式平台探针另写隔离目录，不覆盖 canonical 证据 |
+| `data/runtime/tool_workspace/` | 严格研究 `job.json`、每轮隔离 raw/derived/outputs、旧版工具设计运行与 `collection/` 的调度配置/状态/事件/候选/指纹 | 后台任务、失败审计和设计运行都保留独立 ID；容器必须挂载持久卷；非正式平台探针另写隔离目录，不覆盖 canonical 证据 |
 | `scripts/` | 正式流水线、工具 API/一键启动、环境探针、四平台 Smoke Test 与显式授权入口 | 登录和工具启动命令变化同步维护本文件“标准命令” |
-| `tests/` | 数据、证据、降级与端到端契约 | 修复缺陷时优先增加回归测试 |
-| `docs/` | 专题说明与阶段性产品材料，包含人工决策契约、排版令牌、画布比例和视觉验收基线 | 本文件保留总览，专题细节链接到 docs |
+| `tests/` | 数据、证据、采集调度/候选门、部分失败降级与端到端契约 | 修复缺陷时优先增加回归测试；授权缺失、部分来源失败和重启恢复必须有明确断言 |
+| `docs/` | 专题说明与阶段性产品材料，包含人工决策契约、排版令牌、画布比例、视觉验收基线和 `frontend_quality_workflow.md` 自动/人工前端门 | 本文件保留总览，专题细节链接到 docs；自动 axe 与像素基线不得写成完整无障碍认证 |
 | `docs/assets/` | GitHub README 等文档专用视觉资产 | 只放项目自有或已获许可素材；保持相对路径与无障碍文本 |
 | `PRODUCT.md`、`DESIGN.md` | 产品意图、核心工作流与长期设计宪法 | 产品角色、信息优先级、视觉令牌或交互原则改变时同步维护；不得让文档与实际 CSS/组件漂移 |
 | `.impeccable/` | 机器可读设计契约、界面简报、成品截图与资产来源记录 | Detector 每轮最多运行一次；截图只作审阅证据，不把外部参考资产混入正式产品素材 |
-| `web/` | 暖纸色 Creative Intelligence Workbench、五阶段导航、上下文 Dock、七阶段 Human Decision Studio、React Flow 节点、9 个动态详情页、证据台账、Inspector、API Client、Workspace UI、Canvas PNG 导出与自托管中文排版系统 | 使用 Vinext/React/Sites 构建；颜色/间距/圆角/阴影优先引用 `variables.css` 令牌；页面不得硬编码事实计数，不把历史/cache 写成 live，不使用 `reference_only` 馆藏像素；内部跳转必须保留 workspace 与 decision 参数；手机端核心触控目标至少 44px，覆盖层必须转移并归还焦点，范围滑杆必须同时提供可精确输入的数值控件 |
-| `Dockerfile`、`deploy/` | Zeabur 单容器构建、Nginx 鉴权/反代、Vinext 与 Tool API 进程编排、健康检查 | Basic Auth 哈希只在启动时生成；worker 仅可读哈希文件；`/healthz` 之外不得绕过鉴权；运行态写入挂载卷 |
+| `web/` | Monochrome Precision Instrument 工作台、五阶段导航、上下文 Dock、七阶段 Human Decision Studio、可拖动/缩放 React Flow 工作台画布、黑色文化知识星图、持续采集控制面、9 个动态详情页、证据台账、Inspector、API Client、Workspace UI、Canvas PNG 导出、自托管中文排版系统与 Playwright/axe/视觉回归门 | 系统 chrome 只使用白/冷灰/石墨/黑，黑色只作为关系画布例外，来源图片才可保留内容色；页面不得把历史/cache/排期写成 live；市场历史证据优先于运维控制；断线必须使旧在线状态失效；手机默认能滚页，显式操作模式才接管星图手势；主要触控目标至少 44px，拖拽必须有点击/键盘等价路径 |
+| `web/tests/ui/` | 工作台与九个详情路由的 Playwright 桌面/手机质量门、axe、工作台/星图/弹层核心交互、采集断线与恢复、forced-colors 与视觉基线 | 当前 36 个测试实例为 35 passed / 1 desktop-only skip；测试必须从用户可见语义定位，不得通过隐藏控件、禁用规则或无审阅更新快照来消除失败；像素基线固定 Windows Chromium 环境 |
+| `Dockerfile`、`deploy/` | Zeabur 单容器构建、Nginx 鉴权/反代、Vinext、Tool API 与采集调度进程编排、真实健康检查 | Basic Auth 哈希只在启动时生成；`/healthz` 代理真实 API 心跳，线程死亡/心跳超过 45 秒返回 503，镜像 HEALTHCHECK 随之失败；启动脚本任一 API/Web/Nginx 子进程退出即失败；恢复仍依赖平台重启策略，运行态必须写入持久卷，当前只支持单副本调度 |
 | 四个外部源码目录（含 `flow/xyflow-main/`） | 许可证审计和可替换运行时 | 不删除版权信息；非必要不直接修改；产品节点、状态和视觉留在 QianCraft 自有层 |
 
 ## 5. 数据与证据规则
@@ -253,6 +274,10 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 ### 5.6 Workbench、Concept 与可编辑 Poster
 
 - 中央画布只允许 `CultureGraphNode / MarketRadarNode / StrategyNode / DesignBriefNode / VisualGenerationNode / ConceptNode / PosterBoardNode` 七类业务节点；默认三个 Concept 是同一类型的不同实例。
+- 工作画布必须遵守直接操控契约：主键或单指拖动空白区域平移，`Shift + 拖动` 框选，滚轮/捏合缩放，节点拖动只移动节点；移动端主要画布控制和菜单命中区不得小于 44px。
+- 文化/市场证据的拖拽创建必须同时提供可见点击按钮与键盘路径；React Flow 选择/移动提示必须使用当前中文产品语境，不能把拖拽当作进入画布的唯一方式。
+- Culture Graph、Workspace 与 Human Decision Studio 等 modal 必须有可访问名称/描述、初始焦点、Tab 焦点圈、Escape 关闭和触发器焦点归还；可滚动详情必须能由键盘进入。
+- `prefers-reduced-motion` 只去除动画旅行和连续运动，不得通过全局极短时长抹掉必要状态；`prefers-contrast` 与 Windows forced-colors 下必须保留可见焦点、选中态和状态形状。
 - Workspace Schema 1.1 必须保存 nodes、edges、viewport、selected concept、node versions、workflow metadata、`metadata.decision_profile` 与 `metadata.decision_output`；不得把 Base64 图像写进 JSON。
 - `DecisionProfile` 必须区分 `guided/manual`，并可保存文化记录、市场平台/产品形态、1–3 个机会、六维权重、文化风险扣分、设计意图、视觉参考/风格/尺寸、概念比较组/当前方向和海报主题/板块；所有 ID 必须来自服务端 `decisionCatalog`。
 - 人工权重允许用任意正数表达相对偏好，服务端统一归一化后再算分；原始 `systemScore`、人工 `manualScore`、权重贡献与风险扣分必须并列保存，禁止覆盖系统量分或伪装为新的事实。
@@ -305,6 +330,7 @@ uv pip install --python ".\market-intel_agent\MediaCrawler-main\.venv-qiancraft\
 # 首次安装前端依赖
 cd web
 pnpm install
+pnpm exec playwright install chromium
 cd ..
 
 # 同时启动本地真实数据 API 与 Web 工作台
@@ -319,11 +345,15 @@ pnpm dev
 pnpm test
 pnpm typecheck
 pnpm lint
+pnpm test:ui
 pnpm build
+pnpm quality
 pnpm start:local
 ```
 
-工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`。前端只通过 HTTP 使用真实 Python 数据；Workspace、研究任务、设计运行与生成资产写入被 Git 忽略的 `data/runtime/`，`data/workbench/` 和 `data/tool_workspace/` 仅作首次初始化/历史基线。工作台会持久化节点坐标、视口、任务书版本、DecisionProfile 版本、人工量分输出、当前采用方向、海报编排、后台任务和运行状态。五阶段导航负责聚焦链路，工具轨按需打开证据/资产/历史 Dock，节点选择联动画布与 Inspector；手机端外周面板变成可关闭覆盖层，打开时转移焦点，Escape 关闭后归还触发器。Human Decision Studio 可从顶部、工具轨、证据 Dock、画布、Inspector 或任一节点详情页进入；URL 使用 `?workspace=<id>&decision=<stage>` 恢复上下文。图像服务缺项时 Visual Generation 与单 Concept 操作明确进入 `warning`，不会用占位图冒充新生成。严格实时研究要求完整上游配置；缺项时阻断，不走兜底，运行中刷新页面会从服务端任务号续接。
+`pnpm test:ui` 自动启动项目 `.venv` 的 Tool API 与本地 Vinext，并在 1440×960 / 390×844 两个 Chromium 项目运行 36 个测试实例（当前 35 passed / 1 desktop-only skip）。除原有工作台与详情门外，还覆盖知识星图搜索/选点/拖动/滚轮/键盘/双触点、手机默认页面滚动与显式操作模式、采集断线旧状态失效、首次连接恢复、授权阻断和 forced-colors 层级。只有确认视觉变化有意且已经逐张人工查看 `web/tests/ui/ui-quality.spec.ts-snapshots/` 时，才允许运行 `pnpm test:ui:update`；详细口径见 [`docs/frontend_quality_workflow.md`](docs/frontend_quality_workflow.md)。
+
+工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`。前端只通过 HTTP 使用真实 Python 数据；Workspace、研究任务、采集调度/事件/候选、设计运行与生成资产写入被 Git 忽略的 `data/runtime/`，`data/workbench/` 和 `data/tool_workspace/` 仅作首次初始化/历史基线。Tool API 启动时同时启动持续采集调度器；文化默认每 360 分钟巡检登记来源并把新发现写入人工候选，市场默认每 240 分钟做严格授权预检。条件缺失时阻断，不走兜底；后台轮询、心跳、下次运行和连续失败在页面上保持可见。严格实时研究要求完整上游配置，运行中刷新页面从服务端任务号续接。
 
 ### 7.4 安装 API 与探针
 
@@ -367,7 +397,7 @@ uv run ruff check app tests
 
 ```powershell
 # 本地存在 Docker 时可先构建同一生产镜像
-docker build -t qiancraft:0.8.0 .
+docker build -t qiancraft:0.9.0 .
 
 # Zeabur CLI 在已选择项目/环境/服务后上传精简发布目录
 npx --yes zeabur@latest deploy --service-id <service-id> --environment-id <environment-id> --interactive=false
@@ -392,12 +422,157 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 - [ ] 正式输出需要更新时，已生成新的 JSON、Markdown 和 RunManifest。
 - [ ] 涉及 Design Agent 时，已核对交接 SHA-256、证据编号、量产状态、参考像素声明、海报尺寸与渲染摘要。
 - [ ] 涉及 Workbench 时，已核对 7 类节点契约、9 个默认实例的详情页、引用解析/缺失审计、Workspace Schema 1.1 与旧数据兼容、DecisionProfile 版本/ID 白名单/权重归一化、系统分和人工分并列、节点阶段深链、下游 stale 传播、严格研究 202/轮询/刷新续接/全 live 晋级门、Brief 实际 DesignPackage、Concept 旧资产标识、Poster 实际渲染和真实 API 错误态。
-- [ ] 涉及前端排版时，已核对用户暖纸色令牌与实际组件一致、中文字体实际加载、画布可读比例、1440px 桌面及 390px 手机工作台/Decision Studio/节点详情、页面级横向溢出、44px 触控目标、可访问名称与覆盖层焦点闭环。
+- [ ] 涉及持续采集时，已核对持久配置/状态/事件/候选/指纹、真实心跳、下次运行、退避、API 重启 interrupted、文化全部成功与部分失败的 healthy/degraded 区分、候选人工晋级门、市场实时开关/运行时/四平台授权阻断，以及只有 `live_verified` 才覆盖正式证据；不得把排期、预检、历史快照或部分成功写成实时产出。
+- [ ] 涉及前端排版或交互时，已运行 `pnpm test:ui` 并核对 Monochrome Precision Instrument 的白/冷灰/石墨/纯黑令牌与实际组件一致、黑色只作为真实关系画布例外、系统中文字体回退实际可用、画布可读比例、1440px 桌面及 390px 手机工作台/Decision Studio/节点详情、页面级横向溢出、44px 触控目标、移动端阶段/Run 入口、拖拽的点击/键盘等价路径、知识星图搜索/选点/桌面拖动/移动显式操作模式、断线旧状态失效、中文画布语义、可访问名称与覆盖层焦点闭环；系统 chrome 不得回退到米色、暖纸色或蓝/靛蓝，来源图片可保留自身颜色。
+- [ ] 涉及视觉基线时，已逐张人工查看桌面/手机快照后再决定是否运行 `pnpm test:ui:update`；axe 与像素回归只作为门槛证据，不写成完整 WCAG 认证。
 - [ ] 涉及上线时，已核对匿名鉴权、健康检查、认证后页面/API、持久卷目录、运行日志和部署域名；不能只依据平台状态声明完成。
 - [ ] 本文件的当前状态、受影响章节和更新日志已经同步维护。
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-08-29｜0.9.0｜知识星图、持续采集调度与双控制面
+
+变更：
+
+- 新增 `app/collection.py` 持续采集服务，把文化来源巡检与市场严格刷新拆成两条持久通道；配置、状态、真实心跳、下次运行、连续失败/退避、事件、候选、已见指纹和运行号写入 `data/runtime/tool_workspace/collection/`。文化通道使用条件请求、内容指纹与严格文章过滤发现同域资料，只进入 `pending_review`/`ready_to_structure`/`rejected` 候选门；只有全部已探测来源成功才是 healthy，部分失败为 degraded。市场通道先检查实时开关、MediaCrawler 运行时与 xhs/dy/bili/wb 授权，缺项即 blocked，只有最终 `live_verified` 才允许晋级。
+- `app/tool_api.py` 增加 collection 状态、事件、候选、配置、暂停/恢复/立即运行与审核 API，启动时自动启动调度线程，`/api/health` 返回真实调度心跳；线程死亡或心跳超过 45 秒时返回 503，Docker HEALTHCHECK 随之失败，交给已配置的平台重启策略恢复。客户端提前断开时安全吞掉 BrokenPipe/ConnectionReset，不产生第二次错误响应。Nginx `/healthz` 代理真实 API 健康，启动脚本同时监督 API、Web 与 Nginx，任一子进程退出即失败；新增环境变量说明与单副本/持久卷边界。
+- 文化节点由普通关系列表升级为可搜索、分类过滤、选点检查证据的黑色知识星图，保持白/冷灰/石墨/纯黑的工具 chrome。桌面支持按钮/滚轮缩放、鼠标拖动与键盘平移；手机默认 `pan-y pinch-zoom` 保留整页滚动，显式进入“操作星图”后支持单指平移和双指缩放，退出即归还页面手势。工作台原 React Flow 画布的拖动、框选、缩放和节点移动保持有效。
+- 文化与市场详情接入持续采集控制面：真实在线/中断、计划、上次尝试/成功、候选审核、平台授权矩阵、事件和错误均可见；12 秒轮询失败会使旧在线状态失效、禁用写操作并提供至少 44px 的重新连接按钮。新增候选只在服务端确认成功后清空表单，断线/拒绝时保留 URL 与标题供重试。市场页把 378 条历史证据、发布/检索时间窗和四平台样本量放在运行控制之前，实时控制默认折叠，避免用运维状态遮住证据。
+- 全部页面继续使用黑白精密工具视觉；修正星图 forced-colors 分层、reduced-motion、可访问状态、候选空标题、节点阶段标签、手机触控目标与时间本地化。重新截取 10 个桌面路由和文化/市场手机关键状态，截图保存在 `web/output/playwright/`；同步 README、产品/设计契约、持续采集、架构、知识图谱、市场、部署、实机和前端质量文档，版本提升到 0.9.0。
+
+原因：
+
+- 用户明确要求知识库、知识图谱和爬虫两个界面更好看，知识图谱采用优秀星图/网络图体验，并让素材收集从固定的二十余条静态录入变成可持续更新、7×24 可维护的前两个项目环节。实现参考 Sigma 的大图交互分层、Kumu 的力导向/固定节点思路，以及 Airflow/Temporal 的计划、暂停、下次运行、历史和阻断可观测模式，但保持 QianCraft 的证据门、授权门和工具型信息密度，没有复制官网式外观。
+
+验证：
+
+- `uv run pytest -q`：53 passed；新增回归证明调度线程死亡或心跳过期时 `/api/health` 为 503。`uv run ruff check app tests scripts/probe_market_platforms.py`、`uv lock --check`、`bash -n deploy/start-zeabur.sh` 与 `git diff --check`：通过。
+- `pnpm typecheck`、`pnpm lint`、`pnpm test`（5 passed）与 Vinext 五阶段 `pnpm build`：通过。`pnpm exec playwright test tests/ui/ui-quality.spec.ts`：35 passed、1 skipped；覆盖 1440×960 / 390×844 的全部 10 个路由、星图桌面真实滚轮/拖动/键盘、移动真实页面滚动/单触点平移/双触点缩放、工作台平移/节点移动、候选失败输入保留、44px、断线/首次失败恢复、授权阻断、forced-colors、axe、溢出和视觉基线。
+- Playwright CLI 人工验收：桌面 10 个路由均截图，文化/市场手机关键状态复核；知识星图实际完成搜索、选点、拖动、滚轮/按钮缩放与手机显式操作模式，浏览器控制台 0 error / 0 warning。最新 `desktop-culture.png`、`desktop-market.png` 与 `mobile-culture-top.png` 已在最终 CSS/交互之后重拍并目视通过。
+- 文化真实运行实际探测 4 个登记来源，4/4 可达；严格过滤没有把通用导航写入正式图谱，9 条噪声候选已拒绝，保留 1 条真实待核验候选，正式图谱仍为 22 条/32 来源。市场真实预检两次均因 `MEDIACRAWLER_LIVE_ENABLED=false` 和四平台无授权浏览器进入 blocked，没有创建假研究任务，也没有覆盖 378 条历史快照。
+- 独立 Impeccable finish review 逐轮阻断真实问题：第一轮发现移动触摸、断线假在线、文化部分成功、市场证据顺序和 forced-colors；第二轮发现 44px、最终测试时序、文档和时间格式；第三轮发现调度线程失效仍回 200，以及星图自动覆盖过述。上述问题均已修正并在最终代码上重跑完整质量门；第四位全新 reviewer 只读复核健康 503、真实星图动作、候选失败输入保留、文档与 15 张最终截图，结论为 `verdict: ship`、Critical/Major 均为 0。
+
+边界：
+
+- 本轮完成的是“持续调度、真实状态、候选门和可操作界面”。7×24 成立的前提是 Tool API/容器单副本常驻、`data/runtime` 持久卷、平台重启策略、网络与授权登录态持续有效；当前实现不是分布式队列，也不保证每轮都有新增资料。文化候选仍须人工核验，不自动成为文化事实。
+- 当前市场实时通道被明确阻断，378 只是带时间边界的历史真实快照，不能宣称四平台正在 7×24 持续产出。用户完成平台条款确认、授权和实时开关配置后，调度器才会创建严格任务。
+- 0.9.0 只完成本地实现与验收，未执行发布；线上仍是 0.8.0。本轮没有越过 DesignPackage、工厂询价/首样简报和概念海报边界，没有下单、量产发布、商业艺术批准或制造/合规就绪声明。
+
+涉及文件：
+
+- 后端/部署：`app/collection.py`、`app/tool_api.py`、`app/workbench.py`、`tests/test_collection.py`、`.env.example`、`Dockerfile`、`deploy/nginx.conf.template`、`deploy/start-zeabur.sh`、版本与锁文件。
+- 前端/测试：`web/app/collection-console.tsx`、`web/app/culture-constellation.tsx`、`web/app/node-detail.tsx`、`web/app/workbench-api.ts`、`web/app/workbench-model.ts`、`web/app/globals.css`、`web/app/variables.css`、`web/app/icon.svg`、`web/tests/ui/ui-quality.spec.ts`、`web/output/playwright/`。
+- 文档：`README.md`、`PRODUCT.md`、`DESIGN.md`、`.impeccable/design.json`、`.impeccable/surfaces/web-app-workbench-tsx.md`、`docs/continuous_collection.md`、`docs/architecture.md`、`docs/knowledge_graph.md`、`docs/market_intelligence.md`、`docs/deployment_zeabur.md`、`docs/real_machine_test.md`、`docs/frontend_quality_workflow.md`、`WORKFLOW.md`。
+
+### 2026-08-29｜0.8.3｜官方前端质量门、无障碍硬化与自动视觉回归
+
+变更：
+
+- 按用户要求在线调研高质量前端工作流，只采用 W3C WCAG 2.2、React Flow、Playwright、web.dev 与 Apple HIG 的官方/第一方资料，把结论整理为 `docs/frontend_quality_workflow.md`。同时通过官方 Skill Installer 安装用户本地 curated `playwright` Skill；安装器明确它从下一轮任务起可用，本轮没有伪装成已调用该 Skill，也没有复制外部网站视觉。
+- 为全部可拖拽文化/市场证据增加可见“添加到画布”按钮和中文 `role=status` 反馈，共享与 drop 相同的节点创建逻辑，满足不依赖拖拽的点击/键盘路径。React Flow 的选择、移动、取消和 live announcement 改为中文；工作台补唯一隐藏 `h1`，toast 区分 status/alert，连线配置和回调稳定化，七类自定义节点 memoized。
+- Culture Graph、Workspace 与 Human Decision Studio 统一为有名称/描述的 modal 语义，补初始焦点、Tab 焦点圈、Escape 关闭和触发器焦点归还；可滚动文化详情可由键盘进入。修复文化记录索引按钮内嵌链接的 nested-interactive DOM，并把 Decision Studio 平台/产品形态选中态和市场/策略次级文字收回黑白高对比。
+- 移除全局 `0.01ms` reduced-motion 清除方式：JS 画布定位在减少动态时直接归零，running/loading 使用静态替代，工作台/Dock/Inspector 只关闭相关过渡。增加 `prefers-contrast` 与 Windows forced-colors 规则；手机表单为至少 16px，新增证据按钮为 44×44px。非首屏图片使用 lazy/async，主图异步解码并保持高优先级。
+- 引入 `@playwright/test` 与 `@axe-core/playwright`，新增 Windows Chromium 桌面 1440×960、手机 390×844 两项目。28 项门覆盖 `/` 与九个节点详情的 axe A/AA/2.2 AA、唯一 `h1`、破图/alt、文档/主区溢出、手机 44px、证据输入等价、中文画布语义、三类弹层焦点、桌面指针平移、桌面/手机节点键盘移动、forced-colors 与四张像素基线；`pnpm quality` 串联 typecheck、lint、单元、UI 与 build。
+- 同步更新 `PRODUCT.md`、`DESIGN.md`、Impeccable surface brief/机器设计契约、标准命令、目录职责、完成定义和当前状态；前端版本提升到 0.8.3。Playwright 报告/结果目录加入 Git 与 ESLint 排除，Vite watcher 忽略测试产物和快照目录，避免报告生成触发开发服务器无意义重载。
+
+原因：
+
+- 用户要求继续检索优秀前端工作流、Skill 与实践，并实际使用它们把当前黑白工具界面提升到可持续的高完成度。0.8.2 已证明页面在两个核心视口下外观成立，但仍缺少每次改动都能重跑的语义、交互和视觉质量门；本轮因此不再凭感觉加装饰，而是把“工具性、直接操控、黑白克制、跨端可完成、焦点可逆”变成可执行约束。
+
+验证：
+
+- `pnpm typecheck`、ESLint、Workbench TypeScript 5/5、Playwright 28/28 与 Vinext 五阶段 production build 通过；`.impeccable/design.json` 经 JSON 解析，`git diff --check` 通过。
+- Playwright 最终对 10 个路由 × 2 个项目全部通过 axe A/AA/2.2 AA 规则、唯一 `h1`、破图 0、缺失 alt 0、文档/主区横向溢出 0；390px 可见主要触控目标小于 44px 为 0。三类 modal 的 axe、焦点圈、Escape 与焦点归还通过，桌面指针平移、两项目节点键盘移动与 forced-colors 焦点通过。
+- 自动门第一次真实发现并阻断了选中市场项、Culture 索引 nested-interactive、Workspace form/dialog role、移动图谱滚动区与 Decision Studio 选中态对比问题；逐项修复后才形成最终 28/28，没有禁用 axe 规则或隐藏控件绕过失败。
+- 四张 Windows Chromium 基线（工作台/Brief × 桌面/手机）已逐张人工目视；系统 chrome 只见白、冷灰、石墨和黑，工作台保持高密度工具结构，手机保留单任务视野而不是机械缩小桌面多栏。
+- 应用内真实浏览器最终在 1440×960 复核：6 个 draggable 证据对应 6 个添加按钮，点击后节点由 9→10；主键拖动空白画布使视口从 `translate(-199.976px, 125.931px) scale(0.98)` 变为 `translate(-349.976px, 0.930732px) scale(0.98)`；Culture Graph、Workspace 与 Human Decision Studio 均打开可见、焦点进入内部、Escape 关闭并归还各自触发器。
+- 本轮未修改 Python、API、文化/市场数据或研究链路，因此没有重复 Python 46/46、ruff、外部平台探针与在线引用检查；这些仍按既有基线记录，不冒充本轮重跑。
+
+边界：
+
+- axe 只能自动发现部分无障碍问题，28/28 不是 WCAG 认证；真实屏幕阅读器、残障用户、真实触屏设备与大规模图谱性能仍需专项验证。移动自动化覆盖节点键盘移动和 44px，单指画布平移沿用 0.8.2 应用内浏览器真实手势通过证据。
+- 像素快照固定 Windows Chromium、字体与演示工作区；其他操作系统的抗锯齿差异不能直接覆盖基线。视觉更新必须先人工查看，再使用 `pnpm test:ui:update`。
+- 本轮是本地前端、测试与设计契约更新，没有部署 0.8.3；当前受保护线上实例仍为 0.8.0，不能写成线上发布或认证后远端复验。用户本地安装的 `playwright` Skill 也不属于仓库交付物。
+- 未修改 22 条文化事实、378 条历史市场快照、机会评分、Workspace Schema、DesignPackage、概念图与海报内容；仍止于概念视觉、工厂询价/首样简报和概念海报，不授权生产发布、工厂下单、商业图稿批准或制造/合规就绪声明。
+
+涉及文件：
+
+- `web/app/workbench.tsx`、`web/app/workbench-nodes.tsx`、`web/app/decision-studio.tsx`、`web/app/node-detail.tsx`、`web/app/globals.css`
+- `web/package.json`、`web/pnpm-lock.yaml`、`web/playwright.config.ts`、`web/vite.config.ts`、`web/.gitignore`
+- `web/tests/ui/ui-quality.spec.ts`、`web/tests/ui/ui-quality.spec.ts-snapshots/`
+- `docs/frontend_quality_workflow.md`、`PRODUCT.md`、`DESIGN.md`
+- `.impeccable/design.json`、`.impeccable/surfaces/web-app-workbench-tsx.md`、`WORKFLOW.md`
+
+### 2026-08-29｜0.8.2｜全页面截图审计、可拖动画布与深层黑白收口
+
+变更：
+
+- 将 React Flow 空白画布从“主键拖动框选、仅中/右键平移”改为主键/单指直接平移；`Shift + 拖动` 继续承担框选，滚轮/捏合继续缩放，节点拖动仍只移动节点。画布增加可读交互说明和 grab/grabbing 反馈，没有改变 9 个节点、10 条边、Workspace Schema 或保存逻辑。
+- 修复 390px Workspace 菜单从 `x=-34` 越出屏幕的问题，菜单现稳定落在 `x=56…348`；React Flow 缩放控制、详情保存/下载/筛选/操作、运行信息和方法说明等主要手机控件统一到至少 44px。
+- 逐页深入到内部滚动容器后，修复 Poster 长工厂阶段值造成的 375→394px 横向溢出，并清除首屏之外残留的绿色标签/引用边线、深蓝海报拆解卡、红色步骤点、偏蓝页脚文字以及旧加载/通知状态色。系统 chrome 全部回到白、冷灰、石墨和黑；产品/证据/概念/海报栅格图继续按内容色例外保留来源颜色。
+- 为工作台与全部 9 个节点详情分别保存桌面/手机首屏和详情底部截图，并补充 Workspace、阶段菜单、Dock、Inspector、Decision Studio 与画布拖动后的关键状态，共 48 张最终验收图；`.impeccable/review/full-audit-082/README.md` 提供逐页索引、缺陷、实机数值、验证和边界。
+- 同步更新 `PRODUCT.md`、`DESIGN.md`、Impeccable surface brief 与机器设计契约，明确直接操控手势、移动触控范围与“内容色不等于系统色”的长期规则。
+
+勘误：
+
+- 0.8.1 日志中的“可见系统 chrome 无彩色值”只覆盖当时抽样的首屏视口，没有审计 9 个详情页的完整内部滚动范围，因此不能等同于全页面无彩。本条保留原日志不改写，并记录 0.8.2 实际发现、修复和重新验证的深层遗留色。
+
+原因：
+
+- 用户要求把所有页面截图后重新判断是否真正达到黑白、克制、类似 Apple 精度但仍为高密度工具的目标，并明确指出工作台画板应可拖动。此次因此从首屏审美扩展到完整路由、内部滚动、实际手势、移动触点、覆盖层焦点和错误/加载状态，而不是只再调一轮颜色。
+
+验证：
+
+- `pnpm test` 5/5、`pnpm typecheck`、ESLint、Vinext 五阶段 production build 与 `git diff --check` 通过；`.impeccable/design.json` 另经 JSON 解析验证。本轮没有改 Python、API、文化/市场数据或研究链路，因此没有重复 Python 46/46 和外部平台探针。
+- 应用内浏览器在 1440×960 与 390×844 实测 `/`、`culture`、`market`、`strategy`、`brief`、`visual`、`concept-a/b/c`、`poster`：10/10 桌面页面与 10/10 手机页面均为破图 0、内部 `scrollWidth === clientWidth`、全滚动范围彩色系统 chrome 0。手机主要 `button/select/summary/detail-download` 小于 44px 的可操作项为 0；React Flow attribution 与正文内联引用按内联目标例外保留紧凑尺寸。
+- 桌面画布实际从 `translate(20px, 210px) scale(0.82)` 拖到 `translate(180px, 165px) scale(0.82)`，Zoom In 到 `0.984`；“交付”阶段能选中 `poster`。手机空白画布平移与节点拖动分别成功，节点双击进入 `/nodes/brief?workspace=guizhou-miao-demo`，移动阶段菜单选“交付”后自动关闭并选中 `poster`。
+- 手机 Dock 与 Inspector 均可用 Escape 关闭，焦点分别归还“证据库”和 `brief` 节点；Decision Studio 的 Escape 关闭后焦点归还“人工决策”。Workspace 菜单 4 个控件均为 44px，且不再裁切。
+- 48 张最终截图已人工目视抽查所有首屏、全部底部与关键工作台状态；文化图谱关系网格是实际关系画布的既定例外，不授权装饰网格扩散。
+
+边界：
+
+- 本轮是本地前端、设计契约与验收证据更新，没有部署 0.8.2；当前受保护线上实例仍是 0.8.0，不能把本地验收写成线上发布或认证后远端复验。
+- 未修改文化事实、378 条历史市场快照、机会评分、API、Workspace 数据、DesignPackage、概念图或海报内容。来源图片保留色彩仅属于内容例外，不允许彩色系统 chrome 回流。
+- 当前产物仍只用于概念展示、DesignPackage、工厂询价/首样简报与概念海报；未授权生产发布、工厂下单、商业图稿批准或制造/合规就绪声明。
+
+涉及文件：
+
+- `web/app/workbench.tsx`、`web/app/globals.css`
+- `PRODUCT.md`、`DESIGN.md`、`.impeccable/design.json`、`.impeccable/surfaces/web-app-workbench-tsx.md`
+- `.impeccable/review/full-audit-082/README.md`、`.impeccable/review/full-audit-082/before/`、`.impeccable/review/full-audit-082/after/`、`WORKFLOW.md`
+
+### 2026-08-29｜0.8.1｜黑白精密工具界面重构
+
+变更：
+
+- 将工作台从暖纸、米色与蓝/靛蓝交互色全面重构为用户钉定的 `Monochrome Precision Instrument`（Operate mode，方向种子 `a403e052`）：白色承担工作面、冷中性灰承担层级、石墨承担正文、纯黑承担选中态和唯一主动作。桌面命令栏调整为 60px，工具轨调整为 56px，Dock/Inspector 稳定为 260px/336px；节点选中只改变黑色对比与 keyline，不改变横条几何。原始产品、证据和概念图片可以保留来源色，界面 chrome、焦点与状态结构保持无彩色。
+- 把同一黑白视觉语言覆盖到工作台、工具 Dock、Inspector、React Flow 节点/连线/小地图、Human Decision Studio、九类节点详情、文化图谱、市场/策略/任务书/视觉/概念/海报状态和浏览器表面；字体改为 system/SF-like/Noto Sans SC 回退，使用细中性边线、克制语义圆角和仅限覆盖层的低强度阴影。文化图谱的关系网格因真实关系画布保留，不扩散为装饰背景。
+- 修复终审指出的三项移动/动作层级问题：390px 顶栏增加 72×56 当前阶段选择器和右上 44×44 黑色 Run；工具轨固定 56px且所有工具按钮为 44×44；Decision Studio 将“恢复系统建议/取消”按内容宽度分组，黑色保存保持唯一主动作，手机端保存为整行 44px、两个次动作并列为 44px。
+- 将长期偏好和已 ship 的设计系统同步写入 `PRODUCT.md`、`DESIGN.md`、Impeccable surface brief 与内嵌布局契约；重拍桌面/手机工作台、阶段菜单、Decision Studio 和节点详情验收图。没有把界面改成营销官网，也没有删除任何操作、证据、引用或失败边界。
+
+原因：
+
+- 用户明确否定原米色/蓝色配色，要求采用类似 Apple 的黑白精确感，但同时强调这是高密度工具而不是官网。此次因此只借用克制、留白、字重和材质精度，不引入营销首屏、巨幅标语、产品展示叙事或装饰动画。
+
+验证：
+
+- `pnpm test` 5/5、`pnpm typecheck`、ESLint 与 Vinext 五阶段 production build 通过；production server bundle 包含方向契约 `a403e052`。本轮没有改 Python、API、文化/市场数据或研究链路，因此未重复执行 Python 46/46 与外部平台探针。
+- 使用应用内浏览器复核 1440×960 与 390×844 的工作台、Decision Studio、Brief 详情；全部 `document.scrollWidth === clientWidth`。可见颜色审计在这些视图均为 0 个彩色系统 chrome；移动端阶段入口为 72×56、Run 为 44×44、工具轨为 56px、六个轨道按钮均为 44×44、阶段菜单项均为 44px，决策页主/次动作分别为 370×44 与 181×44。
+- Impeccable 检测器仅报告一项 advisory：Culture Graph 的网格背景；该处是实际关系画布，按 craft-floor 例外保留。独立 finish reviewer 首轮提出三项修复，复拍后逐项由 0/1 提升为 1/1，最终 disposition 为 `ship`。
+- `git diff --check` 无空白错误，仅显示工作树现有 LF/CRLF 规范化提示；桌面与手机最终截图均非空且已人工目视确认。
+
+边界：
+
+- 本轮是本地前端与设计文档更新，没有部署 0.8.1；当前受保护线上实例仍是 0.8.0，不能把本地视觉验收写成线上发布或认证后远端复验。
+- 文化事实、市场缓存口径、机会评分、API 行为、Workspace 数据、DesignPackage 与海报内容均未改变；来源图片保留自身颜色不等于允许彩色 chrome 回流。
+- 当前尺寸、BOM、DesignPackage 与海报仍只用于概念展示、工厂报价和首样沟通；未授权生产发布、工厂下单、商业图稿批准或制造/合规就绪声明。
+
+涉及文件：
+
+- `web/app/variables.css`、`web/app/globals.css`、`web/app/layout.tsx`、`web/app/workbench.tsx`、`web/app/decision-studio.tsx`
+- `PRODUCT.md`、`DESIGN.md`、`.impeccable/design.json`、`.impeccable/surfaces/web-app-workbench-tsx.md`、`.impeccable/review/desktop.png`、`.impeccable/review/desktop-decision.png`、`.impeccable/review/desktop-detail.png`
+- `.impeccable/review/mobile.png`、`.impeccable/review/mobile-phase.png`、`.impeccable/review/mobile-decision.png`、`.impeccable/review/mobile-detail.png`、`WORKFLOW.md`
 
 ### 2026-08-29｜0.8.0｜真实运行闭环、后台续接与全链路功能验收
 
@@ -1221,6 +1396,7 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 
 ## 11. 当前已知约束与下一步空间
 
+- 0.9.0 已建立桌面/手机 36 个 Playwright 实例（35 passed / 1 desktop-only skipped）、axe 与像素回归门，并真实覆盖星图桌面滚轮/拖动/键盘、移动页面滚动/单触点/双触点；自动检查仍不能替代真实屏幕阅读器、残障用户、真实触屏设备、跨平台字体渲染与超大图谱性能测试，后续无障碍结论必须继续区分“自动门通过”和“认证/用户验证”。
 - Human Decision Studio 已让文化、市场、机会、量分、任务书、视觉、概念和海报具备人工可变输入；下一步可在不改事实层的前提下增加 DecisionProfile 命名版本、差异对比、撤销/重做、多人批注和方案分支合并。
 - Workbench 的研究任务、Design Agent、DesignPackage 和 Poster 已形成可持久化本地闭环，刷新页面可续接研究轮询；独立图像自动化服务仍未配置。后续若要实际生成新的 Concept，需由用户提供兼容 Images API 的服务地址、模型和密钥并重新实测；旧成功资产必须继续和本轮结果分开标注。
 - 当前 Zeabur 实例已通过 Nginx Basic Auth、回环 API、Secret 变量与持久卷形成受保护产品验证环境；若扩大为多人正式使用，仍需补用户级身份、权限审计、备份恢复、口令轮换、对象存储、任务队列和更细粒度限流。
@@ -1238,6 +1414,7 @@ Invoke-WebRequest https://qiancraft-studio-2026.zeabur.app/ -UseBasicParsing
 - [`DESIGN.md`](DESIGN.md)
 - [`docs/architecture.md`](docs/architecture.md)
 - [`docs/design_agent.md`](docs/design_agent.md)
+- [`docs/frontend_quality_workflow.md`](docs/frontend_quality_workflow.md)
 - [`docs/human_decision_workflow.md`](docs/human_decision_workflow.md)
 - [`docs/knowledge_graph.md`](docs/knowledge_graph.md)
 - [`docs/market_intelligence.md`](docs/market_intelligence.md)

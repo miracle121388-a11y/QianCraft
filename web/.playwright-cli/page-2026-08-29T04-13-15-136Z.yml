@@ -1,0 +1,2026 @@
+- main [ref=f3e2]:
+  - generic [ref=f3e6]:
+    - link "返回 QianCraft 工作台" [ref=f3e7] [cursor=pointer]:
+      - /url: /?workspace=guizhou-miao-demo
+      - generic [ref=f3e10]: Q
+    - generic [ref=f3e11]:
+      - generic [ref=f3e12]: /
+      - strong [ref=f3e13]: 四平台形态热度
+    - generic [ref=f3e14]:
+      - link "打开人工决策" [ref=f3e15] [cursor=pointer]:
+        - /url: /?workspace=guizhou-miao-demo&decision=market
+      - button "运行当前节点" [ref=f3e17] [cursor=pointer]
+      - button "从当前节点开始运行" [ref=f3e20] [cursor=pointer]
+      - button "导出当前节点数据" [ref=f3e24] [cursor=pointer]
+  - generic [ref=f3e28]:
+    - generic [ref=f3e29]: M
+    - generic [ref=f3e30]:
+      - heading "四平台形态热度" [level=1] [ref=f3e31]
+      - paragraph [ref=f3e32]: 基于已保存的真实平台历史快照比较产品形态，不把缓存标成实时趋势。
+      - generic [ref=f3e33]:
+        - emphasis [ref=f3e34]: 证据快照
+        - link "39 条引用" [ref=f3e35] [cursor=pointer]:
+          - /url: "#citations"
+        - generic [ref=f3e36]: 市场证据 · 非销量结论
+        - group [ref=f3e37]:
+          - generic "运行信息" [ref=f3e38] [cursor=pointer]
+  - navigation "相关节点" [ref=f3e39]:
+    - generic [ref=f3e40]: 关联节点
+    - link "下游 文化 × 市场机会排序" [ref=f3e41] [cursor=pointer]:
+      - /url: /nodes/strategy?workspace=guizhou-miao-demo
+      - generic [ref=f3e43]: 下游
+      - strong [ref=f3e44]: 文化 × 市场机会排序
+  - generic [ref=f3e49]:
+    - generic [ref=f3e50]:
+      - generic [ref=f3e51]:
+        - generic [ref=f3e52]: 历史样本
+        - strong [ref=f3e53]: "378"
+        - generic [ref=f3e54]: 发布 2021-05-18 — 2026-08-27检索 2026-08-27
+      - generic [ref=f3e55]:
+        - generic [ref=f3e56]: 小红书
+        - strong [ref=f3e57]: "115"
+        - generic [ref=f3e58]: 历史快照
+      - generic [ref=f3e59]:
+        - generic [ref=f3e60]: 抖音
+        - strong [ref=f3e61]: "14"
+        - generic [ref=f3e62]: 历史快照
+      - generic [ref=f3e63]:
+        - generic [ref=f3e64]: B站
+        - strong [ref=f3e65]: "101"
+        - generic [ref=f3e66]: 历史快照
+      - generic [ref=f3e67]:
+        - generic [ref=f3e68]: 微博
+        - strong [ref=f3e69]: "148"
+        - generic [ref=f3e70]: 历史快照
+    - group [ref=f3e71]:
+      - generic "持续采集与授权 按计划复检四个平台；未授权时明确阻断，不覆盖上方历史证据。 展开运行控制" [active] [ref=f3e72] [cursor=pointer]:
+        - generic [ref=f3e73]:
+          - strong [ref=f3e74]: 持续采集与授权
+          - generic [ref=f3e75]: 按计划复检四个平台；未授权时明确阻断，不覆盖上方历史证据。
+        - emphasis [ref=f3e76]: 展开运行控制
+      - generic [ref=f3e1760]:
+        - generic [ref=f3e1761]:
+          - generic [ref=f3e1762]:
+            - generic [ref=f3e1763]: 持续维护已开启
+            - heading "采集运行控制面" [level=2] [ref=f3e1765]
+            - paragraph [ref=f3e1766]: 按计划复检四个平台；每个平台独立记账，失败轮不覆盖已核验快照。
+          - button "暂停全部" [ref=f3e1767] [cursor=pointer]
+        - generic "持续采集摘要" [ref=f3e1771]:
+          - generic [ref=f3e1772]:
+            - generic [ref=f3e1775]: 调度心跳
+            - strong [ref=f3e1776]: 在线
+            - generic [ref=f3e1777]: 08/29 12:12
+        - article [ref=f3e1779]:
+          - generic [ref=f3e1780]:
+            - generic [ref=f3e1790]:
+              - heading "四平台增量采集" [level=3] [ref=f3e1791]
+              - paragraph [ref=f3e1792]: 自动采集受阻：实时市场采集开关：MEDIACRAWLER_LIVE_ENABLED=false；XHS 授权入口：没有已连接的授权浏览器；DY 授权入口：没有已连接的授权浏览器；BILI 授权入口：没有已连接的授权浏览器
+            - strong [ref=f3e1795]: 等待授权
+          - list "四平台增量采集处理步骤" [ref=f3e1796]:
+            - listitem [ref=f3e1797]:
+              - generic [ref=f3e1798]: "1"
+              - strong [ref=f3e1799]: 检查授权与运行时
+            - listitem [ref=f3e1800]:
+              - generic [ref=f3e1801]: "2"
+              - strong [ref=f3e1802]: 四平台独立采集
+            - listitem [ref=f3e1803]:
+              - generic [ref=f3e1804]: "3"
+              - strong [ref=f3e1805]: 统一字段与去重
+            - listitem [ref=f3e1806]:
+              - generic [ref=f3e1807]: "4"
+              - strong [ref=f3e1808]: 全 live 才晋级
+          - generic "四平台授权与采集状态" [ref=f3e1809]:
+            - generic [ref=f3e1810]:
+              - generic [ref=f3e1811]: 小红书
+              - strong [ref=f3e1812]: 等待授权
+              - generic [ref=f3e1813]: 没有已连接的授权浏览器
+            - generic [ref=f3e1814]:
+              - generic [ref=f3e1815]: 抖音
+              - strong [ref=f3e1816]: 等待授权
+              - generic [ref=f3e1817]: 没有已连接的授权浏览器
+            - generic [ref=f3e1818]:
+              - generic [ref=f3e1819]: B站
+              - strong [ref=f3e1820]: 等待授权
+              - generic [ref=f3e1821]: 没有已连接的授权浏览器
+            - generic [ref=f3e1822]:
+              - generic [ref=f3e1823]: 微博
+              - strong [ref=f3e1824]: 等待授权
+              - generic [ref=f3e1825]: 没有已连接的授权浏览器
+          - generic [ref=f3e1826]:
+            - generic [ref=f3e1827]:
+              - generic [ref=f3e1828]:
+                - term [ref=f3e1829]: 上次尝试
+                - definition [ref=f3e1830]: 08/29 12:12
+              - generic [ref=f3e1831]:
+                - term [ref=f3e1832]: 上次成功
+                - definition [ref=f3e1833]: 尚无
+              - generic [ref=f3e1834]:
+                - term [ref=f3e1835]: 下次运行
+                - definition [ref=f3e1836]: 45 分钟后
+              - generic [ref=f3e1837]:
+                - term [ref=f3e1838]: 连续失败
+                - definition [ref=f3e1839]: "3"
+            - generic [ref=f3e1840]:
+              - generic [ref=f3e1841]:
+                - generic [ref=f3e1842]: 运行间隔
+                - combobox "四平台增量采集运行间隔" [ref=f3e1843] [cursor=pointer]:
+                  - option "每 1 小时"
+                  - option "每 2 小时"
+                  - option "每 4 小时" [selected]
+                  - option "每 6 小时"
+                  - option "每 12 小时"
+                  - option "每 1 天"
+              - button "暂停通道" [ref=f3e1844] [cursor=pointer]
+              - button "立即运行" [ref=f3e1848] [cursor=pointer]
+          - generic [ref=f3e1854]:
+            - strong [ref=f3e1859]: 自动运行前必须补齐
+            - list [ref=f3e1860]:
+              - listitem [ref=f3e1861]: 实时市场采集开关：MEDIACRAWLER_LIVE_ENABLED=false
+              - listitem [ref=f3e1862]: XHS 授权入口：没有已连接的授权浏览器
+              - listitem [ref=f3e1863]: DY 授权入口：没有已连接的授权浏览器
+              - listitem [ref=f3e1864]: BILI 授权入口：没有已连接的授权浏览器
+              - listitem [ref=f3e1865]: WB 授权入口：没有已连接的授权浏览器
+            - paragraph [ref=f3e1866]: 调度器会继续复检，不会自动弹出登录窗口，也不会把历史快照写成实时结果。
+        - generic [ref=f3e1867]:
+          - generic [ref=f3e1869]:
+            - heading "最近运行事件" [level=3] [ref=f3e1870]
+            - paragraph [ref=f3e1871]: 失败、阻断和恢复都保留在本机持久化审计中。
+          - list [ref=f3e1872]:
+            - listitem [ref=f3e1873]:
+              - time [ref=f3e1875]: 08/29 12:12
+              - generic [ref=f3e1876]:
+                - strong [ref=f3e1877]: 自动采集受阻：实时市场采集开关：MEDIACRAWLER_LIVE_ENABLED=false；XHS 授权入口：没有已连接的授权浏览器；DY 授权入口：没有已连接的授权浏览器；BILI 授权入口：没有已连接的授权浏览器
+                - generic [ref=f3e1878]: 市场
+            - listitem [ref=f3e1879]:
+              - time [ref=f3e1881]: 08/29 12:08
+              - generic [ref=f3e1882]:
+                - strong [ref=f3e1883]: 持续采集调度器已启动。
+                - generic [ref=f3e1884]: 系统
+            - listitem [ref=f3e1885]:
+              - time [ref=f3e1887]: 08/29 12:07
+              - generic [ref=f3e1888]:
+                - strong [ref=f3e1889]: 持续采集调度器已启动。
+                - generic [ref=f3e1890]: 系统
+            - listitem [ref=f3e1891]:
+              - time [ref=f3e1893]: 08/29 12:06
+              - generic [ref=f3e1894]:
+                - strong [ref=f3e1895]: 持续采集调度器已启动。
+                - generic [ref=f3e1896]: 系统
+            - listitem [ref=f3e1897]:
+              - time [ref=f3e1899]: 08/29 11:52
+              - generic [ref=f3e1900]:
+                - strong [ref=f3e1901]: 持续采集调度器已启动。
+                - generic [ref=f3e1902]: 系统
+            - listitem [ref=f3e1903]:
+              - time [ref=f3e1905]: 08/29 11:42
+              - generic [ref=f3e1906]:
+                - strong [ref=f3e1907]: 自动采集受阻：实时市场采集开关：MEDIACRAWLER_LIVE_ENABLED=false；XHS 授权入口：没有已连接的授权浏览器；DY 授权入口：没有已连接的授权浏览器；BILI 授权入口：没有已连接的授权浏览器
+                - generic [ref=f3e1908]: 市场
+            - listitem [ref=f3e1909]:
+              - time [ref=f3e1911]: 08/29 11:41
+              - generic [ref=f3e1912]:
+                - strong [ref=f3e1913]: 持续采集调度器已启动。
+                - generic [ref=f3e1914]: 系统
+            - listitem [ref=f3e1915]:
+              - time [ref=f3e1917]: 08/29 11:40
+              - generic [ref=f3e1918]:
+                - strong [ref=f3e1919]: 持续采集调度器已启动。
+                - generic [ref=f3e1920]: 系统
+            - listitem [ref=f3e1921]:
+              - time [ref=f3e1923]: 08/29 11:39
+              - generic [ref=f3e1924]:
+                - strong [ref=f3e1925]: 持续采集调度器已启动。
+                - generic [ref=f3e1926]: 系统
+            - listitem [ref=f3e1927]:
+              - time [ref=f3e1929]: 08/29 11:36
+              - generic [ref=f3e1930]:
+                - strong [ref=f3e1931]: 持续采集调度器已启动。
+                - generic [ref=f3e1932]: 系统
+    - generic [ref=f3e77]:
+      - generic [ref=f3e78]:
+        - generic [ref=f3e79]:
+          - heading "爆款形态排序" [level=2] [ref=f3e81]
+          - paragraph [ref=f3e82]: 跨平台热度为派生分，不是平台官方口径
+        - article [ref=f3e83]:
+          - generic [ref=f3e84]: "01"
+          - generic [ref=f3e85]:
+            - heading "冰箱贴" [level=3] [ref=f3e86]
+            - paragraph [ref=f3e87]: 覆盖 4/4 个平台；小红书平台内平均热度 52.7；高热帖子占比 15%；共识别 89 条相关真实记录；近期内容占比较高
+            - generic [ref=f3e88]:
+              - generic [ref=f3e89]:
+                - text: 小红书
+                - emphasis [ref=f3e91]: "52.7"
+              - generic [ref=f3e92]:
+                - text: 抖音
+                - emphasis [ref=f3e94]: "5.4"
+              - generic [ref=f3e95]:
+                - text: B站
+                - emphasis [ref=f3e97]: "43.2"
+              - generic [ref=f3e98]:
+                - text: 微博
+                - emphasis [ref=f3e100]: "41.0"
+          - strong [ref=f3e101]: "57.3"
+        - article [ref=f3e102]:
+          - generic [ref=f3e103]: "02"
+          - generic [ref=f3e104]:
+            - heading "徽章" [level=3] [ref=f3e105]
+            - paragraph [ref=f3e106]: 覆盖 4/4 个平台；微博平台内平均热度 36.0；高热帖子占比 9%；共识别 33 条相关真实记录；近期内容占比较高
+            - generic [ref=f3e107]:
+              - generic [ref=f3e108]:
+                - text: 小红书
+                - emphasis [ref=f3e110]: "30.8"
+              - generic [ref=f3e111]:
+                - text: 抖音
+                - emphasis [ref=f3e113]: "21.4"
+              - generic [ref=f3e114]:
+                - text: B站
+                - emphasis [ref=f3e116]: "31.3"
+              - generic [ref=f3e117]:
+                - text: 微博
+                - emphasis [ref=f3e119]: "36.0"
+          - strong [ref=f3e120]: "52.1"
+        - article [ref=f3e121]:
+          - generic [ref=f3e122]: "03"
+          - generic [ref=f3e123]:
+            - heading "盲盒" [level=3] [ref=f3e124]
+            - paragraph [ref=f3e125]: 覆盖 2/4 个平台；B站平台内平均热度 78.3；高热帖子占比 67%；共识别 3 条相关真实记录
+            - generic [ref=f3e126]:
+              - generic [ref=f3e127]:
+                - text: 小红书
+                - emphasis [ref=f3e129]: "52.7"
+              - generic [ref=f3e130]:
+                - text: B站
+                - emphasis [ref=f3e132]: "78.3"
+          - strong [ref=f3e133]: "51.5"
+        - article [ref=f3e134]:
+          - generic [ref=f3e135]: "04"
+          - generic [ref=f3e136]:
+            - heading "包挂" [level=3] [ref=f3e137]
+            - paragraph [ref=f3e138]: 覆盖 3/4 个平台；小红书平台内平均热度 40.0；高热帖子占比 11%；共识别 28 条相关真实记录；近期内容占比较高
+            - generic [ref=f3e139]:
+              - generic [ref=f3e140]:
+                - text: 小红书
+                - emphasis [ref=f3e142]: "40.0"
+              - generic [ref=f3e143]:
+                - text: B站
+                - emphasis [ref=f3e145]: "17.2"
+              - generic [ref=f3e146]:
+                - text: 微博
+                - emphasis [ref=f3e148]: "35.8"
+          - strong [ref=f3e149]: "47.8"
+        - article [ref=f3e150]:
+          - generic [ref=f3e151]: "05"
+          - generic [ref=f3e152]:
+            - heading "伴手礼" [level=3] [ref=f3e153]
+            - paragraph [ref=f3e154]: 覆盖 2/4 个平台；小红书平台内平均热度 62.0；高热帖子占比 0%；共识别 6 条相关真实记录；近期内容占比较高
+            - generic [ref=f3e155]:
+              - generic [ref=f3e156]:
+                - text: 小红书
+                - emphasis [ref=f3e158]: "62.0"
+              - generic [ref=f3e159]:
+                - text: 微博
+                - emphasis [ref=f3e161]: "25.6"
+          - strong [ref=f3e162]: "47.0"
+        - article [ref=f3e163]:
+          - generic [ref=f3e164]: "06"
+          - generic [ref=f3e165]:
+            - heading "潮玩" [level=3] [ref=f3e166]
+            - paragraph [ref=f3e167]: 覆盖 2/4 个平台；小红书平台内平均热度 59.0；高热帖子占比 14%；共识别 7 条相关真实记录；近期内容占比较高
+            - generic [ref=f3e168]:
+              - generic [ref=f3e169]:
+                - text: 小红书
+                - emphasis [ref=f3e171]: "59.0"
+              - generic [ref=f3e172]:
+                - text: 微博
+                - emphasis [ref=f3e174]: "18.5"
+          - strong [ref=f3e175]: "46.3"
+        - article [ref=f3e176]:
+          - generic [ref=f3e177]: "07"
+          - generic [ref=f3e178]:
+            - heading "香氛" [level=3] [ref=f3e179]
+            - paragraph [ref=f3e180]: 覆盖 3/4 个平台；B站平台内平均热度 54.9；高热帖子占比 0%；共识别 5 条相关真实记录
+            - generic [ref=f3e181]:
+              - generic [ref=f3e182]:
+                - text: 小红书
+                - emphasis [ref=f3e184]: "52.0"
+              - generic [ref=f3e185]:
+                - text: B站
+                - emphasis [ref=f3e187]: "54.9"
+              - generic [ref=f3e188]:
+                - text: 微博
+                - emphasis [ref=f3e190]: "9.0"
+          - strong [ref=f3e191]: "44.0"
+        - article [ref=f3e192]:
+          - generic [ref=f3e193]: "08"
+          - generic [ref=f3e194]:
+            - heading "挂件" [level=3] [ref=f3e195]
+            - paragraph [ref=f3e196]: 覆盖 3/4 个平台；小红书平台内平均热度 49.3；高热帖子占比 20%；共识别 5 条相关真实记录；近期内容占比较高
+            - generic [ref=f3e197]:
+              - generic [ref=f3e198]:
+                - text: 小红书
+                - emphasis [ref=f3e200]: "49.3"
+              - generic [ref=f3e201]:
+                - text: B站
+                - emphasis [ref=f3e203]: "26.8"
+              - generic [ref=f3e204]:
+                - text: 微博
+                - emphasis [ref=f3e206]: "22.6"
+          - strong [ref=f3e207]: "43.5"
+        - article [ref=f3e208]:
+          - generic [ref=f3e209]: "09"
+          - generic [ref=f3e210]:
+            - heading "首饰" [level=3] [ref=f3e211]
+            - paragraph [ref=f3e212]: 覆盖 2/4 个平台；小红书平台内平均热度 68.4；高热帖子占比 50%；共识别 4 条相关真实记录；近期内容占比较高
+            - generic [ref=f3e213]:
+              - generic [ref=f3e214]:
+                - text: 小红书
+                - emphasis [ref=f3e216]: "68.4"
+              - generic [ref=f3e217]:
+                - text: 微博
+                - emphasis [ref=f3e219]: "7.0"
+          - strong [ref=f3e220]: "38.9"
+        - article [ref=f3e221]:
+          - generic [ref=f3e222]: "10"
+          - generic [ref=f3e223]:
+            - heading "毛绒" [level=3] [ref=f3e224]
+            - paragraph [ref=f3e225]: 覆盖 2/4 个平台；小红书平台内平均热度 35.6；高热帖子占比 11%；共识别 9 条相关真实记录
+            - generic [ref=f3e226]:
+              - generic [ref=f3e227]:
+                - text: 小红书
+                - emphasis [ref=f3e229]: "35.6"
+              - generic [ref=f3e230]:
+                - text: 微博
+                - emphasis [ref=f3e232]: "13.8"
+          - strong [ref=f3e233]: "37.0"
+      - complementary [ref=f3e234]:
+        - heading "评分方法" [level=2] [ref=f3e235]
+        - paragraph [ref=f3e236]: 综合平台内热度、样本占比、平台覆盖与近期性，仅用于这批有限样本的相对比较。
+        - group [ref=f3e237]:
+          - generic "查看字段说明" [ref=f3e238] [cursor=pointer]
+        - generic [ref=f3e239]: 生成于 2026-08-28T19:50:56.592285+00:00
+    - generic [ref=f3e240]:
+      - generic [ref=f3e241]:
+        - heading "已采集代表记录" [level=2] [ref=f3e243]
+        - navigation [ref=f3e244]:
+          - button "全部" [pressed] [ref=f3e245] [cursor=pointer]
+          - button "小红书" [ref=f3e246] [cursor=pointer]
+          - button "抖音" [ref=f3e247] [cursor=pointer]
+          - button "B站" [ref=f3e248] [cursor=pointer]
+          - button "微博" [ref=f3e249] [cursor=pointer]
+      - generic [ref=f3e250]:
+        - article [ref=f3e251]:
+          - generic [ref=f3e252]:
+            - generic [ref=f3e253]: 小红书
+            - code [ref=f3e254]: MPL-XHS-ADD1A725C83693E55392
+          - heading "搞💰提升｜冰箱贴还能这样做！已变🧵三位数✨" [level=3] [ref=f3e255]
+          - paragraph [ref=f3e256]: 冰箱贴 · 文创冰箱贴
+          - paragraph [ref=f3e257]:
+            - time [ref=f3e258]: 发布 2026-03-16
+            - time [ref=f3e259]: 检索 2026-08-27
+          - generic [ref=f3e260]:
+            - generic [ref=f3e261]:
+              - text: 赞
+              - generic [ref=f3e262]: 9.4万
+            - generic [ref=f3e263]:
+              - text: 藏
+              - generic [ref=f3e264]: 3.5万
+            - generic [ref=f3e265]:
+              - text: 评
+              - generic [ref=f3e266]: "252"
+            - generic [ref=f3e267]:
+              - text: 转
+              - generic [ref=f3e268]: 1,658
+          - generic [ref=f3e269]:
+            - generic [ref=f3e270]: 平台内热度
+            - emphasis [ref=f3e272]
+            - strong [ref=f3e273]: "93.2"
+          - generic [ref=f3e274]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e275] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/69b7d61a000000001e00c83f
+        - article [ref=f3e276]:
+          - generic [ref=f3e277]:
+            - generic [ref=f3e278]: 微博
+            - code [ref=f3e279]: MPL-WB-BEF9FDE469E113008D8D
+          - heading "🎁好消息好消息，小年糕们看这里——🐟⚔️mini鱼吻！来了！！！「天下龙泉·太平瓷·太平剑」第二波联名，正式上新！听到大家的呼声，这次真的、真的、真的可以拥有了——鱼吻小挂件、冰箱贴，一并安排上，主打" [level=3] [ref=f3e280]
+          - paragraph [ref=f3e281]: 冰箱贴 · 文创包挂
+          - paragraph [ref=f3e282]:
+            - time [ref=f3e283]: 发布 2026-08-22
+            - time [ref=f3e284]: 检索 2026-08-27
+          - generic [ref=f3e285]:
+            - generic [ref=f3e286]:
+              - text: 赞
+              - generic [ref=f3e287]: "634"
+            - generic [ref=f3e288]:
+              - text: 藏
+              - generic [ref=f3e289]: "0"
+            - generic [ref=f3e290]:
+              - text: 评
+              - generic [ref=f3e291]: "369"
+            - generic [ref=f3e292]:
+              - text: 转
+              - generic [ref=f3e293]: "357"
+          - generic [ref=f3e294]:
+            - generic [ref=f3e295]: 平台内热度
+            - emphasis [ref=f3e297]
+            - strong [ref=f3e298]: "89.1"
+          - generic [ref=f3e299]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e300] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5334653629894939
+        - article [ref=f3e301]:
+          - generic [ref=f3e302]:
+            - generic [ref=f3e303]: B站
+            - code [ref=f3e304]: MPL-BILI-CE60CB67717280F3E0A9
+          - heading "“泉水冰箱贴”在趵突泉卖，1块多进10块卖“钱挣了，旅游也旅了”" [level=3] [ref=f3e305]
+          - paragraph [ref=f3e306]: 冰箱贴 · 文创冰箱贴
+          - paragraph [ref=f3e307]:
+            - time [ref=f3e308]: 发布 2026-08-25
+            - time [ref=f3e309]: 检索 2026-08-27
+          - generic [ref=f3e310]:
+            - generic [ref=f3e311]:
+              - text: 赞
+              - generic [ref=f3e312]: 1.3万
+            - generic [ref=f3e313]:
+              - text: 藏
+              - generic [ref=f3e314]: 1,176
+            - generic [ref=f3e315]:
+              - text: 评
+              - generic [ref=f3e316]: "338"
+            - generic [ref=f3e317]:
+              - text: 转
+              - generic [ref=f3e318]: "666"
+          - generic [ref=f3e319]:
+            - generic [ref=f3e320]: 平台内热度
+            - emphasis [ref=f3e322]
+            - strong [ref=f3e323]: "81.1"
+          - generic [ref=f3e324]: 用户授权的B站搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e325] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av117154309539417
+        - article [ref=f3e326]:
+          - generic [ref=f3e327]:
+            - generic [ref=f3e328]: 抖音
+            - code [ref=f3e329]: MPL-DY-27944D91D522C338411B
+          - 'heading "是漂亮的贵州非遗手工文创冰箱贴呀！！#非遗文化传承 #手工diy #我的手工作品 #冰箱贴 #贵州旅游" [level=3] [ref=f3e330]'
+          - paragraph [ref=f3e331]: 冰箱贴 · 非遗文创
+          - paragraph [ref=f3e332]:
+            - time [ref=f3e333]: 发布 2025-09-26
+            - time [ref=f3e334]: 检索 2026-08-27
+          - generic [ref=f3e335]:
+            - generic [ref=f3e336]:
+              - text: 赞
+              - generic [ref=f3e337]: "64"
+            - generic [ref=f3e338]:
+              - text: 藏
+              - generic [ref=f3e339]: "19"
+            - generic [ref=f3e340]:
+              - text: 评
+              - generic [ref=f3e341]: "8"
+            - generic [ref=f3e342]:
+              - text: 转
+              - generic [ref=f3e343]: "54"
+          - generic [ref=f3e344]:
+            - generic [ref=f3e345]: 平台内热度
+            - emphasis [ref=f3e347]
+            - strong [ref=f3e348]: "5.4"
+          - generic [ref=f3e349]: 用户授权的抖音搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e350] [cursor=pointer]:
+            - /url: https://www.douyin.com/video/7554353825148652826
+        - article [ref=f3e351]:
+          - generic [ref=f3e352]:
+            - generic [ref=f3e353]: 微博
+            - code [ref=f3e354]: MPL-WB-8C2A9FCD0AC1990EE7AB
+          - heading "二哈和他的白猫师尊 前世燃晚完全是恨海情天来的……《二哈和他的白猫师尊》✖️ 酷艾文创KuAi 方形徽章 「盲盒系列」🐱🐶截修“人生有八苦，生老病死，爱离别，求不得，怨憎会，五阴炽，是谓长恨。”" [level=3] [ref=f3e355]
+          - paragraph [ref=f3e356]: 徽章 · 文创徽章
+          - paragraph [ref=f3e357]:
+            - time [ref=f3e358]: 发布 2026-07-18
+            - time [ref=f3e359]: 检索 2026-08-27
+          - generic [ref=f3e360]:
+            - generic [ref=f3e361]:
+              - text: 赞
+              - generic [ref=f3e362]: 1,849
+            - generic [ref=f3e363]:
+              - text: 藏
+              - generic [ref=f3e364]: "0"
+            - generic [ref=f3e365]:
+              - text: 评
+              - generic [ref=f3e366]: 1,404
+            - generic [ref=f3e367]:
+              - text: 转
+              - generic [ref=f3e368]: "631"
+          - generic [ref=f3e369]:
+            - generic [ref=f3e370]: 平台内热度
+            - emphasis [ref=f3e372]
+            - strong [ref=f3e373]: "89.2"
+          - generic [ref=f3e374]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e375] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5322059395630612
+        - article [ref=f3e376]:
+          - generic [ref=f3e377]:
+            - generic [ref=f3e378]: B站
+            - code [ref=f3e379]: MPL-BILI-9D3C24AB18DD062C617A
+          - heading "买了一个徽章机！太好玩了！可以自己做徽章！" [level=3] [ref=f3e380]
+          - paragraph [ref=f3e381]: 徽章 · 文创徽章
+          - paragraph [ref=f3e382]:
+            - time [ref=f3e383]: 发布 2021-11-17
+            - time [ref=f3e384]: 检索 2026-08-27
+          - generic [ref=f3e385]:
+            - generic [ref=f3e386]:
+              - text: 赞
+              - generic [ref=f3e387]: 11万
+            - generic [ref=f3e388]:
+              - text: 藏
+              - generic [ref=f3e389]: 6.4万
+            - generic [ref=f3e390]:
+              - text: 评
+              - generic [ref=f3e391]: 5,974
+            - generic [ref=f3e392]:
+              - text: 转
+              - generic [ref=f3e393]: 3万
+          - generic [ref=f3e394]:
+            - generic [ref=f3e395]: 平台内热度
+            - emphasis [ref=f3e397]
+            - strong [ref=f3e398]: "88.2"
+          - generic [ref=f3e399]: 用户授权的B站搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e400] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av891685786
+        - article [ref=f3e401]:
+          - generic [ref=f3e402]:
+            - generic [ref=f3e403]: 小红书
+            - code [ref=f3e404]: MPL-XHS-86E971480DF92CB65751
+          - heading "阳光下的扩香片✨" [level=3] [ref=f3e405]
+          - paragraph [ref=f3e406]: 徽章 · 文创徽章
+          - paragraph [ref=f3e407]:
+            - time [ref=f3e408]: 发布 2025-04-27
+            - time [ref=f3e409]: 检索 2026-08-27
+          - generic [ref=f3e410]:
+            - generic [ref=f3e411]:
+              - text: 赞
+              - generic [ref=f3e412]: 2,423
+            - generic [ref=f3e413]:
+              - text: 藏
+              - generic [ref=f3e414]: 1,742
+            - generic [ref=f3e415]:
+              - text: 评
+              - generic [ref=f3e416]: 1,024
+            - generic [ref=f3e417]:
+              - text: 转
+              - generic [ref=f3e418]: "705"
+          - generic [ref=f3e419]:
+            - generic [ref=f3e420]: 平台内热度
+            - emphasis [ref=f3e422]
+            - strong [ref=f3e423]: "65.5"
+          - generic [ref=f3e424]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e425] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/680d9198000000001d02dd01
+        - article [ref=f3e426]:
+          - generic [ref=f3e427]:
+            - generic [ref=f3e428]: 抖音
+            - code [ref=f3e429]: MPL-DY-BE4841B90E9B64DF77C6
+          - 'heading "好适合当吧唧托啊…#国风手作 #东方美学手作 #故宫文创" [level=3] [ref=f3e430]'
+          - paragraph [ref=f3e431]: 徽章 · 非遗文创
+          - paragraph [ref=f3e432]:
+            - time [ref=f3e433]: 发布 2026-08-15
+            - time [ref=f3e434]: 检索 2026-08-27
+          - generic [ref=f3e435]:
+            - generic [ref=f3e436]:
+              - text: 赞
+              - generic [ref=f3e437]: 3,285
+            - generic [ref=f3e438]:
+              - text: 藏
+              - generic [ref=f3e439]: "562"
+            - generic [ref=f3e440]:
+              - text: 评
+              - generic [ref=f3e441]: "55"
+            - generic [ref=f3e442]:
+              - text: 转
+              - generic [ref=f3e443]: 1,398
+          - generic [ref=f3e444]:
+            - generic [ref=f3e445]: 平台内热度
+            - emphasis [ref=f3e447]
+            - strong [ref=f3e448]: "21.4"
+          - generic [ref=f3e449]: 用户授权的抖音搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e450] [cursor=pointer]:
+            - /url: https://www.douyin.com/video/7674163951421501158
+        - article [ref=f3e451]:
+          - generic [ref=f3e452]:
+            - generic [ref=f3e453]: B站
+            - code [ref=f3e454]: MPL-BILI-D3AD6452E5C575EE79ED
+          - heading "文创battle，博物馆的内卷" [level=3] [ref=f3e455]
+          - paragraph [ref=f3e456]: 盲盒 · 博物馆文创
+          - paragraph [ref=f3e457]:
+            - time [ref=f3e458]: 发布 2021-05-18
+            - time [ref=f3e459]: 检索 2026-08-27
+          - generic [ref=f3e460]:
+            - generic [ref=f3e461]:
+              - text: 赞
+              - generic [ref=f3e462]: 3.4万
+            - generic [ref=f3e463]:
+              - text: 藏
+              - generic [ref=f3e464]: 3,723
+            - generic [ref=f3e465]:
+              - text: 评
+              - generic [ref=f3e466]: 1,049
+            - generic [ref=f3e467]:
+              - text: 转
+              - generic [ref=f3e468]: 2,378
+          - generic [ref=f3e469]:
+            - generic [ref=f3e470]: 平台内热度
+            - emphasis [ref=f3e472]
+            - strong [ref=f3e473]: "78.9"
+          - generic [ref=f3e474]: 用户授权的B站搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e475] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av973135660
+        - article [ref=f3e476]:
+          - generic [ref=f3e477]:
+            - generic [ref=f3e478]: 小红书
+            - code [ref=f3e479]: MPL-XHS-0DE55712F12CC3AA7521
+          - heading "三星堆盲盒" [level=3] [ref=f3e480]
+          - paragraph [ref=f3e481]: 盲盒 · 博物馆文创
+          - paragraph [ref=f3e482]:
+            - time [ref=f3e483]: 发布 2026-03-08
+            - time [ref=f3e484]: 检索 2026-08-27
+          - generic [ref=f3e485]:
+            - generic [ref=f3e486]:
+              - text: 赞
+              - generic [ref=f3e487]: 2,204
+            - generic [ref=f3e488]:
+              - text: 藏
+              - generic [ref=f3e489]: "392"
+            - generic [ref=f3e490]:
+              - text: 评
+              - generic [ref=f3e491]: "672"
+            - generic [ref=f3e492]:
+              - text: 转
+              - generic [ref=f3e493]: 2,760
+          - generic [ref=f3e494]:
+            - generic [ref=f3e495]: 平台内热度
+            - emphasis [ref=f3e497]
+            - strong [ref=f3e498]: "52.7"
+          - generic [ref=f3e499]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e500] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/69ad7d66000000001d027f72
+        - article [ref=f3e501]:
+          - generic [ref=f3e502]:
+            - generic [ref=f3e503]: 微博
+            - code [ref=f3e504]: MPL-WB-F25F6606766F74E5FA7D
+          - heading "【转存！#文创包搭子是懂中式美学的#】#文化中国行看包搭子里的东方美学# “包挂”走红，你给包包挂上“包搭子”了吗？“吴越争霸”蒜鸟包挂、魁星点斗毛绒包挂、杜虎符毛绒挂件……当博物馆里的文物变成“包搭" [level=3] [ref=f3e505]
+          - paragraph [ref=f3e506]: 包挂 · 文创包挂
+          - paragraph [ref=f3e507]:
+            - time [ref=f3e508]: 发布 2025-11-23
+            - time [ref=f3e509]: 检索 2026-08-27
+          - generic [ref=f3e510]:
+            - generic [ref=f3e511]:
+              - text: 赞
+              - generic [ref=f3e512]: "918"
+            - generic [ref=f3e513]:
+              - text: 藏
+              - generic [ref=f3e514]: "0"
+            - generic [ref=f3e515]:
+              - text: 评
+              - generic [ref=f3e516]: "414"
+            - generic [ref=f3e517]:
+              - text: 转
+              - generic [ref=f3e518]: "943"
+          - generic [ref=f3e519]:
+            - generic [ref=f3e520]: 平台内热度
+            - emphasis [ref=f3e522]
+            - strong [ref=f3e523]: "86.2"
+          - generic [ref=f3e524]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e525] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5236414541464118
+        - article [ref=f3e526]:
+          - generic [ref=f3e527]:
+            - generic [ref=f3e528]: 小红书
+            - code [ref=f3e529]: MPL-XHS-0CBD2E87009C1F13CF79
+          - heading "🦊原创小狐狸眯糊狐小耳机包｜首发送眼镜‼️" [level=3] [ref=f3e530]
+          - paragraph [ref=f3e531]: 包挂 · 文创包挂
+          - paragraph [ref=f3e532]:
+            - time [ref=f3e533]: 发布 2026-03-10
+            - time [ref=f3e534]: 检索 2026-08-27
+          - generic [ref=f3e535]:
+            - generic [ref=f3e536]:
+              - text: 赞
+              - generic [ref=f3e537]: 8,808
+            - generic [ref=f3e538]:
+              - text: 藏
+              - generic [ref=f3e539]: 2,395
+            - generic [ref=f3e540]:
+              - text: 评
+              - generic [ref=f3e541]: "182"
+            - generic [ref=f3e542]:
+              - text: 转
+              - generic [ref=f3e543]: 1,381
+          - generic [ref=f3e544]:
+            - generic [ref=f3e545]: 平台内热度
+            - emphasis [ref=f3e547]
+            - strong [ref=f3e548]: "82.4"
+          - generic [ref=f3e549]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e550] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/69affdb70000000009021f88
+        - article [ref=f3e551]:
+          - generic [ref=f3e552]:
+            - generic [ref=f3e553]: B站
+            - code [ref=f3e554]: MPL-BILI-D5375C2DCEBF75DCBB75
+          - heading "1分钟学会制作一种物料之小房子包挂教程🏠" [level=3] [ref=f3e555]
+          - paragraph [ref=f3e556]: 包挂 · 文创包挂
+          - paragraph [ref=f3e557]:
+            - time [ref=f3e558]: 发布 2026-06-14
+            - time [ref=f3e559]: 检索 2026-08-27
+          - generic [ref=f3e560]:
+            - generic [ref=f3e561]:
+              - text: 赞
+              - generic [ref=f3e562]: "115"
+            - generic [ref=f3e563]:
+              - text: 藏
+              - generic [ref=f3e564]: "84"
+            - generic [ref=f3e565]:
+              - text: 评
+              - generic [ref=f3e566]: "5"
+            - generic [ref=f3e567]:
+              - text: 转
+              - generic [ref=f3e568]: "2"
+          - generic [ref=f3e569]:
+            - generic [ref=f3e570]: 平台内热度
+            - emphasis [ref=f3e572]
+            - strong [ref=f3e573]: "32.2"
+          - generic [ref=f3e574]: 用户授权的B站搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e575] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av116748099520766
+        - article [ref=f3e576]:
+          - generic [ref=f3e577]:
+            - generic [ref=f3e578]: 小红书
+            - code [ref=f3e579]: MPL-XHS-2B043F4A04CB3BC118F1
+          - heading "金犊奖认证！我们把武夷山水装进茶点盒" [level=3] [ref=f3e580]
+          - paragraph [ref=f3e581]: 伴手礼 · 新中式文创
+          - paragraph [ref=f3e582]:
+            - time [ref=f3e583]: 发布 2025-03-05
+            - time [ref=f3e584]: 检索 2026-08-27
+          - generic [ref=f3e585]:
+            - generic [ref=f3e586]:
+              - text: 赞
+              - generic [ref=f3e587]: 8,561
+            - generic [ref=f3e588]:
+              - text: 藏
+              - generic [ref=f3e589]: 5,623
+            - generic [ref=f3e590]:
+              - text: 评
+              - generic [ref=f3e591]: "65"
+            - generic [ref=f3e592]:
+              - text: 转
+              - generic [ref=f3e593]: 1,554
+          - generic [ref=f3e594]:
+            - generic [ref=f3e595]: 平台内热度
+            - emphasis [ref=f3e597]
+            - strong [ref=f3e598]: "74.6"
+          - generic [ref=f3e599]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e600] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/67c7e6220000000009039df4
+        - article [ref=f3e601]:
+          - generic [ref=f3e602]:
+            - generic [ref=f3e603]: 微博
+            - code [ref=f3e604]: MPL-WB-08D51A1EF9DFB7D0FBB9
+          - heading "省级部署“农文旅体健展商”，天祝率先这么干——多彩藏乡融合消费季全解读 天祝县商务局 活动解读 多彩藏乡·乐购天祝 | 8月29日启幕：一场&quot;农文旅体健展商&quot;的融合创" [level=3] [ref=f3e605]
+          - paragraph [ref=f3e606]: 伴手礼 · 非遗文创
+          - paragraph [ref=f3e607]:
+            - time [ref=f3e608]: 发布 2026-08-27
+            - time [ref=f3e609]: 检索 2026-08-27
+          - generic [ref=f3e610]:
+            - generic [ref=f3e611]:
+              - text: 赞
+              - generic [ref=f3e612]: "2"
+            - generic [ref=f3e613]:
+              - text: 藏
+              - generic [ref=f3e614]: "0"
+            - generic [ref=f3e615]:
+              - text: 评
+              - generic [ref=f3e616]: "2"
+            - generic [ref=f3e617]:
+              - text: 转
+              - generic [ref=f3e618]: "2"
+          - generic [ref=f3e619]:
+            - generic [ref=f3e620]: 平台内热度
+            - emphasis [ref=f3e622]
+            - strong [ref=f3e623]: "28.4"
+          - generic [ref=f3e624]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e625] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336586339749178
+        - article [ref=f3e626]:
+          - generic [ref=f3e627]:
+            - generic [ref=f3e628]: 小红书
+            - code [ref=f3e629]: MPL-XHS-2AFFA3B3139AC5C33D75
+          - heading "三星堆IP✨3D建模+文创延展｜超实用工作流" [level=3] [ref=f3e630]
+          - paragraph [ref=f3e631]: 潮玩 · 博物馆文创
+          - paragraph [ref=f3e632]:
+            - time [ref=f3e633]: 发布 2025-08-07
+            - time [ref=f3e634]: 检索 2026-08-27
+          - generic [ref=f3e635]:
+            - generic [ref=f3e636]:
+              - text: 赞
+              - generic [ref=f3e637]: 9,051
+            - generic [ref=f3e638]:
+              - text: 藏
+              - generic [ref=f3e639]: 7,469
+            - generic [ref=f3e640]:
+              - text: 评
+              - generic [ref=f3e641]: "69"
+            - generic [ref=f3e642]:
+              - text: 转
+              - generic [ref=f3e643]: 1,869
+          - generic [ref=f3e644]:
+            - generic [ref=f3e645]: 平台内热度
+            - emphasis [ref=f3e647]
+            - strong [ref=f3e648]: "80.4"
+          - generic [ref=f3e649]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e650] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/6894290f0000000023020c9b
+        - article [ref=f3e651]:
+          - generic [ref=f3e652]:
+            - generic [ref=f3e653]: 微博
+            - code [ref=f3e654]: MPL-WB-C8437B7873BD386DCD7A
+          - heading "【#好Young济宁打卡运河青春市集#】夜幕下的市集沿河铺展、业态丰富多元。非遗文创区人气高涨，青年匠人带来运河主题漆扇、剪纸、手作饰品，将太白楼、古漕运等济宁元素融入原创好物，游客可现场体验拓印、手" [level=3] [ref=f3e655]
+          - paragraph [ref=f3e656]: 潮玩 · 非遗文创
+          - paragraph [ref=f3e657]:
+            - time [ref=f3e658]: 发布 2026-07-23
+            - time [ref=f3e659]: 检索 2026-08-27
+          - generic [ref=f3e660]:
+            - generic [ref=f3e661]:
+              - text: 赞
+              - generic [ref=f3e662]: "3"
+            - generic [ref=f3e663]:
+              - text: 藏
+              - generic [ref=f3e664]: "0"
+            - generic [ref=f3e665]:
+              - text: 评
+              - generic [ref=f3e666]: "2"
+            - generic [ref=f3e667]:
+              - text: 转
+              - generic [ref=f3e668]: "2"
+          - generic [ref=f3e669]:
+            - generic [ref=f3e670]: 平台内热度
+            - emphasis [ref=f3e672]
+            - strong [ref=f3e673]: "24.2"
+          - generic [ref=f3e674]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e675] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5323791748303172
+        - article [ref=f3e676]:
+          - generic [ref=f3e677]:
+            - generic [ref=f3e678]: 小红书
+            - code [ref=f3e679]: MPL-XHS-6CAE27EA8A2BCE3DB164
+          - heading "🌟 32种必看非遗手作|感受指尖上的千年国粹" [level=3] [ref=f3e680]
+          - paragraph [ref=f3e681]: 香氛 · 非遗文创
+          - paragraph [ref=f3e682]:
+            - time [ref=f3e683]: 发布 2025-06-18
+            - time [ref=f3e684]: 检索 2026-08-27
+          - generic [ref=f3e685]:
+            - generic [ref=f3e686]:
+              - text: 赞
+              - generic [ref=f3e687]: 7,317
+            - generic [ref=f3e688]:
+              - text: 藏
+              - generic [ref=f3e689]: 4,130
+            - generic [ref=f3e690]:
+              - text: 评
+              - generic [ref=f3e691]: "52"
+            - generic [ref=f3e692]:
+              - text: 转
+              - generic [ref=f3e693]: "903"
+          - generic [ref=f3e694]:
+            - generic [ref=f3e695]: 平台内热度
+            - emphasis [ref=f3e697]
+            - strong [ref=f3e698]: "71.4"
+          - generic [ref=f3e699]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e700] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/6852680f0000000013011d85
+        - article [ref=f3e701]:
+          - generic [ref=f3e702]:
+            - generic [ref=f3e703]: B站
+            - code [ref=f3e704]: MPL-BILI-EB1557656712BE87ABDC
+          - heading "来了！平价实用却很有创意的小文创【第2弹】" [level=3] [ref=f3e705]
+          - paragraph [ref=f3e706]: 香氛 · 文创包挂
+          - paragraph [ref=f3e707]:
+            - time [ref=f3e708]: 发布 2022-09-07
+            - time [ref=f3e709]: 检索 2026-08-27
+          - generic [ref=f3e710]:
+            - generic [ref=f3e711]:
+              - text: 赞
+              - generic [ref=f3e712]: 1,333
+            - generic [ref=f3e713]:
+              - text: 藏
+              - generic [ref=f3e714]: "393"
+            - generic [ref=f3e715]:
+              - text: 评
+              - generic [ref=f3e716]: "172"
+            - generic [ref=f3e717]:
+              - text: 转
+              - generic [ref=f3e718]: "73"
+          - generic [ref=f3e719]:
+            - generic [ref=f3e720]: 平台内热度
+            - emphasis [ref=f3e722]
+            - strong [ref=f3e723]: "54.9"
+          - generic [ref=f3e724]: 用户授权的B站搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e725] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av730281982
+        - article [ref=f3e726]:
+          - generic [ref=f3e727]:
+            - generic [ref=f3e728]: 微博
+            - code [ref=f3e729]: MPL-WB-5987BB5450FA39F4DCDF
+          - heading "#生活手记#【廊坊七修酒店深度游】不止养生！二层“书修”区域全攻略，这才是文化人的天堂！很多朋友来廊坊新绎七修酒店，可能只关注了客房、餐厅。但其实，想要完整体验七修“德、食、功、书、香、乐、花”的文化" [level=3] [ref=f3e730]
+          - paragraph [ref=f3e731]: 香氛 · 新中式文创
+          - paragraph [ref=f3e732]:
+            - time [ref=f3e733]: 发布 2026-08-27
+            - time [ref=f3e734]: 检索 2026-08-27
+          - generic [ref=f3e735]:
+            - generic [ref=f3e736]:
+              - text: 赞
+              - generic [ref=f3e737]: "0"
+            - generic [ref=f3e738]:
+              - text: 藏
+              - generic [ref=f3e739]: "0"
+            - generic [ref=f3e740]:
+              - text: 评
+              - generic [ref=f3e741]: "0"
+            - generic [ref=f3e742]:
+              - text: 转
+              - generic [ref=f3e743]: "0"
+          - generic [ref=f3e744]:
+            - generic [ref=f3e745]: 平台内热度
+            - emphasis [ref=f3e747]
+            - strong [ref=f3e748]: "9.0"
+          - generic [ref=f3e749]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e750] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336447607375062
+        - article [ref=f3e751]:
+          - generic [ref=f3e752]:
+            - generic [ref=f3e753]: 小红书
+            - code [ref=f3e754]: MPL-XHS-3621FB69F104F70DD47B
+          - heading "🧨用吹塑板解锁非遗拓印✨年味挂饰自己做～" [level=3] [ref=f3e755]
+          - paragraph [ref=f3e756]: 挂件 · 非遗文创
+          - paragraph [ref=f3e757]:
+            - time [ref=f3e758]: 发布 2025-12-26
+            - time [ref=f3e759]: 检索 2026-08-27
+          - generic [ref=f3e760]:
+            - generic [ref=f3e761]:
+              - text: 赞
+              - generic [ref=f3e762]: 1.9万
+            - generic [ref=f3e763]:
+              - text: 藏
+              - generic [ref=f3e764]: 1.6万
+            - generic [ref=f3e765]:
+              - text: 评
+              - generic [ref=f3e766]: "172"
+            - generic [ref=f3e767]:
+              - text: 转
+              - generic [ref=f3e768]: 6,372
+          - generic [ref=f3e769]:
+            - generic [ref=f3e770]: 平台内热度
+            - emphasis [ref=f3e772]
+            - strong [ref=f3e773]: "89.4"
+          - generic [ref=f3e774]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e775] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/694e568b000000001e001fde
+        - article [ref=f3e776]:
+          - generic [ref=f3e777]:
+            - generic [ref=f3e778]: B站
+            - code [ref=f3e779]: MPL-BILI-454EB804DCA48ABD45DD
+          - heading "新手必学||超详细的钥匙扣教程" [level=3] [ref=f3e780]
+          - paragraph [ref=f3e781]: 挂件 · 文创包挂
+          - paragraph [ref=f3e782]:
+            - time [ref=f3e783]: 发布 2026-05-21
+            - time [ref=f3e784]: 检索 2026-08-27
+          - generic [ref=f3e785]:
+            - generic [ref=f3e786]:
+              - text: 赞
+              - generic [ref=f3e787]: "69"
+            - generic [ref=f3e788]:
+              - text: 藏
+              - generic [ref=f3e789]: "90"
+            - generic [ref=f3e790]:
+              - text: 评
+              - generic [ref=f3e791]: "4"
+            - generic [ref=f3e792]:
+              - text: 转
+              - generic [ref=f3e793]: "0"
+          - generic [ref=f3e794]:
+            - generic [ref=f3e795]: 平台内热度
+            - emphasis [ref=f3e797]
+            - strong [ref=f3e798]: "26.8"
+          - generic [ref=f3e799]: 用户授权的B站搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e800] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av116611902081813
+        - article [ref=f3e801]:
+          - generic [ref=f3e802]:
+            - generic [ref=f3e803]: 微博
+            - code [ref=f3e804]: MPL-WB-B79DAA30C867A796380A
+          - heading "丁程鑫周边中转站 出文创通勤包（可加购D挂件）还有行李箱小物也出" [level=3] [ref=f3e805]
+          - paragraph [ref=f3e806]: 挂件 · 文创包挂
+          - paragraph [ref=f3e807]:
+            - time [ref=f3e808]: 发布 2026-08-27
+            - time [ref=f3e809]: 检索 2026-08-27
+          - generic [ref=f3e810]:
+            - generic [ref=f3e811]:
+              - text: 赞
+              - generic [ref=f3e812]: "0"
+            - generic [ref=f3e813]:
+              - text: 藏
+              - generic [ref=f3e814]: "0"
+            - generic [ref=f3e815]:
+              - text: 评
+              - generic [ref=f3e816]: "11"
+            - generic [ref=f3e817]:
+              - text: 转
+              - generic [ref=f3e818]: "0"
+          - generic [ref=f3e819]:
+            - generic [ref=f3e820]: 平台内热度
+            - emphasis [ref=f3e822]
+            - strong [ref=f3e823]: "22.6"
+          - generic [ref=f3e824]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e825] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336619751573827
+        - article [ref=f3e826]:
+          - generic [ref=f3e827]:
+            - generic [ref=f3e828]: 小红书
+            - code [ref=f3e829]: MPL-XHS-51E98E4412F0A8AD5857
+          - heading "🦋24种非遗手作看完直接跪了！老祖宗的审美" [level=3] [ref=f3e830]
+          - paragraph [ref=f3e831]: 首饰 · 非遗文创
+          - paragraph [ref=f3e832]:
+            - time [ref=f3e833]: 发布 2025-02-19
+            - time [ref=f3e834]: 检索 2026-08-27
+          - generic [ref=f3e835]:
+            - generic [ref=f3e836]:
+              - text: 赞
+              - generic [ref=f3e837]: 8,288
+            - generic [ref=f3e838]:
+              - text: 藏
+              - generic [ref=f3e839]: 4,893
+            - generic [ref=f3e840]:
+              - text: 评
+              - generic [ref=f3e841]: "188"
+            - generic [ref=f3e842]:
+              - text: 转
+              - generic [ref=f3e843]: 1,073
+          - generic [ref=f3e844]:
+            - generic [ref=f3e845]: 平台内热度
+            - emphasis [ref=f3e847]
+            - strong [ref=f3e848]: "78.0"
+          - generic [ref=f3e849]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e850] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/67b5cbd4000000002901c6a5
+        - article [ref=f3e851]:
+          - generic [ref=f3e852]:
+            - generic [ref=f3e853]: 微博
+            - code [ref=f3e854]: MPL-WB-00F95CF55B6828732C4C
+          - heading "闲置转让 出垃圾包 有挂件 盲盒 本子 贴纸 吉卡哇 手链 夹子 文创等" [level=3] [ref=f3e855]
+          - paragraph [ref=f3e856]: 首饰 · 文创包挂
+          - paragraph [ref=f3e857]:
+            - time [ref=f3e858]: 发布 2026-08-25
+            - time [ref=f3e859]: 检索 2026-08-27
+          - generic [ref=f3e860]:
+            - generic [ref=f3e861]:
+              - text: 赞
+              - generic [ref=f3e862]: "0"
+            - generic [ref=f3e863]:
+              - text: 藏
+              - generic [ref=f3e864]: "0"
+            - generic [ref=f3e865]:
+              - text: 评
+              - generic [ref=f3e866]: "0"
+            - generic [ref=f3e867]:
+              - text: 转
+              - generic [ref=f3e868]: "0"
+          - generic [ref=f3e869]:
+            - generic [ref=f3e870]: 平台内热度
+            - emphasis [ref=f3e872]
+            - strong [ref=f3e873]: "7.0"
+          - generic [ref=f3e874]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e875] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5335896173840378
+        - article [ref=f3e876]:
+          - generic [ref=f3e877]:
+            - generic [ref=f3e878]: 小红书
+            - code [ref=f3e879]: MPL-XHS-0A643FC34F73416F8C15
+          - heading "敦煌飞天喵｜飘带卷着仙气挂包上🐱" [level=3] [ref=f3e880]
+          - paragraph [ref=f3e881]: 毛绒 · 文创包挂
+          - paragraph [ref=f3e882]:
+            - time [ref=f3e883]: 发布 2025-06-19
+            - time [ref=f3e884]: 检索 2026-08-27
+          - generic [ref=f3e885]:
+            - generic [ref=f3e886]:
+              - text: 赞
+              - generic [ref=f3e887]: 5,294
+            - generic [ref=f3e888]:
+              - text: 藏
+              - generic [ref=f3e889]: 3,165
+            - generic [ref=f3e890]:
+              - text: 评
+              - generic [ref=f3e891]: 1,614
+            - generic [ref=f3e892]:
+              - text: 转
+              - generic [ref=f3e893]: 2,100
+          - generic [ref=f3e894]:
+            - generic [ref=f3e895]: 平台内热度
+            - emphasis [ref=f3e897]
+            - strong [ref=f3e898]: "82.0"
+          - generic [ref=f3e899]: 用户授权的小红书搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e900] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/6853890b000000001203e42d
+        - article [ref=f3e901]:
+          - generic [ref=f3e902]:
+            - generic [ref=f3e903]: 微博
+            - code [ref=f3e904]: MPL-WB-1617EB0D2FAC88CDD970
+          - heading "老白史话‖地闲了，手不闲 —— 高原人的擀毡手艺与日子笔者语｜我生在河湟谷地，踩惯了黄土夹青草的乡路，深知青海从来不是中华文明的边地注脚，而是多元文化共生交融的鲜活田野。循着费孝通先生 “从实求知、美" [level=3] [ref=f3e905]
+          - paragraph [ref=f3e906]: 毛绒 · 博物馆文创
+          - paragraph [ref=f3e907]:
+            - time [ref=f3e908]: 发布 2026-08-27
+            - time [ref=f3e909]: 检索 2026-08-27
+          - generic [ref=f3e910]:
+            - generic [ref=f3e911]:
+              - text: 赞
+              - generic [ref=f3e912]: "1"
+            - generic [ref=f3e913]:
+              - text: 藏
+              - generic [ref=f3e914]: "0"
+            - generic [ref=f3e915]:
+              - text: 评
+              - generic [ref=f3e916]: "1"
+            - generic [ref=f3e917]:
+              - text: 转
+              - generic [ref=f3e918]: "0"
+          - generic [ref=f3e919]:
+            - generic [ref=f3e920]: 平台内热度
+            - emphasis [ref=f3e922]
+            - strong [ref=f3e923]: "13.8"
+          - generic [ref=f3e924]: 用户授权的微博搜索记录；互动字段按平台原始返回保存，缺失字段为0
+          - link "查看平台原记录 ↗" [ref=f3e925] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336767310856601
+    - generic [ref=f3e926]:
+      - generic [ref=f3e927]:
+        - heading "引用与证据台账" [level=2] [ref=f3e929]
+        - paragraph [ref=f3e930]:
+          - strong [ref=f3e931]: "39"
+          - text: / 39 条引用已解析
+      - generic [ref=f3e932]:
+        - article [ref=f3e933]:
+          - generic [ref=f3e934]:
+            - code [ref=f3e935]: MPL-XHS-ADD1A725C83693E55392
+            - generic [ref=f3e936]: platform record
+          - heading "搞💰提升｜冰箱贴还能这样做！已变🧵三位数✨" [level=3] [ref=f3e937]
+          - paragraph [ref=f3e938]: XHS
+          - generic [ref=f3e939]:
+            - generic [ref=f3e940]:
+              - term [ref=f3e941]: 发布
+              - definition [ref=f3e942]: 2026-03-16T10:56:46+00:00
+            - generic [ref=f3e943]:
+              - term [ref=f3e944]: 检索
+              - definition [ref=f3e945]: 2026-08-27T22:09:59.572667+00:00
+            - generic [ref=f3e946]:
+              - term [ref=f3e947]: 权利
+              - definition [ref=f3e948]: evidence_link_only
+          - generic [ref=f3e949]:
+            - generic [ref=f3e950]: 冰箱贴
+            - generic [ref=f3e951]: 文创冰箱贴
+            - generic [ref=f3e952]: 平台内热度 93.2
+          - link "查看原始来源 ↗" [ref=f3e953] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/69b7d61a000000001e00c83f
+        - article [ref=f3e954]:
+          - generic [ref=f3e955]:
+            - code [ref=f3e956]: MPL-WB-BEF9FDE469E113008D8D
+            - generic [ref=f3e957]: platform record
+          - heading "🎁好消息好消息，小年糕们看这里——🐟⚔️mini鱼吻！来了！！！「天下龙泉·太平瓷·太平剑」第二波联名，正式上新！听到大家的呼声，这次真的、真的、真的可以拥有了——鱼吻小挂件、" [level=3] [ref=f3e958]
+          - paragraph [ref=f3e959]: WB
+          - generic [ref=f3e960]:
+            - generic [ref=f3e961]:
+              - term [ref=f3e962]: 发布
+              - definition [ref=f3e963]: 2026-08-22T02:00:01+00:00
+            - generic [ref=f3e964]:
+              - term [ref=f3e965]: 检索
+              - definition [ref=f3e966]: 2026-08-27T22:20:55.518427+00:00
+            - generic [ref=f3e967]:
+              - term [ref=f3e968]: 权利
+              - definition [ref=f3e969]: evidence_link_only
+          - generic [ref=f3e970]:
+            - generic [ref=f3e971]: 冰箱贴
+            - generic [ref=f3e972]: 文创包挂
+            - generic [ref=f3e973]: 平台内热度 89.1
+          - link "查看原始来源 ↗" [ref=f3e974] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5334653629894939
+        - article [ref=f3e975]:
+          - generic [ref=f3e976]:
+            - code [ref=f3e977]: MPL-BILI-CE60CB67717280F3E0A9
+            - generic [ref=f3e978]: platform record
+          - heading "“泉水冰箱贴”在趵突泉卖，1块多进10块卖“钱挣了，旅游也旅了”" [level=3] [ref=f3e979]
+          - paragraph [ref=f3e980]: BILI
+          - generic [ref=f3e981]:
+            - generic [ref=f3e982]:
+              - term [ref=f3e983]: 发布
+              - definition [ref=f3e984]: 2026-08-25T05:00:00+00:00
+            - generic [ref=f3e985]:
+              - term [ref=f3e986]: 检索
+              - definition [ref=f3e987]: 2026-08-27T22:16:36.693176+00:00
+            - generic [ref=f3e988]:
+              - term [ref=f3e989]: 权利
+              - definition [ref=f3e990]: evidence_link_only
+          - generic [ref=f3e991]:
+            - generic [ref=f3e992]: 冰箱贴
+            - generic [ref=f3e993]: 文创冰箱贴
+            - generic [ref=f3e994]: 平台内热度 81.1
+          - link "查看原始来源 ↗" [ref=f3e995] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av117154309539417
+        - article [ref=f3e996]:
+          - generic [ref=f3e997]:
+            - code [ref=f3e998]: MPL-DY-27944D91D522C338411B
+            - generic [ref=f3e999]: platform record
+          - 'heading "是漂亮的贵州非遗手工文创冰箱贴呀！！#非遗文化传承 #手工diy #我的手工作品 #冰箱贴 #贵州旅游" [level=3] [ref=f3e1000]'
+          - paragraph [ref=f3e1001]: DY
+          - generic [ref=f3e1002]:
+            - generic [ref=f3e1003]:
+              - term [ref=f3e1004]: 发布
+              - definition [ref=f3e1005]: 2025-09-26T11:11:10+00:00
+            - generic [ref=f3e1006]:
+              - term [ref=f3e1007]: 检索
+              - definition [ref=f3e1008]: 2026-08-27T21:52:39.815254+00:00
+            - generic [ref=f3e1009]:
+              - term [ref=f3e1010]: 权利
+              - definition [ref=f3e1011]: evidence_link_only
+          - generic [ref=f3e1012]:
+            - generic [ref=f3e1013]: 冰箱贴
+            - generic [ref=f3e1014]: 非遗文创
+            - generic [ref=f3e1015]: 平台内热度 5.4
+          - link "查看原始来源 ↗" [ref=f3e1016] [cursor=pointer]:
+            - /url: https://www.douyin.com/video/7554353825148652826
+        - article [ref=f3e1017]:
+          - generic [ref=f3e1018]:
+            - code [ref=f3e1019]: MPL-WB-8C2A9FCD0AC1990EE7AB
+            - generic [ref=f3e1020]: platform record
+          - heading "二哈和他的白猫师尊 前世燃晚完全是恨海情天来的……《二哈和他的白猫师尊》✖️ 酷艾文创KuAi 方形徽章 「盲盒系列」🐱🐶截修“人生有八苦，生老病死，爱离别，求不得，怨憎会" [level=3] [ref=f3e1021]
+          - paragraph [ref=f3e1022]: WB
+          - generic [ref=f3e1023]:
+            - generic [ref=f3e1024]:
+              - term [ref=f3e1025]: 发布
+              - definition [ref=f3e1026]: 2026-07-18T07:55:02+00:00
+            - generic [ref=f3e1027]:
+              - term [ref=f3e1028]: 检索
+              - definition [ref=f3e1029]: 2026-08-27T22:20:55.521522+00:00
+            - generic [ref=f3e1030]:
+              - term [ref=f3e1031]: 权利
+              - definition [ref=f3e1032]: evidence_link_only
+          - generic [ref=f3e1033]:
+            - generic [ref=f3e1034]: 徽章
+            - generic [ref=f3e1035]: 文创徽章
+            - generic [ref=f3e1036]: 平台内热度 89.2
+          - link "查看原始来源 ↗" [ref=f3e1037] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5322059395630612
+        - article [ref=f3e1038]:
+          - generic [ref=f3e1039]:
+            - code [ref=f3e1040]: MPL-BILI-9D3C24AB18DD062C617A
+            - generic [ref=f3e1041]: platform record
+          - heading "买了一个徽章机！太好玩了！可以自己做徽章！" [level=3] [ref=f3e1042]
+          - paragraph [ref=f3e1043]: BILI
+          - generic [ref=f3e1044]:
+            - generic [ref=f3e1045]:
+              - term [ref=f3e1046]: 发布
+              - definition [ref=f3e1047]: 2021-11-17T08:00:03+00:00
+            - generic [ref=f3e1048]:
+              - term [ref=f3e1049]: 检索
+              - definition [ref=f3e1050]: 2026-08-27T22:16:36.693532+00:00
+            - generic [ref=f3e1051]:
+              - term [ref=f3e1052]: 权利
+              - definition [ref=f3e1053]: evidence_link_only
+          - generic [ref=f3e1054]:
+            - generic [ref=f3e1055]: 徽章
+            - generic [ref=f3e1056]: 文创徽章
+            - generic [ref=f3e1057]: 平台内热度 88.2
+          - link "查看原始来源 ↗" [ref=f3e1058] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av891685786
+        - article [ref=f3e1059]:
+          - generic [ref=f3e1060]:
+            - code [ref=f3e1061]: MPL-XHS-86E971480DF92CB65751
+            - generic [ref=f3e1062]: platform record
+          - heading "阳光下的扩香片✨" [level=3] [ref=f3e1063]
+          - paragraph [ref=f3e1064]: XHS
+          - generic [ref=f3e1065]:
+            - generic [ref=f3e1066]:
+              - term [ref=f3e1067]: 发布
+              - definition [ref=f3e1068]: 2025-04-27T08:00:59+00:00
+            - generic [ref=f3e1069]:
+              - term [ref=f3e1070]: 检索
+              - definition [ref=f3e1071]: 2026-08-27T22:09:59.575438+00:00
+            - generic [ref=f3e1072]:
+              - term [ref=f3e1073]: 权利
+              - definition [ref=f3e1074]: evidence_link_only
+          - generic [ref=f3e1075]:
+            - generic [ref=f3e1076]: 徽章
+            - generic [ref=f3e1077]: 文创徽章
+            - generic [ref=f3e1078]: 平台内热度 65.5
+          - link "查看原始来源 ↗" [ref=f3e1079] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/680d9198000000001d02dd01
+        - article [ref=f3e1080]:
+          - generic [ref=f3e1081]:
+            - code [ref=f3e1082]: MPL-DY-BE4841B90E9B64DF77C6
+            - generic [ref=f3e1083]: platform record
+          - 'heading "好适合当吧唧托啊…#国风手作 #东方美学手作 #故宫文创" [level=3] [ref=f3e1084]'
+          - paragraph [ref=f3e1085]: DY
+          - generic [ref=f3e1086]:
+            - generic [ref=f3e1087]:
+              - term [ref=f3e1088]: 发布
+              - definition [ref=f3e1089]: 2026-08-15T07:55:33+00:00
+            - generic [ref=f3e1090]:
+              - term [ref=f3e1091]: 检索
+              - definition [ref=f3e1092]: 2026-08-27T21:52:39.815181+00:00
+            - generic [ref=f3e1093]:
+              - term [ref=f3e1094]: 权利
+              - definition [ref=f3e1095]: evidence_link_only
+          - generic [ref=f3e1096]:
+            - generic [ref=f3e1097]: 徽章
+            - generic [ref=f3e1098]: 非遗文创
+            - generic [ref=f3e1099]: 平台内热度 21.4
+          - link "查看原始来源 ↗" [ref=f3e1100] [cursor=pointer]:
+            - /url: https://www.douyin.com/video/7674163951421501158
+        - article [ref=f3e1101]:
+          - generic [ref=f3e1102]:
+            - code [ref=f3e1103]: MPL-BILI-D3AD6452E5C575EE79ED
+            - generic [ref=f3e1104]: platform record
+          - heading "文创battle，博物馆的内卷" [level=3] [ref=f3e1105]
+          - paragraph [ref=f3e1106]: BILI
+          - generic [ref=f3e1107]:
+            - generic [ref=f3e1108]:
+              - term [ref=f3e1109]: 发布
+              - definition [ref=f3e1110]: 2021-05-18T09:59:47+00:00
+            - generic [ref=f3e1111]:
+              - term [ref=f3e1112]: 检索
+              - definition [ref=f3e1113]: 2026-08-27T22:16:36.691715+00:00
+            - generic [ref=f3e1114]:
+              - term [ref=f3e1115]: 权利
+              - definition [ref=f3e1116]: evidence_link_only
+          - generic [ref=f3e1117]:
+            - generic [ref=f3e1118]: 盲盒
+            - generic [ref=f3e1119]: 博物馆文创
+            - generic [ref=f3e1120]: 平台内热度 78.9
+          - link "查看原始来源 ↗" [ref=f3e1121] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av973135660
+        - article [ref=f3e1122]:
+          - generic [ref=f3e1123]:
+            - code [ref=f3e1124]: MPL-XHS-0DE55712F12CC3AA7521
+            - generic [ref=f3e1125]: platform record
+          - heading "三星堆盲盒" [level=3] [ref=f3e1126]
+          - paragraph [ref=f3e1127]: XHS
+          - generic [ref=f3e1128]:
+            - generic [ref=f3e1129]:
+              - term [ref=f3e1130]: 发布
+              - definition [ref=f3e1131]: 2026-03-08T13:45:10+00:00
+            - generic [ref=f3e1132]:
+              - term [ref=f3e1133]: 检索
+              - definition [ref=f3e1134]: 2026-08-27T22:09:59.569712+00:00
+            - generic [ref=f3e1135]:
+              - term [ref=f3e1136]: 权利
+              - definition [ref=f3e1137]: evidence_link_only
+          - generic [ref=f3e1138]:
+            - generic [ref=f3e1139]: 盲盒
+            - generic [ref=f3e1140]: 博物馆文创
+            - generic [ref=f3e1141]: 平台内热度 52.7
+          - link "查看原始来源 ↗" [ref=f3e1142] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/69ad7d66000000001d027f72
+        - article [ref=f3e1143]:
+          - generic [ref=f3e1144]:
+            - code [ref=f3e1145]: MPL-WB-F25F6606766F74E5FA7D
+            - generic [ref=f3e1146]: platform record
+          - heading "【转存！#文创包搭子是懂中式美学的#】#文化中国行看包搭子里的东方美学# “包挂”走红，你给包包挂上“包搭子”了吗？“吴越争霸”蒜鸟包挂、魁星点斗毛绒包挂、杜虎符毛绒挂件……当" [level=3] [ref=f3e1147]
+          - paragraph [ref=f3e1148]: WB
+          - generic [ref=f3e1149]:
+            - generic [ref=f3e1150]:
+              - term [ref=f3e1151]: 发布
+              - definition [ref=f3e1152]: 2025-11-23T23:52:57+00:00
+            - generic [ref=f3e1153]:
+              - term [ref=f3e1154]: 检索
+              - definition [ref=f3e1155]: 2026-08-27T22:20:55.517752+00:00
+            - generic [ref=f3e1156]:
+              - term [ref=f3e1157]: 权利
+              - definition [ref=f3e1158]: evidence_link_only
+          - generic [ref=f3e1159]:
+            - generic [ref=f3e1160]: 包挂
+            - generic [ref=f3e1161]: 文创包挂
+            - generic [ref=f3e1162]: 平台内热度 86.2
+          - link "查看原始来源 ↗" [ref=f3e1163] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5236414541464118
+        - article [ref=f3e1164]:
+          - generic [ref=f3e1165]:
+            - code [ref=f3e1166]: MPL-XHS-0CBD2E87009C1F13CF79
+            - generic [ref=f3e1167]: platform record
+          - heading "🦊原创小狐狸眯糊狐小耳机包｜首发送眼镜‼️" [level=3] [ref=f3e1168]
+          - paragraph [ref=f3e1169]: XHS
+          - generic [ref=f3e1170]:
+            - generic [ref=f3e1171]:
+              - term [ref=f3e1172]: 发布
+              - definition [ref=f3e1173]: 2026-03-10T11:17:12+00:00
+            - generic [ref=f3e1174]:
+              - term [ref=f3e1175]: 检索
+              - definition [ref=f3e1176]: 2026-08-27T22:09:59.570798+00:00
+            - generic [ref=f3e1177]:
+              - term [ref=f3e1178]: 权利
+              - definition [ref=f3e1179]: evidence_link_only
+          - generic [ref=f3e1180]:
+            - generic [ref=f3e1181]: 包挂
+            - generic [ref=f3e1182]: 文创包挂
+            - generic [ref=f3e1183]: 平台内热度 82.4
+          - link "查看原始来源 ↗" [ref=f3e1184] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/69affdb70000000009021f88
+        - article [ref=f3e1185]:
+          - generic [ref=f3e1186]:
+            - code [ref=f3e1187]: MPL-BILI-D5375C2DCEBF75DCBB75
+            - generic [ref=f3e1188]: platform record
+          - heading "1分钟学会制作一种物料之小房子包挂教程🏠" [level=3] [ref=f3e1189]
+          - paragraph [ref=f3e1190]: BILI
+          - generic [ref=f3e1191]:
+            - generic [ref=f3e1192]:
+              - term [ref=f3e1193]: 发布
+              - definition [ref=f3e1194]: 2026-06-14T11:03:31+00:00
+            - generic [ref=f3e1195]:
+              - term [ref=f3e1196]: 检索
+              - definition [ref=f3e1197]: 2026-08-27T22:16:36.692445+00:00
+            - generic [ref=f3e1198]:
+              - term [ref=f3e1199]: 权利
+              - definition [ref=f3e1200]: evidence_link_only
+          - generic [ref=f3e1201]:
+            - generic [ref=f3e1202]: 包挂
+            - generic [ref=f3e1203]: 文创包挂
+            - generic [ref=f3e1204]: 平台内热度 32.2
+          - link "查看原始来源 ↗" [ref=f3e1205] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av116748099520766
+        - article [ref=f3e1206]:
+          - generic [ref=f3e1207]:
+            - code [ref=f3e1208]: MPL-XHS-2B043F4A04CB3BC118F1
+            - generic [ref=f3e1209]: platform record
+          - heading "金犊奖认证！我们把武夷山水装进茶点盒" [level=3] [ref=f3e1210]
+          - paragraph [ref=f3e1211]: XHS
+          - generic [ref=f3e1212]:
+            - generic [ref=f3e1213]:
+              - term [ref=f3e1214]: 发布
+              - definition [ref=f3e1215]: 2025-03-05T05:50:26+00:00
+            - generic [ref=f3e1216]:
+              - term [ref=f3e1217]: 检索
+              - definition [ref=f3e1218]: 2026-08-27T22:09:59.578117+00:00
+            - generic [ref=f3e1219]:
+              - term [ref=f3e1220]: 权利
+              - definition [ref=f3e1221]: evidence_link_only
+          - generic [ref=f3e1222]:
+            - generic [ref=f3e1223]: 伴手礼
+            - generic [ref=f3e1224]: 新中式文创
+            - generic [ref=f3e1225]: 平台内热度 74.6
+          - link "查看原始来源 ↗" [ref=f3e1226] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/67c7e6220000000009039df4
+        - article [ref=f3e1227]:
+          - generic [ref=f3e1228]:
+            - code [ref=f3e1229]: MPL-WB-08D51A1EF9DFB7D0FBB9
+            - generic [ref=f3e1230]: platform record
+          - heading "省级部署“农文旅体健展商”，天祝率先这么干——多彩藏乡融合消费季全解读 天祝县商务局 活动解读 多彩藏乡·乐购天祝 | 8月29日启幕：一场&quot;农文旅体健" [level=3] [ref=f3e1231]
+          - paragraph [ref=f3e1232]: WB
+          - generic [ref=f3e1233]:
+            - generic [ref=f3e1234]:
+              - term [ref=f3e1235]: 发布
+              - definition [ref=f3e1236]: 2026-08-27T09:59:55+00:00
+            - generic [ref=f3e1237]:
+              - term [ref=f3e1238]: 检索
+              - definition [ref=f3e1239]: 2026-08-27T22:20:55.516269+00:00
+            - generic [ref=f3e1240]:
+              - term [ref=f3e1241]: 权利
+              - definition [ref=f3e1242]: evidence_link_only
+          - generic [ref=f3e1243]:
+            - generic [ref=f3e1244]: 伴手礼
+            - generic [ref=f3e1245]: 非遗文创
+            - generic [ref=f3e1246]: 平台内热度 28.4
+          - link "查看原始来源 ↗" [ref=f3e1247] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336586339749178
+        - article [ref=f3e1248]:
+          - generic [ref=f3e1249]:
+            - code [ref=f3e1250]: MPL-XHS-2AFFA3B3139AC5C33D75
+            - generic [ref=f3e1251]: platform record
+          - heading "三星堆IP✨3D建模+文创延展｜超实用工作流" [level=3] [ref=f3e1252]
+          - paragraph [ref=f3e1253]: XHS
+          - generic [ref=f3e1254]:
+            - generic [ref=f3e1255]:
+              - term [ref=f3e1256]: 发布
+              - definition [ref=f3e1257]: 2025-08-07T04:18:23+00:00
+            - generic [ref=f3e1258]:
+              - term [ref=f3e1259]: 检索
+              - definition [ref=f3e1260]: 2026-08-27T22:09:59.568053+00:00
+            - generic [ref=f3e1261]:
+              - term [ref=f3e1262]: 权利
+              - definition [ref=f3e1263]: evidence_link_only
+          - generic [ref=f3e1264]:
+            - generic [ref=f3e1265]: 潮玩
+            - generic [ref=f3e1266]: 博物馆文创
+            - generic [ref=f3e1267]: 平台内热度 80.4
+          - link "查看原始来源 ↗" [ref=f3e1268] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/6894290f0000000023020c9b
+        - article [ref=f3e1269]:
+          - generic [ref=f3e1270]:
+            - code [ref=f3e1271]: MPL-WB-C8437B7873BD386DCD7A
+            - generic [ref=f3e1272]: platform record
+          - heading "【#好Young济宁打卡运河青春市集#】夜幕下的市集沿河铺展、业态丰富多元。非遗文创区人气高涨，青年匠人带来运河主题漆扇、剪纸、手作饰品，将太白楼、古漕运等济宁元素融入原创好物" [level=3] [ref=f3e1273]
+          - paragraph [ref=f3e1274]: WB
+          - generic [ref=f3e1275]:
+            - generic [ref=f3e1276]:
+              - term [ref=f3e1277]: 发布
+              - definition [ref=f3e1278]: 2026-07-23T02:38:47+00:00
+            - generic [ref=f3e1279]:
+              - term [ref=f3e1280]: 检索
+              - definition [ref=f3e1281]: 2026-08-27T22:20:55.515253+00:00
+            - generic [ref=f3e1282]:
+              - term [ref=f3e1283]: 权利
+              - definition [ref=f3e1284]: evidence_link_only
+          - generic [ref=f3e1285]:
+            - generic [ref=f3e1286]: 潮玩
+            - generic [ref=f3e1287]: 非遗文创
+            - generic [ref=f3e1288]: 平台内热度 24.2
+          - link "查看原始来源 ↗" [ref=f3e1289] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5323791748303172
+        - article [ref=f3e1290]:
+          - generic [ref=f3e1291]:
+            - code [ref=f3e1292]: MPL-XHS-6CAE27EA8A2BCE3DB164
+            - generic [ref=f3e1293]: platform record
+          - heading "🌟 32种必看非遗手作|感受指尖上的千年国粹" [level=3] [ref=f3e1294]
+          - paragraph [ref=f3e1295]: XHS
+          - generic [ref=f3e1296]:
+            - generic [ref=f3e1297]:
+              - term [ref=f3e1298]: 发布
+              - definition [ref=f3e1299]: 2025-06-18T10:04:33+00:00
+            - generic [ref=f3e1300]:
+              - term [ref=f3e1301]: 检索
+              - definition [ref=f3e1302]: 2026-08-27T22:09:59.563672+00:00
+            - generic [ref=f3e1303]:
+              - term [ref=f3e1304]: 权利
+              - definition [ref=f3e1305]: evidence_link_only
+          - generic [ref=f3e1306]:
+            - generic [ref=f3e1307]: 香氛
+            - generic [ref=f3e1308]: 非遗文创
+            - generic [ref=f3e1309]: 平台内热度 71.4
+          - link "查看原始来源 ↗" [ref=f3e1310] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/6852680f0000000013011d85
+        - article [ref=f3e1311]:
+          - generic [ref=f3e1312]:
+            - code [ref=f3e1313]: MPL-BILI-EB1557656712BE87ABDC
+            - generic [ref=f3e1314]: platform record
+          - heading "来了！平价实用却很有创意的小文创【第2弹】" [level=3] [ref=f3e1315]
+          - paragraph [ref=f3e1316]: BILI
+          - generic [ref=f3e1317]:
+            - generic [ref=f3e1318]:
+              - term [ref=f3e1319]: 发布
+              - definition [ref=f3e1320]: 2022-09-07T11:00:00+00:00
+            - generic [ref=f3e1321]:
+              - term [ref=f3e1322]: 检索
+              - definition [ref=f3e1323]: 2026-08-27T22:16:36.692127+00:00
+            - generic [ref=f3e1324]:
+              - term [ref=f3e1325]: 权利
+              - definition [ref=f3e1326]: evidence_link_only
+          - generic [ref=f3e1327]:
+            - generic [ref=f3e1328]: 香氛
+            - generic [ref=f3e1329]: 文创包挂
+            - generic [ref=f3e1330]: 平台内热度 54.9
+          - link "查看原始来源 ↗" [ref=f3e1331] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av730281982
+        - article [ref=f3e1332]:
+          - generic [ref=f3e1333]:
+            - code [ref=f3e1334]: MPL-WB-5987BB5450FA39F4DCDF
+            - generic [ref=f3e1335]: platform record
+          - heading "#生活手记#【廊坊七修酒店深度游】不止养生！二层“书修”区域全攻略，这才是文化人的天堂！很多朋友来廊坊新绎七修酒店，可能只关注了客房、餐厅。但其实，想要完整体验七修“德、食、功" [level=3] [ref=f3e1336]
+          - paragraph [ref=f3e1337]: WB
+          - generic [ref=f3e1338]:
+            - generic [ref=f3e1339]:
+              - term [ref=f3e1340]: 发布
+              - definition [ref=f3e1341]: 2026-08-27T00:48:39+00:00
+            - generic [ref=f3e1342]:
+              - term [ref=f3e1343]: 检索
+              - definition [ref=f3e1344]: 2026-08-27T22:20:55.523119+00:00
+            - generic [ref=f3e1345]:
+              - term [ref=f3e1346]: 权利
+              - definition [ref=f3e1347]: evidence_link_only
+          - generic [ref=f3e1348]:
+            - generic [ref=f3e1349]: 香氛
+            - generic [ref=f3e1350]: 新中式文创
+            - generic [ref=f3e1351]: 平台内热度 9.0
+          - link "查看原始来源 ↗" [ref=f3e1352] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336447607375062
+        - article [ref=f3e1353]:
+          - generic [ref=f3e1354]:
+            - code [ref=f3e1355]: MPL-XHS-3621FB69F104F70DD47B
+            - generic [ref=f3e1356]: platform record
+          - heading "🧨用吹塑板解锁非遗拓印✨年味挂饰自己做～" [level=3] [ref=f3e1357]
+          - paragraph [ref=f3e1358]: XHS
+          - generic [ref=f3e1359]:
+            - generic [ref=f3e1360]:
+              - term [ref=f3e1361]: 发布
+              - definition [ref=f3e1362]: 2025-12-26T09:34:03+00:00
+            - generic [ref=f3e1363]:
+              - term [ref=f3e1364]: 检索
+              - definition [ref=f3e1365]: 2026-08-27T22:09:59.555253+00:00
+            - generic [ref=f3e1366]:
+              - term [ref=f3e1367]: 权利
+              - definition [ref=f3e1368]: evidence_link_only
+          - generic [ref=f3e1369]:
+            - generic [ref=f3e1370]: 挂件
+            - generic [ref=f3e1371]: 非遗文创
+            - generic [ref=f3e1372]: 平台内热度 89.4
+          - link "查看原始来源 ↗" [ref=f3e1373] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/694e568b000000001e001fde
+        - article [ref=f3e1374]:
+          - generic [ref=f3e1375]:
+            - code [ref=f3e1376]: MPL-BILI-454EB804DCA48ABD45DD
+            - generic [ref=f3e1377]: platform record
+          - heading "新手必学||超详细的钥匙扣教程" [level=3] [ref=f3e1378]
+          - paragraph [ref=f3e1379]: BILI
+          - generic [ref=f3e1380]:
+            - generic [ref=f3e1381]:
+              - term [ref=f3e1382]: 发布
+              - definition [ref=f3e1383]: 2026-05-21T09:41:49+00:00
+            - generic [ref=f3e1384]:
+              - term [ref=f3e1385]: 检索
+              - definition [ref=f3e1386]: 2026-08-27T22:16:36.692479+00:00
+            - generic [ref=f3e1387]:
+              - term [ref=f3e1388]: 权利
+              - definition [ref=f3e1389]: evidence_link_only
+          - generic [ref=f3e1390]:
+            - generic [ref=f3e1391]: 挂件
+            - generic [ref=f3e1392]: 文创包挂
+            - generic [ref=f3e1393]: 平台内热度 26.8
+          - link "查看原始来源 ↗" [ref=f3e1394] [cursor=pointer]:
+            - /url: https://www.bilibili.com/video/av116611902081813
+        - article [ref=f3e1395]:
+          - generic [ref=f3e1396]:
+            - code [ref=f3e1397]: MPL-WB-B79DAA30C867A796380A
+            - generic [ref=f3e1398]: platform record
+          - heading "丁程鑫周边中转站 出文创通勤包（可加购D挂件）还有行李箱小物也出" [level=3] [ref=f3e1399]
+          - paragraph [ref=f3e1400]: WB
+          - generic [ref=f3e1401]:
+            - generic [ref=f3e1402]:
+              - term [ref=f3e1403]: 发布
+              - definition [ref=f3e1404]: 2026-08-27T12:12:41+00:00
+            - generic [ref=f3e1405]:
+              - term [ref=f3e1406]: 检索
+              - definition [ref=f3e1407]: 2026-08-27T22:20:55.518253+00:00
+            - generic [ref=f3e1408]:
+              - term [ref=f3e1409]: 权利
+              - definition [ref=f3e1410]: evidence_link_only
+          - generic [ref=f3e1411]:
+            - generic [ref=f3e1412]: 挂件
+            - generic [ref=f3e1413]: 文创包挂
+            - generic [ref=f3e1414]: 平台内热度 22.6
+          - link "查看原始来源 ↗" [ref=f3e1415] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336619751573827
+        - article [ref=f3e1416]:
+          - generic [ref=f3e1417]:
+            - code [ref=f3e1418]: MPL-XHS-51E98E4412F0A8AD5857
+            - generic [ref=f3e1419]: platform record
+          - heading "🦋24种非遗手作看完直接跪了！老祖宗的审美" [level=3] [ref=f3e1420]
+          - paragraph [ref=f3e1421]: XHS
+          - generic [ref=f3e1422]:
+            - generic [ref=f3e1423]:
+              - term [ref=f3e1424]: 发布
+              - definition [ref=f3e1425]: 2025-02-19T12:17:24+00:00
+            - generic [ref=f3e1426]:
+              - term [ref=f3e1427]: 检索
+              - definition [ref=f3e1428]: 2026-08-27T22:09:59.563199+00:00
+            - generic [ref=f3e1429]:
+              - term [ref=f3e1430]: 权利
+              - definition [ref=f3e1431]: evidence_link_only
+          - generic [ref=f3e1432]:
+            - generic [ref=f3e1433]: 首饰
+            - generic [ref=f3e1434]: 非遗文创
+            - generic [ref=f3e1435]: 平台内热度 78.0
+          - link "查看原始来源 ↗" [ref=f3e1436] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/67b5cbd4000000002901c6a5
+        - article [ref=f3e1437]:
+          - generic [ref=f3e1438]:
+            - code [ref=f3e1439]: MPL-WB-00F95CF55B6828732C4C
+            - generic [ref=f3e1440]: platform record
+          - heading "闲置转让 出垃圾包 有挂件 盲盒 本子 贴纸 吉卡哇 手链 夹子 文创等" [level=3] [ref=f3e1441]
+          - paragraph [ref=f3e1442]: WB
+          - generic [ref=f3e1443]:
+            - generic [ref=f3e1444]:
+              - term [ref=f3e1445]: 发布
+              - definition [ref=f3e1446]: 2026-08-25T12:17:27+00:00
+            - generic [ref=f3e1447]:
+              - term [ref=f3e1448]: 检索
+              - definition [ref=f3e1449]: 2026-08-27T22:20:55.518343+00:00
+            - generic [ref=f3e1450]:
+              - term [ref=f3e1451]: 权利
+              - definition [ref=f3e1452]: evidence_link_only
+          - generic [ref=f3e1453]:
+            - generic [ref=f3e1454]: 首饰
+            - generic [ref=f3e1455]: 文创包挂
+            - generic [ref=f3e1456]: 平台内热度 7.0
+          - link "查看原始来源 ↗" [ref=f3e1457] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5335896173840378
+        - article [ref=f3e1458]:
+          - generic [ref=f3e1459]:
+            - code [ref=f3e1460]: MPL-XHS-0A643FC34F73416F8C15
+            - generic [ref=f3e1461]: platform record
+          - heading "敦煌飞天喵｜飘带卷着仙气挂包上🐱" [level=3] [ref=f3e1462]
+          - paragraph [ref=f3e1463]: XHS
+          - generic [ref=f3e1464]:
+            - generic [ref=f3e1465]:
+              - term [ref=f3e1466]: 发布
+              - definition [ref=f3e1467]: 2025-06-19T03:50:35+00:00
+            - generic [ref=f3e1468]:
+              - term [ref=f3e1469]: 检索
+              - definition [ref=f3e1470]: 2026-08-27T22:09:59.570985+00:00
+            - generic [ref=f3e1471]:
+              - term [ref=f3e1472]: 权利
+              - definition [ref=f3e1473]: evidence_link_only
+          - generic [ref=f3e1474]:
+            - generic [ref=f3e1475]: 毛绒
+            - generic [ref=f3e1476]: 文创包挂
+            - generic [ref=f3e1477]: 平台内热度 82.0
+          - link "查看原始来源 ↗" [ref=f3e1478] [cursor=pointer]:
+            - /url: https://www.xiaohongshu.com/explore/6853890b000000001203e42d
+        - article [ref=f3e1479]:
+          - generic [ref=f3e1480]:
+            - code [ref=f3e1481]: MPL-WB-1617EB0D2FAC88CDD970
+            - generic [ref=f3e1482]: platform record
+          - heading "老白史话‖地闲了，手不闲 —— 高原人的擀毡手艺与日子笔者语｜我生在河湟谷地，踩惯了黄土夹青草的乡路，深知青海从来不是中华文明的边地注脚，而是多元文化共生交融的鲜活田野。循着费" [level=3] [ref=f3e1483]
+          - paragraph [ref=f3e1484]: WB
+          - generic [ref=f3e1485]:
+            - generic [ref=f3e1486]:
+              - term [ref=f3e1487]: 发布
+              - definition [ref=f3e1488]: 2026-08-27T21:59:02+00:00
+            - generic [ref=f3e1489]:
+              - term [ref=f3e1490]: 检索
+              - definition [ref=f3e1491]: 2026-08-27T22:20:55.517119+00:00
+            - generic [ref=f3e1492]:
+              - term [ref=f3e1493]: 权利
+              - definition [ref=f3e1494]: evidence_link_only
+          - generic [ref=f3e1495]:
+            - generic [ref=f3e1496]: 毛绒
+            - generic [ref=f3e1497]: 博物馆文创
+            - generic [ref=f3e1498]: 平台内热度 13.8
+          - link "查看原始来源 ↗" [ref=f3e1499] [cursor=pointer]:
+            - /url: https://m.weibo.cn/detail/5336767310856601
+        - article [ref=f3e1500]:
+          - generic [ref=f3e1501]:
+            - code [ref=f3e1502]: M001
+            - generic [ref=f3e1503]: 市场来源
+          - heading "文创来了｜贵博‘年货’上新，快来‘马’住！" [level=3] [ref=f3e1504]
+          - paragraph [ref=f3e1505]: 贵州省博物馆
+          - generic [ref=f3e1506]:
+            - generic [ref=f3e1507]:
+              - term [ref=f3e1508]: 发布
+              - definition [ref=f3e1509]: 2026-02-24
+            - generic [ref=f3e1510]:
+              - term [ref=f3e1511]: 检索
+              - definition [ref=f3e1512]: 2026-08-28
+            - generic [ref=f3e1513]:
+              - term [ref=f3e1514]: 权利
+              - definition [ref=f3e1515]: 公开来源
+          - generic [ref=f3e1516]:
+            - generic [ref=f3e1517]: 互动旋转冰箱贴
+            - generic [ref=f3e1518]: 毛绒挂饰
+            - generic [ref=f3e1519]: 苗族银花冠凤鸟Q版转译
+          - link "查看原始来源 ↗" [ref=f3e1520] [cursor=pointer]:
+            - /url: https://www.gzmuseum.com/gbyw/202602/1263.html
+        - article [ref=f3e1521]:
+          - generic [ref=f3e1522]:
+            - code [ref=f3e1523]: M002
+            - generic [ref=f3e1524]: 市场来源
+          - heading "把黔山秀水‘打包’带回家" [level=3] [ref=f3e1525]
+          - paragraph [ref=f3e1526]: 中国文化报/中国青年网
+          - generic [ref=f3e1527]:
+            - generic [ref=f3e1528]:
+              - term [ref=f3e1529]: 发布
+              - definition [ref=f3e1530]: 2026-07-22
+            - generic [ref=f3e1531]:
+              - term [ref=f3e1532]: 检索
+              - definition [ref=f3e1533]: 2026-08-28
+            - generic [ref=f3e1534]:
+              - term [ref=f3e1535]: 权利
+              - definition [ref=f3e1536]: 公开来源
+          - generic [ref=f3e1537]:
+            - generic [ref=f3e1538]: 贵州文创43条措施
+            - generic [ref=f3e1539]: 四绣与六类场景
+            - generic [ref=f3e1540]: 可触摸、可体验、可带走
+          - link "查看原始来源 ↗" [ref=f3e1541] [cursor=pointer]:
+            - /url: https://tour.youth.cn/xw/202607/t20260722_16777153.htm
+        - article [ref=f3e1542]:
+          - generic [ref=f3e1543]:
+            - code [ref=f3e1544]: M003
+            - generic [ref=f3e1545]: 市场来源
+          - heading "CASETiFY推苗绣合作系列" [level=3] [ref=f3e1546]
+          - paragraph [ref=f3e1547]: CASETiFY官方微博/新浪
+          - generic [ref=f3e1548]:
+            - generic [ref=f3e1549]:
+              - term [ref=f3e1550]: 发布
+              - definition [ref=f3e1551]: 2026-07-27
+            - generic [ref=f3e1552]:
+              - term [ref=f3e1553]: 检索
+              - definition [ref=f3e1554]: 2026-08-28
+            - generic [ref=f3e1555]:
+              - term [ref=f3e1556]: 权利
+              - definition [ref=f3e1557]: 公开来源
+          - generic [ref=f3e1558]:
+            - generic [ref=f3e1559]: 苗绣×科技配件
+            - generic [ref=f3e1560]: 传承人联合创作
+            - generic [ref=f3e1561]: 手机挂饰与旅行配件
+          - link "查看原始来源 ↗" [ref=f3e1562] [cursor=pointer]:
+            - /url: https://www.sina.cn/news/detail/5325276839941484.html
+        - article [ref=f3e1563]:
+          - generic [ref=f3e1564]:
+            - code [ref=f3e1565]: M004
+            - generic [ref=f3e1566]: 市场来源
+          - heading "年味渐浓 贵州三都：马尾绣文创产品订单火爆" [level=3] [ref=f3e1567]
+          - paragraph [ref=f3e1568]: 人民网贵州频道
+          - generic [ref=f3e1569]:
+            - generic [ref=f3e1570]:
+              - term [ref=f3e1571]: 发布
+              - definition [ref=f3e1572]: 2026-02-10
+            - generic [ref=f3e1573]:
+              - term [ref=f3e1574]: 检索
+              - definition [ref=f3e1575]: 2026-08-28
+            - generic [ref=f3e1576]:
+              - term [ref=f3e1577]: 权利
+              - definition [ref=f3e1578]: 公开来源
+          - generic [ref=f3e1579]:
+            - generic [ref=f3e1580]: 马尾绣订单排期
+            - generic [ref=f3e1581]: 女性就业
+            - generic [ref=f3e1582]: AI辅助图案探索
+          - link "查看原始来源 ↗" [ref=f3e1583] [cursor=pointer]:
+            - /url: https://gz.people.com.cn/n2/2026/0210/c402972-41498475.html
+        - article [ref=f3e1584]:
+          - generic [ref=f3e1585]:
+            - code [ref=f3e1586]: M005
+            - generic [ref=f3e1587]: 市场来源
+          - heading "让文物活起来 把文创带回家" [level=3] [ref=f3e1588]
+          - paragraph [ref=f3e1589]: 文化和旅游部/中国国家博物馆
+          - generic [ref=f3e1590]:
+            - generic [ref=f3e1591]:
+              - term [ref=f3e1592]: 发布
+              - definition [ref=f3e1593]: 2025-03-27
+            - generic [ref=f3e1594]:
+              - term [ref=f3e1595]: 检索
+              - definition [ref=f3e1596]: 2026-08-28
+            - generic [ref=f3e1597]:
+              - term [ref=f3e1598]: 权利
+              - definition [ref=f3e1599]: 公开来源
+          - generic [ref=f3e1600]:
+            - generic [ref=f3e1601]: 凤冠冰箱贴销量破100万
+            - generic [ref=f3e1602]: 系列销售额破亿元
+            - generic [ref=f3e1603]: 爆款带长尾
+          - link "查看原始来源 ↗" [ref=f3e1604] [cursor=pointer]:
+            - /url: https://www.mct.gov.cn/preview/whzx/zsdw/zggjbwg/202503/t20250327_959057.html
+        - article [ref=f3e1605]:
+          - generic [ref=f3e1606]:
+            - code [ref=f3e1607]: M006
+            - generic [ref=f3e1608]: 市场来源
+          - heading "河南博物院让清代文物成‘流量担当’——日销千件的‘葫芦’火了" [level=3] [ref=f3e1609]
+          - paragraph [ref=f3e1610]: 文化和旅游部/中国文化报
+          - generic [ref=f3e1611]:
+            - generic [ref=f3e1612]:
+              - term [ref=f3e1613]: 发布
+              - definition [ref=f3e1614]: 2025-07-10
+            - generic [ref=f3e1615]:
+              - term [ref=f3e1616]: 检索
+              - definition [ref=f3e1617]: 2026-08-28
+            - generic [ref=f3e1618]:
+              - term [ref=f3e1619]: 权利
+              - definition [ref=f3e1620]: 公开来源
+          - generic [ref=f3e1621]:
+            - generic [ref=f3e1622]: 日销量破千
+            - generic [ref=f3e1623]: 锌合金浮雕与烤漆
+            - generic [ref=f3e1624]: 核心元素而非照搬复刻
+          - link "查看原始来源 ↗" [ref=f3e1625] [cursor=pointer]:
+            - /url: https://www.mct.gov.cn/preview/whzx/qgwhxxlb/hn/202507/t20250710_961096.htm
+        - article [ref=f3e1626]:
+          - generic [ref=f3e1627]:
+            - code [ref=f3e1628]: M007
+            - generic [ref=f3e1629]: 市场来源
+          - heading "一对孪生文创 双馆‘梦幻联动’" [level=3] [ref=f3e1630]
+          - paragraph [ref=f3e1631]: 上海市人民政府门户网站
+          - generic [ref=f3e1632]:
+            - generic [ref=f3e1633]:
+              - term [ref=f3e1634]: 发布
+              - definition [ref=f3e1635]: 2026-07-31
+            - generic [ref=f3e1636]:
+              - term [ref=f3e1637]: 检索
+              - definition [ref=f3e1638]: 2026-08-28
+            - generic [ref=f3e1639]:
+              - term [ref=f3e1640]: 权利
+              - definition [ref=f3e1641]: 公开来源
+          - generic [ref=f3e1642]:
+            - generic [ref=f3e1643]: 限定双馆联动
+            - generic [ref=f3e1644]: 社交平台自传播
+            - generic [ref=f3e1645]: 跨区域集齐机制
+          - link "查看原始来源 ↗" [ref=f3e1646] [cursor=pointer]:
+            - /url: https://www.shanghai.gov.cn/nw4411/20260731/d0fa4170511b4d43b5a460c3ff6ac4ca.html
+        - article [ref=f3e1647]:
+          - generic [ref=f3e1648]:
+            - code [ref=f3e1649]: M008
+            - generic [ref=f3e1650]: 市场来源
+          - heading "文创融入美好生活 超九成受访青年期待更多博物馆产品走入百姓家" [level=3] [ref=f3e1651]
+          - paragraph [ref=f3e1652]: 央视网/中国青年报
+          - generic [ref=f3e1653]:
+            - generic [ref=f3e1654]:
+              - term [ref=f3e1655]: 发布
+              - definition [ref=f3e1656]: 2025-01-09
+            - generic [ref=f3e1657]:
+              - term [ref=f3e1658]: 检索
+              - definition [ref=f3e1659]: 2026-08-28
+            - generic [ref=f3e1660]:
+              - term [ref=f3e1661]: 权利
+              - definition [ref=f3e1662]: 公开来源
+          - generic [ref=f3e1663]:
+            - generic [ref=f3e1664]: 青年主力消费
+            - generic [ref=f3e1665]: 好看好玩有历史内涵
+            - generic [ref=f3e1666]: 记录分享
+            - generic [ref=f3e1667]: 考古体验与数实卡牌
+          - link "查看原始来源 ↗" [ref=f3e1668] [cursor=pointer]:
+            - /url: https://news.cctv.com/2025/01/09/ARTIITMHNcMexsr2Ka2zD1H1250109.shtml
+        - article [ref=f3e1669]:
+          - generic [ref=f3e1670]:
+            - code [ref=f3e1671]: M009
+            - generic [ref=f3e1672]: 市场来源
+          - heading "小物件里的情绪消费与新国潮" [level=3] [ref=f3e1673]
+          - paragraph [ref=f3e1674]: 人民日报
+          - generic [ref=f3e1675]:
+            - generic [ref=f3e1676]:
+              - term [ref=f3e1677]: 发布
+              - definition [ref=f3e1678]: 2026-02-04
+            - generic [ref=f3e1679]:
+              - term [ref=f3e1680]: 检索
+              - definition [ref=f3e1681]: 2026-08-28
+            - generic [ref=f3e1682]:
+              - term [ref=f3e1683]: 权利
+              - definition [ref=f3e1684]: 公开来源
+          - generic [ref=f3e1685]:
+            - generic [ref=f3e1686]: 情绪价值
+            - generic [ref=f3e1687]: 小巧包挂与香薰
+            - generic [ref=f3e1688]: 非遗手作体验
+            - generic [ref=f3e1689]: 日常化产品
+          - link "查看原始来源 ↗" [ref=f3e1690] [cursor=pointer]:
+            - /url: https://paper.people.com.cn/rmrb/pc/attachement/202602/04/5f8b765c-215b-4f7d-b2ad-f74405557996.pdf
+        - article [ref=f3e1691]:
+          - generic [ref=f3e1692]:
+            - code [ref=f3e1693]: M010
+            - generic [ref=f3e1694]: 市场来源
+          - heading "贵州绣娘文化主动求变开发文创产品" [level=3] [ref=f3e1695]
+          - paragraph [ref=f3e1696]: 中共贵州省委党校
+          - generic [ref=f3e1697]:
+            - generic [ref=f3e1698]:
+              - term [ref=f3e1699]: 发布
+              - definition [ref=f3e1700]: 2026-01
+            - generic [ref=f3e1701]:
+              - term [ref=f3e1702]: 检索
+              - definition [ref=f3e1703]: 2026-08-28
+            - generic [ref=f3e1704]:
+              - term [ref=f3e1705]: 权利
+              - definition [ref=f3e1706]: 公开来源
+          - generic [ref=f3e1707]:
+            - generic [ref=f3e1708]: 机绣+手绣
+            - generic [ref=f3e1709]: 2025年46万件与1300万元
+            - generic [ref=f3e1710]: 景区直营
+          - link "查看原始来源 ↗" [ref=f3e1711] [cursor=pointer]:
+            - /url: https://www.gzdx.gov.cn/dwjl/21718
+        - article [ref=f3e1712]:
+          - generic [ref=f3e1713]:
+            - code [ref=f3e1714]: M011
+            - generic [ref=f3e1715]: 市场来源
+          - heading "贵州文创从旅游商品到生活方式" [level=3] [ref=f3e1716]
+          - paragraph [ref=f3e1717]: 中国旅游报
+          - generic [ref=f3e1718]:
+            - generic [ref=f3e1719]:
+              - term [ref=f3e1720]: 发布
+              - definition [ref=f3e1721]: 2025-07-15
+            - generic [ref=f3e1722]:
+              - term [ref=f3e1723]: 检索
+              - definition [ref=f3e1724]: 2026-08-28
+            - generic [ref=f3e1725]:
+              - term [ref=f3e1726]: 权利
+              - definition [ref=f3e1727]: 公开来源
+          - generic [ref=f3e1728]:
+            - generic [ref=f3e1729]: 非遗+健康
+            - generic [ref=f3e1730]: 亲民首饰
+            - generic [ref=f3e1731]: 香包香氛
+            - generic [ref=f3e1732]: 溯源讲解与快递服务
+          - link "查看原始来源 ↗" [ref=f3e1733] [cursor=pointer]:
+            - /url: https://www.ctnews.com.cn/paper/att/202507/15/b444c673-add0-4f31-9758-1fc9db2d95c9.pdf
+        - article [ref=f3e1734]:
+          - generic [ref=f3e1735]:
+            - code [ref=f3e1736]: M012
+            - generic [ref=f3e1737]: 市场来源
+          - heading "贵州丹寨县石桥村传承老手艺、探索新业态 千年皮纸展新卷" [level=3] [ref=f3e1738]
+          - paragraph [ref=f3e1739]: 中国非物质文化遗产网/人民日报
+          - generic [ref=f3e1740]:
+            - generic [ref=f3e1741]:
+              - term [ref=f3e1742]: 发布
+              - definition [ref=f3e1743]: 2023-12-24
+            - generic [ref=f3e1744]:
+              - term [ref=f3e1745]: 检索
+              - definition [ref=f3e1746]: 2026-08-28
+            - generic [ref=f3e1747]:
+              - term [ref=f3e1748]: 权利
+              - definition [ref=f3e1749]: 公开来源
+          - generic [ref=f3e1750]:
+            - generic [ref=f3e1751]: 修复纸专业市场
+            - generic [ref=f3e1752]: 皮纸灯饰、书签、纸伞和手提袋
+            - generic [ref=f3e1753]: 古纸+体验
+          - link "查看原始来源 ↗" [ref=f3e1754] [cursor=pointer]:
+            - /url: https://www.ihchina.cn/project_details/28752.html
+  - generic [ref=f3e1755]:
+    - generic [ref=f3e1756]:
+      - strong [ref=f3e1757]: QianCraft
+      - generic [ref=f3e1758]: 有据可查的文化文创设计
+    - button "下载 DesignPackage" [ref=f3e1759] [cursor=pointer]

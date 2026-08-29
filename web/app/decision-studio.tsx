@@ -334,7 +334,7 @@ export function DecisionStudio({
                     const compare = draft.conceptCompareIds.includes(item.id);
                     const active = draft.activeConceptId === item.id;
                     const image = apiAssetUrl(item.imageUrl, API_BASE);
-                    return <article className={`${compare ? 'is-selected' : ''} ${active ? 'is-active' : ''}`} key={item.id}>{image ? <img src={image} alt={`${item.title} 概念方向`} /> : <div className="decision-concept-empty">等待视觉</div>}<span>{item.label}</span><h4>{item.title}</h4><label><input checked={compare} type="checkbox" onChange={() => setDraft({ ...draft, mode: 'manual', conceptCompareIds: toggleDecisionSelection(draft.conceptCompareIds, item.id, 12) })} />加入比较组</label><label><input checked={active} name="active-concept" type="radio" onChange={() => setDraft({ ...draft, mode: 'manual', activeConceptId: item.id, conceptCompareIds: draft.conceptCompareIds.includes(item.id) ? draft.conceptCompareIds : [...draft.conceptCompareIds, item.id] })} />设为当前采用</label></article>;
+                    return <article className={`${compare ? 'is-selected' : ''} ${active ? 'is-active' : ''}`} key={item.id}>{image ? <img src={image} alt={`${item.title} 概念方向`} decoding="async" loading="lazy" /> : <div className="decision-concept-empty">等待视觉</div>}<span>{item.label}</span><h4>{item.title}</h4><label><input checked={compare} type="checkbox" onChange={() => setDraft({ ...draft, mode: 'manual', conceptCompareIds: toggleDecisionSelection(draft.conceptCompareIds, item.id, 12) })} />加入比较组</label><label><input checked={active} name="active-concept" type="radio" onChange={() => setDraft({ ...draft, mode: 'manual', activeConceptId: item.id, conceptCompareIds: draft.conceptCompareIds.includes(item.id) ? draft.conceptCompareIds : [...draft.conceptCompareIds, item.id] })} />设为当前采用</label></article>;
                   })}
                 </div>
               </section>
@@ -354,10 +354,15 @@ export function DecisionStudio({
         </div>
 
         <footer className="decision-studio__footer">
-          <div><span>当前将保存</span><strong>{draft.cultureRecordIds.length} 文化 / {draft.marketPlatforms.length} 平台 / {draft.opportunityIds.length} 机会 / {draft.conceptCompareIds.length} 概念</strong></div>
-          {!canSave ? <p>每个关键阶段至少选择一项，机会最多 3 项，评分权重不能全部为 0。</p> : null}
-          <button className="decision-secondary" type="button" onClick={applyRecommendation}>恢复系统建议</button>
-          <button className="decision-secondary" type="button" onClick={onClose}>取消</button>
+          <div className="decision-studio__save-state">
+            <span>当前将保存</span>
+            <strong>{draft.cultureRecordIds.length} 文化 / {draft.marketPlatforms.length} 平台 / {draft.opportunityIds.length} 机会 / {draft.conceptCompareIds.length} 概念</strong>
+            {!canSave ? <p>每个关键阶段至少选择一项，机会最多 3 项，评分权重不能全部为 0。</p> : null}
+          </div>
+          <div className="decision-studio__secondary-actions">
+            <button className="decision-secondary" type="button" onClick={applyRecommendation}>恢复系统建议</button>
+            <button className="decision-secondary" type="button" onClick={onClose}>取消</button>
+          </div>
           <button className="decision-primary" disabled={busy || !canSave} type="button" onClick={() => onSave({ ...draft, mode: draft.mode === 'guided' ? 'guided' : 'manual' })}>{busy ? '正在保存…' : '保存人工决策并更新链路'}</button>
         </footer>
       </section>

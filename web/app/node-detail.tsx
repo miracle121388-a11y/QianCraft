@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -45,6 +45,8 @@ import {
   type WorkbenchNode,
   type WorkbenchNodeType,
 } from './workbench-model';
+import { CollectionConsole } from './collection-console';
+import { CultureConstellation } from './culture-constellation';
 
 const PLATFORM_LABELS: Record<string, string> = {
   xhs: '小红书',
@@ -61,6 +63,16 @@ const NODE_DECISION_STAGE: Record<WorkbenchNodeType, string> = {
   VisualGenerationNode: 'visual',
   ConceptNode: 'concept',
   PosterBoardNode: 'poster',
+};
+
+const NODE_STAGE_LABELS: Record<WorkbenchNodeType, string> = {
+  CultureGraphNode: '文化证据 · 人工核验中',
+  MarketRadarNode: '市场证据 · 非销量结论',
+  StrategyNode: '策略推导 · 人工决策前',
+  DesignBriefNode: '设计任务书 · 首样沟通前',
+  VisualGenerationNode: '视觉研究 · 非商业图稿',
+  ConceptNode: '概念视觉 · 首样沟通前',
+  PosterBoardNode: '概念海报 · 非商业发布',
 };
 
 const RESEARCH_NODE_TYPES = new Set<WorkbenchNodeType>([
@@ -173,6 +185,20 @@ function formatMetric(value: number): string {
   return new Intl.NumberFormat('zh-CN', { notation: value >= 10000 ? 'compact' : 'standard' }).format(value);
 }
 
+function formatDateTime(value: string | undefined): string {
+  if (!value) return '—';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(date);
+}
+
 function saveJson(payload: unknown, filename: string) {
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -188,8 +214,8 @@ function TagList({ values }: { values: string[] }) {
   return <div className="detail-tags">{values.map((item) => <span key={item}>{item}</span>)}</div>;
 }
 
-function CitationBadges({ refs }: { refs: string[] }) {
-  return <div className="citation-badges">{refs.map((ref) => <a href={`#citation-${ref}`} key={ref}>[{ref}]</a>)}</div>;
+function CitationBadges({ refs, interactive = true }: { refs: string[]; interactive?: boolean }) {
+  return <div className="citation-badges">{refs.map((ref) => interactive ? <a href={`#citation-${ref}`} key={ref}>[{ref}]</a> : <span key={ref}>[{ref}]</span>)}</div>;
 }
 
 function CitationLedger({ citations, audit }: { citations: EvidenceCitation[]; audit: NodeDetailPayload['citationAudit'] }) {
@@ -223,44 +249,22 @@ function CitationLedger({ citations, audit }: { citations: EvidenceCitation[]; a
 
 function CultureDetail({ records, citations }: { records: JsonRecord[]; citations: EvidenceCitation[] }) {
   const [selectedId, setSelectedId] = useState(text(records[0]?.culture_id, ''));
-  const selected = records.find((record) => text(record.culture_id, '') === selectedId) ?? records[0];
-  const sourceMap = useMemo(() => new Map(citations.map((item) => [item.id, item])), [citations]);
-  if (!selected) return <p className="detail-empty">文化图谱暂无记录。</p>;
+  if (!records.length) return <p className="detail-empty">文化图谱暂无记录。</p>;
   return (
     <>
-      <section className="culture-detail-layout">
-        <div className="culture-graph-board">
-          <div className="culture-graph-core"><span>贵州</span><strong>在地文化</strong><small>{records.length} 条知识记录</small></div>
-          <svg aria-hidden="true" viewBox="0 0 760 590" preserveAspectRatio="none">
-            {records.slice(0, 16).map((_, index) => {
-              const x = 80 + (index % 4) * 200;
-              const y = 82 + Math.floor(index / 4) * 142;
-              return <line key={index} x1="380" y1="295" x2={x} y2={y} />;
-            })}
-          </svg>
-          <div className="culture-node-grid">
-            {records.slice(0, 16).map((record) => {
-              const id = text(record.culture_id, '');
-              return <button className={id === text(selected.culture_id, '') ? 'is-active' : ''} key={id} type="button" onClick={() => setSelectedId(id)}><span>{text(record.category, '文化')}</span><strong>{text(record.culture_name)}</strong><small>{asStrings(record.source_refs).length} 条引用</small></button>;
-            })}
-          </div>
-        </div>
-        <article className="culture-record-panel">
-          <header><span>{text(selected.category, '在地文化')}</span><code>{text(selected.culture_id)}</code></header>
-          <h2>{text(selected.culture_name)}</h2>
-          <p className="record-lead">{asStrings(selected.history)[0] ?? '已进入结构化文化知识图谱。'}</p>
-          <div className="record-block"><h3>地域与支系</h3><TagList values={asStrings(selected.region)} /></div>
-          <div className="record-block"><h3>工艺</h3><TagList values={asStrings(selected.crafts)} /></div>
-          <div className="record-block"><h3>纹样 / 结构</h3><TagList values={asStrings(selected.patterns)} /></div>
-          <div className="record-block"><h3>可转译方向</h3><TagList values={asStrings(selected.modernizable_elements)} /></div>
-          <div className="record-block record-block--boundary"><h3>文化边界</h3>{asStrings(selected.cultural_taboos).map((item) => <p key={item}>{item}</p>)}</div>
-          <CitationBadges refs={asStrings(selected.source_refs).filter((ref) => sourceMap.has(ref))} />
-        </article>
-      </section>
+      <div id="culture-star-map">
+        <CultureConstellation
+          citations={citations}
+          onSelectionChange={setSelectedId}
+          records={records}
+          selectedId={selectedId}
+        />
+      </div>
+      <CollectionConsole focus="culture" recordCount={records.length} />
       <section className="detail-data-section">
         <header className="detail-section-heading"><div><h2>全部文化记录</h2></div><p>按地域、工艺与引用独立检索</p></header>
         <div className="record-index-grid">
-          {records.map((record) => <button key={text(record.culture_id)} type="button" onClick={() => { setSelectedId(text(record.culture_id, '')); window.scrollTo({ top: 150, behavior: 'smooth' }); }}><span>{text(record.category, '在地文化')}</span><h3>{text(record.culture_name)}</h3><p>{asStrings(record.region).slice(0, 3).join(' · ')}</p><CitationBadges refs={asStrings(record.source_refs).slice(0, 5)} /></button>)}
+          {records.map((record) => <button key={text(record.culture_id)} type="button" onClick={() => { setSelectedId(text(record.culture_id, '')); document.getElementById('culture-star-map')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }}><span>{text(record.category, '在地文化')}</span><h3>{text(record.culture_name)}</h3><p>{asStrings(record.region).slice(0, 3).join(' · ')}</p><CitationBadges interactive={false} refs={asStrings(record.source_refs).slice(0, 5)} /></button>)}
         </div>
       </section>
     </>
@@ -273,12 +277,22 @@ function MarketDetail({ detail }: { detail: NodeDetailPayload }) {
   const platforms = detail.content.platforms ?? {};
   const [platform, setPlatform] = useState('all');
   const visiblePosts = platform === 'all' ? posts : posts.filter((post) => post.platform === platform);
+  const publishedDates = posts.map((post) => post.publishedAt).filter(Boolean).sort();
+  const retrievedDates = posts.map((post) => post.retrievedAt).filter(Boolean).sort();
+  const publishedWindow = publishedDates.length
+    ? `${publishedDates[0].slice(0, 10)} — ${publishedDates.at(-1)?.slice(0, 10)}`
+    : '未登记';
+  const latestRetrieved = retrievedDates.at(-1)?.slice(0, 10) || '未登记';
   return (
     <>
       <section className="market-kpi-row">
-        <div><span>历史样本</span><strong>{detail.content.sampleSize ?? 0}</strong><small>真实历史记录，不标成实时趋势</small></div>
+        <div><span>历史样本</span><strong>{detail.content.sampleSize ?? 0}</strong><small>发布 {publishedWindow}<br />检索 {latestRetrieved}</small></div>
         {Object.entries(platforms).map(([code, value]) => <div key={code}><span>{PLATFORM_LABELS[code] ?? code}</span><strong>{value.sample_size}</strong><small>{platformStatusLabel(value.status)}</small></div>)}
       </section>
+      <details className="collection-console-disclosure" id="market-collection-control">
+        <summary><div><strong>持续采集与授权</strong><span>按计划复检四个平台；未授权时明确阻断，不覆盖上方历史证据。</span></div><em>展开运行控制</em></summary>
+        <CollectionConsole focus="market" />
+      </details>
       <section className="market-detail-grid">
         <div className="ranking-board">
           <header className="detail-section-heading"><div><h2>爆款形态排序</h2></div><p>跨平台热度为派生分，不是平台官方口径</p></header>
@@ -287,10 +301,10 @@ function MarketDetail({ detail }: { detail: NodeDetailPayload }) {
             return <article key={text(raw.product_form, String(index))}><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{text(raw.product_form)}</h3><p>{asStrings(raw.why_hot).join('；')}</p><div className="platform-score-strip">{Object.entries(scores).map(([code, score]) => <span key={code}>{PLATFORM_LABELS[code] ?? code}<i style={{ width: `${Math.min(100, number(score))}%` }} /><em>{number(score).toFixed(1)}</em></span>)}</div></div><strong>{number(raw.cross_platform_hot_score).toFixed(1)}</strong></article>;
           })}
         </div>
-        <aside className="market-method-card"><h2>评分方法</h2><p>综合平台内热度、样本占比、平台覆盖与近期性，仅用于这批有限样本的相对比较。</p><details><summary>查看字段说明</summary><pre>{JSON.stringify(detail.content.methodology ?? {}, null, 2)}</pre></details><small>生成于 {detail.content.generatedAt || '—'}</small></aside>
+        <aside className="market-method-card"><h2>评分方法</h2><p>综合平台内热度、样本占比、平台覆盖与近期性，仅用于这批有限样本的相对比较。</p><details><summary>查看字段说明</summary><pre>{JSON.stringify(detail.content.methodology ?? {}, null, 2)}</pre></details><small>生成于 <time dateTime={detail.content.generatedAt}>{formatDateTime(detail.content.generatedAt)}</time></small></aside>
       </section>
       <section className="detail-data-section">
-        <header className="detail-section-heading"><div><h2>已采集代表记录</h2></div><nav><button className={platform === 'all' ? 'is-active' : ''} type="button" onClick={() => setPlatform('all')}>全部</button>{Object.keys(platforms).map((code) => <button className={platform === code ? 'is-active' : ''} key={code} type="button" onClick={() => setPlatform(code)}>{PLATFORM_LABELS[code] ?? code}</button>)}</nav></header>
+        <header className="detail-section-heading"><div><h2>已采集代表记录</h2></div><nav><button aria-pressed={platform === 'all'} className={platform === 'all' ? 'is-active' : ''} type="button" onClick={() => setPlatform('all')}>全部</button>{Object.keys(platforms).map((code) => <button aria-pressed={platform === code} className={platform === code ? 'is-active' : ''} key={code} type="button" onClick={() => setPlatform(code)}>{PLATFORM_LABELS[code] ?? code}</button>)}</nav></header>
         <div className="market-post-grid">{visiblePosts.map((post) => <MarketPostCard key={post.sourceRef} post={post} />)}</div>
       </section>
     </>
@@ -298,7 +312,7 @@ function MarketDetail({ detail }: { detail: NodeDetailPayload }) {
 }
 
 function MarketPostCard({ post }: { post: MarketPostSummary }) {
-  return <article><header><span>{PLATFORM_LABELS[post.platform] ?? post.platform}</span><code>{post.sourceRef}</code></header><h3>{post.title || '无标题平台记录'}</h3><p>{post.productForm} · {post.searchKeyword}</p><div className="post-metrics"><span>赞 <b>{formatMetric(post.engagement.likes)}</b></span><span>藏 <b>{formatMetric(post.engagement.favorites)}</b></span><span>评 <b>{formatMetric(post.engagement.comments)}</b></span><span>转 <b>{formatMetric(post.engagement.shares)}</b></span></div><div className="post-score"><span>平台内热度</span><i><em style={{ width: `${Math.min(100, post.platformHotScore)}%` }} /></i><strong>{post.platformHotScore.toFixed(1)}</strong></div><small>{post.qualityReasons.join('；')}</small>{post.url ? <a href={post.url} target="_blank" rel="noreferrer">查看平台原记录 ↗</a> : null}</article>;
+  return <article><header><span>{PLATFORM_LABELS[post.platform] ?? post.platform}</span><code>{post.sourceRef}</code></header><h3>{post.title || '无标题平台记录'}</h3><p>{post.productForm} · {post.searchKeyword}</p><p className="market-post-dates"><time dateTime={post.publishedAt}>发布 {post.publishedAt ? post.publishedAt.slice(0, 10) : '未登记'}</time><time dateTime={post.retrievedAt}>检索 {post.retrievedAt ? post.retrievedAt.slice(0, 10) : '未登记'}</time></p><div className="post-metrics"><span>赞 <b>{formatMetric(post.engagement.likes)}</b></span><span>藏 <b>{formatMetric(post.engagement.favorites)}</b></span><span>评 <b>{formatMetric(post.engagement.comments)}</b></span><span>转 <b>{formatMetric(post.engagement.shares)}</b></span></div><div className="post-score"><span>平台内热度</span><i><em style={{ width: `${Math.min(100, post.platformHotScore)}%` }} /></i><strong>{post.platformHotScore.toFixed(1)}</strong></div><small>{post.qualityReasons.join('；')}</small>{post.url ? <a href={post.url} target="_blank" rel="noreferrer">查看平台原记录 ↗</a> : null}</article>;
 }
 
 function StrategyDetail({ opportunities }: { opportunities: OpportunityDetail[] }) {
@@ -329,7 +343,7 @@ function VisualDetail({ detail, onOpen }: { detail: NodeDetailPayload; onOpen: (
 function ConceptTile({ concept, onOpen }: { concept: WorkbenchNode; onOpen: (id: string) => void }) {
   const image = apiAssetUrl(concept.data.imageUrl, API_BASE);
   const previousAsset = Boolean(image && ['warning', 'error', 'stale', 'cached'].includes(concept.data.status));
-  return <article className={concept.data.active ? 'is-active' : ''}>{image ? <img src={image} alt={`${concept.data.title} 概念视觉`} /> : <div className="concept-placeholder">等待图像服务</div>}<div><span>{text(concept.data.label, '概念方向')}</span>{previousAsset ? <small className="concept-asset-note">保留上次成功资产 · 本轮未生成</small> : null}<h3>{concept.data.title}</h3><p>{text(concept.data.direction, concept.data.summary)}</p><button type="button" onClick={() => onOpen(concept.id)}>进入独立概念页 ↗</button></div></article>;
+  return <article className={concept.data.active ? 'is-active' : ''}>{image ? <img src={image} alt={`${concept.data.title} 概念视觉`} decoding="async" loading="lazy" /> : <div className="concept-placeholder">等待图像服务</div>}<div><span>{text(concept.data.label, '概念方向')}</span>{previousAsset ? <small className="concept-asset-note">保留上次成功资产 · 本轮未生成</small> : null}<h3>{concept.data.title}</h3><p>{text(concept.data.direction, concept.data.summary)}</p><button type="button" onClick={() => onOpen(concept.id)}>进入独立概念页 ↗</button></div></article>;
 }
 
 function ConceptDetail({ detail, draft, setDraft, onSave, onAction, busy }: { detail: NodeDetailPayload; draft: { title: string; summary: string; direction: string; prompt: string }; setDraft: (value: { title: string; summary: string; direction: string; prompt: string }) => void; onSave: () => void; onAction: (action: 'activate' | 'duplicate' | 'regenerate' | 'generate-more') => void; busy: boolean }) {
@@ -337,14 +351,14 @@ function ConceptDetail({ detail, draft, setDraft, onSave, onAction, busy }: { de
   const manufacturing = detail.content.manufacturing ?? {};
   const bom = asRecords(manufacturing.bill_of_materials);
   const previousAsset = Boolean(image && ['warning', 'error', 'stale', 'cached'].includes(detail.node.data.status));
-  return <><section className="concept-detail-hero"><div className="concept-detail-image">{image ? <img src={image} alt={`${detail.node.data.title} 文创成品概念`} /> : <div className="concept-placeholder">当前方向尚无生成图</div>}{previousAsset ? <small className="concept-asset-note">保留上次成功资产 · 本轮未生成</small> : null}<span>{detail.node.data.active ? '当前采用' : '候选方案'}</span></div><form className="detail-editor" onSubmit={(event) => { event.preventDefault(); onSave(); }}><header><h2>编辑概念方向</h2></header><label><span>概念标题</span><input value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} /></label><label><span>概念说明</span><textarea rows={4} value={draft.summary} onChange={(event) => setDraft({ ...draft, summary: event.target.value })} /></label><label><span>视觉方向</span><textarea rows={3} value={draft.direction} onChange={(event) => setDraft({ ...draft, direction: event.target.value })} /></label><label><span>图像生成提示词</span><textarea rows={9} value={draft.prompt} onChange={(event) => setDraft({ ...draft, prompt: event.target.value })} /></label><button className="detail-primary" disabled={busy} type="submit">保存概念编辑</button><div className="detail-action-grid"><button disabled={busy || Boolean(detail.node.data.active)} type="button" onClick={() => onAction('activate')}>设为当前方向</button><button disabled={busy} type="button" onClick={() => onAction('duplicate')}>复制方向</button><button disabled={busy} type="button" onClick={() => onAction('regenerate')}>单独重生成</button><button disabled={busy} type="button" onClick={() => onAction('generate-more')}>生成更多方向</button></div></form></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>文化元素与转译规则</h2></div></header><div className="culture-element-grid">{(detail.content.culturalElements ?? []).map((item, index) => <article key={text(item.element_id, String(index))}><code>{text(item.element_id, `E-${index + 1}`)}</code><h3>{text(item.name)}</h3><p>{text(item.transformation_rule)}</p><TagList values={asStrings(item.evidence_refs)} /></article>)}</div></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>BOM 与加工拆解</h2></div><p>仅用于询价与首样沟通</p></header><div className="bom-table"><div className="bom-row bom-row--head"><span>编号</span><span>部件</span><span>材料</span><span>工艺</span><span>尺寸 / 验收</span></div>{bom.map((item, index) => <div className="bom-row" key={text(item.item_id, String(index))}><code>{text(item.item_id, String(index + 1))}</code><strong>{text(item.component)}</strong><span>{text(item.material)}</span><span>{text(item.process)}</span><small>{text(item.dimension)}<br />{text(item.quality_check)}</small></div>)}</div></section></>;
+  return <><section className="concept-detail-hero"><div className="concept-detail-image">{image ? <img src={image} alt={`${detail.node.data.title} 文创成品概念`} decoding="async" fetchPriority="high" /> : <div className="concept-placeholder">当前方向尚无生成图</div>}{previousAsset ? <small className="concept-asset-note">保留上次成功资产 · 本轮未生成</small> : null}<span>{detail.node.data.active ? '当前采用' : '候选方案'}</span></div><form className="detail-editor" onSubmit={(event) => { event.preventDefault(); onSave(); }}><header><h2>编辑概念方向</h2></header><label><span>概念标题</span><input value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} /></label><label><span>概念说明</span><textarea rows={4} value={draft.summary} onChange={(event) => setDraft({ ...draft, summary: event.target.value })} /></label><label><span>视觉方向</span><textarea rows={3} value={draft.direction} onChange={(event) => setDraft({ ...draft, direction: event.target.value })} /></label><label><span>图像生成提示词</span><textarea rows={9} value={draft.prompt} onChange={(event) => setDraft({ ...draft, prompt: event.target.value })} /></label><button className="detail-primary" disabled={busy} type="submit">保存概念编辑</button><div className="detail-action-grid"><button disabled={busy || Boolean(detail.node.data.active)} type="button" onClick={() => onAction('activate')}>设为当前方向</button><button disabled={busy} type="button" onClick={() => onAction('duplicate')}>复制方向</button><button disabled={busy} type="button" onClick={() => onAction('regenerate')}>单独重生成</button><button disabled={busy} type="button" onClick={() => onAction('generate-more')}>生成更多方向</button></div></form></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>文化元素与转译规则</h2></div></header><div className="culture-element-grid">{(detail.content.culturalElements ?? []).map((item, index) => <article key={text(item.element_id, String(index))}><code>{text(item.element_id, `E-${index + 1}`)}</code><h3>{text(item.name)}</h3><p>{text(item.transformation_rule)}</p><TagList values={asStrings(item.evidence_refs)} /></article>)}</div></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>BOM 与加工拆解</h2></div><p>仅用于询价与首样沟通</p></header><div className="bom-table"><div className="bom-row bom-row--head"><span>编号</span><span>部件</span><span>材料</span><span>工艺</span><span>尺寸 / 验收</span></div>{bom.map((item, index) => <div className="bom-row" key={text(item.item_id, String(index))}><code>{text(item.item_id, String(index + 1))}</code><strong>{text(item.component)}</strong><span>{text(item.material)}</span><span>{text(item.process)}</span><small>{text(item.dimension)}<br />{text(item.quality_check)}</small></div>)}</div></section></>;
 }
 
 function PosterDetail({ detail, draft, setDraft, onSave, busy }: { detail: NodeDetailPayload; draft: PosterConfig; setDraft: (value: PosterConfig) => void; onSave: () => void; busy: boolean }) {
   const image = apiAssetUrl(detail.node.data.imageUrl, API_BASE);
   const activeImage = apiAssetUrl(detail.content.activeConcept?.data.imageUrl, API_BASE);
   const manufacturing = detail.content.manufacturing ?? {};
-  return <><section className="poster-detail-layout"><div className="poster-artboard">{image ? <img src={image} alt="QianCraft 完整设计海报" /> : activeImage ? <img src={activeImage} alt="当前概念视觉" /> : null}{!image ? <div className="poster-artboard-label"><span>QianCraft · 概念提案</span><strong>{draft.title}</strong><p>{draft.subtitle}</p></div> : null}</div><form className="detail-editor" onSubmit={(event) => { event.preventDefault(); onSave(); }}><header><h2>编辑海报内容</h2></header><label><span>标题</span><input value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} /></label><label><span>副标题</span><textarea rows={4} value={draft.subtitle} onChange={(event) => setDraft({ ...draft, subtitle: event.target.value })} /></label><fieldset><legend>展示板块</legend>{draft.sections.map((section) => <label className="section-toggle" key={section}><input checked={!draft.hiddenSections.includes(section)} type="checkbox" onChange={(event) => setDraft(updatePosterSection(draft, section, event.target.checked))} /><span>{POSTER_SECTION_LABELS[section] ?? section}</span></label>)}</fieldset><button className="detail-primary" disabled={busy} type="submit">保存海报版式</button>{image ? <a className="detail-download" href={image} download>下载项目海报 PNG</a> : null}</form></section><section className="poster-breakdown-grid"><article><h3>{draft.cultureElement}</h3><p>{draft.cultureRule}</p></article><article><h3>用料方向</h3>{draft.materials.map((item) => <p key={item}>{item}</p>)}</article><article><h3>加工路径</h3>{draft.process.map((item, index) => <p key={item}><b>{index + 1}</b>{item}</p>)}</article><article className="is-boundary"><h3>当前边界</h3><p>{draft.boundary}</p></article></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>工厂沟通信息</h2></div></header><JsonFacts data={manufacturing} /></section></>;
+  return <><section className="poster-detail-layout"><div className="poster-artboard">{image ? <img src={image} alt="QianCraft 完整设计海报" decoding="async" fetchPriority="high" /> : activeImage ? <img src={activeImage} alt="当前概念视觉" decoding="async" fetchPriority="high" /> : null}{!image ? <div className="poster-artboard-label"><span>QianCraft · 概念提案</span><strong>{draft.title}</strong><p>{draft.subtitle}</p></div> : null}</div><form className="detail-editor" onSubmit={(event) => { event.preventDefault(); onSave(); }}><header><h2>编辑海报内容</h2></header><label><span>标题</span><input value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} /></label><label><span>副标题</span><textarea rows={4} value={draft.subtitle} onChange={(event) => setDraft({ ...draft, subtitle: event.target.value })} /></label><fieldset><legend>展示板块</legend>{draft.sections.map((section) => <label className="section-toggle" key={section}><input checked={!draft.hiddenSections.includes(section)} type="checkbox" onChange={(event) => setDraft(updatePosterSection(draft, section, event.target.checked))} /><span>{POSTER_SECTION_LABELS[section] ?? section}</span></label>)}</fieldset><button className="detail-primary" disabled={busy} type="submit">保存海报版式</button>{image ? <a className="detail-download" href={image} download>下载项目海报 PNG</a> : null}</form></section><section className="poster-breakdown-grid"><article><h3>{draft.cultureElement}</h3><p>{draft.cultureRule}</p></article><article><h3>用料方向</h3>{draft.materials.map((item) => <p key={item}>{item}</p>)}</article><article><h3>加工路径</h3>{draft.process.map((item, index) => <p key={item}><b>{index + 1}</b>{item}</p>)}</article><article className="is-boundary"><h3>当前边界</h3><p>{draft.boundary}</p></article></section><section className="detail-data-section"><header className="detail-section-heading"><div><h2>工厂沟通信息</h2></div></header><JsonFacts data={manufacturing} /></section></>;
 }
 
 function JsonFacts({ data }: { data: JsonRecord }) {
@@ -371,12 +385,14 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
       setPosterDraft(next.content.poster ?? next.node.data.poster ?? null);
       setConceptDraft({ title: next.node.data.title, summary: next.node.data.summary, direction: text(next.node.data.direction, ''), prompt: text(next.node.data.prompt, '') });
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : String(reason));
+      const detail = reason instanceof Error ? reason.message : String(reason);
+      setError(detail);
+      throw reason;
     }
   }, [nodeId, workspaceId]);
 
   useEffect(() => {
-    const initialLoad = window.setTimeout(() => void load(), 0);
+    const initialLoad = window.setTimeout(() => void load().catch(() => undefined), 0);
     return () => window.clearTimeout(initialLoad);
   }, [load]);
 
@@ -424,7 +440,7 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
     }
   }, [workspaceId]);
 
-  if (!detail) return <main className="node-detail-loading"><div>Q</div><span>{error ? '载入失败' : '正在读取证据'}</span><h1>{error || '正在装载节点页面'}</h1>{error ? <button type="button" onClick={() => void load()}>重新连接</button> : null}</main>;
+  if (!detail) return <main className="node-detail-loading"><div>Q</div><span>{error ? '载入失败' : '正在读取证据'}</span><h1>{error || '正在装载节点页面'}</h1>{error ? <button type="button" onClick={() => void load().catch(() => undefined)}>重新连接</button> : null}</main>;
 
   const node = detail.node;
   const nodeLabel = NODE_TYPE_LABELS[node.type];
@@ -518,7 +534,9 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
         </div>
       </header>
 
-      <section className="detail-hero"><div className={`detail-node-mark detail-node-mark--${node.type}`}>{node.type === 'ConceptNode' ? text(node.data.label, 'C').slice(-1) : node.data.eyebrow.slice(0, 1)}</div><div><h1>{node.data.title}</h1><p>{displayNodeSummary(node.type, node.data.summary)}</p><div className="hero-meta"><em className={`is-${node.data.status}`}>{STATUS_LABELS[node.data.status]}</em><a href="#citations">{detail.citationAudit.resolved} 条引用</a><span>概念视觉 · 首样沟通前</span><details className="hero-run-details"><summary>运行信息</summary><div><span>工作区：{detail.workspace.name}</span><span>运行：{detail.workspace.sourceRunId || '未登记'}</span></div></details></div></div></section>
+      {error ? <div className="detail-page-error" role="alert">最新状态复核失败：{error}<button type="button" onClick={() => void load().catch(() => undefined)}>重新连接</button></div> : null}
+
+      <section className="detail-hero"><div className={`detail-node-mark detail-node-mark--${node.type}`}>{node.type === 'ConceptNode' ? text(node.data.label, 'C').slice(-1) : node.data.eyebrow.slice(0, 1)}</div><div><h1>{node.data.title}</h1><p>{displayNodeSummary(node.type, node.data.summary)}</p><div className="hero-meta"><em className={`is-${node.data.status}`}>{STATUS_LABELS[node.data.status]}</em><a href="#citations">{detail.citationAudit.resolved} 条引用</a><span>{NODE_STAGE_LABELS[node.type]}</span><details className="hero-run-details"><summary>运行信息</summary><div><span>工作区：{detail.workspace.name}</span><span>运行：{detail.workspace.sourceRunId || '未登记'}</span></div></details></div></div></section>
 
       <nav className="detail-related" aria-label="相关节点"><span>关联节点</span>{detail.relatedNodes.map((item) => <Link href={`/nodes/${encodeURIComponent(item.id)}?workspace=${encodeURIComponent(workspaceId)}`} key={item.id}><i className={`is-${item.status}`} /><small>{item.relation === 'upstream' ? '输入' : '下游'}</small><strong>{item.title}</strong><ExternalLink aria-hidden="true" size={13} /></Link>)}</nav>
 
@@ -534,7 +552,7 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
       </div>
 
       <footer className="detail-footer"><div><strong>QianCraft</strong><span>有据可查的文化文创设计</span></div><p>文化事实、市场记录、策略推导与设计假设分层展示；引用可回到原始来源。</p><button type="button" onClick={() => void act(() => getDesignPackage(workspaceId).then((payload) => saveJson(payload, 'QianCraft-DesignPackage.json')), '当前工作区 DesignPackage 已导出。')}>下载 DesignPackage</button></footer>
-      {notice ? <div className={`detail-notice detail-notice--${notice.tone}`}>{notice.text}</div> : null}
+      {notice ? <div className={`detail-notice detail-notice--${notice.tone}`} role={notice.tone === 'error' ? 'alert' : 'status'}>{notice.text}</div> : null}
     </main>
   );
 }

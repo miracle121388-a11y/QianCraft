@@ -18,6 +18,10 @@
 
 严格任务从网页实际发起了三轮。`20260828T195153Z-ef72a358` 如实返回 `failed_no_fallback`；其中文化与策划 live、市场 cache，四平台均未晋级。`20260828T200911Z-b71cc7d1` 暴露研究函数错误地继续调用 Design Agent，导致不支持的 OPP-009 异常遮住了市场审计；该耦合已修复并增加回归。修复后的 `20260828T202303Z-2bae17ff` 用 9 分 41 秒完成，返回文化 live、策划 live、市场 cache，xhs/dy/bili/wb 均 unavailable，最终 `failed_no_fallback`；运行目录完整保存 8 项研究产物、四平台详情与 `strict_result.json`，没有 DesignPackage，也没有覆盖当前工作区。页面随后显示“实时链路未通过”，三个研究节点不再卡在 running。
 
+0.9.0 新增持续素材采集实机验收。Tool API 启动后 `/api/health` 返回调度线程在线、真实心跳与总开关；文化通道实际巡检 4 个登记来源，最终 4/4 可达、没有把通用导航写入候选，正式图谱仍保持 22 条记录/32 个来源。此前发现的 10 个同域链接经人工审核排除 9 个通用导航，保留 1 条真实待核验候选；候选没有自动晋级。市场通道两次预检均因 `MEDIACRAWLER_LIVE_ENABLED=false` 和四平台当前未连接授权浏览器而 `blocked`，没有启动伪研究任务，也没有改写 378 条历史快照。
+
+前端使用 Playwright CLI 重新截取全部 10 个桌面路由，并重点复核 390×844 的文化星图与市场页。知识星图真实完成鼠标拖动、滚轮缩放、键盘平移、搜索聚焦；移动自动化真实滚动详情容器，并通过 CDP 单/双触点验证显式操作模式下的单指平移与捏合缩放，退出后恢复 `touch-action: pan-y pinch-zoom`。断线拦截验证 12 秒轮询失败后立即改为“采集控制面连接中断”、心跳显示中断且写操作禁用；forced-colors 下中心、普通节点与选中节点保持不同系统色。市场首屏先显示 378、四平台样本量、发布范围与检索日期，完整采集控制台折叠在后。
+
 ## 环境
 
 - Windows / PowerShell
@@ -50,15 +54,17 @@
 | 外部引用可达性 | 分层通过 | 扫描数据层 454 个唯一公开 URL：442 个直接 GET 可达；12 个因目标站连接或站点防护未直接返回，分别来自贵州日报/人民网转载链、全国人大和中国丝绸博物馆等真实官方页面，经搜索索引复核仍存在。未把暂时不可直连写成“来源不存在” |
 | Workspace 与节点运行 | 通过 | 隔离 HTTP 实测 New/Rename/Save、Decision v2、Brief v3、独立 Design Agent、Concept 复制/单体重生成和 Poster 服务端渲染；缺 provider 的 Concept 为 warning 且保留旧资产，研究节点直接普通 POST 返回 409，防止旧文件伪装本轮结果。节点状态和仅下游 stale 均持久化到经过校验的 JSON |
 | Workbench 浏览器交互 | 通过 | 顶部“实时运行”从页面实际发起 202 后台任务；刷新后同一 job 自动续接，运行中入口禁止重复创建。五阶段导航、Dock、画布、Inspector、九个详情页、Design Agent、Concept warning 和 Poster 实际渲染均已浏览器点击；失败后从服务端 Bootstrap 恢复节点状态，不把研究节点永久卡在 running |
+| 持续采集调度与候选门 | 通过（按真实阻断口径） | API 心跳在线；文化 4/4 来源实巡检成功，候选与正式图谱分层；部分来源失败单测为 `degraded` 且连续失败累加。市场因当前实时开关/四平台授权缺失明确 `blocked`，未创建假任务、未覆盖 378 条历史证据 |
+| 知识星图与采集控制面 | 通过 | 桌面/手机星图搜索、选点、缩放、拖动/键盘、触屏操作模式与默认页面滚动通过；控制面断线旧状态、高对比层级、历史/实时信息顺序和 44px 触控目标进入 Playwright 门 |
 | 七阶段人工交互 | 通过 | 浏览器实际完成文化、平台、权重、机会、任务书、视觉、方案与海报调整；保存后节点显示 HUMAN v3、人工分与系统分并列、下游 stale，展示页可深链返回对应决策阶段 |
-| 中文排版、令牌与响应式 | 通过 | 0.7.3 保留暖纸色系统与单一中文标签，并把 9 个画布实例统一为稳定横条；1440 × 960 实测全部节点渲染高度为 62px，切换选择前后尺寸不变、`transform:none`，Inspector 仍绑定正确节点并提供完整页面/运行/从此运行。390 × 844 无页面横向溢出；0.7.2 已完成的手机端文化图谱、任务书、三套概念 BOM、海报和决策表单复核继续有效 |
+| 中文排版、令牌与响应式 | 通过 | 0.9.0 延续黑白精密工具：白色工作面、冷灰层级、石墨文字与纯黑主动作，米色/暖纸色和蓝/靛蓝不再属于系统 chrome；9 个 Workbench 节点保持稳定横条与不变几何。文化关系画布是唯一黑底例外，390 × 844 默认保留页面滚动，显式“操作星图”后才启用单指平移/双指缩放；主要移动控件保持至少 44px，桌面/手机无横向溢出 |
 | Workbench production server | 通过 | Vinext 五阶段构建后以 `127.0.0.1:3000` 启动 production server；页面、真实 API、A/B/C 资产与 Flow Map 均重新验收，React Flow 合法最小 attribution 保留 |
 | Zeabur 线上实例 | 通过（分层验收） | 0.8.0 隔离发布包为 74 个文件、19,435,606 字节，敏感文件名与长 `sk-` 模式均为 0 命中。首个 0.8.0 部署构建完成后因 Windows 上传包把启动脚本转成 CRLF 而崩溃；先恢复 0.7.3 服务，再由 Docker 构建统一脚本行尾。最终部署 `6a91f49bac2577a93d22048d` 为 `RUNNING`，日志确认 `qiancraft-0.8.0`、Tool API 与 Vinext 启动，公网 `/healthz` 为 200、匿名入口为 401。本轮执行环境没有站点凭证，因此 0.8.0 的认证后页面/API 保留待凭证复验，不以本地结果替代 |
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 预期 warning | 独立 Images API 未配置；同一 DeepSeek 服务的 `/images/generations` 实测 HTTP 404。现有 A/B/C 可展示，但 Regenerate 与 Generate More 不会把项目资产冒充为一次新 API 结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 通过 | Python `pytest` 46/46；Workbench TypeScript 5/5；新增覆盖研究段不调用 Design Agent、仅凭研究产物晋级、部分实时记录保留、无生成器自动选案、严格预检、当前决策 DesignPackage、真实 Poster 与失败状态回归 |
-| 静态检查与构建 | 通过 | `ruff check app tests scripts/probe_market_platforms.py`、TypeScript no-emit、ESLint 与 Vinext 五阶段 production build 均无错误；脚本入口的显式 `sys.path` bootstrap 不纳入 E402 检查 |
+| 自动测试 | 通过 | Python `pytest` 53/53；Workbench TypeScript 5/5；Playwright 35 passed / 1 intentionally skipped。新增覆盖持续采集状态与持久化、线程死亡/心跳过期健康端点 503、部分文化来源失败必须 `degraded`、授权阻断、候选失败输入保留、初次连接/轮询断线旧状态失效、知识星图桌面滚轮/拖动/键盘、移动页面滚动/单触点/双触点与 forced-colors，并保留研究、DesignPackage 与 Poster 回归 |
+| 静态检查与构建 | 通过 | `ruff check app tests scripts/probe_market_platforms.py`、TypeScript no-emit、ESLint、Vinext 五阶段 production build、`bash -n deploy/start-zeabur.sh`、`uv lock --check` 与 `git diff --check` 均无错误；脚本入口的显式 `sys.path` bootstrap 不纳入 E402 检查 |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 
 ## 可复现命令
@@ -108,3 +114,4 @@ pnpm start:local
 11. 独立图像生成自动化服务尚未配置。A/B/C 当前都有可展示项目资产，其中 B/C 来自此前内置图像生成与人工目视复核；这不代表 DeepSeek 支持图片。Regenerate / Generate More 会真实调用独立 provider，未配置时保留旧成功资产并明确 warning，不会制造新成功记录。
 12. Workbench 已部署为受 Basic Auth 保护的远端产品验证环境；Vinext 与 Python API 在容器内仍只绑定回环地址，运行态由持久卷承载，密钥由部署变量注入。精简云端镜像没有 MediaCrawler/LightRAG/GPT Researcher 上游运行时，因此严格研究会预检阻断；完整实爬应在有本人授权浏览器的本机运行。如需多人正式使用，仍应补用户级账户、权限审计、备份、任务队列和密钥轮换流程。
 13. 本轮使用上传的 React Flow 源码核对集成版本和能力边界，但没有改写其源码、许可证或版权通知；产品界面统一使用 QianCraft 自有名称和业务语言。
+14. 0.9.0 的持续采集依赖 Tool API 单副本持续运行、持久卷、平台重启策略、网络和用户授权；它不是跨副本分布式队列。当前市场通道被真实授权条件阻断，不能据此宣称四平台已在 7×24 小时持续产出。0.9.0 尚未部署，线上仍为 0.8.0。

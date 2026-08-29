@@ -8,10 +8,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.8.0-3451b2?style=flat-square" alt="Version 0.8.0">
+  <img src="https://img.shields.io/badge/version-0.9.0-111111?style=flat-square" alt="Version 0.9.0">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-51%20passed-2f7358?style=flat-square" alt="51 tests passed">
-  <img src="https://img.shields.io/badge/status-deployed%20prototype-d08b32?style=flat-square" alt="Deployed prototype">
+  <img src="https://img.shields.io/badge/tests-53%20Python%20%7C%205%20Web%20%7C%2035%20UI-2f7358?style=flat-square" alt="53 Python tests, 5 Web tests, and 35 UI tests passed">
+  <img src="https://img.shields.io/badge/local-0.9.0%20%7C%20online-0.8.0-d08b32?style=flat-square" alt="Local version 0.9.0; protected online instance 0.8.0">
 </p>
 
 <p align="center">
@@ -26,15 +26,15 @@
 > [!IMPORTANT]
 > QianCraft 当前是可运行的研究原型：输出可用于概念展示、工厂报价与首样沟通，但不是生产工程图、合规证书、商业文化授权或“爆款保证”。
 
-受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，访问凭证由项目维护者单独提供；运行态工作区写入持久卷，密钥不进入前端或仓库。
+受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。线上仍为已验证的 0.8.0；本地 0.9.0 持续采集与知识星图尚未部署。入口启用 Basic Auth，访问凭证由项目维护者单独提供；运行态工作区写入持久卷，密钥不进入前端或仓库。
 
 ## 一眼看懂
 
-QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何把文化出处、地域差异、当下市场信号、设计判断和制造假设放进同一个可审计流程。系统从贵州文化知识图谱出发，经过四平台市场归一化、双证据锁定的机会评分和 LightRAG 二次核验，最终由 Design Agent 形成一个完整的概念设计包与艺术化海报。
+QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何把文化出处、地域差异、当下市场信号、设计判断和制造假设放进同一个可审计流程。系统从贵州文化知识图谱出发，持续巡检公开文化来源与四平台授权条件，经过市场归一化、双证据锁定的机会评分和 LightRAG 二次核验，最终由 Design Agent 形成一个完整的概念设计包与艺术化海报。
 
 | 文化证据 | 市场证据 | 空间工作台 | 设计交付 |
 |---|---|---|---|
-| 22 条结构化文化记录<br>32 条文化/伦理/法律/视觉来源 | 378 条四平台真实快照<br>平台内热度 + 跨平台形态榜 | 9 个实例 / 7 类节点、独立展示页、Inspector<br>工作区 JSON 可持久保存 | Top 3 机会 → A/B/C 概念<br>尺寸、BOM、装配、质检、可编辑海报 |
+| 22 条结构化文化记录<br>32 条登记来源 + 独立候选审核 | 378 条四平台真实快照<br>授权增量采集 + 跨平台形态榜 | 9 个实例 / 7 类节点、独立展示页、Inspector<br>工作区 JSON 可持久保存 | Top 3 机会 → A/B/C 概念<br>尺寸、BOM、装配、质检、可编辑海报 |
 
 ## 核心能力
 
@@ -46,9 +46,11 @@ QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何�
 | **从 JSON 到概念产品** | Design Agent 重新读取 `designer_handoff.json`、校验摘要并输出文化转译、成品形态、尺寸、BOM、工艺和审核门。 |
 | **展示与制造信息同屏** | 原创产品主视觉与本地精确中文排版合成 1800 × 2400 海报，同时保留机器可读 DesignPackage。 |
 | **空间化创作工作台** | 五阶段导航、按需证据/资产/历史 Dock、文化图谱、四平台雷达、机会策略、设计任务书、A/B/C 概念视觉与海报板在同一无限画布中编排；Inspector 只显示当前节点的参数、来源、历史和动作。 |
+| **文化关系星图** | 22 条正式记录、32 个来源与分类引力点组成可搜索、选点、拖动、缩放和键盘操作的星图；触屏默认保留页面滚动，显式进入操作模式后支持单指平移与双指缩放。 |
+| **持续素材采集** | 文化来源默认每 6 小时巡检并只产生待核验候选；市场默认每 4 小时复检四平台授权，只有完整 `live_verified` 才晋级。暂停、间隔、立即运行、失败与心跳均可见。 |
 | **七阶段人工决策** | 人工可选择文化记录、平台/品类、六维评分权重与候选机会，并继续指定设计意图、视觉参照、概念比较组和海报结构；每次保存形成独立版本，不覆盖事实原件。 |
 | **九节点专业展示页** | 每个实例可单击或双击进入独立页面；文化关系、市场原记录、六维量分、任务书、视觉提示、概念成品、BOM 和海报分别拥有专用视图，并附可回到原始网页的证据台账。 |
-| **暖纸色编辑系统** | 用户提供的 parchment / warm sand / linen / charcoal / interaction indigo 令牌统一颜色、间距、圆角、焦点和轻量内阴影；本地 Noto Sans SC / Noto Serif SC 负责真实中文覆盖，不依赖外部字体 CDN。 |
+| **黑白精密工具界面** | 白色工作面、冷灰结构、石墨文字与纯黑关键动作组成系统 chrome；不使用米色或蓝/靛蓝状态色。黑色星图是关系画布例外，来源图像只在内容区保留自身颜色。 |
 | **诚实的运行状态** | 文化、市场、策划、设计、渲染分别记录 `live / cache / unavailable`；缓存不冒充实时数据。 |
 | **可恢复的真实任务** | “实时运行”会在服务端创建持久化后台任务，页面刷新后自动续接轮询；只有文化、策划和四平台全部为本轮 `live` 才会晋级并回写当前工作区。 |
 
@@ -103,6 +105,16 @@ pnpm dev
 
 打开 `http://localhost:3000`。默认工作区会载入“贵州苗绣 → 四平台市场雷达 → 策略 → 任务书 → 视觉 A/B/C → 海报”的完整链路，三套概念视觉均可直接比较；画布位置、视口、当前概念、编辑版本、后台任务和设计运行保存在被 Git 忽略的 `data/runtime/`。容器部署继续把同一路径映射到 `/app/data/runtime` 持久卷，证据基线不会被用户操作覆盖。
 
+Tool API 启动时也会启动持续采集调度器。文化图谱页提供来源巡检、候选审核与知识星图；市场页先展示 378 条历史证据和时间窗，再提供可展开的授权/增量采集控制面。默认配置为：
+
+```dotenv
+QIANCRAFT_CONTINUOUS_COLLECTION=true
+QIANCRAFT_CULTURE_WATCH_MINUTES=360
+QIANCRAFT_MARKET_REFRESH_MINUTES=240
+```
+
+持续运行要求 API/容器常驻、异常自动重启、`data/runtime/` 持久卷和真实网络；市场通道还要求维护者本人完成 xhs / dy / bili / wb 授权并显式开启实时采集。缺少任何条件时页面会显示 blocked/offline，不会拿历史数据假装正在更新。详见 [`docs/continuous_collection.md`](docs/continuous_collection.md)。
+
 顶部“实时运行”不是演示按钮：它会执行 LightRAG 检索、四平台授权采集和模型策划，并轮询服务端任务。页面刷新或重新打开后会自动续接；任何平台未返回本轮真实记录时，该轮明确失败且不会拿历史快照回写。研究节点的单独“运行”也不会用读取旧文件伪造一次新成功。
 
 需要以已构建的 production server 使用网站时，在 `web` 目录执行 `pnpm build` 后运行 `pnpm start:local`；它只绑定 `127.0.0.1:3000`，并继续使用同一真实 API。
@@ -133,13 +145,17 @@ uv run python scripts/run_design_agent.py `
 ```mermaid
 flowchart LR
     KG[贵州文化图谱] --> LR[LightRAG Adapter]
+    SCHED[持续采集调度器] --> WATCH[文化来源巡检 / 候选队列]
+    WATCH --> KG
     LR --> CD[Culture DNA]
     LR --> VR[Visual Reference Pack]
 
     XHS[小红书] --> MC[MediaCrawler Adapter]
     DY[抖音] --> MC
     BILI[B站] --> MC
-    WB[微博] --> MC
+    WEIBO[微博] --> MC
+    SCHED --> AUTH[四平台授权预检]
+    AUTH --> MC
     MC --> TD[Trend DNA / 产品形态榜]
 
     CD --> ST[Strategist]
@@ -158,11 +174,13 @@ flowchart LR
     DP --> POSTER
     POSTER --> OUT[设计海报 + RenderManifest]
 
-    CD --> WB[QianCraft Workbench]
-    TD --> WB
-    DH --> WB
-    DP --> WB
-    WB --> CANVAS[7 类节点 / Inspector / Workspace JSON]
+    CD --> WORKBENCH[QianCraft Workbench]
+    TD --> WORKBENCH
+    DH --> WORKBENCH
+    DP --> WORKBENCH
+    WORKBENCH --> CANVAS[7 类节点 / Inspector / Workspace JSON]
+    SCHED --> CONTROL[知识库 / 采集控制面]
+    CONTROL --> WORKBENCH
 ```
 
 关键接口不是内存对象，而是已落盘的 [`designer_handoff.json`](data/outputs/designer_handoff.json)。Design Agent 会重新载入 Pydantic 契约并记录文件 SHA-256，避免策划与设计之间出现不可追踪的旁路输入。
@@ -177,6 +195,7 @@ flowchart LR
 | Design Agent | 文件级 Designer Handoff | DesignPackage、PosterRenderRequest | 主机会来自 Top 3，高敏感母题留置审核 |
 | Poster Renderer | DesignPackage、可选原创主视觉 | PNG、RenderManifest | 精确文字本地绘制，参考图像像素禁用 |
 | Creative Workbench | 文化、市场、策略、DesignPackage、图像适配器 | 空间画布、版本化任务书、A/B/C、可编辑海报 | 前端仅经 HTTP API 读写；上游更新只标记下游 stale |
+| Continuous Collection | 登记文化来源、四平台授权与严格研究任务 | 心跳、候选队列、来源指纹、增量运行审计 | 文化候选不自动入图；四平台非全 live 不晋级 |
 
 ### 运行模式
 
@@ -268,6 +287,7 @@ QianCraft/
 │   ├── adapters/          # LightRAG / MediaCrawler / GPT Researcher 隔离层
 │   ├── strategist/        # 双证据锁、评分与 Designer Handoff
 │   ├── designer/          # Design Agent、工厂简报与海报排版
+│   ├── collection.py      # 文化巡检、候选队列与市场增量调度器
 │   ├── workbench.py       # 7 类节点、工作区持久化、版本与运行语义
 │   ├── pipeline.py        # 端到端编排和原子输出
 │   └── schemas.py         # 全系统唯一数据契约
@@ -277,7 +297,7 @@ QianCraft/
 │   ├── design/assets/     # 原创产品主视觉
 │   ├── workbench/         # 工作区 JSON 与受控生成图
 │   └── outputs/           # 最新 13 项正式结果
-├── web/                   # 暖纸色 Creative Instrument 工作台、节点详情与 PNG 导出
+├── web/                   # 黑白精密工作台、知识星图、采集控制面与节点详情
 ├── scripts/               # Demo、Design Agent、环境与授权入口
 ├── tests/                 # 契约、证据、降级与端到端回归
 ├── docs/                  # 架构、图谱、市场、设计与实机报告
@@ -304,19 +324,22 @@ QianCraft/
 
 ```powershell
 uv run pytest
-uv run ruff check app tests
+uv run ruff check app tests scripts/probe_market_platforms.py
+uv lock --check
 cd web
 pnpm test
 pnpm typecheck
 pnpm lint
+pnpm exec playwright test tests/ui/ui-quality.spec.ts
 pnpm build
 ```
 
 当前基线：
 
 ```text
-46 Python tests passed
+53 Python tests passed
 5 Web tests passed
+35 Playwright tests passed / 1 intentionally skipped
 All checks passed!
 ```
 
@@ -328,7 +351,8 @@ All checks passed!
 |---|---|
 | [`WORKFLOW.md`](WORKFLOW.md) | 项目唯一工作流、当前状态与每次更新台账 |
 | [`PRODUCT.md`](PRODUCT.md) | 工具定位、核心用户任务、当前能力与非量产边界 |
-| [`DESIGN.md`](DESIGN.md) | 暖纸色工作台令牌、布局、组件、可访问性与视觉禁区 |
+| [`DESIGN.md`](DESIGN.md) | 黑白精密工具令牌、星图/控制面、布局、组件、可访问性与视觉禁区 |
+| [`docs/continuous_collection.md`](docs/continuous_collection.md) | 文化巡检、候选门、四平台增量排程、状态/API 与 7×24 运行条件 |
 | [`docs/architecture.md`](docs/architecture.md) | 模块边界、证据锁、降级与设计接口 |
 | [`docs/human_decision_workflow.md`](docs/human_decision_workflow.md) | 七阶段人工决策、版本语义、API 与下游失效规则 |
 | [`docs/typography_system.md`](docs/typography_system.md) | Flipbook 调研、中文字体阶梯、画布比例与响应式验收 |

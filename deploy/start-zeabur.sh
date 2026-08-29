@@ -61,4 +61,12 @@ fi
 
 nginx -c /app/runtime/nginx.conf -g 'daemon off;' &
 nginx_pid=$!
-wait "$nginx_pid"
+
+while kill -0 "$api_pid" 2>/dev/null \
+    && kill -0 "$web_pid" 2>/dev/null \
+    && kill -0 "$nginx_pid" 2>/dev/null; do
+    sleep 5
+done
+
+echo "QianCraft child process exited; stopping container for platform restart" >&2
+exit 1

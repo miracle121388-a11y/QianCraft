@@ -18,6 +18,7 @@ from urllib.parse import parse_qs, urlparse
 from uuid import uuid4
 
 from app.adapters.image_generation_adapter import image_provider_status
+from app.collection import CollectionScheduler, CollectionStore, CultureSourceWatcher
 from app.config import MARKET_PLATFORM_CODES, load_settings
 from app.designer import DesignAgent, render_design_package_markdown, render_design_poster
 from app.pipeline import run_pipeline
@@ -61,11 +62,29 @@ WORKSPACE_DIR = Path(
 WORKSPACE_PATH = WORKSPACE_DIR / "workspace.json"
 TOOL_RUNS_DIR = WORKSPACE_DIR / "design_runs"
 RESEARCH_RUNS_DIR = WORKSPACE_DIR / "research_runs"
+COLLECTION_DIR = WORKSPACE_DIR / "collection"
 
 DESIGN_LOCK = threading.Lock()
 RESEARCH_LOCK = threading.Lock()
 RESEARCH_JOB_STATE_LOCK = threading.Lock()
+COLLECTION_SERVICE_LOCK = threading.Lock()
 ACTIVE_RESEARCH_JOB_ID = ""
+COLLECTION_SERVICE: CollectionScheduler | None = None
+
+
+def collection_health_response() -> tuple[dict[str, Any], HTTPStatus]:
+    collection_health = collection_service().health()
+    payload = {
+        "ok": collection_health["ok"],
+        "root": str(ROOT_DIR),
+        "collectionScheduler": collection_health,
+    }
+    status = (
+        HTTPStatus.OK
+        if collection_health["ok"]
+        else HTTPStatus.SERVICE_UNAVAILABLE
+    )
+    return payload, status
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -1134,6 +1153,27 @@ def start_research_job(candidate: dict[str, Any]) -> dict[str, Any]:
     return job
 
 
+def collection_service() -> CollectionScheduler:
+    global COLLECTION_SERVICE
+    with COLLECTION_SERVICE_LOCK:
+        if COLLECTION_SERVICE is None:
+            store = CollectionStore(COLLECTION_DIR)
+            watcher = CultureSourceWatcher(CULTURE_PATH, store)
+            COLLECTION_SERVICE = CollectionScheduler(
+                store,
+                watcher,
+                research_preflight=lambda: _strict_preflight(allow_interactive=False),
+                research_start=lambda workspace_id: start_research_job(
+                    {
+                        "workspace_id": workspace_id,
+                        "allow_interactive": False,
+                    }
+                ),
+                research_status=_load_research_job,
+            )
+        return COLLECTION_SERVICE
+
+
 class ToolRequestHandler(BaseHTTPRequestHandler):
     server_version = "QianCraftTool/0.2"
 
@@ -1154,13 +1194,18 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
 
     def _send_json(self, payload: Any, status: int = HTTPStatus.OK) -> None:
         encoded = json.dumps(payload, ensure_ascii=False, default=str).encode("utf-8")
-        self.send_response(status)
-        self._cors()
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(encoded)))
-        self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(encoded)
+        try:
+            self.send_response(status)
+            self._cors()
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(encoded)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(encoded)
+        except (BrokenPipeError, ConnectionAbortedError, ConnectionResetError):
+            # Browser navigation and deliberate offline tests may close a response early.
+            # Treat that as a disconnected client, not as an API failure that needs a second write.
+            self.close_connection = True
 
     def _read_json(self) -> dict[str, Any]:
         length = min(int(self.headers.get("Content-Length", "0")), 1_000_000)
@@ -1208,6 +1253,26 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
             elif parsed.path.startswith("/api/research/jobs/"):
                 job_id = parsed.path.removeprefix("/api/research/jobs/")
                 self._send_json(_load_research_job(job_id))
+            elif parsed.path == "/api/collection/status":
+                self._send_json(collection_service().status())
+            elif parsed.path == "/api/collection/events":
+                params = parse_qs(parsed.query)
+                limit = int(params.get("limit", ["60"])[0])
+                self._send_json(
+                    {"events": collection_service().store.list_events(limit=limit)}
+                )
+            elif parsed.path == "/api/collection/candidates":
+                params = parse_qs(parsed.query)
+                limit = int(params.get("limit", ["80"])[0])
+                status = params.get("status", [""])[0]
+                self._send_json(
+                    {
+                        "candidates": collection_service().store.list_candidates(
+                            status=status,
+                            limit=limit,
+                        )
+                    }
+                )
             elif parsed.path == "/api/workbench/bootstrap":
                 workspace_id = parse_qs(parsed.query).get(
                     "workspace_id", ["guizhou-miao-demo"]
@@ -1217,6 +1282,7 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                     workspace_id,
                     allow_interactive=True,
                 )
+                payload["collectionRuntime"] = collection_service().status()
                 self._send_json(payload)
             elif parsed.path == "/api/workbench/workspaces":
                 self._send_json({"workspaces": list_workbench_workspaces()})
@@ -1237,7 +1303,8 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                 else:
                     self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
             elif parsed.path == "/api/health":
-                self._send_json({"ok": True, "root": str(ROOT_DIR)})
+                payload, status = collection_health_response()
+                self._send_json(payload, status)
             elif parsed.path.startswith("/assets/"):
                 self._send_asset(parsed.path)
             else:
@@ -1252,6 +1319,8 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/workspace":
                 self._send_json(save_workspace(self._read_json()))
+            elif parsed.path == "/api/collection/schedule":
+                self._send_json(collection_service().configure(self._read_json()))
             elif parsed.path.startswith("/api/workbench/workspaces/"):
                 parts = [part for part in parsed.path.split("/") if part]
                 if len(parts) == 4:
@@ -1272,6 +1341,41 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                 self._send_json(generate_design(), HTTPStatus.CREATED)
             elif parsed.path == "/api/research/run":
                 self._send_json(start_research_job(self._read_json()), HTTPStatus.ACCEPTED)
+            elif parsed.path == "/api/collection/run":
+                body = self._read_json()
+                self._send_json(
+                    collection_service().run_now(str(body.get("lane", "all"))),
+                    HTTPStatus.ACCEPTED,
+                )
+            elif parsed.path == "/api/collection/candidates":
+                candidate = collection_service().store.add_manual_candidate(self._read_json())
+                collection_service().store.add_event(
+                    lane="culture_watch",
+                    status="pending_review",
+                    event="culture_candidate_added",
+                    detail=f"已加入候选来源：{candidate['title']}",
+                    metadata={"candidateId": candidate["id"]},
+                )
+                self._send_json(candidate, HTTPStatus.CREATED)
+            elif parsed.path.startswith("/api/collection/candidates/"):
+                parts = [part for part in parsed.path.split("/") if part]
+                if len(parts) == 5 and parts[4] == "review":
+                    body = self._read_json()
+                    candidate = collection_service().store.review_candidate(
+                        parts[3],
+                        status=str(body.get("status", "pending_review")),
+                        note=str(body.get("note", "")),
+                    )
+                    collection_service().store.add_event(
+                        lane="culture_watch",
+                        status=str(candidate["status"]),
+                        event="culture_candidate_reviewed",
+                        detail=f"候选来源状态已更新：{candidate['title']}",
+                        metadata={"candidateId": candidate["id"]},
+                    )
+                    self._send_json(candidate)
+                else:
+                    self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
             elif parsed.path == "/api/workbench/workspaces":
                 self._send_json(
                     create_workbench_workspace(self._read_json()), HTTPStatus.CREATED
@@ -1395,6 +1499,8 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
 
 
 def serve(host: str = "127.0.0.1", port: int = 8787) -> None:
+    collector = collection_service()
+    collector.start()
     server = ThreadingHTTPServer((host, port), ToolRequestHandler)
     print(f"QianCraft Tool API: http://{host}:{port}")
     try:
@@ -1403,6 +1509,7 @@ def serve(host: str = "127.0.0.1", port: int = 8787) -> None:
         pass
     finally:
         server.server_close()
+        collector.stop()
 
 
 def _arguments() -> argparse.Namespace:

@@ -1,22 +1,40 @@
 :root {
-  /* User-supplied warm parchment design tokens, adapted for QianCraft's CJK UI. */
-  --lovable-parchment: #fcfbf8;
-  --lovable-warm-sand: #f7f4ed;
-  --lovable-linen-border: #eceae4;
-  --lovable-stone: #d4d3d0;
-  --lovable-dim-gray: #5f5f5d;
-  --lovable-faint-gray: var(--lovable-dim-gray);
-  --lovable-charcoal: #1c1c1c;
-  --lovable-ink: #030303;
-  --lovable-indigo-accent: #3451b2;
-  --lovable-status-success: #45a17b;
-  --lovable-status-warning: #7a5a16;
-  --lovable-status-danger: #bd4a4a;
-  --lovable-indigo-soft: color-mix(in srgb, var(--lovable-indigo-accent) 9%, var(--lovable-parchment));
-  --lovable-parchment-glass: color-mix(in srgb, var(--lovable-parchment) 94%, transparent);
-  --lovable-hero-gradient: linear-gradient(90deg, rgb(28, 28, 28) 0%, rgb(28, 28, 28) 33.33%, rgb(130, 188, 255) 40%, rgb(36, 131, 255) 45%, rgb(255, 102, 244) 50%, rgb(255, 48, 41) 55%, rgb(254, 123, 2) 60%, rgba(0, 0, 0, 0) 66.67%, rgba(0, 0, 0, 0) 100%);
+  /* Monochrome Precision Instrument. Legacy variable names remain as aliases so
+     every existing workflow surface moves to the new world in one pass. */
+  --qc-white: #ffffff;
+  --qc-canvas: #f5f5f7;
+  --qc-panel: #fbfbfd;
+  --qc-raised: #f0f0f2;
+  --qc-line: #dedee3;
+  --qc-line-strong: #b8b8be;
+  --qc-secondary: #515154;
+  --qc-tertiary: #6e6e73;
+  --qc-graphite: #1d1d1f;
+  --qc-black: #000000;
+  --qc-selection: #111113;
+  --qc-selection-soft: #ededf0;
+  --qc-status-success: #1d1d1f;
+  --qc-status-cached: #707076;
+  --qc-status-warning: #4a4a4f;
+  --qc-status-danger: #000000;
 
-  --lovable-font-sans: "Camera Plain Variable", "Noto Sans SC Variable", "Noto Sans SC", "Inter Variable", "DM Sans", "Microsoft YaHei", sans-serif;
+  --lovable-parchment: var(--qc-white);
+  --lovable-warm-sand: var(--qc-canvas);
+  --lovable-linen-border: var(--qc-line);
+  --lovable-stone: var(--qc-line-strong);
+  --lovable-dim-gray: var(--qc-secondary);
+  --lovable-faint-gray: var(--qc-tertiary);
+  --lovable-charcoal: var(--qc-graphite);
+  --lovable-ink: var(--qc-black);
+  --lovable-indigo-accent: var(--qc-selection);
+  --lovable-status-success: var(--qc-status-success);
+  --lovable-status-warning: var(--qc-status-warning);
+  --lovable-status-danger: var(--qc-status-danger);
+  --lovable-indigo-soft: var(--qc-selection-soft);
+  --lovable-parchment-glass: rgb(255 255 255 / 94%);
+  --lovable-hero-gradient: none;
+
+  --lovable-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Noto Sans SC Variable", "Noto Sans SC", "Segoe UI", "Microsoft YaHei", sans-serif;
   --lovable-weight-regular: 400;
   --lovable-weight-heading: 480;
   --lovable-weight-strong: 600;
@@ -45,13 +63,13 @@
   --lovable-space-144: 144px;
   --lovable-space-160: 160px;
 
-  --lovable-radius-input: 8px;
+  --lovable-radius-input: 10px;
   --lovable-radius-image: 12px;
-  --lovable-radius-container: 16px;
-  --lovable-radius-card: 24px;
+  --lovable-radius-container: 14px;
+  --lovable-radius-card: 18px;
   --lovable-radius-pill: 9999px;
 
-  --lovable-shadow-subtle: oklch(0 0 0 / 0.25) 0 0 0 0.5px inset;
-  --lovable-shadow-subtle-2: oklab(0 0 0 / 0.08) 0 0 0 1px, rgba(0, 0, 0, 0.1) 0 20px 25px -5px, rgba(0, 0, 0, 0.1) 0 8px 10px -6px;
-  --lovable-shadow-subtle-3: oklch(0 0 0 / 0.16) 0 0 0 0.5px inset;
+  --lovable-shadow-subtle: rgb(0 0 0 / 18%) 0 0 0 0.5px inset;
+  --lovable-shadow-subtle-2: 0 18px 48px rgb(0 0 0 / 12%);
+  --lovable-shadow-subtle-3: rgb(0 0 0 / 12%) 0 0 0 0.5px inset;
 }

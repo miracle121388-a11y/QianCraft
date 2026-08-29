@@ -54,9 +54,14 @@ export default defineConfig(async () => {
   return {
     css: { postcss: { plugins: [tailwindcss()] } },
     server: {
-      ...(isCodexSeatbeltSandbox
-        ? { watch: { useFsEvents: false, usePolling: true } }
-        : {}),
+      watch: {
+        ignored: [
+          '**/.playwright-results/**',
+          '**/.playwright-report/**',
+          '**/tests/ui/**/*-snapshots/**',
+        ],
+        ...(isCodexSeatbeltSandbox ? { useFsEvents: false, usePolling: true } : {}),
+      },
       proxy: {
         '/api': 'http://127.0.0.1:8787',
         '/assets': 'http://127.0.0.1:8787',
