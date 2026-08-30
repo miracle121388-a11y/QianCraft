@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Tonal Focus Review",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "directionSeed": "bbd71e4c",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/tonal-focus-review.png",
+  "sha256": "131cd5bedadd5be42888ace5d946ebaa2d4c3f3dc935e29393fd1127ebf7ffeb",
+  "promptEmbedded": true,
+  "approved": true,
+  "approval": "用户于 2026-08-30 明确选择 C2，并要求先实现一版可运行网站供后续迭代。",
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop productivity web app screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: revise QianCraft 文化文创智能工作台 into a restrained colored review workspace. Preserve Apple Developer-level clarity and Freeform spatial simplicity, but replace pure-white surfaces with calm functional color blocks. No color exists only for decoration. Do not imitate an exact Apple screen or logo.\nComposition — Tonal Focus Review: a 60px command bar, 72px left tool rail, a nearly full-width node canvas, a 210px evidence drawer across the lower canvas and a 330px selected-node inspector overlapping from the right. Upstream 文化 / 市场 / 策略 enter from the left, Design Brief and 视觉方向 form the center, Concept A/B/C and 概念海报 resolve on the right. Node geometry stays stable when selected.\nRequired flat palette: warm mineral app shell #E6E2DA; mist-blue command bar #D9E1E8; muted sage tool rail and evidence drawer #D7E1DC; fog-blue main canvas #E3E8EB; soft clay inspector #E7DDD4; node surfaces #F0EEE9; selected node #CBD9E6 with deep desaturated blue #345C7D. Text #20262C, secondary #626970, rules #C4C8C7. Muted status roles: olive #637E6A, ochre #B1844C, clay #9A6757 and gray #7B8086. Use solid areas, never gradients.\nReal content to show legibly: QianCraft; 文化 / 市场 / 策略 / 设计 / 交付; Human Decision v2; 文化证据 22; 市场样本 378; 机会方向 8; “针格模块｜花溪挑花互动冰箱贴（概念样）”; C001, M007, V001; 已完成 / 待更新 / 缓存; actions “运行当前节点”, “添加证据”, “打开详情”.\nSignature interaction: selecting a node rebinds the inspector and evidence drawer with a subtle crossfade; no geometry change. Typography is SF-like Chinese sans, 13–16px body, 26px selected title, 10–14px radii. Only the overlapping inspector may have a restrained shadow.\nAvoid: pure-white full page, gradient, glass, glow, blur decoration, bright saturated colors, dark theme, marketing hero, bento tiles, giant title, card soup, ethnic decoration, stock people, fake commercial claims, device frame, watermark, illegible labels."
+}

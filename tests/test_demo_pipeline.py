@@ -15,8 +15,9 @@ from app.adapters.media_crawler_adapter import (
     XHS_MVP_KEYWORDS,
     MediaCrawlerAdapter,
 )
-from app.config import load_settings
+from app.config import load_settings, portable_artifact_path
 from app.designer import DesignAgent
+from app.designer import poster as poster_renderer
 from app.pipeline import render_designer_handoff_markdown, run_pipeline
 from app.schemas import (
     DemoRequest,
@@ -60,6 +61,31 @@ def test_miao_embroidery_retrieval_keeps_branch_differences() -> None:
     assert dna.cultural_boundary["must_keep"]
 
 
+def test_explicit_run_modes_override_environment_defaults() -> None:
+    settings = replace(load_settings(), live_mode=False, demo_mode=True)
+
+    demo = settings.with_mode("demo")
+    automatic = settings.with_mode("auto")
+    live = settings.with_mode("live")
+
+    assert (demo.live_mode, demo.demo_mode) == (False, True)
+    assert (automatic.live_mode, automatic.demo_mode) == (True, True)
+    assert (live.live_mode, live.demo_mode) == (True, False)
+
+
+def test_project_artifact_paths_are_portable(tmp_path: Path) -> None:
+    settings = load_settings()
+    project_artifact = settings.root_dir / "data" / "outputs" / "artifact.json"
+    external_artifact = tmp_path / "artifact.json"
+
+    assert portable_artifact_path(project_artifact, settings.root_dir) == (
+        "data/outputs/artifact.json"
+    )
+    assert portable_artifact_path(external_artifact, settings.root_dir) == str(
+        external_artifact.resolve()
+    )
+
+
 @pytest.mark.asyncio
 async def test_market_fallback_is_honest(tmp_path) -> None:
     settings = replace(
@@ -91,6 +117,41 @@ async def test_market_fallback_is_honest(tmp_path) -> None:
         for post in trend.representative_cases
     )
     assert any("未登录" in note or "公开" in note for note in trend.methodology_notes)
+
+
+@pytest.mark.asyncio
+async def test_market_derived_snapshot_survives_fresh_clone(tmp_path) -> None:
+    project_settings = load_settings().with_mode("demo")
+    derived_dir = tmp_path / "derived"
+    derived_dir.mkdir(parents=True)
+    (derived_dir / "latest.json").write_bytes(
+        (project_settings.market_derived_dir / "latest.json").read_bytes()
+    )
+    settings = replace(
+        project_settings,
+        market_raw_dir=tmp_path / "raw",
+        market_derived_dir=derived_dir,
+    )
+
+    trend, status = await MediaCrawlerAdapter(settings).research("贵州苗绣")
+
+    assert status.mode == "cache"
+    assert trend.sample_size == 378
+    assert {
+        platform: source["sample_size"]
+        for platform, source in trend.retrieval["market_platforms"].items()
+    } == {"xhs": 115, "dy": 14, "bili": 101, "wb": 148}
+    assert trend.hot_product_forms
+    assert trend.priority_product_forms
+    assert all(
+        source["status"] == "cache"
+        for source in trend.retrieval["market_platforms"].values()
+    )
+
+
+def test_bom_title_reports_actual_visible_count() -> None:
+    assert poster_renderer._bom_section_title(5) == "BOM / 首样规格（共5项）"
+    assert poster_renderer._bom_section_title(8) == "BOM / 首样规格（前6项，完整表见JSON）"
 
 
 @pytest.mark.asyncio

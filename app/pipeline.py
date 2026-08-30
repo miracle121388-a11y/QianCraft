@@ -10,7 +10,7 @@ from uuid import uuid4
 
 from app.adapters.lightrag_adapter import LightRAGAdapter
 from app.adapters.media_crawler_adapter import MediaCrawlerAdapter
-from app.config import Settings
+from app.config import Settings, portable_artifact_path
 from app.designer import DesignAgent, render_design_package_markdown, render_design_poster
 from app.schemas import (
     BenchmarkCase,
@@ -92,14 +92,18 @@ async def run_pipeline(
 
     components = [culture_status, market_status, strategist_status]
     outputs = {
-        "strategy_json": str(json_path.resolve()),
-        "strategy_markdown": str(markdown_path.resolve()),
-        "visual_reference_json": str(visual_json_path.resolve()),
-        "visual_reference_markdown": str(visual_markdown_path.resolve()),
-        "designer_handoff_json": str(handoff_json_path.resolve()),
-        "designer_handoff_markdown": str(handoff_markdown_path.resolve()),
+        "strategy_json": portable_artifact_path(json_path, settings.root_dir),
+        "strategy_markdown": portable_artifact_path(markdown_path, settings.root_dir),
+        "visual_reference_json": portable_artifact_path(visual_json_path, settings.root_dir),
+        "visual_reference_markdown": portable_artifact_path(
+            visual_markdown_path, settings.root_dir
+        ),
+        "designer_handoff_json": portable_artifact_path(handoff_json_path, settings.root_dir),
+        "designer_handoff_markdown": portable_artifact_path(
+            handoff_markdown_path, settings.root_dir
+        ),
         "product_form_hotness": trend_dna.retrieval["product_form_hotness_path"],
-        "manifest": str(manifest_path.resolve()),
+        "manifest": portable_artifact_path(manifest_path, settings.root_dir),
     }
     if include_design:
         design_package, design_status = DesignAgent(settings).create_from_file(handoff_json_path)
@@ -134,11 +138,21 @@ async def run_pipeline(
         components.extend([design_status, poster_status])
         outputs.update(
             {
-                "design_specification_json": str(design_json_path.resolve()),
-                "design_specification_markdown": str(design_markdown_path.resolve()),
-                "poster_render_request": str(poster_request_path.resolve()),
-                "design_poster": str(design_poster_path.resolve()),
-                "design_render_manifest": str(design_render_manifest_path.resolve()),
+                "design_specification_json": portable_artifact_path(
+                    design_json_path, settings.root_dir
+                ),
+                "design_specification_markdown": portable_artifact_path(
+                    design_markdown_path, settings.root_dir
+                ),
+                "poster_render_request": portable_artifact_path(
+                    poster_request_path, settings.root_dir
+                ),
+                "design_poster": portable_artifact_path(
+                    design_poster_path, settings.root_dir
+                ),
+                "design_render_manifest": portable_artifact_path(
+                    design_render_manifest_path, settings.root_dir
+                ),
             }
         )
 

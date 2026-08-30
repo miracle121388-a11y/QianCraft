@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Focus Review",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "directionSeed": "bbd71e4c",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/apple-focus-review.png",
+  "sha256": "88812fda0793a4896015ae8f8656893f9aa287b11e0310ba6b2cbf86d3b7e88e",
+  "promptEmbedded": true,
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop productivity web app screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: redesign QianCraft 文化文创智能工作台 as an understated premium review workspace inspired by Apple Developer clarity and Freeform spatial simplicity, without copying any exact Apple interface or logo. It must feel calm and authoritative for judges while remaining a real node editor.\nComposition — Focus Review: a minimal 60px white top bar with five phase tabs and a single blue Run action. A compact 72px left tool rail keeps the central canvas nearly full width. The main canvas uses a large centered selected node cluster: upstream 文化 / 市场 / 策略 on the left, Design Brief and 视觉方向 in the middle, concept A/B/C and 概念海报 on the right. A low 210px evidence drawer spans the bottom third of the canvas with real citations and status rows; a 330px inspector opens from the right only for the selected node, clearly overlapping the canvas as a true layer. This makes the workflow easy to present while preserving zoom, drag, add-evidence, open-detail and close-inspector controls.\nReal content to show legibly: QianCraft; 文化 / 市场 / 策略 / 设计 / 交付; Human Decision v2; 文化证据 22; 市场样本 378; 机会方向 8; “针格模块｜花溪挑花互动冰箱贴（概念样）”; C001, M007, V001; 已完成 / 待更新 / 缓存; actions “运行当前节点”, “添加证据”, “打开详情”.\nVisual system: quiet solid-light materials — #F5F5F7 canvas, #FFFFFF work surfaces, #1D1D1F text, #6E6E73 secondary text, #D2D2D7 rules, #0071E3 only for the primary action, active phase and keyboard focus. No gradient, no glass, no colored glow. SF-like Chinese sans typography with strong spacing rhythm, 13–16px UI text, 26px selected title. 10–14px radii and low shadow only on the genuinely overlapping inspector.\nSignature interaction: selecting a node rebinds the inspector and evidence drawer with a fast, subtle crossfade; node geometry stays fixed.\nAvoid: dark theme, mesh gradient, glassmorphism, neon, decorative blur, marketing hero, huge title, dashboard tiles, dense KPI cards, floating card soup, heavy shadow, excessive pills, ethnic pattern decoration, stock people, fake commercial claims, device frame, watermark, illegible labels."
+}

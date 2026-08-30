@@ -3,6 +3,7 @@ import { defineConfig } from '@playwright/test';
 const pythonCommand = process.platform === 'win32'
   ? '.\\.venv\\Scripts\\python.exe -m app.tool_api --port 8787'
   : './.venv/bin/python -m app.tool_api --port 8787';
+const chromiumExecutablePath = process.env.QIANCRAFT_CHROMIUM_EXECUTABLE_PATH?.trim();
 
 export default defineConfig({
   testDir: './tests/ui',
@@ -30,6 +31,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
     video: 'off',
+    launchOptions: chromiumExecutablePath
+      ? { executablePath: chromiumExecutablePath }
+      : undefined,
   },
   projects: [
     {

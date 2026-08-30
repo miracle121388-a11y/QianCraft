@@ -11,7 +11,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal
 
-from app.config import Settings
+from app.config import Settings, portable_artifact_path
 from app.schemas import (
     ComponentStatus,
     MarketPost,
@@ -205,9 +205,13 @@ class MediaCrawlerAdapter:
                 "cache_post_count": len(cached_posts) if not live_posts else 0,
                 "keyword_count": len(keywords),
                 "keywords": keywords,
-                "raw_paths": [str(path.resolve()) for path in raw_paths],
+                "raw_paths": [
+                    portable_artifact_path(path, self.settings.root_dir) for path in raw_paths
+                ],
                 "canonical_path": (
-                    str(canonical_path.resolve()) if canonical_path.exists() else ""
+                    portable_artifact_path(canonical_path, self.settings.root_dir)
+                    if canonical_path.exists()
+                    else ""
                 ),
                 "derived_path": "",
                 "detail": detail,
@@ -270,7 +274,7 @@ class MediaCrawlerAdapter:
                 for path in item["raw_paths"]
             ],
             "derived_path": "",
-            "hotness_path": str(hotness_path.resolve()),
+            "hotness_path": portable_artifact_path(hotness_path, self.settings.root_dir),
             "detail": f"四平台状态：{platform_summary}。",
         }
         derived_path = self._write_derived(posts, market_source, market_platforms)
@@ -298,8 +302,10 @@ class MediaCrawlerAdapter:
             "market_source": market_source,
             "market_platforms": market_platforms,
             "product_form_hotness": hotness_report.model_dump(mode="json"),
-            "product_form_hotness_path": str(hotness_path.resolve()),
-            "derived_path": str(derived_path.resolve()),
+            "product_form_hotness_path": portable_artifact_path(
+                hotness_path, self.settings.root_dir
+            ),
+            "derived_path": portable_artifact_path(derived_path, self.settings.root_dir),
         }
         status = ComponentStatus(
             component="market_research",
@@ -599,10 +605,15 @@ class MediaCrawlerAdapter:
 
     def _load_platform_snapshot(self, platform: str) -> list[MarketPost]:
         path = self._platform_snapshot_path(platform)
-        if not path.exists():
-            return []
+        records = _read_json_records(path) if path.exists() else []
+        if not records:
+            derived_path = self.settings.market_derived_dir / "latest.json"
+            if derived_path.exists():
+                payload = json.loads(derived_path.read_text(encoding="utf-8-sig"))
+                if isinstance(payload, dict) and isinstance(payload.get("records"), list):
+                    records = [item for item in payload["records"] if isinstance(item, dict)]
         posts: list[MarketPost] = []
-        for item in _read_json_records(path):
+        for item in records:
             try:
                 post = MarketPost.model_validate(item)
             except ValueError:
@@ -908,7 +919,7 @@ class MediaCrawlerAdapter:
         self.settings.market_derived_dir.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
         run_path = self.settings.market_derived_dir / f"market_evidence_{timestamp}.json"
-        resolved = str(run_path.resolve())
+        resolved = portable_artifact_path(run_path, self.settings.root_dir)
         market_source["derived_path"] = resolved
         for item in market_platforms.values():
             item["derived_path"] = resolved

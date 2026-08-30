@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Column Workspace",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "directionSeed": "bbd71e4c",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/apple-column-workspace.png",
+  "sha256": "57622954217856668cbb509b7b0ba85fee32ab44c94c0f75437c80d17662c2a3",
+  "promptEmbedded": true,
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop productivity web app screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: redesign QianCraft 文化文创智能工作台 in a calm, spacious Apple-like professional style: the visual clarity of Apple Developer and App Store Connect, the predictable navigation of macOS Finder, and no imitation branding. Preserve every real workflow function and evidence boundary.\nComposition — Column Workspace: a 60px white command bar across the top. Below it, use four precise columns: a narrow 64px icon rail; a 252px source/navigation column with sections 文化证据 22, 市场样本 378, 机会方向 8; a wide central work column containing the editable node graph and a compact phase breadcrumb; a 344px detail inspector. The node graph stays visually dominant, but the left source hierarchy is easier to scan than floating cards. The selected Design Brief is a simple white work object with a blue focus outline and clear connector path. A thin bottom status bar shows zoom, cache time and evidence count.\nReal content to show legibly: QianCraft; 文化 / 市场 / 策略 / 设计 / 交付; Human Decision v2; “针格模块｜花溪挑花互动冰箱贴（概念样）”; 文化证据 22; 市场样本 378; 机会方向 8; nodes 文化, 市场, 策略, Design Brief, 视觉方向, 概念 A/B/C, 概念海报; states 已完成, 待更新, 缓存; actions “运行工作流”, “编辑任务书”, “打开详情”.\nVisual system: solid off-white and white surfaces, graphite text, neutral gray dividers, and one restrained system blue accent. Suggested colors #F5F5F7, #FFFFFF, #1D1D1F, #6E6E73, #D2D2D7, #0071E3. No gradient and no glass. SF-like Chinese sans typography, generous 20–28px section titles, 13–15px operational body text. Tight 10–12px radii, 1px seams, almost no shadow. Use spacing and typography—not decoration—to create authority.\nAvoid: dark UI, mesh gradient, colored ambient light, translucent floating panels, neumorphism, bento grid, oversized metrics, cyberpunk HUD, giant headline, excessive card nesting, heavy pills, cultural-pattern decoration, stock imagery, device frame, watermark, invented claims, unreadable text."
+}

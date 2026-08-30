@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import '@fontsource-variable/noto-sans-sc';
 import '@fontsource-variable/noto-serif-sc';
 import './globals.css';
+import './tonal-focus.css';
 
-const impeccableDirectionContract = `THESIS: The node canvas is a precision instrument, never a parchment moodboard or a showcase homepage.
-OWN-WORLD: Cool white working planes, soft-gray depth fields, graphite type, black selected states, hairline dividers, compact radii, and no chromatic interface accents.
-STORY: Choose a phase, inspect bounded evidence, select or run a node, edit in its contextual inspector, and open the deep record only when needed.
-FIRST VIEWPORT: A 60px white command bar and 56px gray tool rail frame the dominant plotting canvas; contextual Dock and Inspector appear at its edges while the black Run control remains top-right.
-FORM: User-pinned Monochrome Precision Instrument, grounded direction 3, seed a403e052; selection changes contrast, never node geometry.
+const impeccableDirectionContract = `THESIS: Tonal Focus Review uses restrained, functional color blocks to make evidence workspaces legible without becoming a marketing surface.
+PALETTE: Shell #E6E2DA; command #D9E1E8; rail/evidence #D7E1DC; canvas #E3E8EB; Inspector #E7DDD4; node #F0EEE9; selected #CBD9E6; primary/focus #345C7D; text #20262C; secondary #626970; rule #C4C8C7.
+STORY: Choose a phase, inspect bounded evidence, select or run a node, edit in its contextual Inspector, and open the deep record only when needed.
+FIRST VIEWPORT: A 60px mist-blue command bar and 72px gray-green tool rail frame the dominant blue-gray plotting canvas; contextual Dock and warm Inspector appear at its edges while the primary Run control remains top-right.
+FORM: User-approved Tonal Focus Review C2 composition, SHA 131cd5bedadd5be42888ace5d946ebaa2d4c3f3dc935e29393fd1127ebf7ffeb; selection changes color, border, and bound content, never node geometry.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance`;
 
 const impeccableContractScript = `document.currentScript?.parentNode?.insertBefore(document.createComment(${JSON.stringify(impeccableDirectionContract)}), document.currentScript);`;
@@ -40,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <script data-impeccable-contract="a403e052" dangerouslySetInnerHTML={{ __html: impeccableContractScript }} />
+        <script data-impeccable-contract="131cd5bedadd5be42888ace5d946ebaa2d4c3f3dc935e29393fd1127ebf7ffeb" dangerouslySetInnerHTML={{ __html: impeccableContractScript }} />
         {children}
       </body>
     </html>

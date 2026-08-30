@@ -17,7 +17,6 @@ from urllib.parse import urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 from uuid import uuid4
 
-
 USER_AGENT = "QianCraftEvidenceMonitor/0.9 (+local evidence research tool)"
 LANE_IDS = ("culture_watch", "market_refresh")
 TERMINAL_RESEARCH_STATUSES = {"live_verified", "failed_no_fallback", "error"}
@@ -62,7 +61,7 @@ def _parse_time(value: str) -> datetime | None:
     if not value:
         return None
     try:
-        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value)
     except ValueError:
         return None
     return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
@@ -142,7 +141,7 @@ def fetch_public_page(url: str, conditional_headers: Mapping[str, str]) -> Fetch
     }
     request = Request(url, headers=request_headers)
     try:
-        with urlopen(request, timeout=12) as response:  # noqa: S310 - curated public URLs only
+        with urlopen(request, timeout=12) as response:
             body = response.read(524_289)
             if len(body) > 524_288:
                 body = body[:524_288]
@@ -613,7 +612,11 @@ class CultureSourceWatcher:
             parsed = urlparse(url)
             if parsed.hostname != page_host or url in known_urls or url in seen:
                 continue
-            if re.search(r"\.(?:jpg|jpeg|png|gif|webp|svg|zip|rar|mp4|mp3|pdf)$", parsed.path, re.I):
+            if re.search(
+                r"\.(?:jpg|jpeg|png|gif|webp|svg|zip|rar|mp4|mp3|pdf)$",
+                parsed.path,
+                re.IGNORECASE,
+            ):
                 continue
             haystack = f"{label} {parsed.path} {parsed.query}"
             if not any(keyword in haystack for keyword in CULTURE_DISCOVERY_KEYWORDS):
@@ -623,7 +626,7 @@ class CultureSourceWatcher:
                 re.search(
                     r"(?:/20\d{2}(?:[-_/]|$)|(?:detail|details|article|content|news)|\.(?:html?|shtml)$)",
                     parsed.path,
-                    re.I,
+                    re.IGNORECASE,
                 )
             )
             if (

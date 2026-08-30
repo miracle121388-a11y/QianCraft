@@ -11,12 +11,12 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from app.adapters.media_crawler_adapter import (  # noqa: E402
+from app.adapters.media_crawler_adapter import (
     MARKET_PLATFORMS,
     PLATFORM_LABELS,
     MediaCrawlerAdapter,
 )
-from app.config import load_settings  # noqa: E402
+from app.config import load_settings
 
 
 def _arguments() -> argparse.Namespace:

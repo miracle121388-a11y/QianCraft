@@ -5,7 +5,7 @@ from collections.abc import Iterable
 from datetime import UTC, datetime
 from pathlib import Path
 
-from app.config import Settings
+from app.config import Settings, portable_artifact_path
 from app.schemas import (
     ComponentStatus,
     CulturalElementSpec,
@@ -190,7 +190,7 @@ class DesignAgent:
 
     def _base_contract(self, handoff: DesignerHandoff, path: Path) -> DesignInputContract:
         return DesignInputContract(
-            source_file=str(path),
+            source_file=portable_artifact_path(path, self.settings.root_dir),
             source_sha256=_sha256(path),
             ready=handoff.ready,
             input_stage=str(handoff.project.get("stage", "designer_handoff")),

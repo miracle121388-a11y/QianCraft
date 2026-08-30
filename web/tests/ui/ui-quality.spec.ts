@@ -28,6 +28,17 @@ async function openRoute(page: Page, route: (typeof ROUTES)[number]) {
   await page.waitForTimeout(120);
 }
 
+async function computedSurface(page: Page, selector: string) {
+  return page.locator(selector).evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      backgroundColor: style.backgroundColor,
+      backgroundImage: style.backgroundImage,
+      boxShadow: style.boxShadow,
+    };
+  });
+}
+
 function violationSummary(violations: Awaited<ReturnType<AxeBuilder['analyze']>>['violations']) {
   return violations.map((violation) => ({
     id: violation.id,
@@ -40,6 +51,16 @@ function violationSummary(violations: Awaited<ReturnType<AxeBuilder['analyze']>>
 for (const route of ROUTES) {
   test(`${route.name} 满足可访问性、溢出与资源门槛`, async ({ page }, testInfo) => {
     await openRoute(page, route);
+
+    const routeSurface = await page.locator(route.surface).evaluate((root) => {
+      const style = getComputedStyle(root);
+      return {
+        backgroundColor: style.backgroundColor,
+        backgroundImage: style.backgroundImage,
+      };
+    });
+    expect(routeSurface.backgroundImage).toBe('none');
+    expect(routeSurface.backgroundColor).not.toBe('rgb(255, 255, 255)');
 
     const accessibility = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
@@ -87,6 +108,429 @@ for (const route of ROUTES) {
     }
   });
 }
+
+test('工作台应用 Tonal Focus Review 功能色块', async ({ page }) => {
+  await openRoute(page, ROUTES[0]);
+
+  const colors = await page.locator('.workbench-shell--instrument').evaluate((shell) => {
+    const background = (selector: string) => {
+      const element = shell.querySelector(selector);
+      if (!element) throw new Error(`Missing ${selector}`);
+      return getComputedStyle(element).backgroundColor;
+    };
+
+    return {
+      shell: getComputedStyle(shell).backgroundColor,
+      command: background('.app-bar'),
+      rail: background('.tool-rail'),
+      canvas: background('.flow-stage'),
+      inspector: background('.inspector-slot'),
+    };
+  });
+
+  expect(colors).toEqual({
+    shell: 'rgb(230, 226, 218)',
+    command: 'rgb(217, 225, 232)',
+    rail: 'rgb(215, 225, 220)',
+    canvas: 'rgb(227, 232, 235)',
+    inspector: 'rgb(231, 221, 212)',
+  });
+});
+
+test('终审回归：1024px 不套用完整电脑端 C2 几何', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await openRoute(page, ROUTES[0]);
+
+  const geometry = await page.locator('.workbench-shell--instrument').evaluate((shell) => {
+    const size = (selector: string) => {
+      const element = shell.querySelector(selector);
+      if (!element) throw new Error(`Missing ${selector}`);
+      const rect = element.getBoundingClientRect();
+      return { height: Math.round(rect.height), width: Math.round(rect.width) };
+    };
+
+    return {
+      rail: size('.tool-rail'),
+      dock: size('.tool-dock'),
+      inspector: size('.inspector-slot'),
+    };
+  });
+
+  expect(geometry).not.toMatchObject({
+    rail: { width: 72 },
+    dock: { height: 210 },
+    inspector: { width: 330 },
+  });
+});
+
+test('终审回归：Market 首个 KPI 使用固定 C2 画布色', async ({ page }) => {
+  await openRoute(page, ROUTES[2]);
+  expect(await computedSurface(page, '.market-kpi-row > div:first-child')).toEqual({
+    backgroundColor: 'rgb(227, 232, 235)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+  });
+});
+
+test('终审回归：Strategy 机会列表表头使用固定 C2 节点色', async ({ page }) => {
+  await openRoute(page, ROUTES[3]);
+  expect(await computedSurface(page, '.opportunity-list > header')).toEqual({
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+  });
+});
+
+test('终审回归：Poster 首个拆解卡使用固定 C2 节点色', async ({ page }) => {
+  await openRoute(page, ROUTES[9]);
+  expect(await computedSurface(page, '.poster-breakdown-grid > article:first-child')).toEqual({
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+  });
+});
+
+test('终审回归：Decision Studio 保持最大 14px 圆角且无阴影', async ({ page }) => {
+  await openRoute(page, ROUTES[0]);
+  await page.locator('.tool-rail').getByRole('button', { name: '人工决策' }).click();
+
+  const studio = page.locator('.decision-studio');
+  await expect(studio).toBeVisible();
+  expect(await studio.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { borderRadius: style.borderRadius, boxShadow: style.boxShadow };
+  })).toEqual({ borderRadius: '14px', boxShadow: 'none' });
+});
+
+test('终审回归：普通工作台键盘焦点使用 C2 primary', async ({ page }) => {
+  await openRoute(page, ROUTES[0]);
+  const evidenceButton = page.getByRole('button', { name: '证据库' });
+  await evidenceButton.focus();
+
+  const focusStyle = await evidenceButton.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      outlineColor: style.outlineColor,
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+    };
+  });
+  expect(focusStyle.outlineColor).toBe('rgb(52, 92, 125)');
+  expect(focusStyle.outlineStyle).not.toBe('none');
+  expect(Number.parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(2);
+});
+
+test('Decision Studio 使用 C2 大区与主操作语法', async ({ page }) => {
+  await openRoute(page, ROUTES[0]);
+  await page.locator('.tool-rail').getByRole('button', { name: '人工决策' }).click();
+
+  const studio = page.locator('.decision-studio');
+  await expect(studio).toBeVisible();
+  const styles = await studio.evaluate((root) => {
+    const computed = (selector?: string) => {
+      const element = selector ? root.querySelector(selector) : root;
+      if (!element) throw new Error(`Missing ${selector}`);
+      const style = getComputedStyle(element);
+      return {
+        backgroundColor: style.backgroundColor,
+        backgroundImage: style.backgroundImage,
+        boxShadow: style.boxShadow,
+      };
+    };
+
+    return {
+      studio: computed(),
+      header: computed('.decision-studio__header'),
+      footer: computed('.decision-studio__footer'),
+      stageNav: computed('.decision-stage-nav'),
+      panel: computed('.decision-panel'),
+      primary: computed('.decision-primary'),
+    };
+  });
+
+  expect(styles.studio).toMatchObject({
+    backgroundColor: 'rgb(230, 226, 218)',
+    backgroundImage: 'none',
+  });
+  expect(styles.header).toMatchObject({
+    backgroundColor: 'rgb(217, 225, 232)',
+    backgroundImage: 'none',
+  });
+  expect(styles.footer).toMatchObject({
+    backgroundColor: 'rgb(217, 225, 232)',
+    backgroundImage: 'none',
+  });
+  expect(styles.stageNav).toMatchObject({
+    backgroundColor: 'rgb(215, 225, 220)',
+    backgroundImage: 'none',
+  });
+  expect(styles.panel).toMatchObject({
+    backgroundColor: 'rgb(227, 232, 235)',
+    backgroundImage: 'none',
+  });
+  expect(styles.primary).toEqual({
+    backgroundColor: 'rgb(52, 92, 125)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+  });
+});
+
+test('详情命令栏与历史概念资产不使用玻璃效果', async ({ page }) => {
+  await page.route('**/api/workbench/workspaces/*/nodes/concept-a/detail', async (route) => {
+    const response = await route.fetch();
+    const payload = await response.json() as { node: { data: { status: string } } };
+    payload.node.data.status = 'stale';
+    await route.fulfill({ response, json: payload });
+  });
+  await openRoute(page, ROUTES[6]);
+
+  const topbar = await page.locator('.detail-topbar').evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      backdropFilter: style.backdropFilter,
+      backgroundImage: style.backgroundImage,
+    };
+  });
+  expect.soft(topbar).toEqual({ backdropFilter: 'none', backgroundImage: 'none' });
+
+  const assetNote = page.locator('.concept-asset-note');
+  await expect(assetNote).toHaveText('保留上次成功资产 · 本轮未生成');
+  expect.soft(await assetNote.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      backdropFilter: style.backdropFilter,
+      backgroundColor: style.backgroundColor,
+      backgroundImage: style.backgroundImage,
+      boxShadow: style.boxShadow,
+    };
+  })).toEqual({
+    backdropFilter: 'none',
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+  });
+});
+
+test('采集主操作与星图外围控件使用可读 C2 状态', async ({ page }) => {
+  await openRoute(page, ROUTES[1]);
+
+  const computed = (selector: string, pseudo?: string) => page.locator(selector).first().evaluate((element, pseudoElement) => {
+    const style = getComputedStyle(element, pseudoElement || undefined);
+    return {
+      backgroundColor: style.backgroundColor,
+      backgroundImage: style.backgroundImage,
+      borderColor: style.borderColor,
+      boxShadow: style.boxShadow,
+      color: style.color,
+      opacity: style.opacity,
+    };
+  }, pseudo);
+
+  const primary = page.locator('.collection-console--culture .collection-primary-action:not(:disabled)').first();
+  await expect(primary).toHaveText('立即运行');
+  expect.soft(await computed('.collection-console--culture .collection-primary-action:not(:disabled)')).toMatchObject({
+    backgroundColor: 'rgb(52, 92, 125)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(52, 92, 125)',
+    boxShadow: 'none',
+    color: 'rgb(247, 248, 248)',
+  });
+  await primary.hover();
+  expect.soft(await computed('.collection-console--culture .collection-primary-action:not(:disabled)')).toMatchObject({
+    backgroundColor: 'rgb(52, 92, 125)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(52, 92, 125)',
+    boxShadow: 'none',
+    color: 'rgb(247, 248, 248)',
+  });
+
+  expect.soft(await computed('.constellation-search')).toMatchObject({
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(196, 200, 199)',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  expect.soft(await computed('.constellation-search input')).toMatchObject({
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  expect.soft(await computed('.constellation-search input', '::placeholder')).toMatchObject({
+    color: 'rgb(98, 105, 112)',
+    opacity: '1',
+  });
+
+  const zoom = page.getByRole('button', { name: '放大星图' });
+  await zoom.hover();
+  expect.soft(await computed('.constellation-controls button:hover')).toMatchObject({
+    backgroundColor: 'rgb(203, 217, 230)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(52, 92, 125)',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+
+  const source = page.locator('.constellation-source-links a').first();
+  await source.hover();
+  expect.soft(await computed('.constellation-source-links a:hover')).toMatchObject({
+    backgroundColor: 'rgb(203, 217, 230)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(52, 92, 125)',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+});
+
+test('概念画廊使用 C2 卡片、按钮与当前标记', async ({ page }) => {
+  await openRoute(page, ROUTES[5]);
+
+  const computed = (selector: string, pseudo?: string) => page.locator(selector).first().evaluate((element, pseudoElement) => {
+    const style = getComputedStyle(element, pseudoElement || undefined);
+    return {
+      backgroundColor: style.backgroundColor,
+      backgroundImage: style.backgroundImage,
+      borderColor: style.borderColor,
+      boxShadow: style.boxShadow,
+      color: style.color,
+    };
+  }, pseudo);
+
+  expect.soft(await computed('.concept-gallery button')).toMatchObject({
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(196, 200, 199)',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  const galleryButton = page.locator('.concept-gallery button').first();
+  await galleryButton.hover();
+  expect.soft(await computed('.concept-gallery button:hover')).toMatchObject({
+    backgroundColor: 'rgb(203, 217, 230)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(52, 92, 125)',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  expect.soft(await computed('.concept-gallery article.is-active')).toMatchObject({
+    backgroundColor: 'rgb(203, 217, 230)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(52, 92, 125)',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  expect.soft(await computed('.concept-gallery article.is-active', '::before')).toMatchObject({
+    backgroundColor: 'rgb(52, 92, 125)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+    color: 'rgb(247, 248, 248)',
+  });
+});
+
+test('桌面工作区采用 C2 的命令栏、工具栏、底部抽屉和右侧 Inspector', async ({ page }) => {
+  await openRoute(page, ROUTES[0]);
+
+  const bounds = await page.locator('.workbench-shell--instrument').evaluate((shell) => {
+    const rect = (selector: string) => {
+      const element = shell.querySelector(selector);
+      if (!element) throw new Error(`Missing ${selector}`);
+      return element.getBoundingClientRect().toJSON();
+    };
+
+    return {
+      command: rect('.app-bar'),
+      rail: rect('.tool-rail'),
+      canvas: rect('.flow-stage'),
+      dock: rect('.tool-dock'),
+      inspector: rect('.inspector-slot'),
+    };
+  });
+
+  expect(bounds.command.height).toBe(60);
+  expect(bounds.rail.width).toBe(72);
+  expect(bounds.canvas.x).toBe(bounds.rail.right);
+  expect(bounds.canvas.right).toBe(1440);
+  expect(bounds.dock.height).toBe(210);
+  expect(bounds.dock.x).toBe(bounds.rail.right);
+  expect(bounds.dock.right).toBe(1440);
+  expect(bounds.dock.y).toBe(bounds.canvas.y + bounds.canvas.height);
+  expect(bounds.inspector.width).toBe(330);
+  expect(bounds.inspector.right).toBe(1440);
+});
+
+test('桌面 C2 Dock、节点动作和 Inspector 不泄漏旧主题色', async ({ page }) => {
+  await openRoute(page, ROUTES[0]);
+
+  const computed = (selector: string) => page.locator(selector).first().evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      backgroundColor: style.backgroundColor,
+      backgroundImage: style.backgroundImage,
+      borderColor: style.borderColor,
+      boxShadow: style.boxShadow,
+      color: style.color,
+    };
+  });
+
+  expect(await computed('.inspector-slot .inspector-icon')).toMatchObject({
+    backgroundColor: 'rgb(52, 92, 125)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+    color: 'rgb(240, 238, 233)',
+  });
+
+  await page.getByRole('button', { name: '方案资产', exact: true }).click();
+  const asset = page.locator('.asset-dock__list > button').first();
+  await asset.hover();
+  expect(await computed('.asset-dock')).toMatchObject({
+    backgroundColor: 'rgb(215, 225, 220)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  expect(await computed('.asset-dock .dock-heading')).toMatchObject({
+    backgroundColor: 'rgb(215, 225, 220)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(196, 200, 199)',
+    boxShadow: 'none',
+  });
+  expect(await computed('.asset-dock .dock-heading b')).toMatchObject({
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(196, 200, 199)',
+    boxShadow: 'none',
+  });
+  expect(await computed('.asset-dock__list > button:hover')).toMatchObject({
+    backgroundColor: 'rgb(203, 217, 230)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(52, 92, 125)',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  expect(await computed('.asset-dock__list > button.is-active strong')).toMatchObject({
+    color: 'rgb(32, 38, 44)',
+  });
+
+  await page.getByRole('button', { name: '节点历史', exact: true }).click();
+  expect(await computed('.history-dock')).toMatchObject({
+    backgroundColor: 'rgb(215, 225, 220)',
+    backgroundImage: 'none',
+    boxShadow: 'none',
+    color: 'rgb(32, 38, 44)',
+  });
+  expect(await computed('.history-dock .dock-heading')).toMatchObject({
+    backgroundColor: 'rgb(215, 225, 220)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(196, 200, 199)',
+    boxShadow: 'none',
+  });
+  expect(await computed('.history-dock__subject')).toMatchObject({
+    backgroundColor: 'rgb(240, 238, 233)',
+    backgroundImage: 'none',
+    borderColor: 'rgb(196, 200, 199)',
+    boxShadow: 'none',
+  });
+});
 
 test('工作台提供拖拽等价路径、中文画布语义与完整弹层焦点', async ({ page }) => {
   await openRoute(page, ROUTES[0]);
@@ -350,7 +794,11 @@ test('采集控制面初次连接失败提供可触达恢复动作', async ({ pa
 
 test('核心工作台与任务书视觉基线', async ({ page }, testInfo: TestInfo) => {
   await openRoute(page, ROUTES[0]);
-  await expect(page).toHaveScreenshot(`workbench-${testInfo.project.name}.png`, { fullPage: false });
+  await expect(page).toHaveScreenshot(`workbench-${testInfo.project.name}.png`, {
+    fullPage: false,
+    mask: [page.locator('.research-monitor')],
+    maskColor: '#f5f5f7',
+  });
 
   await openRoute(page, ROUTES[4]);
   await expect(page).toHaveScreenshot(`brief-${testInfo.project.name}.png`, { fullPage: false });

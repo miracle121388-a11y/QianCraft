@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Signal Horizon",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/aurora-evidence-radar-signal-horizon.png",
+  "sha256": "d152762fdd07458f0469cc233fe8d19db82e9653ef9f8edb2be1f6173b89e795",
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop web application screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: Redesign QianCraft 文化文创智能工作台 for a short live judging demo. It is an evidence-first operating tool, not a landing page. Preserve the real workflow and make the product understandable within three seconds.\nComposition — Signal Horizon: a 56px translucent top command bar; a slim left tool rail; an open 238px evidence dock; a dominant central node canvas; a 336px right inspector. Across the central canvas, a single luminous horizontal workflow horizon travels left to right: 文化 + 市场 converge into 策略, then Design Brief, 视觉方向, 概念 A / B / C, and 概念海报. Nodes are compact, stable work objects with clear connectors, not floating marketing cards. Select Design Brief in the center and bind it visibly to the inspector.\nReal content to show legibly: QianCraft; phases 文化 / 市场 / 策略 / 设计 / 交付; counts 文化证据 22, 市场样本 378, 机会方向 8; Human Decision v2; selected title “针格模块｜花溪挑花互动冰箱贴（概念样）”; actions “运行当前节点” and “查看证据”. Status labels must include 已完成, 待更新, 缓存, not color alone.\nVisual world: Mesh Gradient + Glassmorphism with mature editorial restraint. Midnight indigo background with three large blurred aurora fields in electric violet, mineral cyan, and a small warm coral glow. Glass layers use translucent ink-blue surfaces, 1px white-alpha seams, backdrop blur, inner highlights, and deep soft shadows only where panels overlap. Keep the center canvas visually dominant and relatively calm. Selected node has a precise cyan-violet keyline and subtle internal glow, never changes size. Chinese neo-grotesk typography, crisp 13–16px UI text, 26px inspector title, generous but operational spacing.\nInteraction cues: node drag handles, zoom control, inspector close button, evidence rows, Run button, and focus rings all visible and credible.\nConstraints: preserve workflow graph topology and evidence provenance; no giant hero headline, no slogan, no bento dashboard, no sales charts, no stock people, no fake product claims, no glass on every tiny element, no rainbow soup, no cyberpunk HUD, no illegible tiny text, no decorative ethnic pattern, no device frame, no watermark."
+}

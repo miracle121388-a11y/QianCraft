@@ -10,7 +10,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from app.config import load_settings
+from app.config import load_settings, portable_artifact_path
 from app.designer import DesignAgent, render_design_package_markdown, render_design_poster
 from app.schemas import RunManifest
 
@@ -102,11 +102,19 @@ def main() -> int:
         manifest.finished_at = datetime.now(UTC)
         manifest.outputs.update(
             {
-                "design_specification_json": str(package_path),
-                "design_specification_markdown": str(markdown_path),
-                "poster_render_request": str(request_path),
-                "design_poster": str(poster_path),
-                "design_render_manifest": str(render_manifest_path),
+                "design_specification_json": portable_artifact_path(
+                    package_path, settings.root_dir
+                ),
+                "design_specification_markdown": portable_artifact_path(
+                    markdown_path, settings.root_dir
+                ),
+                "poster_render_request": portable_artifact_path(
+                    request_path, settings.root_dir
+                ),
+                "design_poster": portable_artifact_path(poster_path, settings.root_dir),
+                "design_render_manifest": portable_artifact_path(
+                    render_manifest_path, settings.root_dir
+                ),
             }
         )
         _write(

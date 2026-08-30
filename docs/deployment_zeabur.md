@@ -22,7 +22,7 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 0.8.0 部署 `6a91f49bac2577a93d22048d` 将持久化严格研究任务、刷新续接、真实 Design Agent、服务端海报渲染和无假回退语义发布到同一实例。第一次 0.8.0 部署 `6a91f23f13d3d467215e790c` 已完成 Python 与 Vinext 构建，但发布包中的 `start-zeabur.sh` 被转换为 CRLF，Linux 容器无法执行；随后先用 `6a91f39a13d3d467215e7928` 恢复已验证的 0.7.3，再在 Docker 构建阶段规范化脚本行尾并重新发布。最终构建日志确认 `qiancraft-0.8.0` 与 Vinext 五阶段完成，运行日志确认 Tool API 和 Vinext 分别监听容器回环地址；部署状态为 `RUNNING`，公网 `/healthz` 为 200、匿名 `/` 为 401。当前环境没有站点 Basic Auth 凭证，因此没有声称完成 0.8.0 认证后公网业务 UI/API 复验。
 
-0.9.0 当前只完成本地实现与验收，**尚未部署**。它新增进程内持续采集调度器、知识星图、文化候选审核、市场增量控制面和真实健康检查：Nginx 的 `/healthz` 转发 `/api/health`，响应包含调度线程、心跳新鲜度和总开关；线程死亡或心跳超过 45 秒返回 503，Docker HEALTHCHECK 随之失败；`start-zeabur.sh` 同时监控 Tool API、Vinext 与 Nginx，任一子进程退出即让容器失败。上述故障恢复仍依赖部署平台实际启用重启策略。不能把本地 0.9.0 截图或测试结果写成线上已升级；受保护实例仍以 0.8.0 为准。
+0.9.1 当前只完成本地实现与验收，**尚未部署**。它延续 0.9.0 的进程内持续采集调度器、知识星图、文化候选审核、市场增量控制面和真实健康检查，并完成提交前链路加固：Nginx 的 `/healthz` 转发 `/api/health`，响应包含调度线程、心跳新鲜度和总开关；线程死亡或心跳超过 45 秒返回 503，Docker HEALTHCHECK 随之失败；`start-zeabur.sh` 同时监控 Tool API、Vinext 与 Nginx，任一子进程退出即让容器失败。上述故障恢复仍依赖部署平台实际启用重启策略。不能把本地 0.9.1 截图或测试结果写成线上已升级；受保护实例仍以 0.8.0 为准。
 
 ## 必需配置
 
@@ -49,13 +49,13 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 ## 本地构建
 
 ```bash
-docker build -t qiancraft:0.9.0 .
+docker build -t qiancraft:0.9.1 .
 docker run --rm -p 8080:8080 \
   -e QIANCRAFT_WEB_USERNAME=qiancraft \
   -e QIANCRAFT_WEB_PASSWORD='<set-in-secret-manager>' \
   -e LLM_API_KEY='<set-in-secret-manager>' \
   -v qiancraft-runtime:/app/data/runtime \
-  qiancraft:0.9.0
+  qiancraft:0.9.1
 ```
 
 生产密钥只应通过 Zeabur 的变量管理界面注入，不写入 Dockerfile、仓库或部署日志。

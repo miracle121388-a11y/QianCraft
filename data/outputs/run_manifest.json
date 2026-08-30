@@ -1,7 +1,7 @@
 {
   "run_id": "20260828T060200Z-e44240e3",
   "started_at": "2026-08-28T06:02:00.362090Z",
-  "finished_at": "2026-08-28T06:05:08.014543Z",
+  "finished_at": "2026-08-29T14:28:17.213118Z",
   "request": {
     "topic": "贵州苗绣",
     "region": "贵州",
@@ -68,8 +68,8 @@
       "文创徽章"
     ],
     "raw_paths": [],
-    "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
-    "hotness_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
+    "derived_path": "data/market/derived/market_evidence_20260828T060206Z.json",
+    "hotness_path": "data/market/derived/product_form_hotness.json",
     "detail": "四平台状态：xhs=cache(115)；dy=cache(14)；bili=cache(101)；wb=cache(148)。"
   },
   "market_platforms": {
@@ -94,8 +94,8 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\xhs.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "canonical_path": "",
+      "derived_path": "data/market/derived/market_evidence_20260828T060206Z.json",
       "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 115 条历史真实抓取快照。"
     },
     "dy": {
@@ -119,8 +119,8 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\dy.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "canonical_path": "",
+      "derived_path": "data/market/derived/market_evidence_20260828T060206Z.json",
       "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 14 条历史真实抓取快照。"
     },
     "bili": {
@@ -144,8 +144,8 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\bili.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "canonical_path": "",
+      "derived_path": "data/market/derived/market_evidence_20260828T060206Z.json",
       "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 101 条历史真实抓取快照。"
     },
     "wb": {
@@ -169,25 +169,25 @@
         "文创徽章"
       ],
       "raw_paths": [],
-      "canonical_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\raw\\wb.jsonl",
-      "derived_path": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\market_evidence_20260828T060206Z.json",
+      "canonical_path": "",
+      "derived_path": "data/market/derived/market_evidence_20260828T060206Z.json",
       "detail": "MEDIACRAWLER_LIVE_ENABLED=false，未发起平台访问。 使用 148 条历史真实抓取快照。"
     }
   },
   "outputs": {
-    "strategy_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\pre_design_strategy.json",
-    "strategy_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\pre_design_strategy.md",
-    "visual_reference_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\visual_reference_pack.json",
-    "visual_reference_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\visual_reference_pack.md",
-    "designer_handoff_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.json",
-    "designer_handoff_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\designer_handoff.md",
-    "product_form_hotness": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\market\\derived\\product_form_hotness.json",
-    "design_specification_json": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_specification.json",
-    "design_specification_markdown": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_specification.md",
-    "poster_render_request": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\poster_render_request.json",
-    "design_poster": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_poster.png",
-    "design_render_manifest": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\design_render_manifest.json",
-    "manifest": "D:\\Users\\Lenovo\\Desktop\\QianCraft\\data\\outputs\\run_manifest.json"
+    "strategy_json": "data/outputs/pre_design_strategy.json",
+    "strategy_markdown": "data/outputs/pre_design_strategy.md",
+    "visual_reference_json": "data/outputs/visual_reference_pack.json",
+    "visual_reference_markdown": "data/outputs/visual_reference_pack.md",
+    "designer_handoff_json": "data/outputs/designer_handoff.json",
+    "designer_handoff_markdown": "data/outputs/designer_handoff.md",
+    "product_form_hotness": "data/market/derived/product_form_hotness.json",
+    "design_specification_json": "data/outputs/design_specification.json",
+    "design_specification_markdown": "data/outputs/design_specification.md",
+    "poster_render_request": "data/outputs/poster_render_request.json",
+    "design_poster": "data/outputs/design_poster.png",
+    "design_render_manifest": "data/outputs/design_render_manifest.json",
+    "manifest": "data/outputs/run_manifest.json"
   },
   "source_snapshot_date": "2026-08-28"
 }

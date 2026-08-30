@@ -2,6 +2,10 @@
 
 验收日期：2026-08-29（Asia/Shanghai）
 
+0.9.1 提交前复验使用当前 Windows 工作区重新安装并导入 LightRAG 1.5.7、GPT Researcher 0.14.7 与 MediaCrawler 隔离运行时；MediaCrawler 可导入 `bili,dy,ks,tieba,wb,xhs,zhihu`。当前机器没有 `LLM_API_KEY`、独立 Images API 或四平台授权会话，因此没有把 DeepSeek/GPT Researcher、图片重生成或平台抓取写成当轮 live；正式 `20260828T060200Z-e44240e3` 仍保留此前真实 DeepSeek 运行证据。独立 `auto` 验收运行 `20260829T144536Z-2e6f3e5b` 实际得到 `culture=live / market=cache / strategist=cache / design=live / poster=live`，消费提交随附的 378 条派生平台证据并生成 13 项隔离产物；清单路径全部为仓库相对路径且文件存在。
+
+同轮重新从正式 `DesignerHandoff` 运行 Design Agent 与 Poster Renderer，更新仓库默认 1800×2400 海报及摘要；BOM 标题按实际 5 项显示。8 个正式 JSON 契约、13 个清单路径、交接/海报 SHA-256、12 条视觉参考、5 个结构原语、8 条机会、Top 3、5 项 BOM、6 步装配、6 项质检、378 条热度样本与 Top 10 均通过审计，`mass_production_ready=false`、`reference_only_images_used=false`。正式运行清单及新生成的设计/渲染路径改为仓库相对路径，不再依赖旧机器盘符。
+
 最新完整业务运行：`20260828T060200Z-e44240e3`（运行号使用 UTC）；五个组件依次为 `live / cache / live / live / live`。Culture 使用本地 612 实体/697 关系图，Strategy 实际调用 `deepseek-v4-flash`，市场层没有再次访问平台，而是消费保存的 378 条历史真实平台快照，因此四路在该清单中均诚实标为 `cache`。Design Agent 随后以同一运行的 `designer_handoff.json` 重算并用项目原创产品主视觉完成最终海报，运行清单的设计与渲染状态已同步更新。
 
 四个平台在逐平台授权 Smoke Test 中都至少成功过一次：小红书 `live/20`、抖音 `live/14`、B站 `live/20`、微博 `live/16`。最新授权正式复核证据为 `market_evidence_20260827T222055Z.json`；同一次四平台复核中，小红书 `live/authorized/115`、B站 `live/authorized/101`、微博 `live/authorized/148`，抖音本次未产出新内容，使用 `cache/missing/14` 的历史真实快照。合计 364 条当轮实时记录、14 条历史真实平台记录，再加 12 条不参与平台榜的公开核验基线，共 390 条证据记录。随后单独重试抖音仍未产出新内容，没有把缓存误报为实时成功。
@@ -35,9 +39,9 @@
 
 | 项目 | 结果 | 证据 |
 |---|---|---|
-| DeepSeek API | 通过 | `/models` 实际返回 3 个模型，目标模型存在；密钥未回显 |
+| DeepSeek API | 历史通过；当前机器未复验 | 既有正式运行记录了目标模型成功；当前机器缺少 `LLM_API_KEY`，环境探针明确报告 missing，未伪造本轮调用 |
 | LightRAG | 通过 | 本地图实际索引 612 个实体、697 条关系；“贵州苗绣”节点查询返回关联边 |
-| GPT Researcher | 通过 | external-context writer 实际调用目标模型并输出合法 JSON；最新完整业务运行经证据锁后得到 8 条机会 |
+| GPT Researcher | 导入通过；当前模型调用被前置条件阻断 | 0.14.7 可导入；当前机器因缺少 `LLM_API_KEY` 使用证据规则基线，既有正式运行仍保留历史 external-context writer 结果 |
 | MediaCrawler | 授权复核 3/4 实时通过 | 小红书 115、B站 101、微博 148 条均完成登录、搜索、规范化与保存；抖音两次均未产出新内容，保留 14 条历史真实快照并标 `cache` |
 | Workbench 严格后台研究 | 通过（按失败口径） | 修复后任务 `20260828T202303Z-2bae17ff` 实际从网页启动并回调完成：culture/strategist live，market cache，四平台 unavailable，状态 `failed_no_fallback`。8 项研究产物与失败审计落盘、设计未被误调用、工作区未晋级；这证明失败会被完整保存而不是伪造成可用结果 |
 | 四平台统一与热度 | 通过 | 四个快照共 378 条真实平台记录；统一榜单样本数为 378，Top 10 依次为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒，Top 5 为前五项；本轮重算分数范围 36.6–57.3，均在 0–100 内 |
@@ -63,8 +67,8 @@
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 预期 warning | 独立 Images API 未配置；同一 DeepSeek 服务的 `/images/generations` 实测 HTTP 404。现有 A/B/C 可展示，但 Regenerate 与 Generate More 不会把项目资产冒充为一次新 API 结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 通过 | Python `pytest` 53/53；Workbench TypeScript 5/5；Playwright 35 passed / 1 intentionally skipped。新增覆盖持续采集状态与持久化、线程死亡/心跳过期健康端点 503、部分文化来源失败必须 `degraded`、授权阻断、候选失败输入保留、初次连接/轮询断线旧状态失效、知识星图桌面滚轮/拖动/键盘、移动页面滚动/单触点/双触点与 forced-colors，并保留研究、DesignPackage 与 Poster 回归 |
-| 静态检查与构建 | 通过 | `ruff check app tests scripts/probe_market_platforms.py`、TypeScript no-emit、ESLint、Vinext 五阶段 production build、`bash -n deploy/start-zeabur.sh`、`uv lock --check` 与 `git diff --check` 均无错误；脚本入口的显式 `sys.path` bootstrap 不纳入 E402 检查 |
+| 自动测试 | 通过 | Python `pytest` 57/57；Workbench TypeScript 5/5；Playwright 35 passed / 1 intentionally skipped。0.9.1 另覆盖显式 auto 模式、提交随附派生市场缓存、准确 BOM 标题与可迁移产物路径 |
+| 静态检查与构建 | 通过 | `ruff check .`、TypeScript no-emit、ESLint、Vinext 五阶段 production build、`uv lock --check` 与 `git diff --check` 均无错误；Ruff 配置明确排除三份只读上游源码 |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 
 ## 可复现命令
@@ -85,7 +89,7 @@
 # 四个平台完成授权后的正式小规模复核：
 .\.venv\Scripts\python.exe scripts\probe_market_platforms.py --platform all --method cdp --formal --authorize
 .\.venv\Scripts\python.exe -m pytest
-uv run ruff check app tests
+uv run ruff check .
 
 # 启动本地 Workbench（自动协调 API 与前端）：
 .\.venv\Scripts\python.exe scripts\run_web_tool.py
@@ -114,4 +118,4 @@ pnpm start:local
 11. 独立图像生成自动化服务尚未配置。A/B/C 当前都有可展示项目资产，其中 B/C 来自此前内置图像生成与人工目视复核；这不代表 DeepSeek 支持图片。Regenerate / Generate More 会真实调用独立 provider，未配置时保留旧成功资产并明确 warning，不会制造新成功记录。
 12. Workbench 已部署为受 Basic Auth 保护的远端产品验证环境；Vinext 与 Python API 在容器内仍只绑定回环地址，运行态由持久卷承载，密钥由部署变量注入。精简云端镜像没有 MediaCrawler/LightRAG/GPT Researcher 上游运行时，因此严格研究会预检阻断；完整实爬应在有本人授权浏览器的本机运行。如需多人正式使用，仍应补用户级账户、权限审计、备份、任务队列和密钥轮换流程。
 13. 本轮使用上传的 React Flow 源码核对集成版本和能力边界，但没有改写其源码、许可证或版权通知；产品界面统一使用 QianCraft 自有名称和业务语言。
-14. 0.9.0 的持续采集依赖 Tool API 单副本持续运行、持久卷、平台重启策略、网络和用户授权；它不是跨副本分布式队列。当前市场通道被真实授权条件阻断，不能据此宣称四平台已在 7×24 小时持续产出。0.9.0 尚未部署，线上仍为 0.8.0。
+14. 0.9.0 引入的持续采集依赖 Tool API 单副本持续运行、持久卷、平台重启策略、网络和用户授权；它不是跨副本分布式队列。当前市场通道被真实授权条件阻断，不能据此宣称四平台已在 7×24 小时持续产出。当前本地 0.9.1 尚未部署，线上仍为 0.8.0。

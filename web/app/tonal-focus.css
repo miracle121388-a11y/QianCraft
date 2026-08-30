@@ -1,0 +1,1066 @@
+:root {
+  --qc-shell: #e6e2da;
+  --qc-command: #d9e1e8;
+  --qc-rail: #d7e1dc;
+  --qc-canvas-tonal: #e3e8eb;
+  --qc-inspector: #e7ddd4;
+  --qc-node: #f0eee9;
+  --qc-selected: #cbd9e6;
+  --qc-primary: #345c7d;
+  --qc-text: #20262c;
+  --qc-text-secondary: #626970;
+  --qc-rule: #c4c8c7;
+  --qc-success: #637e6a;
+  --qc-warning: #b1844c;
+  --qc-danger: #9a6757;
+  --qc-neutral: #7b8086;
+}
+
+.workbench-shell--instrument { color: var(--qc-text); background: var(--qc-shell); }
+.workbench-shell--instrument .app-bar { background: var(--qc-command); }
+.workbench-shell--instrument .tool-rail { background: var(--qc-rail); }
+.workbench-shell--instrument .flow-stage { background: var(--qc-canvas-tonal); }
+.workbench-shell--instrument .inspector-slot { background: var(--qc-inspector); }
+
+@media (min-width: 1280px) {
+  .workbench-shell--instrument .app-bar {
+    height: 60px;
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-command);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .workbench-grid {
+    position: relative;
+    display: grid;
+    height: calc(100dvh - 60px);
+    grid-template: minmax(0, 1fr) 0 / 72px minmax(0, 1fr);
+    grid-template-areas:
+      "rail canvas"
+      "rail dock";
+    background: var(--qc-shell);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .workbench-grid--dock-open {
+    grid-template-rows: minmax(0, 1fr) 210px;
+  }
+
+  .workbench-shell--instrument .workbench-grid.workbench-grid--dock-open,
+  .workbench-shell--instrument .workbench-grid.workbench-grid--inspector-open,
+  .workbench-shell--instrument .workbench-grid.workbench-grid--dock-open.workbench-grid--inspector-open {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .workbench-shell--instrument .tool-rail {
+    grid-area: rail;
+    width: 72px;
+    border-color: var(--qc-rule);
+    color: var(--qc-text-secondary);
+    background: var(--qc-rail);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .flow-stage {
+    min-width: 0;
+    min-height: 0;
+    grid-area: canvas;
+    background: var(--qc-canvas-tonal);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .tool-dock {
+    display: none;
+    min-width: 0;
+    overflow: hidden;
+    grid-area: dock;
+    border-top: 1px solid var(--qc-rule);
+    border-right: 0;
+    color: var(--qc-text);
+    background: var(--qc-rail);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .tool-dock.is-open {
+    display: block;
+  }
+
+  .workbench-shell--instrument .tool-dock > * {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .workbench-shell--instrument .tool-dock .knowledge-center {
+    display: grid;
+    grid-template: auto minmax(0, 1fr) / minmax(220px, 0.72fr) minmax(420px, 1.5fr);
+    border: 0;
+    color: var(--qc-text);
+    background: var(--qc-rail);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .tool-dock .panel-heading {
+    min-height: 44px;
+    padding: 6px 16px;
+    grid-column: 1 / -1;
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-rail);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .tool-dock .knowledge-section {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    padding: 10px 14px;
+    border-color: var(--qc-rule);
+  }
+
+  .workbench-shell--instrument .tool-dock .knowledge-section--culture {
+    border-left: 1px solid var(--qc-rule);
+  }
+
+  .workbench-shell--instrument .tool-dock .market-ranking,
+  .workbench-shell--instrument .tool-dock .culture-list {
+    display: grid;
+    overflow-x: auto;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 1fr);
+  }
+
+  .workbench-shell--instrument .tool-dock .culture-list .tag-row {
+    display: flex;
+  }
+
+  .workbench-shell--instrument .tool-dock .culture-list .culture-selection-state,
+  .workbench-shell--instrument .tool-dock .drag-hint {
+    display: block;
+  }
+
+  .workbench-shell--instrument .inspector-slot {
+    position: absolute;
+    z-index: 14;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    width: 330px;
+    min-width: 0;
+    overflow: hidden;
+    border-left: 1px solid var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-inspector);
+    background-image: none;
+    box-shadow: -18px 0 40px rgb(65 70 72 / 10%);
+  }
+
+  .workbench-shell--instrument .inspector-slot.is-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .workbench-shell--instrument .inspector-slot__toolbar,
+  .workbench-shell--instrument .inspector-slot .inspector {
+    width: 330px;
+    color: var(--qc-text);
+    background: var(--qc-inspector);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .inspector-slot .inspector {
+    min-height: 0;
+    flex: 1;
+  }
+
+  .workbench-shell--instrument .workspace-command,
+  .workbench-shell--instrument .workspace-command > summary,
+  .workbench-shell--instrument .phase-switcher,
+  .workbench-shell--instrument .app-bar__actions {
+    color: var(--qc-text);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .workspace-command > summary,
+  .workbench-shell--instrument .phase-switcher button,
+  .workbench-shell--instrument .app-bar__actions > button {
+    border-color: var(--qc-rule);
+    color: var(--qc-text-secondary);
+    background: transparent;
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .workspace-command[open] > summary,
+  .workbench-shell--instrument .workspace-command > summary:hover,
+  .workbench-shell--instrument .phase-switcher button:hover,
+  .workbench-shell--instrument .phase-switcher button.is-active,
+  .workbench-shell--instrument .app-bar__actions > button:hover {
+    color: var(--qc-text);
+    background: var(--qc-node);
+  }
+
+  .workbench-shell--instrument .phase-switcher button.is-active::after {
+    background: var(--qc-primary);
+  }
+
+  .workbench-shell--instrument .workspace-command__popover {
+    border: 1px solid var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-node);
+    background-image: none;
+    box-shadow: 0 18px 42px rgb(65 70 72 / 12%);
+  }
+
+  .workbench-shell--instrument .workspace-command__popover select,
+  .workbench-shell--instrument .workspace-command__popover button {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-canvas-tonal);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .app-bar__actions > .run-all-button,
+  .workbench-shell--instrument .app-bar__actions > .run-all-button:hover,
+  .workbench-shell--instrument .inspector-slot .primary-button {
+    border-color: var(--qc-primary);
+    color: var(--qc-node);
+    background: var(--qc-primary);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .tool-rail button {
+    color: var(--qc-text-secondary);
+    background: transparent;
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .tool-rail button:hover {
+    color: var(--qc-text);
+    background: var(--qc-node);
+  }
+
+  .workbench-shell--instrument .tool-rail button.is-active {
+    color: var(--qc-node);
+    background: var(--qc-primary);
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .flow-stage .react-flow__edge-path {
+    stroke: var(--qc-rule);
+  }
+
+  .workbench-shell--instrument .flow-stage .react-flow__edge.selected .react-flow__edge-path {
+    stroke: var(--qc-primary);
+  }
+
+  .workbench-shell--instrument .flow-stage .react-flow__controls,
+  .workbench-shell--instrument .flow-stage .react-flow__minimap,
+  .workbench-shell--instrument .canvas-context,
+  .workbench-shell--instrument .canvas-legend,
+  .workbench-shell--instrument .research-monitor {
+    border: 1px solid var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-node);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .flow-stage .react-flow__controls-button,
+  .workbench-shell--instrument .canvas-context button {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-node);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .flow-stage .react-flow__controls-button:hover,
+  .workbench-shell--instrument .canvas-context button:hover {
+    color: var(--qc-node);
+    background: var(--qc-primary);
+  }
+
+  .workbench-shell--instrument .canvas-context span,
+  .workbench-shell--instrument .canvas-context p,
+  .workbench-shell--instrument .canvas-legend,
+  .workbench-shell--instrument .research-monitor span,
+  .workbench-shell--instrument .research-monitor p {
+    color: var(--qc-text-secondary);
+  }
+
+  .workbench-shell--instrument .canvas-context strong,
+  .workbench-shell--instrument .research-monitor strong {
+    color: var(--qc-text);
+  }
+
+  .workbench-shell--instrument .flow-node {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-node);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .flow-node.is-selected {
+    border-color: var(--qc-primary);
+    color: var(--qc-text);
+    background: var(--qc-selected);
+    background-image: none;
+    box-shadow: inset 0 0 0 0.5px var(--qc-primary);
+  }
+
+  .workbench-shell--instrument .flow-node__header,
+  .workbench-shell--instrument .flow-node__footer,
+  .workbench-shell--instrument .inspector-slot__toolbar,
+  .workbench-shell--instrument .inspector-slot .inspector__header,
+  .workbench-shell--instrument .inspector-slot .inspector-tabs,
+  .workbench-shell--instrument .inspector-slot .inspector__footer {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background-color: transparent;
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .flow-node__header h3,
+  .workbench-shell--instrument .inspector-slot .inspector__header h2,
+  .workbench-shell--instrument .inspector-slot .inspector-section > p,
+  .workbench-shell--instrument .inspector-slot .inspector-metrics strong {
+    color: var(--qc-text);
+  }
+
+  .workbench-shell--instrument .flow-node__header p,
+  .workbench-shell--instrument .inspector-slot .inspector__header span,
+  .workbench-shell--instrument .inspector-slot .inspector-section > span,
+  .workbench-shell--instrument .inspector-slot .inspector-form > label > span,
+  .workbench-shell--instrument .inspector-status-label,
+  .workbench-shell--instrument .inspector-slot .inspector-tabs button {
+    color: var(--qc-text-secondary);
+  }
+
+  .workbench-shell--instrument .flow-node .react-flow__handle,
+  .workbench-shell--instrument .flow-node.is-selected .react-flow__handle,
+  .workbench-shell--instrument .inspector-slot .inspector-tabs button.is-active::after {
+    border-color: var(--qc-node);
+    background: var(--qc-primary);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .node-status--success i,
+  .workbench-shell--instrument .legend-success,
+  .workbench-shell--instrument .inspector-status-label.is-success::before {
+    border-color: var(--qc-success);
+    background: var(--qc-success);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .node-status--cached i,
+  .workbench-shell--instrument .legend-cached,
+  .workbench-shell--instrument .inspector-status-label::before {
+    border-color: var(--qc-neutral);
+    background: var(--qc-neutral);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .node-status--warning i,
+  .workbench-shell--instrument .node-status--stale i,
+  .workbench-shell--instrument .legend-stale,
+  .workbench-shell--instrument .inspector-status-label.is-warning::before,
+  .workbench-shell--instrument .inspector-status-label.is-stale::before,
+  .workbench-shell--instrument .node-status--running i {
+    border-color: var(--qc-warning);
+    background: var(--qc-warning);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .node-status--error i,
+  .workbench-shell--instrument .inspector-status-label.is-error::before {
+    border-color: var(--qc-danger);
+    background: var(--qc-danger);
+    background-image: none;
+  }
+
+  .workbench-shell--instrument .tool-dock .panel-heading,
+  .workbench-shell--instrument .tool-dock .platform-grid > div,
+  .workbench-shell--instrument .tool-dock .market-ranking > div,
+  .workbench-shell--instrument .tool-dock .culture-list article,
+  .workbench-shell--instrument .tool-dock .knowledge-search,
+  .workbench-shell--instrument .inspector-slot .inspector-metrics div,
+  .workbench-shell--instrument .inspector-slot .inspector-decision-card,
+  .workbench-shell--instrument .inspector-slot .provider-card,
+  .workbench-shell--instrument .inspector-slot input,
+  .workbench-shell--instrument .inspector-slot textarea {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .tool-dock .platform-grid > div,
+  .workbench-shell--instrument .tool-dock .knowledge-search,
+  .workbench-shell--instrument .inspector-slot .inspector-metrics div,
+  .workbench-shell--instrument .inspector-slot .inspector-decision-card,
+  .workbench-shell--instrument .inspector-slot .provider-card,
+  .workbench-shell--instrument .inspector-slot input,
+  .workbench-shell--instrument .inspector-slot textarea {
+    background-color: var(--qc-node);
+  }
+
+  .workbench-shell--instrument .tool-dock .market-ranking > div,
+  .workbench-shell--instrument .tool-dock .culture-list article {
+    background-color: transparent;
+  }
+
+  .workbench-shell--instrument .tool-dock .market-ranking > div:hover,
+  .workbench-shell--instrument .tool-dock .culture-list article:hover,
+  .workbench-shell--instrument .tool-dock .market-ranking > div.is-selected,
+  .workbench-shell--instrument .tool-dock .culture-list article.is-selected {
+    border-color: var(--qc-primary);
+    color: var(--qc-text);
+    background: var(--qc-selected);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .tool-dock .panel-heading__actions button,
+  .workbench-shell--instrument .tool-dock .section-title-row button,
+  .workbench-shell--instrument .tool-dock .section-title-actions button,
+  .workbench-shell--instrument .inspector-slot .secondary-button,
+  .workbench-shell--instrument .inspector-slot .inspector-actions > button {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-node);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .asset-dock,
+  .workbench-shell--instrument .history-dock {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-rail);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .dock-heading {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-rail);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .dock-heading b,
+  .workbench-shell--instrument .asset-dock__list > button,
+  .workbench-shell--instrument .asset-dock__empty,
+  .workbench-shell--instrument .history-dock__subject {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: var(--qc-node);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .asset-dock__list > button:hover,
+  .workbench-shell--instrument .asset-dock__list > button.is-active {
+    border-color: var(--qc-primary);
+    color: var(--qc-text);
+    background: var(--qc-selected);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .asset-dock__list img {
+    background-color: var(--qc-node);
+  }
+
+  .workbench-shell--instrument .asset-dock__list strong,
+  .workbench-shell--instrument .history-dock__subject strong,
+  .workbench-shell--instrument .history-dock__list p {
+    color: var(--qc-text);
+  }
+
+  .workbench-shell--instrument .asset-dock__list > button.is-active strong {
+    color: var(--qc-text);
+  }
+
+  .workbench-shell--instrument .dock-intro,
+  .workbench-shell--instrument .dock-empty,
+  .workbench-shell--instrument .asset-dock__list small,
+  .workbench-shell--instrument .asset-dock__list em,
+  .workbench-shell--instrument .history-dock__subject span,
+  .workbench-shell--instrument .history-dock__subject em,
+  .workbench-shell--instrument .history-dock__list time {
+    color: var(--qc-text-secondary);
+  }
+
+  .workbench-shell--instrument .history-dock__list article {
+    border-color: var(--qc-rule);
+    color: var(--qc-text);
+    background: transparent;
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .history-dock__list article > i {
+    background: var(--qc-primary);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .flow-node__footer button:hover,
+  .workbench-shell--instrument .flow-node__footer .flow-node__detail {
+    color: var(--qc-primary);
+    background: var(--qc-node);
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .workbench-shell--instrument .inspector-slot .inspector-icon {
+    color: var(--qc-node);
+    background: var(--qc-primary);
+    background-image: none;
+    box-shadow: none;
+  }
+}
+
+.decision-studio,
+.node-detail-page {
+  color: var(--qc-text);
+  background: var(--qc-shell);
+  background-image: none;
+}
+
+.decision-studio__header,
+.decision-studio__footer,
+.detail-topbar,
+.detail-footer {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-command);
+  background-image: none;
+  box-shadow: none;
+}
+
+.detail-topbar {
+  backdrop-filter: none;
+}
+
+.decision-stage-nav,
+.detail-related,
+.collection-overview-strip {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-rail);
+  background-image: none;
+}
+
+.decision-studio__layout,
+.decision-stage-content,
+.decision-panel,
+.detail-content,
+.detail-data-section {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-canvas-tonal);
+  background-image: none;
+}
+
+.primary-button,
+.decision-primary,
+.decision-studio__footer > button.decision-primary,
+.decision-studio__footer > button.decision-primary:hover,
+.detail-primary,
+.detail-top-actions .detail-run-button,
+.detail-top-actions .detail-run-button:hover,
+.collection-primary-action,
+.collection-primary-action:hover {
+  border-color: var(--qc-primary);
+  color: #f7f8f8;
+  background: var(--qc-primary);
+  background-image: none;
+  box-shadow: none;
+}
+
+.decision-close,
+.decision-mode-switch,
+.decision-mode-switch button,
+.decision-stage-nav > button,
+.decision-studio__footer > button,
+.decision-studio__secondary-actions > button,
+.decision-panel button,
+.detail-top-actions button,
+.detail-decision-link,
+.detail-download,
+.detail-action-grid button,
+.detail-section-heading nav button,
+.detail-footer button,
+.collection-console button,
+.collection-console-disclosure > summary em {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+}
+
+.decision-close:hover,
+.decision-mode-switch button:hover,
+.decision-stage-nav > button:hover,
+.decision-studio__footer > button:hover,
+.decision-panel button:hover,
+.detail-top-actions button:hover,
+.detail-decision-link:hover,
+.detail-download:hover,
+.detail-action-grid button:hover,
+.detail-section-heading nav button:hover,
+.detail-footer button:hover,
+.collection-console button:hover,
+.collection-console-disclosure > summary:hover {
+  border-color: var(--qc-primary);
+  color: var(--qc-text);
+  background: var(--qc-selected);
+  background-image: none;
+  box-shadow: none;
+}
+
+.decision-mode-switch button.is-active,
+.decision-stage-nav > button.is-active,
+.decision-stage-nav > button.is-active > b,
+.decision-panel button.is-selected,
+.detail-section-heading nav button.is-active {
+  border-color: var(--qc-primary);
+  color: var(--qc-text);
+  background: var(--qc-selected);
+  background-image: none;
+  box-shadow: inset 2px 0 var(--qc-primary);
+}
+
+.decision-panel input,
+.decision-panel select,
+.decision-panel textarea,
+.detail-editor input,
+.detail-editor select,
+.detail-editor textarea,
+.collection-console input,
+.collection-console select,
+.constellation-toolbar input,
+.constellation-toolbar select {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+}
+
+.decision-panel input:focus,
+.decision-panel select:focus,
+.decision-panel textarea:focus,
+.detail-editor input:focus,
+.detail-editor select:focus,
+.detail-editor textarea:focus,
+.collection-console input:focus,
+.collection-console select:focus,
+.constellation-toolbar input:focus,
+.constellation-toolbar select:focus {
+  border-color: var(--qc-primary);
+  outline-color: var(--qc-primary);
+  box-shadow: 0 0 0 1px var(--qc-primary);
+}
+
+.decision-panel fieldset,
+.decision-panel article,
+.decision-weight-editor,
+.decision-notes,
+.decision-concept-empty,
+.detail-hero > aside,
+.detail-related,
+.citation-ledger,
+.ranking-board,
+.opportunity-list,
+.opportunity-detail-card,
+.detail-editor,
+.prompt-ledger,
+.market-method-card,
+.culture-detail-layout,
+.concept-gallery,
+.visual-provider-hero,
+.brief-context,
+.poster-breakdown-grid > article,
+.collection-console,
+.collection-console-disclosure,
+.collection-blockers,
+.candidate-add-form,
+.collection-empty {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+}
+
+.culture-record-panel,
+.record-index-grid article,
+.market-kpi-row article,
+.market-post-grid article,
+.citation-grid article,
+.culture-element-grid article,
+.concept-gallery article,
+.bom-table,
+.bom-row,
+.poster-artboard,
+.detail-editor fieldset,
+.decision-culture-grid > button,
+.decision-platform-grid > button,
+.decision-form-list > button,
+.decision-reference-grid > button,
+.decision-theme-grid > button,
+.collection-platform-matrix > div,
+.candidate-queue-list > article,
+.collection-events li {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-canvas-tonal);
+  background-image: none;
+  box-shadow: none;
+}
+
+.detail-hero,
+.detail-section-heading,
+.collection-console-heading,
+.collection-section-heading,
+.collection-lane,
+.collection-candidates,
+.collection-events {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: transparent;
+  background-image: none;
+}
+
+.detail-hero h1,
+.detail-section-heading h2,
+.detail-editor h2,
+.detail-footer strong,
+.decision-studio h2,
+.decision-panel h3,
+.decision-panel h4,
+.collection-console h2,
+.collection-console h3,
+.collection-console h4 {
+  color: var(--qc-text);
+}
+
+.detail-breadcrumb,
+.detail-breadcrumb a,
+.detail-breadcrumb span,
+.detail-hero p,
+.detail-section-heading p,
+.detail-footer p,
+.detail-footer span,
+.decision-studio__header p,
+.decision-panel header p,
+.decision-stage-nav > button,
+.decision-stage-nav small,
+.decision-studio__footer p,
+.collection-console p,
+.collection-console small,
+.collection-console dt,
+.collection-console time {
+  color: var(--qc-text-secondary);
+}
+
+.collection-console--loading,
+.collection-console-disclosure > summary,
+.collection-console-disclosure > .collection-console,
+.collection-lane-stack,
+.collection-platform-matrix,
+.collection-candidates,
+.collection-events {
+  background-image: none;
+  box-shadow: none;
+}
+
+.collection-live-state,
+.collection-lane-status,
+.hero-meta > em {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+}
+
+.node-status--success i,
+.legend-success,
+.inspector-status-label.is-success::before,
+.detail-related a > i.is-success,
+.hero-meta > em.is-success,
+.collection-live-state.is-running i,
+.collection-lane.is-completed .collection-lane-status i {
+  border-color: var(--qc-success);
+  color: var(--qc-success);
+  background: var(--qc-success);
+  background-image: none;
+}
+
+.node-status--cached i,
+.legend-cached,
+.inspector-status-label::before,
+.detail-related a > i.is-cached,
+.hero-meta > em.is-cached {
+  border-color: var(--qc-neutral);
+  color: var(--qc-neutral);
+  background: var(--qc-neutral);
+  background-image: none;
+}
+
+.node-status--warning i,
+.node-status--stale i,
+.legend-stale,
+.inspector-status-label.is-warning::before,
+.inspector-status-label.is-stale::before,
+.detail-related a > i.is-warning,
+.detail-related a > i.is-stale,
+.hero-meta > em.is-warning,
+.hero-meta > em.is-stale,
+.collection-lane.is-degraded .collection-lane-status i,
+.collection-lane.is-paused .collection-lane-status i {
+  border-color: var(--qc-warning);
+  color: var(--qc-warning);
+  background: transparent;
+  background-image: none;
+}
+
+.node-status--error i,
+.inspector-status-label.is-error::before,
+.detail-related a > i.is-error,
+.hero-meta > em.is-error,
+.collection-lane.is-failed .collection-lane-status i,
+.collection-lane.is-blocked .collection-lane-status i,
+.collection-events li > i.is-error,
+.collection-events li > i.is-blocked {
+  border-color: var(--qc-danger);
+  color: var(--qc-danger);
+  background: var(--qc-danger);
+  background-image: none;
+}
+
+.constellation-toolbar,
+.constellation-instruction,
+.constellation-legend,
+.constellation-controls,
+.constellation-inspector {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+}
+
+.constellation-toolbar button,
+.constellation-instruction button,
+.constellation-controls button,
+.constellation-inspector a {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-canvas-tonal);
+  background-image: none;
+  box-shadow: none;
+}
+
+.constellation-inspector p,
+.constellation-inspector dt,
+.constellation-inspector dd,
+.constellation-instruction,
+.constellation-legend {
+  color: var(--qc-text-secondary);
+}
+
+:where(.decision-studio, .node-detail-page) :focus-visible {
+  outline-color: var(--qc-primary);
+}
+
+.workbench-shell--instrument .workspace-command > summary > span,
+.workbench-shell--instrument .phase-switcher button,
+.workbench-shell--instrument .market-total > span,
+.workbench-shell--instrument .culture-card-actions small,
+.workbench-shell--instrument .flow-node__header p,
+.workbench-shell--instrument .inspector-slot .inspector__header span,
+.workbench-shell--instrument .inspector-status-label,
+.workbench-shell--instrument .inspector-slot .inspector-tabs button,
+.detail-related > span,
+.detail-editor label > span,
+.detail-editor legend,
+.detail-editor .section-toggle > span,
+.brief-context p,
+.brief-context .json-facts dt,
+.brief-context .json-facts dd,
+.visual-provider-hero p,
+.visual-provider-hero dt,
+.constellation-result-count,
+.constellation-inspector > header code,
+.constellation-inspector h4 {
+  color: var(--qc-text);
+}
+
+.hero-meta > em.is-success,
+.hero-meta > em.is-cached,
+.hero-meta > em.is-warning,
+.hero-meta > em.is-stale,
+.hero-meta > em.is-error {
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+}
+
+.decision-platform-grid > button.is-selected > span,
+.decision-platform-grid > button.is-selected > strong,
+.decision-platform-grid > button.is-selected > em,
+.decision-platform-grid > button.is-selected > i,
+.decision-form-list > button.is-selected > b,
+.decision-form-list > button.is-selected > span strong,
+.decision-form-list > button.is-selected > span small,
+.decision-form-list > button.is-selected > strong {
+  color: var(--qc-text);
+}
+
+.decision-stage-nav > button,
+.decision-stage-nav small,
+.decision-stage-nav em,
+.decision-panel code,
+.decision-panel label > span,
+.decision-panel header p,
+.decision-studio__footer span,
+.decision-studio__footer p {
+  color: var(--qc-text);
+}
+
+.concept-detail-image > .concept-asset-note {
+  border-color: var(--qc-rule);
+  color: var(--qc-warning);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.collection-console .collection-primary-action:not(:disabled),
+.collection-console .collection-primary-action:not(:disabled):hover {
+  border-color: var(--qc-primary);
+  color: #f7f8f8;
+  background: var(--qc-primary);
+  background-image: none;
+  box-shadow: none;
+}
+
+.constellation-search,
+.constellation-search input {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+}
+
+.constellation-search input::placeholder {
+  color: var(--qc-text-secondary);
+  opacity: 1;
+}
+
+.constellation-search:focus-within,
+.constellation-toolbar select:focus-visible {
+  border-color: var(--qc-primary);
+  outline-color: var(--qc-primary);
+}
+
+.constellation-controls button:hover,
+.constellation-source-links a:hover {
+  border-color: var(--qc-primary);
+  color: var(--qc-text);
+  background: var(--qc-selected);
+  background-image: none;
+  box-shadow: none;
+}
+
+.concept-gallery button {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+}
+
+.concept-gallery button:hover {
+  border-color: var(--qc-primary);
+  color: var(--qc-text);
+  background: var(--qc-selected);
+  background-image: none;
+  box-shadow: none;
+}
+
+.concept-gallery article.is-active {
+  border-color: var(--qc-primary);
+  color: var(--qc-text);
+  background: var(--qc-selected);
+  background-image: none;
+  box-shadow: none;
+}
+
+.concept-gallery article.is-active::before {
+  color: #f7f8f8;
+  background: var(--qc-primary);
+  background-image: none;
+  box-shadow: none;
+}
+
+.collection-lane.is-blocked .collection-lane-status i,
+.collection-events li > i.is-blocked {
+  background: transparent;
+  background-image: none;
+}
+
+.market-kpi-row > div:first-child {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-canvas-tonal);
+  background-image: none;
+  box-shadow: none;
+}
+
+.opportunity-list > header,
+.poster-breakdown-grid > article:first-child {
+  border-color: var(--qc-rule);
+  color: var(--qc-text);
+  background: var(--qc-node);
+  background-image: none;
+  box-shadow: none;
+}
+
+.market-kpi-row > div:first-child span,
+.market-kpi-row > div:first-child small,
+.opportunity-list > header span,
+.opportunity-list > header p,
+.poster-breakdown-grid > article:first-child > span,
+.poster-breakdown-grid > article:first-child p {
+  color: var(--qc-text-secondary);
+}
+
+@media (min-width: 761px) {
+  .decision-studio {
+    border-radius: 14px;
+    box-shadow: none;
+  }
+}
+
+.workbench-shell--instrument :focus-visible {
+  outline-color: var(--qc-primary);
+}
+
+@media (forced-colors: active) {
+  .workbench-shell--instrument :focus-visible {
+    outline-color: Highlight;
+  }
+}

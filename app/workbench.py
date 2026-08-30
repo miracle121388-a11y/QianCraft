@@ -160,6 +160,14 @@ def _workspace_manifest_path(workspace: dict[str, Any]) -> Path:
     return _research_artifact_path(workspace, "run_manifest.json", MANIFEST_PATH)
 
 
+def _manifest_artifact_path(value: object) -> Path:
+    raw = str(value or "")
+    if not raw:
+        return ROOT_DIR / ".missing-manifest-artifact"
+    path = Path(raw)
+    return path if path.is_absolute() else ROOT_DIR / path
+
+
 def _workspace_design_path(workspace: dict[str, Any]) -> Path:
     run_id = str(workspace.get("metadata", {}).get("design_run_id", ""))
     workspace_id = str(workspace.get("workspace_id", ""))
@@ -1055,13 +1063,17 @@ def promote_research_run(
     destination = RESEARCH_DIR / workspace_id / manifest_run_id
     outputs = manifest.get("outputs", {})
     sources: dict[str, Path] = {
-        "pre_design_strategy.json": Path(str(outputs.get("strategy_json", ""))),
-        "visual_reference_pack.json": Path(str(outputs.get("visual_reference_json", ""))),
-        "designer_handoff.json": Path(str(outputs.get("designer_handoff_json", ""))),
-        "run_manifest.json": Path(str(outputs.get("manifest", ""))),
-        "product_form_hotness.json": Path(str(outputs.get("product_form_hotness", ""))),
-        "market_evidence.json": Path(
-            str(manifest.get("market_source", {}).get("derived_path", ""))
+        "pre_design_strategy.json": _manifest_artifact_path(outputs.get("strategy_json")),
+        "visual_reference_pack.json": _manifest_artifact_path(
+            outputs.get("visual_reference_json")
+        ),
+        "designer_handoff.json": _manifest_artifact_path(outputs.get("designer_handoff_json")),
+        "run_manifest.json": _manifest_artifact_path(outputs.get("manifest")),
+        "product_form_hotness.json": _manifest_artifact_path(
+            outputs.get("product_form_hotness")
+        ),
+        "market_evidence.json": _manifest_artifact_path(
+            manifest.get("market_source", {}).get("derived_path")
         ),
     }
     missing: list[str] = []
@@ -1716,7 +1728,7 @@ def generate_more_concept(workspace_id: str, concept_id: str) -> dict[str, Any]:
 def _validate_brief_node(node: dict[str, Any]) -> None:
     brief = node.get("data", {}).get("brief")
     if not isinstance(brief, dict):
-        raise ValueError("设计任务书不存在，不能运行。")
+        raise ValueError("设计任务书不存在，不能运行。")  # noqa: TRY004 - API value error
     required = ("title", "objective", "audience", "productType", "factoryBoundary")
     missing = [key for key in required if not str(brief.get(key, "")).strip()]
     if missing:

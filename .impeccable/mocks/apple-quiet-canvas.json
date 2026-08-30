@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Quiet Canvas",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "directionSeed": "bbd71e4c",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/apple-quiet-canvas.png",
+  "sha256": "83a3bd6843768b6f872fbeb4c626f781ca8db95a5a66198b976c1fb0ece5b819",
+  "promptEmbedded": true,
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop productivity web app screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: redesign QianCraft 文化文创智能工作台 as a quiet, premium, highly legible light interface inspired by the clarity and restraint of Apple Developer tools and App Store Connect, combined with the open-canvas ease of Freeform. Do not clone any Apple screen and do not use Apple logos. This is an evidence-first operating tool, not a marketing website.\nComposition — Quiet Canvas: a solid white 60px top toolbar with QianCraft at left, five phase tabs centered, Human Decision v2 and one blue Run action at right; a 236px pale-gray evidence sidebar; a dominant warm-white node canvas occupying about 62% of the width; a 336px white contextual inspector on the right. The canvas shows the real horizontal workflow: 文化 and 市场 converge into 策略, then Design Brief, 视觉方向, Concept A/B/C, 概念海报. Select Design Brief without changing its geometry. Keep node cards compact and aligned with generous negative space.\nReal content to show legibly: QianCraft; 文化 / 市场 / 策略 / 设计 / 交付; 文化证据 22; 市场样本 378; 机会方向 8; “针格模块｜花溪挑花互动冰箱贴（概念样）”; Human Decision v2; 已完成 / 待更新 / 缓存; actions “运行当前节点” and “查看证据”.\nVisual system: restrained light palette only — soft neutral canvas #F5F5F7, white #FFFFFF, graphite #1D1D1F, secondary gray #6E6E73, hairline #D2D2D7, one sparse interaction blue #0071E3. No gradients. No glass panels. No colored glows. SF-like Chinese sans typography with PingFang-style proportions, crisp 13–16px body and 24px inspector title. 10–14px corner radii, thin dividers, subtle shadow only on the selected node or true overlay.\nInteraction credibility: visible zoom control, node handles, sidebar search, inspector close, focus ring, and restrained status icons with text.\nAvoid: dark theme, mesh gradient, neon, frosted glass, rainbow, cyberpunk, giant hero heading, bento dashboard, dense KPI wall, heavy shadows, excessive pills, stock people, decorative ethnic pattern, fake sales or compliance claims, device frame, watermark, illegible labels."
+}

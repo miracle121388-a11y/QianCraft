@@ -25,6 +25,16 @@ def _resolve_path(value: str, default: str) -> Path:
     return path.resolve() if path.is_absolute() else (ROOT_DIR / path).resolve()
 
 
+def portable_artifact_path(path: Path, root_dir: Path = ROOT_DIR) -> str:
+    """Keep project artifacts relocatable while preserving external absolute paths."""
+
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(root_dir.resolve()).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
 def _normalize_deepseek_model(value: str) -> str:
     aliases = {
         "deepseek_v4_flash": "deepseek-v4-flash",
@@ -108,6 +118,8 @@ class Settings:
     def with_mode(self, mode: str) -> Settings:
         if mode == "demo":
             return replace(self, live_mode=False, demo_mode=True)
+        if mode == "auto":
+            return replace(self, live_mode=True, demo_mode=True)
         if mode == "live":
             return replace(self, live_mode=True, demo_mode=False)
         return self

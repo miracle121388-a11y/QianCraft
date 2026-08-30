@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Tonal Quiet Canvas",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "directionSeed": "bbd71e4c",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/tonal-quiet-canvas.png",
+  "sha256": "f44325d2b3d46ac3d682bcf93a371cb0990aec75f815dbac2fe7eaf89ea9a4e6",
+  "promptEmbedded": true,
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop productivity web app screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: revise QianCraft 文化文创智能工作台 into a restrained but visibly colored professional interface. Keep the clarity, spacing and typography discipline of Apple Developer-style tools and the open canvas of Freeform, but do not make the app pure white. Color must explain regions and state, never decorate. Do not clone Apple or use its logo.\nComposition — Tonal Quiet Canvas: keep a 60px command bar, a 236px evidence sidebar, a dominant central node canvas and a 336px contextual inspector. Preserve the real horizontal workflow: 文化 and 市场 converge into 策略, then Design Brief, 视觉方向, Concept A/B/C and 概念海报. Select Design Brief with stable geometry.\nRequired color blocks: warm mineral shell #E6E2DA; mist-blue command bar #D9E1E8; muted sage evidence sidebar #D7E1DC; fog-blue canvas #E3E8EB; soft clay inspector #E7DDD4; node surfaces #F0EEE9 instead of white; selected node #CBD9E6 with deep desaturated blue #345C7D outline. Text #20262C, secondary #626970, dividers #C4C8C7. Status colors are muted olive #637E6A, ochre #B1844C, clay #9A6757 and neutral gray #7B8086. Use flat solid fields only—no gradients.\nReal content to show legibly: QianCraft; 文化 / 市场 / 策略 / 设计 / 交付; 文化证据 22; 市场样本 378; 机会方向 8; Human Decision v2; “针格模块｜花溪挑花互动冰箱贴（概念样）”; 已完成 / 待更新 / 缓存; actions “运行当前节点” and “查看证据”.\nVisual discipline: SF-like Chinese sans typography, crisp 13–16px body, 24px inspector title, 10–14px radii, thin dividers, almost no shadow. Large color blocks provide hierarchy; no decorative shapes, textures, blur, glow, pattern or illustration.\nAvoid: pure-white full screen, dark theme, mesh gradient, any gradient, glass, neon, bright saturated colors, rainbow, cyberpunk, giant hero, bento dashboard, KPI wall, excessive pills, stock people, decorative ethnic pattern, fake claims, device frame, watermark, illegible labels."
+}

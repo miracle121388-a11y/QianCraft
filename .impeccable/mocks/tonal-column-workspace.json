@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Tonal Column Workspace",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "directionSeed": "bbd71e4c",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/tonal-column-workspace.png",
+  "sha256": "c2cc51b9d5a178b678eb4025879630a7f500af44744cd0d890b2e95e26ba6d2c",
+  "promptEmbedded": true,
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop productivity web app screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: revise QianCraft 文化文创智能工作台 into a simple, authoritative, color-blocked professional tool. Retain Apple Developer / App Store Connect information clarity and Finder-like column order, but remove the pure-white feeling. Every color field must correspond to a functional region. Do not copy an Apple product or logo.\nComposition — Tonal Column Workspace: 60px command bar, 64px global tool rail, 252px sources column, wide central editable node canvas, 344px inspector and thin bottom status bar. Preserve 9 real node instances and 10 connectors; Design Brief is selected without resizing. The graph remains the largest region.\nRequired flat palette: warm mineral shell #E6E2DA; command bar and tool rail in mist blue-gray #D9E1E8; source column in muted sage #D7E1DC; central canvas in fog blue #E3E8EB; inspector in soft clay #E7DDD4; node cards in light stone #F0EEE9, selected card in muted blue #CBD9E6. Primary action and focus use deep desaturated blue #345C7D only. Text #20262C, secondary #626970, dividers #C4C8C7. Status uses quiet olive #637E6A, ochre #B1844C, clay #9A6757, gray #7B8086. No major region is pure white and there are no gradients.\nReal content to show legibly: QianCraft; 文化 / 市场 / 策略 / 设计 / 交付; Human Decision v2; 文化证据 22; 市场样本 378; 机会方向 8; “针格模块｜花溪挑花互动冰箱贴（概念样）”; nodes 文化, 市场, 策略, Design Brief, 视觉方向, 概念 A/B/C, 概念海报; 已完成 / 待更新 / 缓存; actions “运行工作流”, “编辑任务书”, “打开详情”.\nVisual discipline: SF-like Chinese sans typography, 13–16px operational text, 22–26px headings, 10–12px radii, 1px seams, nearly flat surfaces. Spacing, typography and solid muted color blocks create authority.\nAvoid: pure-white full page, gradient, glass, translucency, glow, bright blue, neon, rainbow, dark theme, bento layout, huge metrics, excessive cards, decorative patterns, stock imagery, device frame, watermark, invented claims, unreadable text."
+}

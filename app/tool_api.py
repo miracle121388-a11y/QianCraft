@@ -863,9 +863,7 @@ def generate_workbench_design(workspace_id: str) -> dict[str, Any]:
                         "event": f"Design Agent 真实生成 {run_id}",
                     },
                 )
-            elif node["type"] == "VisualGenerationNode":
-                node["data"]["status"] = "stale"
-            elif node["type"] == "ConceptNode":
+            elif node["type"] in {"VisualGenerationNode", "ConceptNode"}:
                 node["data"]["status"] = "stale"
             elif node["type"] == "PosterBoardNode":
                 node["data"].update(

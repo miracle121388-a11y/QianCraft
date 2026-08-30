@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import base64
 import copy
 import json
 from dataclasses import replace
 
+import httpx
 import pytest
 
 from app import workbench
+from app.adapters import image_generation_adapter
 from app.adapters.image_generation_adapter import ImageGenerationAdapter
 from app.config import load_settings
 
@@ -189,6 +192,85 @@ def test_image_adapter_fails_explicitly_when_provider_is_missing(tmp_path) -> No
     assert adapter.status()["configured"] is False
     with pytest.raises(ValueError, match="IMAGE_PROVIDER"):
         adapter.generate("original product concept", tmp_path / "concept.png")
+
+
+def test_dashscope_native_adapter_uses_sync_multimodal_contract(
+    tmp_path,
+    monkeypatch,
+) -> None:
+    settings = replace(
+        load_settings(),
+        image_provider="dashscope-native",
+        image_api_key="test-key",
+        image_base_url="https://workspace.cn-beijing.maas.aliyuncs.com/api/v1",
+        image_model="qwen-image-3.0-pro",
+    )
+    image_bytes = base64.b64decode(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+    )
+    requests: list[httpx.Request] = []
+
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        if request.method == "POST":
+            return httpx.Response(
+                200,
+                json={
+                    "output": {
+                        "choices": [
+                            {
+                                "finish_reason": "stop",
+                                "message": {
+                                    "role": "assistant",
+                                    "content": [{"image": "https://assets.example/result.png"}],
+                                },
+                            }
+                        ]
+                    },
+                    "request_id": "request-test",
+                },
+            )
+        return httpx.Response(200, content=image_bytes, headers={"Content-Type": "image/png"})
+
+    original_client = httpx.Client
+
+    def client_factory(*args, **kwargs):
+        return original_client(*args, transport=httpx.MockTransport(handle_request), **kwargs)
+
+    monkeypatch.setattr(image_generation_adapter.httpx, "Client", client_factory)
+    output_path = tmp_path / "qwen.png"
+
+    result = ImageGenerationAdapter(settings).generate(
+        "Mesh Gradient glassmorphism UI",
+        output_path,
+        size="1664x928",
+    )
+
+    payload = json.loads(requests[0].content)
+    assert str(requests[0].url) == (
+        "https://workspace.cn-beijing.maas.aliyuncs.com/api/v1/"
+        "services/aigc/multimodal-generation/generation"
+    )
+    assert requests[0].headers["Authorization"] == "Bearer test-key"
+    assert payload == {
+        "model": "qwen-image-3.0-pro",
+        "input": {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": [{"text": "Mesh Gradient glassmorphism UI"}],
+                }
+            ]
+        },
+        "parameters": {
+            "n": 1,
+            "prompt_extend": True,
+            "size": "1664*928",
+            "watermark": False,
+        },
+    }
+    assert output_path.read_bytes() == image_bytes
+    assert result["model"] == "qwen-image-3.0-pro"
 
 
 def test_concept_can_be_duplicated_as_an_independent_branch(

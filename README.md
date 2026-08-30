@@ -8,10 +8,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.9.0-111111?style=flat-square" alt="Version 0.9.0">
+  <img src="https://img.shields.io/badge/version-0.9.1-111111?style=flat-square" alt="Version 0.9.1">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-53%20Python%20%7C%205%20Web%20%7C%2035%20UI-2f7358?style=flat-square" alt="53 Python tests, 5 Web tests, and 35 UI tests passed">
-  <img src="https://img.shields.io/badge/local-0.9.0%20%7C%20online-0.8.0-d08b32?style=flat-square" alt="Local version 0.9.0; protected online instance 0.8.0">
+  <img src="https://img.shields.io/badge/tests-57%20Python%20%7C%205%20Web%20%7C%2035%20UI-2f7358?style=flat-square" alt="57 Python tests, 5 Web tests, and 35 UI tests passed">
+  <img src="https://img.shields.io/badge/local-0.9.1%20%7C%20online-0.8.0-d08b32?style=flat-square" alt="Local version 0.9.1; protected online instance 0.8.0">
 </p>
 
 <p align="center">
@@ -26,7 +26,7 @@
 > [!IMPORTANT]
 > QianCraft 当前是可运行的研究原型：输出可用于概念展示、工厂报价与首样沟通，但不是生产工程图、合规证书、商业文化授权或“爆款保证”。
 
-受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。线上仍为已验证的 0.8.0；本地 0.9.0 持续采集与知识星图尚未部署。入口启用 Basic Auth，访问凭证由项目维护者单独提供；运行态工作区写入持久卷，密钥不进入前端或仓库。
+受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。线上仍为已验证的 0.8.0；本地 0.9.1 提交前加固尚未部署。入口启用 Basic Auth，访问凭证由项目维护者单独提供；运行态工作区写入持久卷，密钥不进入前端或仓库。
 
 ## 一眼看懂
 

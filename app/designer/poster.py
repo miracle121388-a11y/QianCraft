@@ -7,6 +7,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 
+from app.config import portable_artifact_path
 from app.schemas import ComponentStatus, DesignPackage, DesignRenderManifest
 
 PAPER = (241, 237, 226)
@@ -232,6 +233,12 @@ def _draw_bom(draw: ImageDraw.ImageDraw, package: DesignPackage, box: tuple[int,
         row_y += row_height
 
 
+def _bom_section_title(total_items: int, limit: int = 6) -> str:
+    if total_items <= limit:
+        return f"BOM / 首样规格（共{total_items}项）"
+    return f"BOM / 首样规格（前{limit}项，完整表见JSON）"
+
+
 def render_design_poster(
     package: DesignPackage,
     output_path: Path,
@@ -320,7 +327,12 @@ def render_design_poster(
 
     bom_box = (90, 2000, 1710, 2390)
     _panel(draw, bom_box, radius=22)
-    _section_label(draw, (120, 2025), "06", "BOM / 首样规格（前6项，完整表见JSON）")
+    _section_label(
+        draw,
+        (120, 2025),
+        "06",
+        _bom_section_title(len(package.manufacturing.bill_of_materials)),
+    )
     _draw_bom(draw, package, (120, 2085, 1680, 2390))
 
     footer_y = height - 42
@@ -342,9 +354,9 @@ def render_design_poster(
         design_id=package.design_id,
         rendered_at=datetime.now(UTC),
         engine=engine,
-        poster_path=str(output_path.resolve()),
+        poster_path=portable_artifact_path(output_path),
         poster_sha256=_hash(output_path),
-        hero_asset_path=str(hero_path) if hero_path else "",
+        hero_asset_path=portable_artifact_path(hero_path) if hero_path else "",
         hero_asset_sha256=_hash(hero_path) if hero_path else "",
         width_px=width,
         height_px=height,

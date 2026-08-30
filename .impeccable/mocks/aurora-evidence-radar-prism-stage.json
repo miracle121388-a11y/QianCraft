@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Prism Stage",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/aurora-evidence-radar-prism-stage.png",
+  "sha256": "fca9dd00fecac15e72984700b455a49020544142a8f232c117a1ff326957c28f",
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop web application screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: Redesign QianCraft 文化文创智能工作台 for a live judging presentation while keeping it fully usable as an evidence-driven node editor. Avoid both enterprise blandness and sci-fi spectacle.\nComposition — Prism Stage: a compact translucent top phase navigator; a 64px left rail; a 230px source dock; a large central diagonal stage; a floating-but-docked 330px inspector at right. The workflow reads as a stepped diagonal from upper-left evidence to lower-right design output: 文化 and 市场 feed 策略, then Design Brief, then 视觉方向; concept A/B/C form a controlled three-lane prism on the lower half and resolve into 概念海报. Put the selected concept “针格模块｜花溪挑花互动冰箱贴（概念样）” on the visual foreground plane with a small authentic product thumbnail placeholder, provenance label and explicit 概念样 boundary. Keep all other nodes as compact editable instruments.\nReal content to show legibly: QianCraft; 文化 / 市场 / 策略 / 设计 / 交付; 文化证据 22, 市场样本 378, 机会方向 8; Human Decision v2; status labels 已完成, 待更新, 缓存; actions “运行工作流”, “比较 A/B/C”, “打开详情”.\nVisual world: sophisticated Mesh Gradient + Glassmorphism. A dark ink canvas with asymmetric indigo, amethyst, teal and restrained apricot mesh fields; layered glass planes create stage depth. Top bar and major docks use smoky translucent navy with fine white-alpha borders; only the selected concept plane receives a brighter frosted glass surface and prismatic edge. Shadows must prove actual overlap. Use subtle grain and crisp vector-like connectors. Chinese neo-grotesk typography, 13–16px body, 26px inspector heading, restrained roundness.\nJudging narrative: the eye should follow evidence → decision → concept → deliverable without reading instructions. The center remains an operating canvas with zoom, drag, evidence, inspector and Run controls.\nConstraints: no marketing hero, no giant slogan, no analytics bento, no floating card soup, no empty showcase composition, no neon cyberpunk HUD, no full-screen rainbow gradient, no stock people, no fabricated compliance or sales claims, no decorative ethnic pattern, no device frame, no watermark, no unreadable tiny UI text."
+}

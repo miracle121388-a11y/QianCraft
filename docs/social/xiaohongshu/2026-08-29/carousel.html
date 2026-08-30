@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>QianCraft 小红书发布图</title>
+  <style>
+    :root {
+      --ink: #0b0d10;
+      --graphite: #343941;
+      --muted: #707780;
+      --line: #d9dde2;
+      --soft: #f2f4f6;
+      --paper: #ffffff;
+      --navy: #192e49;
+      --red: #c83b32;
+      --warm: #f4f0e8;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 1080px;
+      height: 1440px;
+      margin: 0;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+      text-rendering: geometricPrecision;
+    }
+
+    .slide {
+      position: relative;
+      display: none;
+      width: 1080px;
+      height: 1440px;
+      overflow: hidden;
+      padding: 74px 72px 68px;
+      background: var(--paper);
+    }
+
+    .slide.active { display: block; }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 50px;
+      color: var(--muted);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--ink);
+      color: white;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    h1,
+    h2,
+    p { margin: 0; }
+
+    h2 {
+      max-width: 900px;
+      font-size: 68px;
+      line-height: 1.08;
+      letter-spacing: -.055em;
+    }
+
+    .lead {
+      margin-top: 22px;
+      max-width: 850px;
+      color: var(--graphite);
+      font-size: 29px;
+      line-height: 1.55;
+    }
+
+    .red-rule {
+      width: 58px;
+      height: 8px;
+      margin-bottom: 24px;
+      border-radius: 999px;
+      background: var(--red);
+    }
+
+    .footer {
+      position: absolute;
+      right: 72px;
+      bottom: 44px;
+      left: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: .05em;
+    }
+
+    .pill {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      padding: 0 20px;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: var(--ink);
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .pill.dark {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: white;
+    }
+
+    .image-card {
+      overflow: hidden;
+      border: 1.5px solid var(--line);
+      border-radius: 30px;
+      background: var(--soft);
+    }
+
+    .image-card img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 01 cover */
+    #slide-1 {
+      padding: 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.96) 36%, rgba(255,255,255,.22) 68%, rgba(255,255,255,0) 100%),
+        url("assets/cover-concept-visual.png") center / cover no-repeat;
+    }
+
+    #slide-1 .cover-inner {
+      position: absolute;
+      inset: 0;
+      padding: 74px 72px;
+    }
+
+    #slide-1 .meta { margin-bottom: 182px; }
+
+    #slide-1 h1 {
+      width: 760px;
+      font-size: 88px;
+      line-height: .98;
+      letter-spacing: -.075em;
+    }
+
+    #slide-1 h1 span {
+      display: block;
+      color: var(--red);
+    }
+
+    #slide-1 .cover-sub {
+      width: 540px;
+      margin-top: 34px;
+      color: var(--graphite);
+      font-size: 29px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    #slide-1 .cover-note {
+      position: absolute;
+      bottom: 66px;
+      left: 72px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    /* 02 problem */
+    .problem-quote {
+      margin-top: 50px;
+      padding: 34px 38px;
+      border-radius: 26px;
+      background: var(--ink);
+      color: white;
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .problem-item {
+      min-height: 138px;
+      padding: 28px;
+      border: 1.5px solid var(--line);
+      border-radius: 24px;
+      background: white;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .problem-item span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--red);
+      font-size: 18px;
+      letter-spacing: .12em;
+    }
+
+    #slide-2 .image-card {
+      height: 470px;
+      margin-top: 28px;
+    }
+
+    #slide-2 .image-card img { object-position: center 34%; }
+
+    /* 03 workflow */
+    .workflow-list {
+      position: relative;
+      display: grid;
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .workflow-list::before {
+      position: absolute;
+      top: 56px;
+      bottom: 56px;
+      left: 48px;
+      width: 2px;
+      background: var(--line);
+      content: "";
+    }
+
+    .workflow-row {
+      position: relative;
+      display: grid;
+      min-height: 154px;
+      grid-template-columns: 98px 1fr 220px;
+      align-items: center;
+      padding: 24px 28px 24px 18px;
+      border: 1.5px solid var(--line);
+      border-radius: 26px;
+      background: white;
+    }
+
+    .workflow-row strong {
+      font-size: 30px;
+      letter-spacing: -.03em;
+    }
+
+    .workflow-row p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .workflow-index {
+      z-index: 1;
+      display: grid;
+      width: 62px;
+      height: 62px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--ink);
+      color: white;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .workflow-metric {
+      color: var(--red);
+      font-size: 28px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .workflow-lock {
+      margin-top: 24px;
+      padding: 24px 30px;
+      border-radius: 22px;
+      background: var(--navy);
+      color: white;
+      font-size: 25px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* 04 culture */
+    #slide-4 .culture-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    #slide-4 .image-card {
+      height: 660px;
+      margin-top: 30px;
+      border-color: #1d1f22;
+      background: #050505;
+    }
+
+    #slide-4 .image-card img {
+      object-fit: cover;
+      object-position: 44% center;
+    }
+
+    .culture-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .summary-box {
+      padding: 28px;
+      border: 1.5px solid var(--line);
+      border-radius: 24px;
+      background: var(--soft);
+    }
+
+    .summary-box strong {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 42px;
+    }
+
+    .summary-box p {
+      color: var(--graphite);
+      font-size: 21px;
+      line-height: 1.5;
+    }
+
+    /* 05 market */
+    .market-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .market-stat {
+      padding: 24px 20px;
+      border: 1.5px solid var(--line);
+      border-radius: 22px;
+      background: white;
+    }
+
+    .market-stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .market-stat strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 45px;
+    }
+
+    #slide-5 .market-note {
+      margin-top: 20px;
+      padding: 24px 28px;
+      border-radius: 22px;
+      background: var(--ink);
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    #slide-5 .image-card {
+      height: 620px;
+      margin-top: 24px;
+    }
+
+    #slide-5 .image-card img {
+      object-fit: cover;
+      object-position: 50% 34%;
+    }
+
+    .rank-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .rank-strip div {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: var(--soft);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .rank-strip span {
+      margin-right: 10px;
+      color: var(--red);
+    }
+
+    /* 06 human */
+    .human-statement {
+      margin-top: 34px;
+      color: var(--graphite);
+      font-size: 31px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    #slide-6 .image-card {
+      height: 550px;
+      margin-top: 30px;
+    }
+
+    #slide-6 .image-card img {
+      object-fit: cover;
+      object-position: center 22%;
+    }
+
+    .stage-list {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .stage-list div {
+      min-height: 80px;
+      padding: 14px 8px;
+      border: 1.5px solid var(--line);
+      border-radius: 18px;
+      background: white;
+      color: var(--graphite);
+      font-size: 17px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .stage-list div:last-child {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: white;
+    }
+
+    .human-lock {
+      margin-top: 18px;
+      padding: 18px 22px;
+      border-left: 8px solid var(--red);
+      background: var(--soft);
+      color: var(--graphite);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    /* 07 concepts */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      grid-template-rows: 390px 390px;
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    .concept-card {
+      position: relative;
+      overflow: hidden;
+      border: 1.5px solid var(--line);
+      border-radius: 28px;
+      background: var(--soft);
+    }
+
+    .concept-card.a { grid-row: 1 / 3; }
+
+    .concept-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .concept-card.a img { object-position: 28% center; }
+
+    .concept-label {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.93);
+      color: var(--ink);
+      font-size: 17px;
+      font-weight: 800;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+
+    .concept-label strong {
+      display: grid;
+      width: 29px;
+      height: 29px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--ink);
+      color: white;
+    }
+
+    .concept-copy {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .concept-copy div {
+      padding: 22px;
+      border-top: 4px solid var(--ink);
+      background: var(--soft);
+      color: var(--graphite);
+      font-size: 19px;
+      line-height: 1.45;
+    }
+
+    .concept-copy strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 22px;
+    }
+
+    /* 08 boundary */
+    .boundary-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      margin-top: 42px;
+    }
+
+    .boundary-col {
+      display: grid;
+      gap: 18px;
+    }
+
+    .boundary-box {
+      padding: 28px 30px;
+      border: 1.5px solid var(--line);
+      border-radius: 24px;
+      background: white;
+    }
+
+    .boundary-box.done { border-top: 8px solid var(--navy); }
+    .boundary-box.not-yet { border-top: 8px solid var(--red); }
+
+    .boundary-box h3 {
+      margin: 0 0 18px;
+      font-size: 28px;
+    }
+
+    .boundary-box ul {
+      display: grid;
+      gap: 13px;
+      margin: 0;
+      padding-left: 24px;
+      color: var(--graphite);
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    #slide-8 .poster-card {
+      position: relative;
+      overflow: hidden;
+      height: 760px;
+      border: 1.5px solid var(--line);
+      border-radius: 28px;
+      background: var(--warm);
+      box-shadow: 0 18px 44px rgba(23,34,48,.12);
+    }
+
+    #slide-8 .poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .poster-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(11,13,16,.9);
+      color: white;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .closing {
+      margin-top: 26px;
+      padding: 30px 34px;
+      border-radius: 26px;
+      background: var(--ink);
+      color: white;
+    }
+
+    .closing p {
+      font-size: 27px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .closing strong { color: #ff695f; }
+
+    .closing .question {
+      margin-top: 16px;
+      color: #dfe3e8;
+      font-size: 19px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <section class="slide" id="slide-1">
+    <div class="cover-inner">
+      <div class="meta">
+        <div class="brand"><span class="brand-mark">Q</span> QianCraft · 项目实录</div>
+        <div>01 / 08</div>
+      </div>
+      <div class="red-rule"></div>
+      <h1>让贵州非遗<br><span>被看见，也被理解</span></h1>
+      <p class="cover-sub">用证据、设计与人的判断，让传统有出处、创新有根，并以被尊重的方式走进当代生活。</p>
+      <div class="cover-note">
+        <span class="pill dark">概念视觉</span>
+        <span>非量产实拍 · 不使用馆藏参考像素</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="slide-2">
+    <div class="meta">
+      <div class="brand"><span class="brand-mark">Q</span> QianCraft</div>
+      <div>02 / 08</div>
+    </div>
+    <div class="red-rule"></div>
+    <h2>最难的，不是画不出<br>一张好看的图</h2>
+    <div class="problem-quote">真正难的是：每个设计判断，能不能回到出处、数据和边界。</div>
+    <div class="problem-grid">
+      <div class="problem-item"><span>01 / 出处</span>文化出处被省略，设计只剩“像传统”。</div>
+      <div class="problem-item"><span>02 / 差异</span>花溪、剑河、松桃、雷山被混成一种风格。</div>
+      <div class="problem-item"><span>03 / 热度</span>平台热度被直接当成真实需求与销量。</div>
+      <div class="problem-item"><span>04 / 完成度</span>一张 AI 效果图，被误认为产品已经完成。</div>
+    </div>
+    <div class="image-card">
+      <img src="../../../../data/design/assets/huaxi_grid_magnet_hero_v1.png" alt="针格模块概念产品与结构拆解">
+    </div>
+    <div class="footer"><span>先建立证据链，再进入视觉与首样</span><span>QIANCRAFT / 02</span></div>
+  </section>
+
+  <section class="slide" id="slide-3">
+    <div class="meta">
+      <div class="brand"><span class="brand-mark">Q</span> QianCraft</div>
+      <div>03 / 08</div>
+    </div>
+    <div class="red-rule"></div>
+    <h2>一条从证据到概念样的完整链路</h2>
+    <p class="lead">每一步都能回看输入、状态、来源和人的选择。</p>
+    <div class="workflow-list">
+      <div class="workflow-row">
+        <div class="workflow-index">01</div>
+        <div><strong>文化证据</strong><p>保留地域、工艺与语境差异</p></div>
+        <div class="workflow-metric">22 条 / 32 来源</div>
+      </div>
+      <div class="workflow-row">
+        <div class="workflow-index">02</div>
+        <div><strong>市场信号</strong><p>统一字段，只比较有限历史样本</p></div>
+        <div class="workflow-metric">378 条快照</div>
+      </div>
+      <div class="workflow-row">
+        <div class="workflow-index">03</div>
+        <div><strong>机会策略</strong><p>双证据引用 + 六维评分 + 风险扣分</p></div>
+        <div class="workflow-metric">8 → Top 3</div>
+      </div>
+      <div class="workflow-row">
+        <div class="workflow-index">04</div>
+        <div><strong>人工决策</strong><p>人可以调范围、权重、任务书与概念</p></div>
+        <div class="workflow-metric">7 个阶段</div>
+      </div>
+      <div class="workflow-row">
+        <div class="workflow-index">05</div>
+        <div><strong>设计交付</strong><p>DesignPackage、首样拆解与概念海报</p></div>
+        <div class="workflow-metric">1800×2400</div>
+      </div>
+    </div>
+    <div class="workflow-lock">缓存 ≠ 实时　·　推断 ≠ 文化事实　·　概念样 ≠ 量产定稿</div>
+    <div class="footer"><span>QianCraft Creative Intelligence Workbench</span><span>QIANCRAFT / 03</span></div>
+  </section>
+
+  <section class="slide" id="slide-4">
+    <div class="meta">
+      <div class="brand"><span class="brand-mark">Q</span> QianCraft</div>
+      <div>04 / 08</div>
+    </div>
+    <div class="red-rule"></div>
+    <h2>先分清地域与工艺<br>再谈“苗绣风格”</h2>
+    <p class="lead">文化图谱不是素材库，而是一道防止混用、误读和越界的设计门。</p>
+    <div class="culture-tags">
+      <span class="pill">花溪挑花</span>
+      <span class="pill">剑河锡绣</span>
+      <span class="pill">松桃苗绣</span>
+      <span class="pill">雷山工艺</span>
+    </div>
+    <div class="image-card">
+      <img src="../../../../web/output/playwright/desktop-culture.png" alt="QianCraft 贵州苗绣文化关系星图">
+    </div>
+    <div class="culture-summary">
+      <div class="summary-box"><strong>22 条</strong><p>已核验结构化文化记录；事实字段能回到来源。</p></div>
+      <div class="summary-box"><strong>32 条</strong><p>文化、伦理、法律与馆藏视觉登记来源；候选不会自动晋级。</p></div>
+    </div>
+    <div class="footer"><span>馆藏页只作研究引用，不等于商品图稿授权</span><span>QIANCRAFT / 04</span></div>
+  </section>
+
+  <section class="slide" id="slide-5">
+    <div class="meta">
+      <div class="brand"><span class="brand-mark">Q</span> QianCraft</div>
+      <div>05 / 08</div>
+    </div>
+    <div class="red-rule"></div>
+    <h2>市场数据，也要先讲清楚<br>“它不是什么”</h2>
+    <div class="market-stats">
+      <div class="market-stat"><span>小红书</span><strong>115</strong></div>
+      <div class="market-stat"><span>抖音</span><strong>14</strong></div>
+      <div class="market-stat"><span>B站</span><strong>101</strong></div>
+      <div class="market-stat"><span>微博</span><strong>148</strong></div>
+    </div>
+    <div class="market-note">合计 378 条有限历史真实快照。它不是当前全平台实时趋势，也不是销量、订单或“爆款保证”。</div>
+    <div class="image-card">
+      <img src="../../../../web/output/playwright/desktop-market.png" alt="QianCraft 四平台历史样本与产品形态排序">
+    </div>
+    <div class="rank-strip">
+      <div><span>01</span>冰箱贴</div>
+      <div><span>02</span>徽章</div>
+      <div><span>03</span>盲盒</div>
+    </div>
+    <div class="footer"><span>榜单用于提出问题，不替代用户研究</span><span>QIANCRAFT / 05</span></div>
+  </section>
+
+  <section class="slide" id="slide-6">
+    <div class="meta">
+      <div class="brand"><span class="brand-mark">Q</span> QianCraft</div>
+      <div>06 / 08</div>
+    </div>
+    <div class="red-rule"></div>
+    <h2>不是让 AI 替人拍板</h2>
+    <p class="human-statement">系统提供可解释的起点，人仍然可以改变范围、权重、任务书和最终方向。</p>
+    <div class="image-card">
+      <img src="../../../../.impeccable/review/full-audit-082/after/desktop/workbench-decision.png" alt="QianCraft 七阶段人工决策工作台">
+    </div>
+    <div class="stage-list">
+      <div>01<br>文化选择</div>
+      <div>02<br>市场范围</div>
+      <div>03<br>机会与评分</div>
+      <div>04<br>设计意图</div>
+      <div>05<br>视觉方向</div>
+      <div>06<br>方案比较</div>
+      <div>07<br>海报呈现</div>
+    </div>
+    <div class="human-lock">原始文化事实、市场记录和系统评分保持只读；人工结果与系统结果并列保存，不互相冒充。</div>
+    <div class="footer"><span>Human Decision Studio · 版本可追踪</span><span>QIANCRAFT / 06</span></div>
+  </section>
+
+  <section class="slide" id="slide-7">
+    <div class="meta">
+      <div class="brand"><span class="brand-mark">Q</span> QianCraft</div>
+      <div>07 / 08</div>
+    </div>
+    <div class="red-rule"></div>
+    <h2>同一任务书，比较三种产品方向</h2>
+    <p class="lead">不是一次生成就定案，而是把差异放到同一个工作台里比较。</p>
+    <div class="concept-grid">
+      <div class="concept-card a">
+        <img src="../../../../data/design/assets/huaxi_grid_magnet_hero_v1.png" alt="Concept A 核心结构">
+        <div class="concept-label"><strong>A</strong> 核心结构</div>
+      </div>
+      <div class="concept-card">
+        <img src="../../../../data/workbench/generated/guizhou-miao-demo/concept-b-v1.png" alt="Concept B 轻量礼赠">
+        <div class="concept-label"><strong>B</strong> 轻量礼赠</div>
+      </div>
+      <div class="concept-card">
+        <img src="../../../../data/workbench/generated/guizhou-miao-demo/concept-c-v1.png" alt="Concept C 系列收藏">
+        <div class="concept-label"><strong>C</strong> 系列收藏</div>
+      </div>
+    </div>
+    <div class="concept-copy">
+      <div><strong>A · 针格模块</strong>验证可替换织物面板与封闭磁体结构。</div>
+      <div><strong>B · 轻量版</strong>收敛礼赠体量与更柔和的居家表达。</div>
+      <div><strong>C · 收藏版</strong>探索可持续扩展的替换面板系统。</div>
+    </div>
+    <div class="footer"><span>均为概念视觉，不是量产实拍</span><span>QIANCRAFT / 07</span></div>
+  </section>
+
+  <section class="slide" id="slide-8">
+    <div class="meta">
+      <div class="brand"><span class="brand-mark">Q</span> QianCraft</div>
+      <div>08 / 08</div>
+    </div>
+    <div class="red-rule"></div>
+    <h2>传播的不只是图案<br>而是它背后的文化</h2>
+    <div class="boundary-layout">
+      <div class="boundary-col">
+        <div class="boundary-box done">
+          <h3>现在已经做到</h3>
+          <ul>
+            <li>证据锁定的文化与市场研究</li>
+            <li>8 条机会与 Top 3 交接</li>
+            <li>针格模块概念视觉</li>
+            <li>5 项 BOM、6 步装配、6 项质检</li>
+            <li>工厂报价与首样沟通材料</li>
+          </ul>
+        </div>
+        <div class="boundary-box not-yet">
+          <h3>现在还没有做到</h3>
+          <ul>
+            <li>量产工程定稿与工厂下单</li>
+            <li>商业文化授权与社区共审</li>
+            <li>材料、结构和适用标准测试</li>
+            <li>制造与合规就绪声明</li>
+          </ul>
+        </div>
+      </div>
+      <div class="poster-card">
+        <img src="../../../../data/outputs/design_poster.png" alt="针格模块完整概念设计海报">
+        <span class="poster-badge">概念样</span>
+      </div>
+    </div>
+    <div class="closing">
+      <p>我们想让人看见图案背后的<strong>地域、技艺、人与故事</strong>。</p>
+      <p class="question">让传统被看见 · 让出处被尊重 · 让创新有根</p>
+    </div>
+    <div class="footer"><span>QianCraft · 下一篇继续拆</span><span>QIANCRAFT / 08</span></div>
+  </section>
+
+  <script>
+    const requested = Math.min(8, Math.max(1, Number(new URLSearchParams(location.search).get("slide")) || 1));
+    document.getElementById(`slide-${requested}`).classList.add("active");
+  </script>
+</body>
+</html>

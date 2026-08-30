@@ -4,9 +4,9 @@
 
 ## 1. 输入接口
 
-- 设计 ID：`QD-8A82B6C8-MAGNET-01`
-- 输入：`D:\Users\Lenovo\Desktop\QianCraft\data\outputs\designer_handoff.json`
-- 输入 SHA-256：`8a82b6c897800372d02f5e7d06f6792a70f1185955506d191a0807fa80e8799b`
+- 设计 ID：`QD-5267CA21-MAGNET-01`
+- 输入：`data/outputs/designer_handoff.json`
+- 输入 SHA-256：`5267ca21c88837e9f0a7ddf0de87b8708f7a9e7b72f6796bd6ed5dcf1e4c54b3`
 - 主机会：`OPP-006`（verified）
 - 支持机会：无
 
@@ -99,7 +99,7 @@
 
 ## 9. 海报渲染接口
 
-- Request ID：`PR-QD-8A82B6C8-MAGNET-01`
+- Request ID：`PR-QD-5267CA21-MAGNET-01`
 - 画布：1800×2400px
 - 目标：`data/outputs/design_poster.png`
 - 参考策略：textual primitives only; reference_only museum pixels are prohibited

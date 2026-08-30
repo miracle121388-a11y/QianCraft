@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "useCase": "ui-mockup",
+  "surface": "web/app/workbench.tsx",
+  "variant": "Evidence Lens",
+  "viewport": {
+    "width": 1664,
+    "height": 928
+  },
+  "provider": "dashscope-native",
+  "model": "qwen-image-3.0-pro",
+  "generatedAt": "2026-08-30",
+  "file": ".impeccable/mocks/aurora-evidence-radar-evidence-lens.png",
+  "sha256": "0b5647fcf5c0fc6d0261346ecdc08e19f9c55ed0862150cb26c48752708b8557",
+  "approved": false,
+  "prompt": "Use case: ui-mockup\nAsset type: high-fidelity full-canvas desktop web application screenshot, 1664×928, no browser chrome or device frame.\nPrimary request: Redesign QianCraft 文化文创智能工作台 for judges to understand an evidence-to-design workflow quickly. This is serious creative software, not a website hero or analytics dashboard.\nComposition — Evidence Lens: a translucent top phase bar and slim left tool rail frame a wide canvas. In the center, the selected Design Brief acts as a large but still operational glass lens. Two upstream evidence streams enter from the left: 文化证据 22 above and 市场样本 378 below; both pass through 策略 / 机会方向 8 and converge on the selected brief. Downstream, the path fans cleanly toward 视觉方向, 概念 A / B / C, then reconverges at 概念海报. A compact evidence tray sits at lower left, while a tall 340px inspector on the right shows the selected brief fields, citations, state and actions. Connections remain unambiguous and editable.\nReal content to show legibly: QianCraft; phases 文化 / 市场 / 策略 / 设计 / 交付; Human Decision v2; selected title “针格模块｜花溪挑花互动冰箱贴（概念样）”; evidence IDs C001, M007, V001; actions “运行当前节点”, “编辑任务书”, “查看来源”. Status labels include 已完成, 待更新, 缓存.\nVisual world: Mesh Gradient + Glassmorphism with a signature optical-lens moment. Deep blue-black background; a broad violet-to-cyan mesh bloom sits behind the center lens, while corners stay dark and calm. Glass is physically credible: layered refraction, faint chromatic edge, 1px white-alpha borders, soft internal haze, limited blur. Use graphite translucent panels and high-contrast white Chinese text. Selected lens has a thin prismatic rim, not a glowing neon ring. Supporting nodes are denser and quieter.\nTypography: premium Chinese neo-grotesk, crisp 13–16px operational text, 24–28px selected title, no giant display copy.\nConstraints: preserve graph topology and provenance; no marketing hero, no bento grid, no huge KPI cards, no circular sci-fi radar HUD, no excessive pills, no cards floating without alignment, no rainbow gradient, no fake cultural imagery, no device frame, no watermark, no illegible or warped labels."
+}
