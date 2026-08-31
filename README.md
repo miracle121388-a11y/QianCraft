@@ -10,7 +10,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-0.9.2-111111?style=flat-square" alt="Version 0.9.2">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-76%20Python%20%7C%205%20Web%20%7C%2030%20UI-2f7358?style=flat-square" alt="76 Python tests, 5 Web tests, and 30 desktop UI functional tests passed on macOS; Windows keeps the canonical visual gate">
+  <img src="https://img.shields.io/badge/tests-77%20Python%20%7C%205%20Web%20%7C%2030%20UI-2f7358?style=flat-square" alt="77 Python tests, 5 Web tests, and 30 desktop UI functional tests passed on macOS; Windows keeps the canonical visual gate">
   <img src="https://img.shields.io/badge/local-0.9.2%20%7C%20online-0.9.1-bb6b38?style=flat-square" alt="Local version 0.9.2; protected online instance 0.9.1 pending deployment">
 </p>
 
@@ -352,7 +352,7 @@ pnpm build
 当前基线：
 
 ```text
-76 Python tests passed
+77 Python tests passed
 5 Web tests passed
 30 desktop functional Playwright tests passed on macOS; 1 Windows canonical visual test skipped
 0 known Python or pnpm dependency vulnerabilities

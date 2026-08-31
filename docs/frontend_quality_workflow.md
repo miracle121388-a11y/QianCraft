@@ -103,7 +103,7 @@ pnpm quality
 - `pnpm --dir web audit --audit-level=high`：完整依赖（含开发工具）0 个已知漏洞。
 - macOS `pnpm --dir web exec playwright test --project=desktop-chromium`：30 passed / 1 Windows 像素门按设计 skipped。
 
-0.9.2 同轮 Python 回归为 76/76。历史 58/58、25/25 与 `35 passed / 1 intentionally skipped` 只代表各自旧版本，不能冒充当前跨平台或手机基线。
+0.9.2 同轮 Python 回归为 77/77。历史 58/58、25/25 与 `35 passed / 1 intentionally skipped` 只代表各自旧版本，不能冒充当前跨平台或手机基线。
 
 失败时报告写入 `web/.playwright-report/`，截图、axe 上下文和 trace 写入 `web/.playwright-results/`；两者不进 Git。
 

@@ -44,3 +44,19 @@ def test_runtime_image_includes_snapshot_tool_and_explicit_runtime_root() -> Non
     assert "gosu" in dockerfile
     assert "gosu www-data python -m app.tool_api" in startup
     assert "gosu www-data ./node_modules/.bin/vinext start" in startup
+
+
+def test_docker_context_excludes_local_quality_and_runtime_artifacts() -> None:
+    dockerignore = (ROOT_DIR / ".dockerignore").read_text(encoding="utf-8")
+
+    for path in (
+        ".github",
+        "qiancraft.egg-info",
+        "web/.playwright-cli",
+        "web/.playwright-report",
+        "web/.playwright-results",
+        "web/output",
+        "web/tests",
+    ):
+        assert path in dockerignore.splitlines()
+    assert "!scripts/runtime_snapshot.py" in dockerignore

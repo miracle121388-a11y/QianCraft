@@ -28,7 +28,7 @@
 
 2026-08-31 对当前 0.9.1 再次完整验收：Python 58/58、Workbench TypeScript 5/5、desktop-chromium 31/31，Ruff、锁文件、typecheck、ESLint、Vinext 五阶段 production build 与启动脚本语法均通过。真实 Playwright CLI 会话加载隔离工作区，打开 Human Decision Studio、Delivery、Inspector 与 Poster 详情，控制台为 0 error / 0 warning；C2 本轮没有运行 mobile project。Zeabur 部署 `6a958619be05255ec5e261f7` 为 `RUNNING`，公网健康与匿名鉴权、服务器内认证后的首页/九详情页面、健康/Bootstrap/九详情/DesignPackage API、正式资产、持久卷、调度心跳和 LLM 模型探针均通过。隔离远端工作区实际完成保存、Decision v2、Design Agent、DesignPackage、Poster v2 和九详情页后已清理；严格研究按真实前置条件返回 422。
 
-2026-09-01 的 0.9.2 发布前复验改用统一 Conda Python 3.13 环境：Python 76/76、Workbench TypeScript 5/5、macOS desktop-chromium 30 passed / 1 Windows 像素门按设计 skipped，Ruff、锁文件、typecheck、零 warning ESLint、Vinext 8.2.2 五阶段 production build 与启动脚本语法通过。完整 `pnpm audit` 和本地 Python `pip-audit` 均为 0 个已知漏洞。新增回归覆盖图像 provider 真实状态、无图形会话预检、空覆盖变量自动识别、私网/DNS/rebinding/重定向 SSRF 拒绝、Nginx 安全头/限流，以及运行态 ZIP 的 SHA-256 校验、路径穿越拒绝和原子恢复回滚。线上 0.9.2 在本段记录时尚未发布，因此不把本地结果写成远端通过。
+2026-09-01 的 0.9.2 发布前复验改用统一 Conda Python 3.13 环境：Python 77/77、Workbench TypeScript 5/5、macOS desktop-chromium 30 passed / 1 Windows 像素门按设计 skipped，Ruff、锁文件、typecheck、零 warning ESLint、Vinext 8.2.2 五阶段 production build 与启动脚本语法通过。完整 `pnpm audit` 和本地 Python `pip-audit` 均为 0 个已知漏洞。新增回归覆盖图像 provider 真实状态、无图形会话预检、空覆盖变量自动识别、私网/DNS/rebinding/重定向 SSRF 拒绝、Nginx 安全头/限流、Docker 上下文，以及运行态 ZIP 的 SHA-256 校验、路径穿越拒绝和原子恢复回滚。线上 0.9.2 在本段记录时尚未发布，因此不把本地结果写成远端通过。
 
 ## 环境
 
@@ -71,7 +71,7 @@
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 预期 warning | 独立 Images API 未配置；同一 DeepSeek 服务的 `/images/generations` 实测 HTTP 404。现有 A/B/C 可展示，但 Regenerate 与 Generate More 不会把项目资产冒充为一次新 API 结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 通过 | Python `pytest` 76/76；Workbench TypeScript 5/5；macOS desktop-chromium Playwright 30 passed / 1 Windows 像素门 skipped。另覆盖显式 auto 模式、提交随附派生市场缓存、准确 BOM 标题、可迁移产物路径、C2 几何、可访问性、交互、断线、安全与恢复 |
+| 自动测试 | 通过 | Python `pytest` 77/77；Workbench TypeScript 5/5；macOS desktop-chromium Playwright 30 passed / 1 Windows 像素门 skipped。另覆盖显式 auto 模式、提交随附派生市场缓存、准确 BOM 标题、可迁移产物路径、C2 几何、可访问性、交互、断线、安全、部署与恢复 |
 | 静态检查与构建 | 通过 | Conda 内 Ruff、TypeScript no-emit、零 warning ESLint、Vinext 五阶段 production build、`uv lock --check`、完整 `pnpm audit`、Python `pip-audit`、`bash -n deploy/start-zeabur.sh` 与 `git diff --check` 均无错误或已知漏洞 |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 

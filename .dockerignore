@@ -1,4 +1,5 @@
 .git
+.github
 .gitignore
 .env
 .env.*
@@ -12,6 +13,14 @@ api.txt
 .ruff_cache
 .codex-zeabur-upload
 *.log
+AGENTS.md
+DESIGN.md
+PRODUCT.md
+THIRD_PARTY_NOTICES.md
+WORKFLOW.md
+environment.yml
+qiancraft.egg-info
+uv.lock
 
 flow
 local_culture
@@ -25,10 +34,18 @@ web/.next
 web/.vinext
 web/dist
 web/.wrangler
+web/.playwright-cli
+web/.playwright-report
+web/.playwright-results
+web/output
 web/outputs
+web/tests
 web/work
 web/.env*
 !web/.env.example
+
+scripts/*
+!scripts/runtime_snapshot.py
 
 data/culture/lightrag_storage
 data/market/raw

@@ -56,7 +56,7 @@
 | API | 当前本机被忽略的 `.env` 与 Zeabur Secret 均配置 DeepSeek；密钥值没有进入源码、命令、文档或输出。独立图像 provider 当前未配置，四平台授权状态未改变。0.9.2 的严格研究预检按运行主机能力判断：Windows、macOS 或具有图形会话的 Linux 可执行显式授权采集，无图形会话的 Zeabur 容器继续返回 422；空的兼容开关不再错误覆盖自动检测。旧版设计状态接口改为返回真实图像 provider 状态。`/api/health` 在调度线程死亡或心跳超过 45 秒时返回 503 |
 | 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 当前仍运行 0.9.1，部署 `6a958619be05255ec5e261f7` 为 `RUNNING`，0.9.2 尚待本轮发布。公网 `/healthz` 为 200，匿名首页/API 为 401；认证后的页面、API 与持久卷在 0.9.1 已验收。0.9.2 新增 Nginx HSTS/CSP/Permissions-Policy、API 429 限流和可校验运行态快照，需在新部署后重新验证。当前仍是单 Tool API 副本；云端严格研究与图片重生成继续按缺失条件阻断 |
 | MediaCrawler | 独立 Python 3.13 环境按上游 requirements 完整安装，探针实际导入 `bili,dy,ks,tieba,wb,xhs,zhihu`。市场通道默认每 240 分钟预检一次，只有实时开关、运行时与用户授权全部成立才创建严格任务；当前实时开关关闭且四平台无已连接授权，本轮没有登录或抓取，378 条历史快照继续诚实保持 cache |
-| 自动测试 | 0.9.2 本地完整回归：Python 76/76、Workbench TypeScript 5/5、macOS `desktop-chromium` 30 passed / 1 个 Windows 像素基线按平台跳过。浏览器门覆盖工作台与 9 个详情路由的 axe、结构、破图/alt、溢出、C2 固定色块、1280px 完整几何及 1024px 负向门、焦点、等价路径、画布/星图交互、断线旧状态失效和授权阻断。Windows 像素门已进入 GitHub Actions，推送后以 CI 实际结果为准；没有运行或声明 mobile/tablet C2。自动 axe 不等同 WCAG 认证 |
+| 自动测试 | 0.9.2 本地完整回归：Python 77/77、Workbench TypeScript 5/5、macOS `desktop-chromium` 30 passed / 1 个 Windows 像素基线按平台跳过。浏览器门覆盖工作台与 9 个详情路由的 axe、结构、破图/alt、溢出、C2 固定色块、1280px 完整几何及 1024px 负向门、焦点、等价路径、画布/星图交互、断线旧状态失效和授权阻断。Windows 像素门已进入 GitHub Actions，推送后以 CI 实际结果为准；没有运行或声明 mobile/tablet C2。自动 axe 不等同 WCAG 认证 |
 | 静态检查 | 0.9.2 本地实际通过 Conda `qiancraft` 环境下 Ruff、`uv lock --check`、Web typecheck、ESLint、peer 检查、Vinext 五阶段 production build、`bash -n deploy/start-zeabur.sh` 与 `git diff --check`。`pip-audit` 和 `pnpm audit --audit-level=high` 均为零已知漏洞；前端从初始 7 个生产/10 个全量 high 漏洞升级至零。GitHub Actions 新增 Ubuntu/macOS/Windows Python 门、Linux 静态/依赖门及 Windows Web/像素门；远端执行状态待推送后验证 |
 | 运行态恢复 | `scripts/runtime_snapshot.py` 对 `data/runtime` 生成带 SHA-256 清单的 ZIP，发布前自校验；恢复前校验路径、大小、文件数和摘要，要求服务已停止及显式确认，并保留时间戳回滚目录。它解决可验证的单卷备份/恢复，不等同于异地备份、自动调度或恢复演练；生产快照仍须复制到独立存储 |
 | 凭证检查 | 本机 LLM 凭证只存在于被 Git 忽略的 `.env`，站点 Basic Auth 与服务器 LLM 凭证只存在于 Zeabur Secret；当前没有独立图像凭证。本轮对 QianCraft 自有受跟踪文件执行安全独立长 `sk-` 扫描为 0 命中。全仓扫描另检出 2 个既有、未改动的 extracted-upstream 示例字面量，分别位于 LightRAG 的完整 Docker Compose 示例和非官方示例脚本；它们不在本轮改动内且按上游边界不改写。扫描没有读取 `.env` 或 Secret 值，文档与最终交接不复述任何字面量、Cookie、API Key 或授权会话值 |
@@ -457,6 +457,31 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-09-01｜0.9.2｜Docker 发布上下文收敛
+
+变更：
+
+- 修正 `.dockerignore` 中 `web/output` 被误写为 `web/outputs` 的遗漏；明确排除约 5 MB 的 Playwright 截图/记录、Web 测试、GitHub 配置、本地包元数据、工作流文档和其他不参与镜像构建的文件。`scripts/` 只重新纳入 Dockerfile 实际复制的 `runtime_snapshot.py`。
+- 在部署回归中固定上述排除项和快照脚本重新纳入规则，防止后续发布再次把本地质量产物或无关文件带入构建上下文。
+
+原因：
+
+- 远端部署前的上下文审计发现单复数路径错误会无谓增加上传体积和构建输入面。镜像内容虽不受影响，但真实发布包应最小化且可回归。
+
+验证：
+
+- 修复前本地 `web/output` 为约 4.8 MB、`.playwright-cli` 与 `web/tests` 另约 0.6 MB；新增测试与最终 GitHub Actions 将验证排除契约。Zeabur 发布尚未触发。
+
+边界：
+
+- 本次不删除仓库内的验收截图或测试，只从 Docker 构建上下文排除；正式数据、A/B/C 资产、海报、应用源码和运行态快照工具仍会进入镜像。
+
+涉及文件：
+
+- `.dockerignore`
+- `tests/test_deployment.py`
+- `WORKFLOW.md`
 
 ### 2026-09-01｜0.9.2｜GitHub Actions 弃用参数清理
 
