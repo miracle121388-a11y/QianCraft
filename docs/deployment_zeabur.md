@@ -9,6 +9,7 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 - 拓扑：Nginx（公网端口）→ Vinext `127.0.0.1:3000` / Tool API `127.0.0.1:8787`
 - 访问控制：除 `/healthz` 外统一启用 Basic Auth；凭证由项目维护者单独分发。
 - 持久化：Zeabur Volume `qiancraft-runtime` 挂载到 `/app/data/runtime`。
+- 网络防护：0.9.2 模板关闭 Nginx 版本回显，为 API 设置 12 req/s、burst 40 的单 IP 限流，并下发 HSTS、CSP、Permissions-Policy、X-Content-Type-Options、Referrer-Policy 与 X-Frame-Options。
 
 2026-08-28 的发布验收覆盖匿名 401、健康检查 200、认证后首页/API/九个节点详情页 200、引用解析、节点独立运行和运行目录挂载状态。0.5.2 部署 `6a91944713d3d467215e63e3` 进一步验证两套 Noto 中文字体 CSS 与 WOFF2 为 200，并把持久化默认视口迁移为 `x=20, y=210, zoom=0.82`。0.6.0 部署 `6a91a4a7db37f2e6ddbc0c40` 在同一受保护实例增加七阶段人工决策、DecisionProfile 1.1 与节点展示页深链接；线上容器报告应用版本 0.6.0，默认工作区已无损持久化迁移为 Schema 1.1，Decision Catalog 为 22 条文化记录、4 个平台、8 条机会、12 条视觉参考和 3 个概念，九个节点 API 与九个前端详情页均返回 200，非法决策 ID 返回 422。
 
@@ -37,6 +38,7 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 - `QIANCRAFT_CONTINUOUS_COLLECTION=true`：启动持续采集调度器。
 - `QIANCRAFT_CULTURE_WATCH_MINUTES=360`：文化来源巡检间隔。
 - `QIANCRAFT_MARKET_REFRESH_MINUTES=240`：四平台增量复检间隔。
+- `QIANCRAFT_RUNTIME_ROOT=/app/data/runtime`：快照脚本统一运行态根目录；镜像已内置该默认值。
 
 图像服务必须单独配置 `IMAGE_PROVIDER`、`IMAGE_API_KEY`、`IMAGE_BASE_URL` 与 `IMAGE_MODEL`；未配置时，工作台保留已有 A/B/C 方案并明确显示 warning，不伪造新生成结果。
 
@@ -44,23 +46,39 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 `/app/data/runtime/workbench` 保存画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs、旧版工具设计运行，以及 `collection/` 下的排程配置、心跳、事件、候选与来源指纹。文化图谱、市场证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；页面刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted。
 
-单容器、单 Tool API 副本可以按上述持久卷和平台重启策略持续调度；它不是分布式任务队列。扩到多个 API 副本前必须加入唯一领导者、分布式锁或外部队列，否则每个副本都会运行自己的排程。生产还需为心跳、连续失败、候选积压与授权过期配置外部告警和备份；页面显示“在线”不能代替平台级监控。
+单容器、单 Tool API 副本可以按上述持久卷和平台重启策略持续调度；它不是分布式任务队列。扩到多个 API 副本前必须加入唯一领导者、分布式锁或外部队列，否则每个副本都会运行自己的排程。仓库已提供带路径/数量/体积/SHA-256 校验的手工快照与原子恢复工具，并在恢复时保留旧运行目录。生产仍需把快照复制到独立卷或站外存储，并为心跳、连续失败、候选积压与授权过期配置外部告警；同卷快照和页面“在线”都不能代替异地备份与平台级监控。
 
 当前线上容器面向产品工作台和设计验证。四平台实时采集仍受平台登录态、授权用途、MediaCrawler 源码与独立浏览器运行时约束；精简云端镜像不包含这些上游运行时，因此严格研究会在预检阶段明确阻断，不会用 378 条历史快照冒充本轮 live。完整实爬应在用户已授权浏览器的本机运行，再由核验门晋级到对应工作区。
 
 ## 本地构建
 
 ```bash
-docker build -t qiancraft:0.9.1 .
+docker build -t qiancraft:0.9.2 .
 docker run --rm -p 8080:8080 \
   -e QIANCRAFT_WEB_USERNAME=qiancraft \
   -e QIANCRAFT_WEB_PASSWORD='<set-in-secret-manager>' \
   -e LLM_API_KEY='<set-in-secret-manager>' \
   -v qiancraft-runtime:/app/data/runtime \
-  qiancraft:0.9.1
+  qiancraft:0.9.2
 ```
 
 生产密钥只应通过 Zeabur 的变量管理界面注入，不写入 Dockerfile、仓库或部署日志。
+
+## 运行态备份与恢复
+
+Zeabur 镜像内已包含快照脚本。权威备份和恢复都应在维护窗口先停止 Tool API 写入；无法停机时创建的在线备份只能视为尽力快照。脚本会在发布 ZIP 前自校验，并应把 `/tmp/qiancraft-runtime.zip` 立即复制到独立受控存储。恢复须从维护 shell 执行带双重确认的命令：
+
+```bash
+/opt/venv/bin/python /app/scripts/runtime_snapshot.py backup \
+  --runtime-root /app/data/runtime --output /tmp/qiancraft-runtime.zip
+/opt/venv/bin/python /app/scripts/runtime_snapshot.py verify \
+  /tmp/qiancraft-runtime.zip
+/opt/venv/bin/python /app/scripts/runtime_snapshot.py restore \
+  /tmp/qiancraft-runtime.zip --runtime-root /app/data/runtime \
+  --confirm-service-stopped --confirm RESTORE_QIANCRAFT_RUNTIME
+```
+
+快照清单不记录 Secret；但运行态可能包含研究输入和审核记录，备份本身仍按敏感项目数据管理。恢复成功后保留时间戳命名的 `runtime.pre-restore-*` 回滚目录，确认新状态无误后再由维护者单独处理。
 
 Zeabur CLI 上传会跳过点号目录；Dockerfile 因此会在远端构建阶段确保存在不含密钥的 `.openai/hosting.json`。实际 D1/R2 绑定仍以部署环境配置为准，不能把该占位清单当作生产凭证或数据配置。0.7.1 继续使用隔离发布副本，只保留当前市场快照，并仅在副本中对随镜像发布的展示 PNG 做无尺寸变化压缩；工作区原始高清资产不改动，PNG 尺寸和必要的文本/物理尺寸元数据块得到保留。当前副本为 87 个文件、5,694,056 字节，敏感路径和长 `sk-` 模式扫描均为 0 命中。首次上传在对象存储连接层被远端重置且未触发部署；同一已扫描副本第二次上传成功，随后远端构建与发布完成。
 

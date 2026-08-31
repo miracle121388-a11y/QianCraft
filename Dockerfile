@@ -28,6 +28,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     QIANCRAFT_CONTINUOUS_COLLECTION=true \
     QIANCRAFT_CULTURE_WATCH_MINUTES=360 \
     QIANCRAFT_MARKET_REFRESH_MINUTES=240 \
+    QIANCRAFT_RUNTIME_ROOT=/app/data/runtime \
     QIANCRAFT_WORKBENCH_DIR=/app/data/runtime/workbench \
     QIANCRAFT_TOOL_WORKSPACE_DIR=/app/data/runtime/tool_workspace
 
@@ -36,6 +37,7 @@ RUN apt-get update \
         ca-certificates \
         gettext-base \
         fonts-noto-cjk \
+        gosu \
         nginx \
         openssl \
         python3 \
@@ -48,6 +50,7 @@ WORKDIR /app
 
 COPY pyproject.toml README.md ./
 COPY app/ ./app/
+COPY scripts/runtime_snapshot.py ./scripts/runtime_snapshot.py
 COPY data/ ./data/
 RUN pip install --no-cache-dir .
 

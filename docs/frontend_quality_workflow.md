@@ -1,8 +1,8 @@
 # QianCraft 前端质量工作流
 
-> 适用版本：0.9.1 及以后
+> 适用版本：0.9.2 及以后
 >
-> 当前 C2 验收范围：Windows Chromium，1440×960 电脑端
+> 当前 C2 验收范围：1440×960 电脑端；功能门跨 Windows/macOS/Linux，像素基线固定为 Windows Chromium
 >
 > 本文是本地开发与验收标准，不代表部署、WCAG 认证、手机/平板适配或生产发布。
 
@@ -84,7 +84,7 @@ pnpm test:ui
 pnpm quality
 ```
 
-当前 `desktop-chromium` 在 1440×960 执行 25 项，覆盖：
+当前 `desktop-chromium` 在 1440×960 定义 31 项：30 项功能门在支持 Chromium 的系统执行，最后 1 项像素门只在 Windows 执行。覆盖：
 
 - `/` 与九个 `/nodes/*` 路由的 axe A/AA/2.2 AA 规则、唯一 `h1`、破图、缺失 `alt`、文档/主内容横向溢出。
 - 真实 C2 五色表面、60/72/210/330 几何、Asset/History Dock、节点动作、Inspector、Decision Studio、九个详情页、collection primary、星图外围控件和 concept gallery 的计算样式。
@@ -100,9 +100,10 @@ pnpm quality
 - `pnpm --dir web typecheck`：通过。
 - `pnpm --dir web lint`：通过。
 - `pnpm --dir web build`：Vinext 五阶段 production build 通过。
-- `pnpm --dir web exec playwright test --project=desktop-chromium`：25/25。
+- `pnpm --dir web audit --audit-level=high`：完整依赖（含开发工具）0 个已知漏洞。
+- macOS `pnpm --dir web exec playwright test --project=desktop-chromium`：30 passed / 1 Windows 像素门按设计 skipped。
 
-Python 58/58 是 C2 之前 Qwen 原生适配轮次的既有结果，本次文档/桌面收口没有重跑 Python；不得把它写成本轮验证。历史 `35 passed / 1 intentionally skipped` 是 C2 前 0.9.1 的桌面+手机基线，也不得冒充本轮 C2 跨端结果。
+0.9.2 同轮 Python 回归为 76/76。历史 58/58、25/25 与 `35 passed / 1 intentionally skipped` 只代表各自旧版本，不能冒充当前跨平台或手机基线。
 
 失败时报告写入 `web/.playwright-report/`，截图、axe 上下文和 trace 写入 `web/.playwright-results/`；两者不进 Git。
 
@@ -146,5 +147,5 @@ Task 5 只更新并目视复核两张 desktop 快照。两张 mobile snapshot �
 - axe 只能发现一部分无障碍问题；自动门通过不等于 WCAG 认证，仍需真实屏幕阅读器与残障用户测试。
 - 当前没有把 Lighthouse、真实用户 INP 或超大图谱压力测试设为阻断门；节点数量和数据规模显著增长时需要单独基线。
 - 视觉快照使用 `guizhou-miao-demo` 的本地真实 HTTP 数据，不能替代认证后线上复验。
-- C2 只在本地电脑端实现和验收；受保护线上实例仍为 0.8.0。
+- C2 已在受保护线上 0.9.1 验收；本地 0.9.2 在本轮发布完成前仍不能冒充线上 0.9.2。
 - 本流程止于本地产品前端质量，不授权部署、商业图稿批准、工厂下单或制造/合规就绪声明。

@@ -31,6 +31,7 @@ import {
   Workflow,
   X,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
@@ -1100,7 +1101,7 @@ function LoadingScreen({ error, onRetry }: { error: string; onRetry: () => void 
       <div className="loading-mark">Q</div>
       <span>黔艺造物 · 文化创意工作台</span>
       {error ? (
-        <><h1>工作台 API 尚未连接</h1><p>{error}</p><code>python -m app.tool_api --port 8787</code><button type="button" onClick={onRetry}>重新连接</button></>
+        <><h1>工作台 API 尚未连接</h1><p>{error}</p><code>conda run -n qiancraft python -m app.tool_api --port 8787</code><button type="button" onClick={onRetry}>重新连接</button></>
       ) : (
         <><h1>正在装载文化与市场证据</h1><div className="loading-line"><i /></div></>
       )}
@@ -1109,6 +1110,7 @@ function LoadingScreen({ error, onRetry }: { error: string; onRetry: () => void 
 }
 
 export function Workbench() {
+  const router = useRouter();
   const [workspace, setWorkspace] = useState<WorkbenchWorkspace | null>(null);
   const [knowledge, setKnowledge] = useState<KnowledgeCenterData | null>(null);
   const [decisionCatalog, setDecisionCatalog] = useState<DecisionCatalog | null>(null);
@@ -1511,13 +1513,13 @@ export function Workbench() {
     const listener = (event: Event) => {
       const detail = (event as CustomEvent<{ nodeId: string; action: string }>).detail;
       if (detail.action === 'open') {
-        window.location.assign(`/nodes/${encodeURIComponent(detail.nodeId)}?workspace=${encodeURIComponent(workspace?.workspace_id ?? 'guizhou-miao-demo')}`);
+        router.push(`/nodes/${encodeURIComponent(detail.nodeId)}?workspace=${encodeURIComponent(workspace?.workspace_id ?? 'guizhou-miao-demo')}`);
       } else if (detail.action === 'activate') void activate(detail.nodeId);
       else void runSequence(detail.nodeId, detail.action === 'run-from-here');
     };
     window.addEventListener('qiancraft:node-action', listener);
     return () => window.removeEventListener('qiancraft:node-action', listener);
-  }, [activate, runSequence, workspace?.workspace_id]);
+  }, [activate, router, runSequence, workspace?.workspace_id]);
 
   const selectedNode = nodes.find((node) => node.id === selectedNodeId);
   const activeConcept = nodes.find((node) => node.type === 'ConceptNode' && node.data.active);
@@ -1762,8 +1764,8 @@ export function Workbench() {
   }, []);
 
   const handleFlowNodeDoubleClick = useCallback<NodeMouseHandler<WorkbenchNode>>((_, node) => {
-    window.location.assign(`/nodes/${encodeURIComponent(node.id)}?workspace=${encodeURIComponent(workspace?.workspace_id ?? '')}`);
-  }, [workspace?.workspace_id]);
+    router.push(`/nodes/${encodeURIComponent(node.id)}?workspace=${encodeURIComponent(workspace?.workspace_id ?? '')}`);
+  }, [router, workspace?.workspace_id]);
 
   const handlePaneClick = useCallback(() => setShowInspector(false), []);
 
@@ -1922,7 +1924,7 @@ export function Workbench() {
                 provider={provider}
                 decisionProfile={workspace.metadata.decision_profile}
                 busy={busy}
-                onOpenDetail={(nodeId) => window.location.assign(`/nodes/${encodeURIComponent(nodeId)}?workspace=${encodeURIComponent(workspace.workspace_id)}`)}
+                onOpenDetail={(nodeId) => router.push(`/nodes/${encodeURIComponent(nodeId)}?workspace=${encodeURIComponent(workspace.workspace_id)}`)}
                 onRun={(nodeId) => void runSequence(nodeId, false)}
                 onRunFromHere={(nodeId) => void runSequence(nodeId, true)}
                 onSaveBrief={(brief) => void handleSaveBrief(brief)}

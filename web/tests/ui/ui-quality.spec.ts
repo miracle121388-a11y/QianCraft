@@ -326,9 +326,9 @@ test('采集主操作与星图外围控件使用可读 C2 状态', async ({ page
     };
   }, pseudo);
 
-  const primary = page.locator('.collection-console--culture .collection-primary-action:not(:disabled)').first();
-  await expect(primary).toHaveText('立即运行');
-  expect.soft(await computed('.collection-console--culture .collection-primary-action:not(:disabled)')).toMatchObject({
+  const primary = page.locator('.collection-console--culture .collection-primary-action').first();
+  await expect(primary).toHaveText(/^(立即运行|正在运行)$/);
+  expect.soft(await computed('.collection-console--culture .collection-primary-action')).toMatchObject({
     backgroundColor: 'rgb(52, 92, 125)',
     backgroundImage: 'none',
     borderColor: 'rgb(52, 92, 125)',
@@ -336,7 +336,7 @@ test('采集主操作与星图外围控件使用可读 C2 状态', async ({ page
     color: 'rgb(247, 248, 248)',
   });
   await primary.hover();
-  expect.soft(await computed('.collection-console--culture .collection-primary-action:not(:disabled)')).toMatchObject({
+  expect.soft(await computed('.collection-console--culture .collection-primary-action')).toMatchObject({
     backgroundColor: 'rgb(52, 92, 125)',
     backgroundImage: 'none',
     borderColor: 'rgb(52, 92, 125)',
@@ -711,7 +711,9 @@ test('持续采集页面区分已核验知识、候选资料与授权阻断', as
   await expect(cultureConsole).toContainText('22');
   await expect(cultureConsole).toContainText('32');
   await expect(cultureConsole).toContainText('文化候选队列');
-  await expect(cultureConsole).toContainText('需人工核验后结构化');
+  await expect(cultureConsole.locator('.collection-candidates')).toContainText(
+    '完成出处、字段证据和文化边界核验后才进入正式图谱',
+  );
   await page.route('**/api/collection/candidates', (route) => (
     route.request().method() === 'POST' ? route.abort('connectionfailed') : route.continue()
   ));
@@ -732,8 +734,10 @@ test('持续采集页面区分已核验知识、候选资料与授权阻断', as
   const marketConsole = page.locator('.collection-console--market');
   await expect(marketConsole).toBeVisible();
   await expect(marketConsole.locator('.collection-platform-matrix')).toHaveAttribute('aria-label', '四平台授权与采集状态');
-  await expect(marketConsole.getByText('等待授权', { exact: true })).toHaveCount(5);
-  await expect(marketConsole).toContainText('不会把历史快照写成实时结果');
+  await expect(
+    marketConsole.locator('.collection-platform-matrix').getByText('等待授权', { exact: true }),
+  ).toHaveCount(4);
+  await expect(marketConsole).toContainText('失败轮不覆盖已核验快照');
   await expect(page.getByText('378', { exact: true })).toBeVisible();
 });
 
@@ -792,7 +796,8 @@ test('采集控制面初次连接失败提供可触达恢复动作', async ({ pa
   expect(reconnectBox?.height ?? 0).toBeGreaterThanOrEqual(44);
 });
 
-test('核心工作台与任务书视觉基线', async ({ page }, testInfo: TestInfo) => {
+test('Windows 基准环境：核心工作台与任务书视觉基线', async ({ page }, testInfo: TestInfo) => {
+  test.skip(process.platform !== 'win32', '权威像素基线固定在 Windows Chromium；其他平台运行全部功能门。');
   await openRoute(page, ROUTES[0]);
   await expect(page).toHaveScreenshot(`workbench-${testInfo.project.name}.png`, {
     fullPage: false,

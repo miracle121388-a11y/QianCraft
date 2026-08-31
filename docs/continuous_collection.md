@@ -39,7 +39,7 @@ QianCraft 的持续采集由 Tool API 进程内的持久化调度器执行。只
 
 ## 4. 文化候选审核
 
-文化来源巡检只发现满足以下条件的同域页面：路径像文章/详情页、链接标题具备实际语义、内容命中非遗/贵州/工艺等限定词，并排除通用导航、媒体文件和已登记 URL。候选状态为：
+文化来源巡检只发现满足以下条件的同域页面：路径像文章/详情页、链接标题具备实际语义、内容命中非遗/贵州/工艺等限定词，并排除通用导航、媒体文件和已登记 URL。0.9.2 同时拒绝本机、私网、链路本地、云元数据和保留地址；输入、DNS 结果和 HTTP 重定向逐次校验，实际 TCP 连接钉住当次已校验的公网地址且不使用环境代理，防止 DNS rebinding 或代理绕行访问内部服务。候选状态为：
 
 1. `pending_review`：只证明“被发现”，不证明内容真实或适合入图。
 2. `ready_to_structure`：人工已核对来源，可进入字段级结构化；仍不是正式记录。
@@ -53,13 +53,13 @@ QianCraft 的持续采集由 Tool API 进程内的持久化调度器执行。只
 
 ```powershell
 # 查看非交互预检，不打开登录窗口
-.\.venv\Scripts\python.exe scripts\probe_market_platforms.py
+conda run --no-capture-output -n qiancraft python scripts\probe_market_platforms.py
 
 # 用户在场时逐平台授权；依次替换 xhs / dy / bili / wb
-.\.venv\Scripts\python.exe scripts\probe_market_platforms.py --platform xhs --method cdp --authorize
+conda run --no-capture-output -n qiancraft python scripts\probe_market_platforms.py --platform xhs --method cdp --authorize
 
 # 四个平台授权完成后做正式小规模复核
-.\.venv\Scripts\python.exe scripts\probe_market_platforms.py --platform all --method cdp --formal --authorize
+conda run --no-capture-output -n qiancraft python scripts\probe_market_platforms.py --platform all --method cdp --formal --authorize
 ```
 
 随后显式设置 `MEDIACRAWLER_LIVE_ENABLED=true`。调度器不会自动弹出登录窗口，不会把授权 Cookie 写进仓库或 API 响应，也不会用 378 条历史记录给失败的新一轮兜底。
@@ -88,15 +88,15 @@ QIANCRAFT_MARKET_REFRESH_MINUTES=240
 
 - `/healthz` 由 Nginx 转发真实 `/api/health`；响应包含调度线程在线状态、心跳新鲜度和总开关。线程死亡或心跳超过 45 秒时 API 返回 503，镜像 HEALTHCHECK 随之失败，交给已配置的容器重启策略恢复，不再返回静态假 200。
 - `deploy/start-zeabur.sh` 监控 Tool API、Vinext 与 Nginx；任一子进程退出时容器以失败结束，交给平台重启。
-- 当前仓库 0.9.1 尚未部署。线上受保护实例仍是 0.8.0；不能用本地验证替代线上验证。
+- 当前本地版本为 0.9.2；线上受保护实例在本轮发布前仍是已验收的 0.9.1，不能用本地验证替代线上验证。
 - 生产排程必须配置持久卷、异常重启、日志/告警和备份。单个容器内线程不是跨副本分布式调度器；部署多个 API 副本前必须增加唯一领导者或外部队列，避免重复采集。
 - 定期查看连续失败、最后成功时间、候选积压和平台授权过期。`healthy` 只说明当前轮满足技术条件，不等于候选内容已获得文化审核或商业授权。
 
 ## 8. 验证
 
 ```powershell
-uv run pytest tests/test_collection.py tests/test_tool_api.py -q
-uv run ruff check app tests
+conda run --no-capture-output -n qiancraft python -m pytest tests/test_collection.py tests/test_tool_api.py -q
+conda run --no-capture-output -n qiancraft ruff check app tests
 
 cd web
 pnpm typecheck

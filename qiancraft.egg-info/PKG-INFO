@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: qiancraft
-Version: 0.9.1
+Version: 0.9.2
 Summary: 贵州非遗文化知识图谱、市场前策与概念设计系统
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
@@ -11,6 +11,7 @@ Requires-Dist: Pillow<13.0.0,>=12.0.0
 Requires-Dist: pydantic<3.0.0,>=2.11.0
 Requires-Dist: python-dotenv>=1.1.0
 Provides-Extra: test
+Requires-Dist: pip-audit<3.0.0,>=2.10.1; extra == "test"
 Requires-Dist: pytest>=8.4.0; extra == "test"
 Requires-Dist: pytest-asyncio>=1.2.0; extra == "test"
 Requires-Dist: ruff<0.17.0,>=0.16.5; extra == "test"
@@ -25,10 +26,10 @@ Requires-Dist: ruff<0.17.0,>=0.16.5; extra == "test"
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.9.1-111111?style=flat-square" alt="Version 0.9.1">
+  <img src="https://img.shields.io/badge/version-0.9.2-111111?style=flat-square" alt="Version 0.9.2">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-57%20Python%20%7C%205%20Web%20%7C%2035%20UI-2f7358?style=flat-square" alt="57 Python tests, 5 Web tests, and 35 UI tests passed">
-  <img src="https://img.shields.io/badge/local-0.9.1%20%7C%20online-0.8.0-d08b32?style=flat-square" alt="Local version 0.9.1; protected online instance 0.8.0">
+  <img src="https://img.shields.io/badge/tests-76%20Python%20%7C%205%20Web%20%7C%2030%20UI-2f7358?style=flat-square" alt="76 Python tests, 5 Web tests, and 30 desktop UI functional tests passed on macOS; Windows keeps the canonical visual gate">
+  <img src="https://img.shields.io/badge/local-0.9.2%20%7C%20online-0.9.1-bb6b38?style=flat-square" alt="Local version 0.9.2; protected online instance 0.9.1 pending deployment">
 </p>
 
 <p align="center">
@@ -43,7 +44,7 @@ Requires-Dist: ruff<0.17.0,>=0.16.5; extra == "test"
 > [!IMPORTANT]
 > QianCraft 当前是可运行的研究原型：输出可用于概念展示、工厂报价与首样沟通，但不是生产工程图、合规证书、商业文化授权或“爆款保证”。
 
-受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。线上仍为已验证的 0.8.0；本地 0.9.1 提交前加固尚未部署。入口启用 Basic Auth，访问凭证由项目维护者单独提供；运行态工作区写入持久卷，密钥不进入前端或仓库。
+受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。线上当前已验收 0.9.1，0.9.2 正在发布前复验；入口启用 Basic Auth，访问凭证由项目维护者单独提供。运行态工作区写入 Zeabur 持久卷，密钥只由服务器变量注入，不进入前端或仓库。当前独立图像 provider 与四平台授权采集运行时尚未接通，因此 A/B/C 已有资产、工作台、人工决策、Design Agent、DesignPackage 与海报可直接使用，图片重生成和严格实时研究会显示真实阻断状态。
 
 ## 一眼看懂
 
@@ -67,7 +68,7 @@ QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何�
 | **持续素材采集** | 文化来源默认每 6 小时巡检并只产生待核验候选；市场默认每 4 小时复检四平台授权，只有完整 `live_verified` 才晋级。暂停、间隔、立即运行、失败与心跳均可见。 |
 | **七阶段人工决策** | 人工可选择文化记录、平台/品类、六维评分权重与候选机会，并继续指定设计意图、视觉参照、概念比较组和海报结构；每次保存形成独立版本，不覆盖事实原件。 |
 | **九节点专业展示页** | 每个实例可单击或双击进入独立页面；文化关系、市场原记录、六维量分、任务书、视觉提示、概念成品、BOM 和海报分别拥有专用视图，并附可回到原始网页的证据台账。 |
-| **黑白精密工具界面** | 白色工作面、冷灰结构、石墨文字与纯黑关键动作组成系统 chrome；不使用米色或蓝/靛蓝状态色。黑色星图是关系画布例外，来源图像只在内容区保留自身颜色。 |
+| **Tonal Focus 工具界面** | 暖矿物外壳、雾蓝画布、灰绿工具区、暖陶 Inspector 与浅石节点构成固定功能色块；低饱和深灰蓝只承担选中、焦点和主动作，黑色星图仅作为关系画布例外。 |
 | **诚实的运行状态** | 文化、市场、策划、设计、渲染分别记录 `live / cache / unavailable`；缓存不冒充实时数据。 |
 | **可恢复的真实任务** | “实时运行”会在服务端创建持久化后台任务，页面刷新后自动续接轮询；只有文化、策划和四平台全部为本轮 `live` 才会晋级并回写当前工作区。 |
 
@@ -96,12 +97,11 @@ QianCraft 解决的不是“给传统纹样套一个商品壳”，而是如何�
 
 ## 快速开始
 
-前置条件：Git、[uv](https://docs.astral.sh/uv/) 与 Python 3.11+。项目在 Windows、PowerShell、CPython 3.13 上完成实机验收。
+前置条件：Git、Conda、Node.js 22 与 Corepack。仓库统一使用 `environment.yml` 创建 Python 3.13 环境，不直接调用本机 Python。
 
 ```powershell
-uv venv --python 3.13
-uv pip install -e ".[test]"
-uv run python scripts/run_demo.py --mode demo
+conda env create -f environment.yml
+conda run --no-capture-output -n qiancraft python scripts/run_demo.py --mode demo
 ```
 
 `demo` 模式不调用外部 API，也不会打开浏览器；它会使用结构化图谱与明确标记的本地证据完成端到端验收。默认主题为“贵州苗绣”，结果写入 `data/outputs/`。
@@ -112,7 +112,7 @@ uv run python scripts/run_demo.py --mode demo
 
 ```powershell
 # Terminal 1 · QianCraft API
-uv run python -m app.tool_api --port 8787
+conda run --no-capture-output -n qiancraft python -m app.tool_api --port 8787
 
 # Terminal 2 · Web Workbench
 cd web
@@ -136,6 +136,20 @@ QIANCRAFT_MARKET_REFRESH_MINUTES=240
 
 需要以已构建的 production server 使用网站时，在 `web` 目录执行 `pnpm build` 后运行 `pnpm start:local`；它只绑定 `127.0.0.1:3000`，并继续使用同一真实 API。
 
+### 备份与恢复运行态
+
+快照包含 Workspace、严格研究任务、采集排程/事件/候选和生成资产，不包含 Secret。备份文件必须放在运行态目录之外；权威备份和恢复前都应停止 Tool API 写入。脚本会在发布 ZIP 前自校验路径、文件数、体积与 SHA-256，并在恢复时保留原目录作为回滚副本。
+
+```powershell
+conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py backup `
+  --runtime-root data/runtime --output ..\qiancraft-backups\runtime.zip
+conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py verify `
+  ..\qiancraft-backups\runtime.zip
+conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py restore `
+  ..\qiancraft-backups\runtime.zip --runtime-root data/runtime `
+  --confirm-service-stopped --confirm RESTORE_QIANCRAFT_RUNTIME
+```
+
 每张节点卡都可以进入完整展示页，双击节点也可直达；详情页支持独立运行、从此处运行、编辑保存、结构化导出和相邻节点跳转。文化、市场与策略页会把 `Cxxx / Mxxx / MPL-xxx / Vxxx` 解析为完整引用卡，并区分事实来源、平台历史记录、视觉研究参考和策略推导。
 
 画布右上角的 Flow Map 可直接定位文化、市场、策略、任务书、A/B/C 与海报节点，不必手动在大画布中寻找。若网站前端与 API 不在同一台机器，把 `web/.env.example` 复制为 `web/.env.local`，设置 `NEXT_PUBLIC_QIANCRAFT_API_URL`；需要覆盖公开站点元数据时设置 `NEXT_PUBLIC_QIANCRAFT_SITE_URL`。这两个公开变量只能放 URL，不能放任何密钥。
@@ -145,14 +159,14 @@ QIANCRAFT_MARKET_REFRESH_MINUTES=240
 接入项目内原创产品主视觉：
 
 ```powershell
-uv run python scripts/run_demo.py --mode auto `
+conda run --no-capture-output -n qiancraft python scripts/run_demo.py --mode auto `
   --design-hero data\design\assets\huaxi_grid_magnet_hero_v1.png
 ```
 
 只重跑 Designer Handoff 之后的设计链路：
 
 ```powershell
-uv run python scripts/run_design_agent.py `
+conda run --no-capture-output -n qiancraft python scripts/run_design_agent.py `
   --hero-image data\design\assets\huaxi_grid_magnet_hero_v1.png `
   --update-run-manifest
 ```
@@ -228,15 +242,15 @@ flowchart LR
 <summary><strong>LightRAG 与 GPT Researcher</strong></summary>
 
 ```powershell
-uv pip install -e ".\local_culture\LightRAG-main"
-uv pip install -e ".\researcher_agent\gpt-researcher-main"
+conda run --no-capture-output -n qiancraft python -m pip install -e ".\local_culture\LightRAG-main"
+conda run --no-capture-output -n qiancraft python -m pip install -e ".\researcher_agent\gpt-researcher-main"
 ```
 
 复制 `.env.example` 为 `.env`，填写自己的 OpenAI-compatible API 配置后验证：
 
 ```powershell
-uv run python scripts/check_environment.py --probe-api
-uv run python scripts/check_environment.py --probe-mediacrawler
+conda run --no-capture-output -n qiancraft python scripts/check_environment.py --probe-api
+conda run --no-capture-output -n qiancraft python scripts/check_environment.py --probe-mediacrawler
 ```
 
 不要把 API Key 写入源码、README、命令行参数或提交记录。
@@ -249,30 +263,30 @@ uv run python scripts/check_environment.py --probe-mediacrawler
 > [!CAUTION]
 > MediaCrawler 的上游许可证仅允许非商业学习/研究。商业化前必须取得书面授权或替换为具备适当商业许可与平台授权的数据实现。
 
-MediaCrawler 使用独立环境，避免其固定依赖污染主运行时：
+MediaCrawler 使用独立 Conda 环境，避免其固定依赖污染主运行时；创建后把该环境 Python 的绝对路径写入被忽略的 `.env` 中的 `MEDIACRAWLER_PYTHON`：
 
 ```powershell
-uv venv --python 3.13 ".\market-intel_agent\MediaCrawler-main\.venv-qiancraft"
-uv pip install --python ".\market-intel_agent\MediaCrawler-main\.venv-qiancraft\Scripts\python.exe" `
+conda create -n qiancraft-mediacrawler python=3.13 pip -y
+conda run --no-capture-output -n qiancraft-mediacrawler python -m pip install `
   -r ".\market-intel_agent\MediaCrawler-main\requirements.txt"
 ```
 
 无交互状态探针不会打开浏览器：
 
 ```powershell
-uv run python scripts/probe_market_platforms.py
+conda run --no-capture-output -n qiancraft python scripts/probe_market_platforms.py
 ```
 
 首次授权必须由本人逐个平台显式执行；将 `xhs` 依次替换为 `dy`、`bili`、`wb`：
 
 ```powershell
-uv run python scripts/probe_market_platforms.py --platform xhs --method cdp --authorize
+conda run --no-capture-output -n qiancraft python scripts/probe_market_platforms.py --platform xhs --method cdp --authorize
 ```
 
 四个平台完成授权后，再做正式小规模复核：
 
 ```powershell
-uv run python scripts/probe_market_platforms.py --platform all --method cdp --formal --authorize
+conda run --no-capture-output -n qiancraft python scripts/probe_market_platforms.py --platform all --method cdp --formal --authorize
 ```
 
 项目不绕过验证码、风控、访问控制或平台登录机制。CDP 会话通常可复用，但退出登录、Cookie 过期、平台风控或资料目录清理后仍需本人重新授权。
@@ -314,9 +328,9 @@ QianCraft/
 │   ├── design/assets/     # 原创产品主视觉
 │   ├── workbench/         # 工作区 JSON 与受控生成图
 │   └── outputs/           # 最新 13 项正式结果
-├── web/                   # 黑白精密工作台、知识星图、采集控制面与节点详情
-├── scripts/               # Demo、Design Agent、环境与授权入口
-├── tests/                 # 契约、证据、降级与端到端回归
+├── web/                   # Tonal Focus 工作台、知识星图、采集控制面与节点详情
+├── scripts/               # Demo、Design Agent、环境、授权与运行态快照入口
+├── tests/                 # 契约、证据、安全、恢复、降级与端到端回归
 ├── docs/                  # 架构、图谱、市场、设计与实机报告
 ├── PRODUCT.md             # 产品定位、用户任务、成功标准与边界
 ├── DESIGN.md              # 可执行界面令牌、组件与响应式规范
@@ -340,27 +354,30 @@ QianCraft/
 ## 验证
 
 ```powershell
-uv run pytest
-uv run ruff check app tests scripts/probe_market_platforms.py
-uv lock --check
+conda run --no-capture-output -n qiancraft python -m pytest -q
+conda run --no-capture-output -n qiancraft ruff check .
+conda run --no-capture-output -n qiancraft uv lock --check
+conda run --no-capture-output -n qiancraft python -m pip_audit --local
 cd web
+pnpm audit --audit-level=high
 pnpm test
 pnpm typecheck
 pnpm lint
-pnpm exec playwright test tests/ui/ui-quality.spec.ts
+pnpm exec playwright test --project=desktop-chromium
 pnpm build
 ```
 
 当前基线：
 
 ```text
-53 Python tests passed
+76 Python tests passed
 5 Web tests passed
-35 Playwright tests passed / 1 intentionally skipped
+30 desktop functional Playwright tests passed on macOS; 1 Windows canonical visual test skipped
+0 known Python or pnpm dependency vulnerabilities
 All checks passed!
 ```
 
-当前正式基线运行号为 `20260828T060200Z-e44240e3`：LightRAG、DeepSeek 策略、Design Agent 与 Poster Renderer 均为 `live`，市场层使用 378 条历史真实快照并标记为 `cache`。Workbench 的“实时运行”不会直接复用这份基线：它会新建隔离后台任务并实际访问上游，四平台任一项不是本轮 `live` 就保留失败审计而不回写旧结果；详细的 API、运行时、实爬与契约证据见 [`docs/real_machine_test.md`](docs/real_machine_test.md)。
+当前正式基线运行号为 `20260828T060200Z-e44240e3`：LightRAG、DeepSeek 策略调用、Design Agent 与 Poster Renderer 均为 `live`，市场层使用 378 条历史真实快照并标记为 `cache`。该轮模型建议的正式接受数为 `generated_opportunities_accepted=0`，所以当前 8 条机会全部来自证据规则基线，不能写成 DeepSeek 生成。Workbench 的“实时运行”不会直接复用这份基线：它会新建隔离后台任务并实际访问上游，四平台任一项不是本轮 `live` 就保留失败审计而不回写旧结果；详细的 API、运行时、实爬与契约证据见 [`docs/real_machine_test.md`](docs/real_machine_test.md)。
 
 ## 文档地图
 
@@ -368,7 +385,7 @@ All checks passed!
 |---|---|
 | [`WORKFLOW.md`](WORKFLOW.md) | 项目唯一工作流、当前状态与每次更新台账 |
 | [`PRODUCT.md`](PRODUCT.md) | 工具定位、核心用户任务、当前能力与非量产边界 |
-| [`DESIGN.md`](DESIGN.md) | 黑白精密工具令牌、星图/控制面、布局、组件、可访问性与视觉禁区 |
+| [`DESIGN.md`](DESIGN.md) | Tonal Focus 功能色块、星图/控制面、布局、组件、可访问性与视觉禁区 |
 | [`docs/continuous_collection.md`](docs/continuous_collection.md) | 文化巡检、候选门、四平台增量排程、状态/API 与 7×24 运行条件 |
 | [`docs/architecture.md`](docs/architecture.md) | 模块边界、证据锁、降级与设计接口 |
 | [`docs/human_decision_workflow.md`](docs/human_decision_workflow.md) | 七阶段人工决策、版本语义、API 与下游失效规则 |
@@ -385,7 +402,7 @@ All checks passed!
 - 与花溪具体合作社区/保护单位共同审核首版转译、署名、收益与撤回机制。
 - 开展用户测试和工厂首样，验证磁体封装、吸附力、卡合循环、绣线耐磨与跌落。
 - 在确定销售年龄和地区后补齐材料、标签、包装、适用标准与 DFM。
-- 为 QianCraft 自有代码层确定公开发布许可证，并补充 CI、贡献指南与安全报告入口。
+- 为 QianCraft 自有代码层确定公开发布许可证，并补充贡献指南、私密安全报告入口与用户级身份审计。
 
 ## 参与项目
 

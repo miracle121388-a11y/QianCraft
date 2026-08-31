@@ -28,13 +28,15 @@
 
 2026-08-31 对当前 0.9.1 再次完整验收：Python 58/58、Workbench TypeScript 5/5、desktop-chromium 31/31，Ruff、锁文件、typecheck、ESLint、Vinext 五阶段 production build 与启动脚本语法均通过。真实 Playwright CLI 会话加载隔离工作区，打开 Human Decision Studio、Delivery、Inspector 与 Poster 详情，控制台为 0 error / 0 warning；C2 本轮没有运行 mobile project。Zeabur 部署 `6a958619be05255ec5e261f7` 为 `RUNNING`，公网健康与匿名鉴权、服务器内认证后的首页/九详情页面、健康/Bootstrap/九详情/DesignPackage API、正式资产、持久卷、调度心跳和 LLM 模型探针均通过。隔离远端工作区实际完成保存、Decision v2、Design Agent、DesignPackage、Poster v2 和九详情页后已清理；严格研究按真实前置条件返回 422。
 
+2026-09-01 的 0.9.2 发布前复验改用统一 Conda Python 3.13 环境：Python 76/76、Workbench TypeScript 5/5、macOS desktop-chromium 30 passed / 1 Windows 像素门按设计 skipped，Ruff、锁文件、typecheck、零 warning ESLint、Vinext 8.2.2 五阶段 production build 与启动脚本语法通过。完整 `pnpm audit` 和本地 Python `pip-audit` 均为 0 个已知漏洞。新增回归覆盖图像 provider 真实状态、无图形会话预检、空覆盖变量自动识别、私网/DNS/rebinding/重定向 SSRF 拒绝、Nginx 安全头/限流，以及运行态 ZIP 的 SHA-256 校验、路径穿越拒绝和原子恢复回滚。线上 0.9.2 在本段记录时尚未发布，因此不把本地结果写成远端通过。
+
 ## 环境
 
-- Windows / PowerShell
-- CPython 3.13.9
-- `uv` 0.10.9
-- 主虚拟环境：`.venv`
-- MediaCrawler 隔离环境：`market-intel_agent/MediaCrawler-main/.venv-qiancraft`
+- macOS / zsh（本轮）与 Windows / PowerShell（既有权威像素基线）
+- Conda `qiancraft` / CPython 3.13.15
+- `uv` 0.12.7（只在 Conda 环境中执行锁文件检查）
+- 主虚拟环境：Conda `qiancraft`，由 `environment.yml` 创建
+- MediaCrawler：0.9.1 Windows 历史验收使用独立 `.venv-qiancraft`；当前 macOS/Zeabur 未配置该上游运行时，0.9.2 标准改为独立 Conda 环境并由 `MEDIACRAWLER_PYTHON` 指向其解释器
 - DeepSeek 目标模型：`deepseek-v4-flash`
 
 ## 验收结果
@@ -48,7 +50,7 @@
 | Workbench 严格后台研究 | 通过（按失败口径） | 修复后任务 `20260828T202303Z-2bae17ff` 实际从网页启动并回调完成：culture/strategist live，market cache，四平台 unavailable，状态 `failed_no_fallback`。8 项研究产物与失败审计落盘、设计未被误调用、工作区未晋级；这证明失败会被完整保存而不是伪造成可用结果 |
 | 四平台统一与热度 | 通过 | 四个快照共 378 条真实平台记录；统一榜单样本数为 378，Top 10 依次为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒，Top 5 为前五项；本轮重算分数范围 36.6–57.3，均在 0–100 内 |
 | Visual Reference Pack | 通过 | 12 条官方/权威馆藏参考、5 个 Pattern Primitive、3 组无伪造 HEX 的颜色关系；全部未明权利图片标为 `reference_only` |
-| Opportunity Score | 通过 | 8–12 条机会均有六项正向分、文化风险和可解释综合分；20/20/20/15/15/10 加权后扣 20% 风险 |
+| Opportunity Score | 通过 | 当前正式文件为 8 条证据规则基线，`generated_opportunities_accepted=0`；全部具备六项正向分、文化风险和可解释综合分，20/20/20/15/15/10 加权后扣 20% 风险。历史模型候选数量不等于当前正式接受数 |
 | LightRAG 二次核验 | 通过 | 高分候选实际重载本地图并逐项查询；输出 `verified/warning/rejected`，拒绝项不能进入设计交接 |
 | Designer Handoff | 通过 | 仅 Top 3，当前为 OPP-006、OPP-002、OPP-004，均为 `verified`；JSON 为设计阶段唯一机器输入，`next_owner=QianCraft Design Agent` |
 | Design Agent 接口 | 通过 | 正式链路实际从文件重载 DesignerHandoff 并核对 SHA-256；网页 Brief 也实际执行运行 `20260828T201228Z-e646561b`，选择 OPP-006、保存 DesignPackage/Markdown/RenderManifest/海报并回写工作区。自动选案现在只从已有真实产品生成器可执行的候选中选择；人工明确选择无生成器的机会仍直接报错，不套用通用兜底 |
@@ -63,38 +65,39 @@
 | 持续采集调度与候选门 | 通过（按真实阻断口径） | 线上调度线程在线、心跳新鲜、总开关开启；首轮文化巡检 4 个来源中 3 个正常、1 个失败，通道为 `degraded`，只新增 1 条待审候选且正式图谱仍为 22 条/32 来源。市场因 7 项运行时/授权前置条件缺失明确 `blocked`，未创建假任务、未覆盖 378 条历史证据 |
 | 知识星图与采集控制面 | 当前桌面通过 | C2 desktop-chromium 覆盖星图搜索、选点、按钮/滚轮缩放、拖动/键盘、断线旧状态、历史/实时信息顺序、forced-colors 与焦点门；此前手机触摸结果只保留为历史基线，本轮没有执行 mobile project |
 | 七阶段人工交互 | 通过 | 浏览器实际完成文化、平台、权重、机会、任务书、视觉、方案与海报调整；保存后节点显示 HUMAN v3、人工分与系统分并列、下游 stale，展示页可深链返回对应决策阶段 |
-| 中文排版、令牌与响应式 | 当前桌面通过 | 0.9.1 C2 Tonal Focus Review 使用暖矿物、雾蓝、灰绿、暖陶与浅石固定功能色块，保留 60/72/210/330 电脑端几何、稳定九节点和深色文化星图例外；1440×960 无横向溢出并通过两张视觉基线。mobile/tablet 沿用既有实现，但不属于本轮验收承诺 |
+| 中文排版、令牌与响应式 | 当前桌面通过 | 0.9.2 C2 Tonal Focus Review 使用暖矿物、雾蓝、灰绿、暖陶与浅石固定功能色块，保留 60/72/210/330 电脑端几何、稳定九节点和深色文化星图例外；macOS 1440×960 功能门 30/30，像素基线固定由 Windows Chromium 执行。mobile/tablet 沿用既有实现，但不属于本轮验收承诺 |
 | Workbench production server | 通过 | Vinext 五阶段构建后以 `127.0.0.1:3000` 启动 production server；页面、真实 API、A/B/C 资产与 Flow Map 均重新验收，React Flow 合法最小 attribution 保留 |
 | Zeabur 线上实例 | 通过 | 0.9.1 隔离包 79 个文件、19,597,854 字节，敏感路径/长 `sk-` 均 0 命中；部署 `6a958619be05255ec5e261f7` 为 `RUNNING`。公网 `/healthz` 200、匿名首页/API 401；容器内使用现有服务器凭证验收首页、九路由、健康/Bootstrap、九详情、DesignPackage 与正式资产均为 200。`/app/data/runtime` 为 ext4 持久挂载，临时远端 E2E 工作区已精确清理 |
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 预期 warning | 独立 Images API 未配置；同一 DeepSeek 服务的 `/images/generations` 实测 HTTP 404。现有 A/B/C 可展示，但 Regenerate 与 Generate More 不会把项目资产冒充为一次新 API 结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 通过 | Python `pytest` 58/58；Workbench TypeScript 5/5；desktop-chromium Playwright 31/31。0.9.1 另覆盖显式 auto 模式、提交随附派生市场缓存、准确 BOM 标题、可迁移产物路径、C2 几何、可访问性、交互与断线状态 |
-| 静态检查与构建 | 通过 | `uv run --extra test ruff check .`、TypeScript no-emit、ESLint、Vinext 五阶段 production build、`uv lock --check`、`bash -n deploy/start-zeabur.sh` 与 `git diff --check` 均无错误；显式 `--extra test` 避免 `uv run` 使用系统旧版 Ruff |
+| 自动测试 | 通过 | Python `pytest` 76/76；Workbench TypeScript 5/5；macOS desktop-chromium Playwright 30 passed / 1 Windows 像素门 skipped。另覆盖显式 auto 模式、提交随附派生市场缓存、准确 BOM 标题、可迁移产物路径、C2 几何、可访问性、交互、断线、安全与恢复 |
+| 静态检查与构建 | 通过 | Conda 内 Ruff、TypeScript no-emit、零 warning ESLint、Vinext 五阶段 production build、`uv lock --check`、完整 `pnpm audit`、Python `pip-audit`、`bash -n deploy/start-zeabur.sh` 与 `git diff --check` 均无错误或已知漏洞 |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 
 ## 可复现命令
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\check_environment.py --probe-mediacrawler --probe-api
-.\.venv\Scripts\python.exe scripts\run_demo.py --mode demo
-.\.venv\Scripts\python.exe scripts\run_demo.py --mode auto
-.\.venv\Scripts\python.exe scripts\run_demo.py --mode live
+conda run --no-capture-output -n qiancraft python scripts\check_environment.py --probe-mediacrawler --probe-api
+conda run --no-capture-output -n qiancraft python scripts\run_demo.py --mode demo
+conda run --no-capture-output -n qiancraft python scripts\run_demo.py --mode auto
+conda run --no-capture-output -n qiancraft python scripts\run_demo.py --mode live
 # 用当前原创产品主视觉运行完整设计段：
-.\.venv\Scripts\python.exe scripts\run_demo.py --mode auto --design-hero data\design\assets\huaxi_grid_magnet_hero_v1.png
+conda run --no-capture-output -n qiancraft python scripts\run_demo.py --mode auto --design-hero data\design\assets\huaxi_grid_magnet_hero_v1.png
 # 只重跑 Designer Handoff 之后的设计和海报，并同步清单：
-.\.venv\Scripts\python.exe scripts\run_design_agent.py --hero-image data\design\assets\huaxi_grid_magnet_hero_v1.png --update-run-manifest
+conda run --no-capture-output -n qiancraft python scripts\run_design_agent.py --hero-image data\design\assets\huaxi_grid_magnet_hero_v1.png --update-run-manifest
 # 不打开浏览器的四平台状态探针：
-.\.venv\Scripts\python.exe scripts\probe_market_platforms.py
+conda run --no-capture-output -n qiancraft python scripts\probe_market_platforms.py
 # 用户准备好逐平台登录时才执行，平台依次改为 xhs/dy/bili/wb：
-.\.venv\Scripts\python.exe scripts\probe_market_platforms.py --platform xhs --method cdp --authorize
+conda run --no-capture-output -n qiancraft python scripts\probe_market_platforms.py --platform xhs --method cdp --authorize
 # 四个平台完成授权后的正式小规模复核：
-.\.venv\Scripts\python.exe scripts\probe_market_platforms.py --platform all --method cdp --formal --authorize
-.\.venv\Scripts\python.exe -m pytest
-uv run --extra test ruff check .
+conda run --no-capture-output -n qiancraft python scripts\probe_market_platforms.py --platform all --method cdp --formal --authorize
+conda run --no-capture-output -n qiancraft python -m pytest
+conda run --no-capture-output -n qiancraft ruff check .
+conda run --no-capture-output -n qiancraft python -m pip_audit --local
 
 # 启动本地 Workbench（自动协调 API 与前端）：
-.\.venv\Scripts\python.exe scripts\run_web_tool.py
+conda run --no-capture-output -n qiancraft python scripts\run_web_tool.py
 
 # 前端独立验收：
 cd web
@@ -118,6 +121,6 @@ pnpm start:local
 9. 当前海报、尺寸和 BOM 只支持展示、报价和首样沟通；花溪社区确认、材料/结构实测、DFM、适用标准测试和商业授权未完成，不能据此宣称可直接量产。
 10. 当前四个平台的 378 条记录是历史真实快照。本轮 Workbench 确实重新访问了平台，但修复后严格任务没有获得可晋级记录，因此界面与工作区继续显示 `cache`；不能把曾经授权或“发起过请求”等同于本轮 live。
 11. 独立图像生成自动化服务尚未配置。A/B/C 当前都有可展示项目资产，其中 B/C 来自此前内置图像生成与人工目视复核；这不代表 DeepSeek 支持图片。Regenerate / Generate More 会真实调用独立 provider，未配置时保留旧成功资产并明确 warning，不会制造新成功记录。
-12. Workbench 已部署为受 Basic Auth 保护的远端产品验证环境；Vinext 与 Python API 在容器内仍只绑定回环地址，运行态由持久卷承载，密钥由部署变量注入。精简云端镜像没有 MediaCrawler/LightRAG/GPT Researcher 上游运行时，因此严格研究会预检阻断；完整实爬应在有本人授权浏览器的本机运行。如需多人正式使用，仍应补用户级账户、权限审计、备份、任务队列和密钥轮换流程。
+12. Workbench 已部署为受 Basic Auth 保护的远端产品验证环境；Vinext 与 Python API 在容器内仍只绑定回环地址，运行态由持久卷承载，密钥由部署变量注入。0.9.2 已补手工校验快照、原子恢复与回滚，但异地定时备份、用户级账户、权限审计、分布式任务队列、外部告警和密钥轮换仍是多人正式运营条件。精简云端镜像没有 MediaCrawler/LightRAG/GPT Researcher 上游运行时，因此严格研究会预检阻断；完整实爬应在有本人授权浏览器的本机运行。
 13. 本轮使用上传的 React Flow 源码核对集成版本和能力边界，但没有改写其源码、许可证或版权通知；产品界面统一使用 QianCraft 自有名称和业务语言。
 14. 0.9.0 引入的持续采集依赖 Tool API 单副本持续运行、持久卷、平台重启策略、网络和用户授权；它不是跨副本分布式队列。线上 0.9.1 的线程、心跳与持久卷已验收，但市场通道仍被上游运行时和真实授权条件阻断，不能据此宣称四平台已在 7×24 小时持续产出。

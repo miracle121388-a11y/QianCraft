@@ -13,6 +13,7 @@ from app.tool_api import (
     _historical_market_snapshot,
     _strict_preflight,
     audit_summary,
+    design_state,
     opportunities,
     start_research_job,
 )
@@ -48,7 +49,10 @@ def test_historical_audit_prefers_complete_snapshot_over_newer_smoke_probe() -> 
     assert counts == {"xhs": 115, "dy": 14, "bili": 101, "wb": 148}
 
 
-def test_strict_research_requires_explicit_runtime_authorization() -> None:
+def test_strict_research_requires_explicit_runtime_authorization(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(tool_api, "_interactive_crawl_supported", lambda: True)
     passive = _strict_preflight(allow_interactive=False)
     explicit = _strict_preflight(allow_interactive=True)
 
@@ -58,6 +62,46 @@ def test_strict_research_requires_explicit_runtime_authorization() -> None:
     assert next(item for item in explicit["checks"] if item["id"] == "crawler_switch")["ok"] is True
     with pytest.raises(ValueError, match="严格实时研究未就绪"):
         start_research_job({"workspace_id": "guizhou-miao-demo", "allow_interactive": False})
+
+
+def test_strict_research_rejects_interactive_launch_without_display(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(tool_api, "_interactive_crawl_supported", lambda: False)
+
+    explicit = _strict_preflight(allow_interactive=True)
+
+    assert explicit["interactive_launch"] is False
+    assert explicit["interactive_supported"] is False
+    assert any("没有可交互图形会话" in item for item in explicit["blockers"])
+
+
+def test_interactive_support_empty_override_uses_platform_detection(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("QIANCRAFT_INTERACTIVE_CRAWL_ALLOWED", "")
+    monkeypatch.setattr(tool_api.sys, "platform", "darwin")
+
+    assert tool_api._interactive_crawl_supported() is True
+
+    monkeypatch.setenv("QIANCRAFT_INTERACTIVE_CRAWL_ALLOWED", "false")
+    assert tool_api._interactive_crawl_supported() is False
+
+
+def test_legacy_design_state_reports_actual_image_provider(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    provider = {
+        "provider": "test-provider",
+        "model": "test-model",
+        "base_url_configured": True,
+        "credential_configured": True,
+        "configured": True,
+        "detail": "图像生成适配器已就绪。",
+    }
+    monkeypatch.setattr(tool_api, "image_provider_status", lambda settings=None: provider)
+
+    assert design_state()["image_generation"] == provider
 
 
 def test_all_stored_opportunity_scores_are_reproducible() -> None:

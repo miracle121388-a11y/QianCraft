@@ -61,9 +61,9 @@ QianCraft/
 │   ├── workbench/             # 画布工作区与生成视觉资产
 │   └── outputs/               # 策略、交接、设计包、海报与运行清单
 ├── docs/                      # 架构、图谱、测试和下一阶段产品方向
-├── scripts/                   # 唯一命令行入口与环境探针
-├── tests/                     # 契约、证据、降级和输出测试
-├── web/                       # 黑白工具工作台、知识星图、采集控制面与 9 个节点详情页
+├── scripts/                   # 命令行、环境探针与运行态快照/恢复入口
+├── tests/                     # 契约、证据、安全、恢复、降级和输出测试
+├── web/                       # Tonal Focus 工具工作台、知识星图、采集控制面与 9 个节点详情页
 ├── deploy/                    # Nginx 鉴权/反代与 Zeabur 进程编排
 ├── Dockerfile                # Vinext + Python + Nginx 单服务生产镜像
 ├── flow/xyflow-main/          # 节点画布源码审计边界与原许可证
@@ -88,7 +88,7 @@ Workbench 桌面使用命令栏、工具轨、按需 Dock、可缩放/平移的�
 
 ## 持续采集控制面
 
-`app/collection.py` 在 Tool API 进程内维护两条持久化通道。`culture_watch` 轮换巡检已登记文化来源，使用 HTTP 条件请求与内容哈希识别变化，只把同域相关文章写入候选队列；正式图谱仍要求人工完成字段级证据映射。`market_refresh` 先检查实时开关、MediaCrawler 和四平台授权，条件齐备才启动现有严格研究任务，且只接受 `live_verified`。调度配置、心跳、事件、候选和来源指纹写入 `data/runtime/tool_workspace/collection/`，不会覆盖仓库文化/市场基线。
+`app/collection.py` 在 Tool API 进程内维护两条持久化通道。`culture_watch` 轮换巡检已登记文化来源，使用 HTTP 条件请求与内容哈希识别变化，只把同域相关文章写入候选队列；请求前及每次重定向后都会拒绝本机、私网、链路本地、云元数据、保留地址和解析到这些地址的域名。正式图谱仍要求人工完成字段级证据映射。`market_refresh` 先检查实时开关、MediaCrawler 和四平台授权，条件齐备才启动现有严格研究任务，且只接受 `live_verified`。调度配置、心跳、事件、候选和来源指纹写入 `data/runtime/tool_workspace/collection/`，不会覆盖仓库文化/市场基线。
 
 前端每 12 秒读取控制面；请求失败立即显示连接中断并禁用写操作，心跳超过 45 秒也视为离线。文化批次必须本轮所有来源成功才是 `healthy`，部分失败为 `degraded` 且连续失败不清零。市场历史证据先于折叠运维台展示，避免把 378 条历史快照与新一轮授权状态混在一起。完整运行条件、状态和 API 见 [`continuous_collection.md`](continuous_collection.md)。
 
@@ -110,7 +110,7 @@ Workbench 桌面使用命令栏、工具轨、按需 Dock、可缩放/平移的�
 
 图像适配器只接受独立的 `IMAGE_PROVIDER / IMAGE_API_KEY / IMAGE_BASE_URL / IMAGE_MODEL`。缺项时 Visual Generation Node 为 `warning`，内置 A/B/C 项目资产仍可作为 `success` 概念证据展示，但不会被说成当次 API 新生成。默认工作区会从版本化文件恢复 B/C 及其 SHA-256；可编辑海报由浏览器 Canvas 按标题、文案、板块显示与顺序实时导出 1800 × 2400 PNG，页脚始终保留概念/首样边界。
 
-生产环境采用一个容器：Nginx 在平台注入的端口统一处理 Basic Auth 和安全响应头，把 `/api`、`/assets` 转到回环地址的 Tool API，把其他请求转到回环地址的 Vinext；`/healthz` 单独免鉴权并转发真实 `/api/health`。启动脚本监控 Tool API、Vinext 与 Nginx，任一子进程退出就让容器失败；调度线程死亡或心跳超过 45 秒时健康 API 返回 503，Docker HEALTHCHECK 也失败，由已配置的平台重启策略恢复。`/app/data/runtime` 是唯一运行态持久卷，镜像内文化/市场证据只作为基线读取。该结构能在单副本持续调度，但不是分布式队列；多 API 副本前需增加唯一领导者。部署细节见 [`deployment_zeabur.md`](deployment_zeabur.md)。
+生产环境采用一个容器：Nginx 在平台注入的端口统一处理 Basic Auth、API 单 IP 限流、HSTS/CSP/Permissions-Policy 等安全头，把 `/api`、`/assets` 转到回环地址的 Tool API，把其他请求转到回环地址的 Vinext；`/healthz` 单独免鉴权并转发真实 `/api/health`。启动脚本监控 Tool API、Vinext 与 Nginx，任一子进程退出就让容器失败；调度线程死亡或心跳超过 45 秒时健康 API 返回 503，Docker HEALTHCHECK 也失败，由已配置的平台重启策略恢复。`/app/data/runtime` 是唯一运行态持久卷，镜像内文化/市场证据只作为基线读取；`scripts/runtime_snapshot.py` 可创建自校验 ZIP、拒绝危险路径并原子恢复/保留回滚目录。该结构能在单副本持续调度，但不是分布式队列；多 API 副本前需增加唯一领导者，生产备份仍需复制到独立存储。部署细节见 [`deployment_zeabur.md`](deployment_zeabur.md)。
 
 ## 运行和降级
 
@@ -126,7 +126,7 @@ Workbench 桌面使用命令栏、工具轨、按需 Dock、可缩放/平移的�
 
 ## 证据锁
 
-策划师只能提出机会假设，不能覆盖 Culture DNA、Trend DNA 和 Benchmark Case。模型产出的每个 Opportunity Signal 必须同时包含一个现存 `Cxxx` 文化证据和一个现存 `Mxxx` 市场证据；不存在的编号、单边证据和不符合数据契约的项目会被拒绝。随后用本地基线补足至少八条机会。
+策划师只能提出机会假设，不能覆盖 Culture DNA、Trend DNA 和 Benchmark Case。模型产出的每个 Opportunity Signal 必须同时包含一个现存 `Cxxx` 文化证据和一个现存 `Mxxx` 市场证据；不存在的编号、单边证据和不符合数据契约的项目会被拒绝。随后用本地基线补足至少八条机会。当前正式文件的 `generated_opportunities_accepted=0`，因此当前 8 条全部是证据规则基线，不得写成模型新生成。
 
 每条机会再计算 `culture_fit / market_pull / novelty / visual_potential / social_shareability / product_feasibility / cultural_risk / overall_score`。正向权重为 20/20/20/15/15/10，文化风险按 20% 扣分。排序同时考虑综合分、证据完整度和风险。
 
@@ -152,7 +152,7 @@ Pattern Primitive 只抽取网格、排列、主次、叙事节奏和材料层�
 - MediaCrawler Cookie 不进入命令行参数，而通过隔离子进程环境传递并在进程启动后立即移除。
 - 二维码/CDP 只通过 `scripts/probe_market_platforms.py --authorize`（旧小红书脚本继续兼容）由用户显式启动；普通 demo/live 策略运行不会擅自弹出登录窗口。
 - 四平台使用同一 23 词全集，正式默认各取 6 词；每平台约 50–150 条、总量约 200–600 条，单平台硬上限 150。规范化快照、上游原始文件与派生榜单分层保存。
-- MediaCrawler 使用独立虚拟环境，避免其固定依赖版本污染主运行时。
+- 主项目统一使用 Conda `qiancraft`；MediaCrawler 使用独立 Conda 环境并由 `MEDIACRAWLER_PYTHON` 指向解释器，避免其固定依赖版本污染主运行时。
 - MediaCrawler 当前许可证只允许非商业学习/研究；商业化必须取得授权或替换数据采集实现。
 - 祭祀、丧葬、祖源、支系身份、完整服饰构图、秘密知识和具体传承人作品进入概念设计前必须再次获得相应社区确认。
 

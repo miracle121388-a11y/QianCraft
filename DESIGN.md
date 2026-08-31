@@ -59,9 +59,9 @@ desktopGeometry:
 
 **Creative North Star: “Tonal Focus Review / 低饱和聚焦评审”**
 
-QianCraft 0.9.1 的本地电脑端已经从旧的 Monochrome Precision Instrument 更新为 C2 Tonal Focus Review。它仍是高密度证据工具，不是营销官网：暖矿物外壳承接整体环境，雾蓝命令栏与画布、灰绿工具/证据区、暖陶 Inspector 通过固定色块定位任务；低饱和深灰蓝只承担选中、焦点和主动作。简约来自减少无意义修饰，而不是把工作区清空成大面积纯白。
+QianCraft 0.9.2 的电脑端延续 C2 Tonal Focus Review。它仍是高密度证据工具，不是营销官网：暖矿物外壳承接整体环境，雾蓝命令栏与画布、灰绿工具/证据区、暖陶 Inspector 通过固定色块定位任务；低饱和深灰蓝只承担选中、焦点和主动作。简约来自减少无意义修饰，而不是把工作区清空成大面积纯白。
 
-本轮只实现并验收 **1440×960 Windows Chromium 电脑端**。既有 mobile/tablet 行为仍留在原组件和样式中，但 Task 4 的 C2 移动增量已按用户要求完整撤销；本轮没有运行 mobile Playwright，也没有把手机/平板写成已适配或已验证。
+本轮只承诺 **1440×960 电脑端**。30 项功能门在 macOS Chromium 已通过，Windows CI 承担同一功能集与两张权威像素基线；既有 mobile/tablet 行为仍留在原组件和样式中，但没有把手机/平板写成当前 C2 已适配或已验证。
 
 批准构图为 `.impeccable/mocks/tonal-focus-review.png`，SHA-256 为 `131cd5bedadd5be42888ace5d946ebaa2d4c3f3dc935e29393fd1127ebf7ffeb`。它只冻结区域比例、色块关系、聚焦节奏和工作台构图，不是产品数据资产，也不是逐像素实现稿。
 
@@ -196,10 +196,10 @@ Task 4 曾实现的 tablet/mobile C2 覆盖层已完整撤销。本文件不为 
 
 ## 7. Validation and change discipline
 
-- 当前 C2 电脑端门：前端单测 5/5，desktop-chromium 31/31，typecheck、lint 与 Vinext production build 通过；终审修复没有改变 Task 5 经人工目视后更新的两张电脑端像素基线。
+- 当前 C2 电脑端门：前端单测 5/5，macOS desktop-chromium 30 passed / 1 Windows 像素门 skipped，typecheck、零 warning lint 与 Vinext production build 通过；两张电脑端像素基线只由 Windows CI 执行。
 - 两张 mobile snapshot 从 Task 5 起点到终点字节不变，但本轮没有运行 mobile project，因此它们不是当前 C2 通过证据。
 - 像素基线只可在目标 Windows Chromium、相同字体环境中，由人工确认变化有意后更新。不得用另一平台的抗锯齿差异覆盖现有基线。
-- 0.9.1 C2 已发布到受 Basic Auth 保护的 Zeabur 实例；远端首页、九个节点路由、九个详情 API、DesignPackage 与正式图像资产均已通过 200 验收。当前 C2 仍只承诺 desktop-chromium，不能把发布成功扩写为 mobile/tablet 设计验收。
+- 0.9.1 C2 已发布到受 Basic Auth 保护的 Zeabur 实例；0.9.2 在远端发布验收完成前只算本地候选。当前 C2 仍只承诺 desktop-chromium，不能把发布成功扩写为 mobile/tablet 设计验收。
 
 ## 8. Do / Don’t
 

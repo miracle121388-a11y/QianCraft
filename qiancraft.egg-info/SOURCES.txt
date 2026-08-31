@@ -25,5 +25,7 @@ qiancraft.egg-info/requires.txt
 qiancraft.egg-info/top_level.txt
 tests/test_collection.py
 tests/test_demo_pipeline.py
+tests/test_deployment.py
+tests/test_runtime_snapshot.py
 tests/test_tool_api.py
 tests/test_workbench.py

@@ -61,13 +61,13 @@ Design Agent
 完整流水线使用本地主视觉：
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\run_demo.py --mode auto --design-hero data\design\assets\huaxi_grid_magnet_hero_v1.png
+conda run --no-capture-output -n qiancraft python scripts\run_demo.py --mode auto --design-hero data\design\assets\huaxi_grid_magnet_hero_v1.png
 ```
 
 只重跑 Design Agent，并同步已有运行清单：
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\run_design_agent.py --hero-image data\design\assets\huaxi_grid_magnet_hero_v1.png --update-run-manifest
+conda run --no-capture-output -n qiancraft python scripts\run_design_agent.py --hero-image data\design\assets\huaxi_grid_magnet_hero_v1.png --update-run-manifest
 ```
 
 不传 `--hero-image` 时，系统仍会用本地几何占位视觉生成完整海报，并把渲染状态诚实标为 `cache`。

@@ -6,6 +6,7 @@ import json
 import os
 import re
 import socket
+import sys
 import threading
 from collections import Counter
 from dataclasses import replace
@@ -135,11 +136,23 @@ def _port_open(host: str, port: int) -> bool:
         return False
 
 
+def _interactive_crawl_supported() -> bool:
+    """Return whether this process can launch a user-visible authorization browser."""
+
+    override = os.environ.get("QIANCRAFT_INTERACTIVE_CRAWL_ALLOWED")
+    if override is not None and override.strip():
+        return override.strip().lower() in {"1", "true", "yes", "y", "on"}
+    if os.name == "nt" or sys.platform == "darwin":
+        return True
+    return bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
+
+
 def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
     settings = load_settings()
     image_status = image_provider_status(settings)
     crawler_entry = settings.mediacrawler_path / "main.py"
-    explicit_crawl = allow_interactive and os.name == "nt"
+    interactive_supported = _interactive_crawl_supported()
+    explicit_crawl = allow_interactive and interactive_supported
     checks = [
         {
             "id": "llm",
@@ -156,6 +169,8 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
                 if explicit_crawl and not settings.mediacrawler_live_enabled
                 else "已启用"
                 if settings.mediacrawler_live_enabled
+                else "当前运行环境没有可交互图形会话"
+                if allow_interactive and not interactive_supported
                 else "MEDIACRAWLER_LIVE_ENABLED=false"
             ),
         },
@@ -224,6 +239,7 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
         "research_ready": not blockers,
         "image_generation_ready": image_status["configured"],
         "interactive_launch": explicit_crawl,
+        "interactive_supported": interactive_supported,
         "login_method": method,
         "checks": checks,
         "blockers": blockers,
@@ -919,10 +935,7 @@ def design_state() -> dict[str, Any]:
             if selected_run == "official"
             else f"/assets/design-runs/{selected_run}/design-poster.png"
         ),
-        "image_generation": {
-            "available": False,
-            "reason": "未接入可由本地网页调用的图像生成服务；不会伪装成已生成。",
-        },
+        "image_generation": image_provider_status(load_settings()),
     }
 
 

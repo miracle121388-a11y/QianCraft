@@ -4,13 +4,21 @@ import json
 from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
 from pathlib import Path
+from urllib.request import Request
 
+import pytest
+
+from app import collection as collection_module
 from app import tool_api
 from app.collection import (
     CollectionScheduler,
     CollectionStore,
     CultureSourceWatcher,
     FetchResult,
+    _assert_public_network_url,
+    _create_public_connection,
+    _PublicRedirectHandler,
+    fetch_public_page,
 )
 
 
@@ -116,6 +124,72 @@ def test_candidate_review_is_persistent_and_separate_from_verified_graph(tmp_pat
     assert reviewed["status"] == "ready_to_structure"
     assert "字段级证据" in reviewed["reviewNote"]
     assert store.candidate_counts() == {"ready_to_structure": 1}
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "http://127.0.0.1/admin",
+        "http://10.0.0.7/internal",
+        "http://169.254.169.254/latest/meta-data/",
+        "http://[::1]/admin",
+        "http://service.internal/",
+    ],
+)
+def test_manual_candidate_rejects_private_network_urls(tmp_path: Path, url: str) -> None:
+    store = CollectionStore(tmp_path / "runtime")
+
+    with pytest.raises(ValueError, match="本机或私有"):
+        store.add_manual_candidate({"url": url, "title": "不安全来源"})
+
+
+def test_public_fetch_rejects_hostname_resolving_to_private_network(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        collection_module.socket,
+        "getaddrinfo",
+        lambda *args, **kwargs: [
+            (collection_module.socket.AF_INET, collection_module.socket.SOCK_STREAM, 6, "", ("10.0.0.8", 443))
+        ],
+    )
+
+    with pytest.raises(ValueError, match="私有或保留网络"):
+        fetch_public_page("https://example.org/research", {})
+
+
+def test_redirect_handler_revalidates_private_destination() -> None:
+    handler = _PublicRedirectHandler()
+
+    with pytest.raises(ValueError, match="本机或私有"):
+        handler.redirect_request(
+            Request("https://example.org/research"),
+            None,
+            302,
+            "Found",
+            {},
+            "http://127.0.0.1/admin",
+        )
+
+
+def test_public_connection_revalidates_dns_and_refuses_rebound_private_address(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    answers = [
+        [(collection_module.socket.AF_INET, collection_module.socket.SOCK_STREAM, 6, "", ("93.184.216.34", 443))],
+        [(collection_module.socket.AF_INET, collection_module.socket.SOCK_STREAM, 6, "", ("10.0.0.8", 443))],
+    ]
+    monkeypatch.setattr(
+        collection_module.socket,
+        "getaddrinfo",
+        lambda *args, **kwargs: answers.pop(0),
+    )
+
+    assert _assert_public_network_url("https://example.org/research") == (
+        "https://example.org/research"
+    )
+    with pytest.raises(ValueError, match="私有或保留网络"):
+        _create_public_connection(("example.org", 443), timeout=1)
 
 
 def test_scheduler_reports_blocked_market_lane_without_starting_fake_live_run(

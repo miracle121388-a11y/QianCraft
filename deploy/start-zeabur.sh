@@ -14,6 +14,14 @@ mkdir -p \
     /tmp/fastcgi_temp \
     /tmp/uwsgi_temp \
     /tmp/scgi_temp
+chown -R www-data:www-data \
+    /app/data/runtime \
+    /app/runtime/auth \
+    /tmp/client_body \
+    /tmp/proxy_temp \
+    /tmp/fastcgi_temp \
+    /tmp/uwsgi_temp \
+    /tmp/scgi_temp
 
 password_hash="$(printf '%s' "$QIANCRAFT_WEB_PASSWORD" | openssl passwd -6 -stdin)"
 printf '%s:%s\n' "$QIANCRAFT_WEB_USERNAME" "$password_hash" > /app/runtime/auth/.htpasswd
@@ -25,13 +33,13 @@ envsubst '${PORT}' \
     < /app/deploy/nginx.conf.template \
     > /app/runtime/nginx.conf
 
-python -m app.tool_api --host 127.0.0.1 --port 8787 &
+gosu www-data python -m app.tool_api --host 127.0.0.1 --port 8787 &
 api_pid=$!
 nginx_pid=""
 
 (
     cd /app/web
-    exec ./node_modules/.bin/vinext start --hostname 127.0.0.1 --port 3000
+    exec gosu www-data ./node_modules/.bin/vinext start --hostname 127.0.0.1 --port 3000
 ) &
 web_pid=$!
 

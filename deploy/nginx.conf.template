@@ -10,10 +10,13 @@ events {
 http {
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
+    server_tokens off;
     access_log /dev/stdout;
     sendfile on;
     keepalive_timeout 65;
     client_max_body_size 10m;
+    limit_req_status 429;
+    limit_req_zone $binary_remote_addr zone=qiancraft_api:10m rate=12r/s;
 
     client_body_temp_path /tmp/client_body;
     proxy_temp_path /tmp/proxy_temp;
@@ -36,6 +39,9 @@ http {
         add_header X-Content-Type-Options nosniff always;
         add_header Referrer-Policy strict-origin-when-cross-origin always;
         add_header X-Frame-Options SAMEORIGIN always;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        add_header Permissions-Policy "camera=(), geolocation=(), microphone=()" always;
+        add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'; img-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; worker-src 'self' blob:" always;
 
         location = /healthz {
             auth_basic off;
@@ -47,6 +53,7 @@ http {
         }
 
         location /api/ {
+            limit_req zone=qiancraft_api burst=40 nodelay;
             proxy_pass http://127.0.0.1:8787;
             proxy_http_version 1.1;
             proxy_set_header Host $host;

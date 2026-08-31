@@ -1,20 +1,30 @@
 from __future__ import annotations
 
 import hashlib
+import ipaddress
 import json
 import os
 import re
+import socket
 import threading
 from collections import Counter
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from html.parser import HTMLParser
+from http.client import HTTPConnection, HTTPSConnection
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin, urlparse, urlunparse
-from urllib.request import Request, urlopen
+from urllib.request import (
+    HTTPHandler,
+    HTTPRedirectHandler,
+    HTTPSHandler,
+    ProxyHandler,
+    Request,
+    build_opener,
+)
 from uuid import uuid4
 
 USER_AGENT = "QianCraftEvidenceMonitor/0.9 (+local evidence research tool)"
@@ -114,12 +124,105 @@ def _normalize_url(value: str) -> str:
     if parsed.username or parsed.password:
         raise ValueError("来源地址不能包含用户名或密码。")
     host = parsed.hostname or ""
-    if host in {"localhost", "127.0.0.1", "::1"} or host.endswith(".local"):
+    if (
+        host in {"localhost", "localhost.localdomain"}
+        or host.endswith((".local", ".localhost", ".internal"))
+    ):
+        raise ValueError("来源地址不能指向本机或私有服务。")
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        address = None
+    if address is not None and not address.is_global:
         raise ValueError("来源地址不能指向本机或私有服务。")
     normalized_path = parsed.path or "/"
     return urlunparse(
         (parsed.scheme.lower(), parsed.netloc.lower(), normalized_path, "", parsed.query, "")
     )
+
+
+def _public_address_infos(host: str, port: int) -> list[tuple[Any, ...]]:
+    try:
+        answers = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+    except socket.gaierror as exc:
+        raise ValueError(f"来源地址无法解析：{host}") from exc
+    addresses = {item[4][0].split("%", maxsplit=1)[0] for item in answers if item[4]}
+    if not addresses or any(not ipaddress.ip_address(item).is_global for item in addresses):
+        raise ValueError("来源地址解析到本机、私有或保留网络，已拒绝访问。")
+    return answers
+
+
+def _assert_public_network_url(value: str) -> str:
+    normalized = _normalize_url(value)
+    parsed = urlparse(normalized)
+    host = parsed.hostname or ""
+    port = parsed.port or (443 if parsed.scheme == "https" else 80)
+    _public_address_infos(host, port)
+    return normalized
+
+
+def _create_public_connection(
+    address: tuple[str, int],
+    timeout: float | object = socket._GLOBAL_DEFAULT_TIMEOUT,
+    source_address: tuple[str, int] | None = None,
+) -> socket.socket:
+    """Resolve, validate and connect to the exact public address set in one step."""
+
+    host, port = address
+    last_error: OSError | None = None
+    for family, socktype, proto, _canonname, sockaddr in _public_address_infos(host, port):
+        connection: socket.socket | None = None
+        try:
+            connection = socket.socket(family, socktype, proto)
+            if timeout is not socket._GLOBAL_DEFAULT_TIMEOUT:
+                connection.settimeout(timeout)
+            if source_address:
+                connection.bind(source_address)
+            connection.connect(sockaddr)
+            return connection
+        except OSError as exc:
+            last_error = exc
+            if connection is not None:
+                connection.close()
+    if last_error is not None:
+        raise last_error
+    raise OSError("来源地址没有可连接的公网地址。")
+
+
+class _PublicHTTPConnection(HTTPConnection):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self._create_connection = _create_public_connection
+
+
+class _PublicHTTPSConnection(HTTPSConnection):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self._create_connection = _create_public_connection
+
+
+class _PublicHTTPHandler(HTTPHandler):
+    def http_open(self, req: Request) -> Any:
+        return self.do_open(_PublicHTTPConnection, req)
+
+
+class _PublicHTTPSHandler(HTTPSHandler):
+    def https_open(self, req: Request) -> Any:
+        return self.do_open(_PublicHTTPSConnection, req, context=self._context)
+
+
+class _PublicRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(
+        self,
+        req: Request,
+        fp: Any,
+        code: int,
+        msg: str,
+        headers: Any,
+        newurl: str,
+    ) -> Request | None:
+        _assert_public_network_url(newurl)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
 @dataclass(frozen=True, slots=True)
@@ -134,6 +237,7 @@ Fetcher = Callable[[str, Mapping[str, str]], FetchResult]
 
 
 def fetch_public_page(url: str, conditional_headers: Mapping[str, str]) -> FetchResult:
+    url = _assert_public_network_url(url)
     request_headers = {
         "User-Agent": USER_AGENT,
         "Accept": "text/html,application/xhtml+xml,application/json;q=0.8,*/*;q=0.3",
@@ -141,7 +245,12 @@ def fetch_public_page(url: str, conditional_headers: Mapping[str, str]) -> Fetch
     }
     request = Request(url, headers=request_headers)
     try:
-        with urlopen(request, timeout=12) as response:
+        with build_opener(
+            ProxyHandler({}),
+            _PublicHTTPHandler(),
+            _PublicHTTPSHandler(),
+            _PublicRedirectHandler(),
+        ).open(request, timeout=12) as response:
             body = response.read(524_289)
             if len(body) > 524_288:
                 body = body[:524_288]

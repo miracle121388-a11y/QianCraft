@@ -4,6 +4,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   ArrowLeft,
   CornerDownRight,
@@ -368,6 +369,7 @@ function JsonFacts({ data }: { data: JsonRecord }) {
 }
 
 export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; workspaceId: string }) {
+  const router = useRouter();
   const [detail, setDetail] = useState<NodeDetailPayload | null>(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -490,7 +492,7 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
       const request = mode === 'duplicate'
         ? duplicateConcept(workspaceId, node.id)
         : generateMoreConcept(workspaceId, node.id);
-      void request.then((workspace) => { window.location.assign(`/nodes/${encodeURIComponent(workspace.selected_node_id)}?workspace=${encodeURIComponent(workspaceId)}`); }).catch((reason) => setNotice({ tone: 'error', text: reason instanceof Error ? reason.message : String(reason) })).finally(() => setBusy(false));
+      void request.then((workspace) => { router.push(`/nodes/${encodeURIComponent(workspace.selected_node_id)}?workspace=${encodeURIComponent(workspaceId)}`); }).catch((reason) => setNotice({ tone: 'error', text: reason instanceof Error ? reason.message : String(reason) })).finally(() => setBusy(false));
     } else {
       const operation = mode === 'activate'
         ? () => activateConcept(workspaceId, node.id)
@@ -545,7 +547,7 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
         {node.type === 'MarketRadarNode' ? <MarketDetail detail={detail} /> : null}
         {node.type === 'StrategyNode' ? <StrategyDetail opportunities={detail.content.opportunities ?? []} /> : null}
         {node.type === 'DesignBriefNode' && briefDraft ? <BriefDetail draft={briefDraft} setDraft={setBriefDraft} onSave={saveBriefDraft} busy={busy} detail={detail} /> : null}
-        {node.type === 'VisualGenerationNode' ? <VisualDetail detail={detail} onOpen={(id) => window.location.assign(`/nodes/${encodeURIComponent(id)}?workspace=${encodeURIComponent(workspaceId)}`)} /> : null}
+        {node.type === 'VisualGenerationNode' ? <VisualDetail detail={detail} onOpen={(id) => router.push(`/nodes/${encodeURIComponent(id)}?workspace=${encodeURIComponent(workspaceId)}`)} /> : null}
         {node.type === 'ConceptNode' ? <ConceptDetail detail={detail} draft={conceptDraft} setDraft={setConceptDraft} onSave={() => saveCurrentNode({ ...conceptDraft }, '保存概念文本与生成参数；等待重生成')} onAction={conceptAction} busy={busy} /> : null}
         {node.type === 'PosterBoardNode' && posterDraft ? <PosterDetail detail={detail} draft={posterDraft} setDraft={setPosterDraft} onSave={() => saveCurrentNode({ title: posterDraft.title, summary: posterDraft.subtitle, poster: posterDraft, status: 'stale' }, '保存海报标题与板块配置；等待重新渲染')} busy={busy} /> : null}
         <CitationLedger citations={detail.citations} audit={detail.citationAudit} />

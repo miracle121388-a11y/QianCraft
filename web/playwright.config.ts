@@ -1,8 +1,11 @@
 import { defineConfig } from '@playwright/test';
 
-const pythonCommand = process.platform === 'win32'
-  ? '.\\.venv\\Scripts\\python.exe -m app.tool_api --port 8787'
-  : './.venv/bin/python -m app.tool_api --port 8787';
+const condaEnvironment = process.env.QIANCRAFT_CONDA_ENV?.trim() || 'qiancraft';
+if (!/^[A-Za-z0-9_.-]+$/.test(condaEnvironment)) {
+  throw new Error('QIANCRAFT_CONDA_ENV 只能包含字母、数字、点、下划线和连字符。');
+}
+const pythonCommand = process.env.QIANCRAFT_PYTHON_COMMAND?.trim()
+  || `conda run --no-capture-output -n ${condaEnvironment} python -m app.tool_api --port 8787`;
 const chromiumExecutablePath = process.env.QIANCRAFT_CHROMIUM_EXECUTABLE_PATH?.trim();
 
 export default defineConfig({
