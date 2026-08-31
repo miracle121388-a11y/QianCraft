@@ -458,6 +458,29 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 
 ## 9. 更新日志
 
+### 2026-09-01｜0.9.2｜GitHub Actions 弃用参数清理
+
+变更：
+
+- 第二次 Actions 运行 `33416007068` 的四个 Job 全部通过，但 setup-miniconda v4 对两处 `auto-activate-base` 产生 6 条弃用注解；按运行器提示替换为 `auto-activate: false`。所有命令本来就显式使用 `conda run -n qiancraft`，因此不依赖 shell 自动激活，行为保持不变。
+
+原因：
+
+- 已通过但带弃用注解的工作流会积累升级风险，不能作为无维护债务的最终质量门。本轮目标是把 CI 配置收敛到当前 action 接口。
+
+验证：
+
+- 运行 `33416007068` 实际通过 Ubuntu/macOS/Windows Python 76/76、Linux Ruff/锁/依赖审计，以及 Windows Web 单测、类型、ESLint、构建、依赖审计、31 项 Playwright（含权威像素基线）和 shell/diff 门；唯一注解就是上述弃用参数。替换后的 YAML 通过本地解析与 `git diff --check`，最终无弃用参数的远端运行结果待推送确认。
+
+边界：
+
+- 本次只清理 CI action 输入，不改变产品代码、依赖、数据或外部服务状态；Zeabur 0.9.2 仍未发布。
+
+涉及文件：
+
+- `.github/workflows/quality.yml`
+- `WORKFLOW.md`
+
 ### 2026-09-01｜0.9.2｜GitHub Actions 运行器上下文修复
 
 变更：

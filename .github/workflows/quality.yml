@@ -31,7 +31,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v4
         with:
           activate-environment: qiancraft
-          auto-activate-base: false
+          auto-activate: false
           environment-file: environment.yml
       - name: Python tests
         run: conda run --no-capture-output -n qiancraft python -m pytest -q
@@ -59,7 +59,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v4
         with:
           activate-environment: qiancraft
-          auto-activate-base: false
+          auto-activate: false
           environment-file: environment.yml
       - uses: actions/setup-node@v7
         with:
