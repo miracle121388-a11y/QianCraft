@@ -199,7 +199,7 @@ Task 4 曾实现的 tablet/mobile C2 覆盖层已完整撤销。本文件不为 
 - 当前 C2 电脑端门：前端单测 5/5，desktop-chromium 31/31，typecheck、lint 与 Vinext production build 通过；终审修复没有改变 Task 5 经人工目视后更新的两张电脑端像素基线。
 - 两张 mobile snapshot 从 Task 5 起点到终点字节不变，但本轮没有运行 mobile project，因此它们不是当前 C2 通过证据。
 - 像素基线只可在目标 Windows Chromium、相同字体环境中，由人工确认变化有意后更新。不得用另一平台的抗锯齿差异覆盖现有基线。
-- 0.9.1 C2 仍只在本地实现和验收；受保护线上实例仍为 0.8.0，不得写成已部署。
+- 0.9.1 C2 已发布到受 Basic Auth 保护的 Zeabur 实例；远端首页、九个节点路由、九个详情 API、DesignPackage 与正式图像资产均已通过 200 验收。当前 C2 仍只承诺 desktop-chromium，不能把发布成功扩写为 mobile/tablet 设计验收。
 
 ## 8. Do / Don’t
 

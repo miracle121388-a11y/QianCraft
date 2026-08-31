@@ -10,8 +10,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-0.9.1-111111?style=flat-square" alt="Version 0.9.1">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-57%20Python%20%7C%205%20Web%20%7C%2035%20UI-2f7358?style=flat-square" alt="57 Python tests, 5 Web tests, and 35 UI tests passed">
-  <img src="https://img.shields.io/badge/local-0.9.1%20%7C%20online-0.8.0-d08b32?style=flat-square" alt="Local version 0.9.1; protected online instance 0.8.0">
+  <img src="https://img.shields.io/badge/tests-58%20Python%20%7C%205%20Web%20%7C%2031%20UI-2f7358?style=flat-square" alt="58 Python tests, 5 Web tests, and 31 desktop UI tests passed">
+  <img src="https://img.shields.io/badge/local-0.9.1%20%7C%20online-0.9.1-2f7358?style=flat-square" alt="Local version 0.9.1; protected online instance 0.9.1">
 </p>
 
 <p align="center">
@@ -26,7 +26,7 @@
 > [!IMPORTANT]
 > QianCraft 当前是可运行的研究原型：输出可用于概念展示、工厂报价与首样沟通，但不是生产工程图、合规证书、商业文化授权或“爆款保证”。
 
-受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。线上仍为已验证的 0.8.0；本地 0.9.1 提交前加固尚未部署。入口启用 Basic Auth，访问凭证由项目维护者单独提供；运行态工作区写入持久卷，密钥不进入前端或仓库。
+受保护的在线工作台：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。线上已发布并验收 0.9.1；入口启用 Basic Auth，访问凭证由项目维护者单独提供。运行态工作区写入 Zeabur 持久卷，密钥只由服务器变量注入，不进入前端或仓库。当前独立图像 provider 与四平台授权采集运行时尚未接通，因此 A/B/C 已有资产、工作台、人工决策、Design Agent、DesignPackage 与海报可直接使用，图片重生成和严格实时研究会显示真实阻断状态。
 
 ## 一眼看懂
 
@@ -323,23 +323,23 @@ QianCraft/
 ## 验证
 
 ```powershell
-uv run pytest
-uv run ruff check app tests scripts/probe_market_platforms.py
+.\.venv\Scripts\python.exe -m pytest -q
+uv run --extra test ruff check .
 uv lock --check
 cd web
 pnpm test
 pnpm typecheck
 pnpm lint
-pnpm exec playwright test tests/ui/ui-quality.spec.ts
+pnpm exec playwright test --project=desktop-chromium
 pnpm build
 ```
 
 当前基线：
 
 ```text
-53 Python tests passed
+58 Python tests passed
 5 Web tests passed
-35 Playwright tests passed / 1 intentionally skipped
+31 desktop Playwright tests passed
 All checks passed!
 ```
 

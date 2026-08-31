@@ -24,8 +24,8 @@ A user can move through Culture → Market → Strategy → Design → Delivery,
 - Eight scored opportunities, nine node instances, ten relationships and three comparable concept directions.
 - A seven-stage Human Decision Studio, editable node detail pages, workspace persistence, citations, deep links and honest live/cache/stale/warning/error states.
 - A working Design Agent handoff through `DesignPackage`, sample/quotation brief and 1800 × 2400 concept poster.
-- A repeatable desktop/mobile UI gate across the workbench and all nine node routes: Python 57 passed, frontend unit tests 5 passed, and Playwright 35 passed / 1 intentionally skipped, alongside typecheck, lint, production build, Ruff, lockfile and artifact-contract checks.
-- The collection scheduler can keep working only while a single Tool API/container instance, persistent runtime volume, restart policy, network and required platform authorization remain available. It is not a distributed queue. Local 0.9.1 has not been deployed; the protected online instance remains 0.8.0.
+- A repeatable desktop UI gate across the workbench and all nine node routes: Python 58 passed, frontend unit tests 5 passed, and desktop Playwright 31 passed, alongside typecheck, lint, production build, Ruff, lockfile and artifact-contract checks. Mobile/tablet behavior remains outside the current C2 acceptance scope.
+- Protected online 0.9.1 is running on Zeabur with Basic Auth, a mounted `/app/data/runtime` volume and a healthy single-process collection scheduler. The deployed Design Agent, `DesignPackage`, poster renderer, workspace persistence and all nine detail routes passed a clean remote acceptance workspace. The scheduler is not a distributed queue; strict live research remains blocked in the compact cloud image until its upstream runtimes and authorized platform sessions are supplied, and image regeneration remains unavailable until an independent image provider is configured.
 
 ## Experience direction
 
