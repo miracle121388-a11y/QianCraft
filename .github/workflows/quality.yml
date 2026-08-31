@@ -54,7 +54,6 @@ jobs:
       CI: "true"
       QIANCRAFT_CONDA_ENV: qiancraft
       QIANCRAFT_CONTINUOUS_COLLECTION: "true"
-      QIANCRAFT_TOOL_WORKSPACE_DIR: ${{ runner.temp }}\qiancraft-tool-workspace
     steps:
       - uses: actions/checkout@v6
       - uses: conda-incubator/setup-miniconda@v4
@@ -84,6 +83,8 @@ jobs:
         run: pnpm --dir web exec playwright install chromium
       - name: Desktop browser gate
         shell: bash
+        env:
+          QIANCRAFT_TOOL_WORKSPACE_DIR: ${{ runner.temp }}\qiancraft-tool-workspace
         run: pnpm --dir web exec playwright test --project=desktop-chromium
       - name: Repository and deployment script checks
         shell: bash

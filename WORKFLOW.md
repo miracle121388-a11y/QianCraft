@@ -458,6 +458,29 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 
 ## 9. 更新日志
 
+### 2026-09-01｜0.9.2｜GitHub Actions 运行器上下文修复
+
+变更：
+
+- 首次推送后的 Actions 运行 `33415813772` 在工作流解析阶段失败且没有创建 Job。定位为 job 级 `env` 使用了只在 runner/step 阶段可用的 `runner.temp`；将临时 Tool Workspace 变量下移到 Windows Playwright step，其他 CI 拓扑和命令不变。
+
+原因：
+
+- 本地 YAML 解析只能证明语法有效，不能证明 GitHub 表达式上下文在对应层级可用。必须以实际 Actions 运行结果为准，不能把零 Job 的解析失败写成跨平台质量门通过。
+
+验证：
+
+- 首次运行的确定事实为 `failure / jobs=[]`，无测试被执行；修复后的 YAML 通过本地解析与 `git diff --check`。新的远端运行结果将在推送后核对，未完成前仍不声明 CI 通过。
+
+边界：
+
+- 本次只修复 CI 配置作用域，不改变产品运行逻辑、数据、视觉或外部能力边界；Zeabur 0.9.2 仍未发布。
+
+涉及文件：
+
+- `.github/workflows/quality.yml`
+- `WORKFLOW.md`
+
 ### 2026-09-01｜0.9.2｜跨平台质量门、安全基线与可恢复运行态
 
 变更：
