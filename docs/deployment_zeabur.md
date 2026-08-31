@@ -25,6 +25,10 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 2026-08-31 的 0.9.1 部署 `6a958619be05255ec5e261f7` 已在同一受保护实例进入 `RUNNING`。远端冷构建完成 Vinext 五阶段并安装 `qiancraft-0.9.1`；公网 `/healthz` 为 200，匿名 `/` 与 `/api/health` 均为 401。容器内使用现有服务器凭证完成统一入口验收：首页、九个节点路由、健康/Bootstrap、九个详情 API、DesignPackage 和四项正式 PNG 资产全部为 200；服务器直报应用版本 0.9.1。`/app/data/runtime` 实际挂载为 ext4 持久卷，默认工作区仍为 9 个节点/10 条边，22 条文化记录、378 条历史市场样本和 8 条机会均可读取。
 
+2026-09-01 的 0.9.2 部署 `6a95b5a29ed7d65609e27bf6` 已进入 `RUNNING`，远端构建日志确认 Vinext 五阶段完成并安装 `qiancraft-0.9.2`。公网 `/healthz` 为 200，匿名首页/API 为 401，认证后首页、九路由、九详情 API、DesignPackage 和四项实际图像均为 200。Nginx 实际下发 HSTS、CSP、Permissions-Policy 等安全头；80 个并发 API 请求实测得到 42 个 200 和 38 个 429，突发后健康检查仍为 200。Tool API、Vinext 与 Nginx worker 以 `www-data` 运行，仅 Nginx master 保留 root；持久卷仍为 `/dev/vda3` ext4。
+
+0.9.2 线上隔离工作区实际完成创建、Design Agent、DesignPackage 和 322,090 字节 PNG 海报。未配置图像 provider 时，Regenerate 与 Generate More 均按契约返回 `warning`；严格研究因无图形会话、缺 MediaCrawler/LightRAG 运行时及四平台授权返回 422。隔离工作区与设计目录已精确清理，默认工作区复核为 9 节点/10 边。发布前 0.9.1 运行态和发布后 0.9.2 ZIP 快照均已校验并复制到 Zeabur 持久卷之外、权限受控的本机目录；这仍不等于定时异地备份或已完成恢复演练。
+
 同轮远端创建隔离验收工作区，实际完成 New → Rename/Save/Load → Decision v2 → Design Agent → DesignPackage → Poster v2 → 九节点详情与两张新 PNG 读取；创建返回 201，其余业务动作返回 200，严格实时研究因缺少上游运行时与四平台授权按契约返回 422。临时工作区、设计运行和生成资产随后按精确 ID 从持久卷清理，默认工作区未被污染。调度器在线、心跳新鲜、总开关开启且 `/api/health` 为 healthy；上线后的首轮文化巡检探测 4 个来源，其中 3 个正常、1 个失败，通道诚实标为 `degraded` 并只新增 1 条待人工审核候选，正式图谱仍为 22 条/32 个来源。市场通道因 7 项真实前置条件缺失保持 `blocked`。DeepSeek `/models` 从服务器返回 200，当前目标模型存在；独立图像 provider 仍未配置。
 
 ## 必需配置
@@ -89,3 +93,5 @@ Zeabur CLI 上传会跳过点号目录；Dockerfile 因此会在远端构建阶�
 0.8.0 使用隔离副本 `.zeabur-stage-080`：74 个文件、19,435,606 字节，敏感文件名与长 `sk-` 模式均为 0 命中；不包含 `api.txt`、环境文件、Cookies、上游源码、测试、本地运行态或用户未跟踪文件。本轮没有改写源图，线上持久卷继续保留既有工作区。鉴于 Zeabur 上传链路会改变 shell 脚本行尾，Dockerfile 在复制启动脚本后显式移除 CRLF，再设置可执行权限；最终 0.8.0 容器已用该路径启动。
 
 0.9.1 使用隔离副本 `.zeabur-stage-091`：79 个文件、19,597,854 字节；敏感路径、长 `sk-` 模式和必需文件检查分别为 0 命中、0 命中和 0 缺失。不包含 `.env`、`api.txt`、Cookies、上游源码、测试、本地运行态或原始采集数据。依赖下载曾发生一次自动重试，但构建、镜像上传和发布最终完整通过；未改写项目源图或线上持久数据。
+
+0.9.2 使用临时隔离发布目录：115 个文件、27,938,032 字节；必需文件缺失、符号链接、禁止路径、私钥、长 `sk-` 和长 Authorization 值均为 0。副本不含 `.env`、`api.txt`、Cookies、本地运行态、原始平台数据、上游源码、测试或 Playwright 产物；远端实际上传的 Docker context 为约 27.95 MB。
