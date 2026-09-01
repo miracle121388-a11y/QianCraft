@@ -487,6 +487,29 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 
 ## 9. 更新日志
 
+### 2026-09-01｜0.10.0｜Studio 小字号对比度跨表面修正
+
+变更：
+
+- 把 Studio 专用次级文字从旧工作台的 `#626970` 调整为 `#565E65`；主色、表面、功能分区和旧 Workbench 令牌均保持不变。
+
+原因：
+
+- 第二次 0.10.0 GitHub Actions 运行 `33509679761` 中，Ubuntu/macOS/Windows Python 全部通过，Windows 旧 31 项门也全部通过；新增 Studio axe 用例发现 `#626970` 在 rail/shell/command 等浅色表面上的小字号对比度只有约 4.16–4.31:1。新值在 Studio 使用的最不利 selected 表面仍为约 4.59:1，在其他浅色表面为约 4.93–5.69:1。
+
+验证：
+
+- 失败仅为新增六路由门的 `color-contrast`，列出的导航、页眉、说明和设计标签都由同一 Studio 变量控制；其余 31/31 Windows 用例实际通过。修改后将重跑本地静态/构建门与新的完整 GitHub Actions。
+
+边界：
+
+- 本次修正不声称完整 WCAG 认证；axe 只覆盖自动可发现问题，真实屏幕阅读器和用户测试仍是正式无障碍验收的后续工作。
+
+涉及文件：
+
+- `web/app/studio.css`、`web/app/layout.tsx`
+- `DESIGN.md`、`docs/frontend_quality_workflow.md`、`WORKFLOW.md`
+
 ### 2026-09-01｜0.10.0｜每日调度回归门消除跨平台竞态
 
 变更：

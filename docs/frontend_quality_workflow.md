@@ -43,7 +43,7 @@ QianCraft 是结果优先的证据工具，不是官网。前端质量按以下�
 | node | `#F0EEE9` | 节点、字段、次操作 |
 | selected | `#CBD9E6` | 选中/活动面 |
 | primary | `#345C7D` | 主动作、选中边、焦点 |
-| text / secondary | `#20262C` / `#626970` | 正文与辅助信息 |
+| text / secondary | `#20262C` / `#626970`; Studio compact secondary `#565E65` | 正文与辅助信息；Studio 小字在全部浅色表面保持至少 4.5:1 |
 | rule | `#C4C8C7` | 边线和分隔 |
 | success / warning / danger / neutral | `#637E6A` / `#B1844C` / `#9A6757` / `#7B8086` | 状态标记，必须配合文字与形状 |
 

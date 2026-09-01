@@ -17,6 +17,7 @@ colors:
   primary: "#345C7D"
   text: "#20262C"
   textSecondary: "#626970"
+  studioTextSecondary: "#565E65"
   rule: "#C4C8C7"
   success: "#637E6A"
   warning: "#9A7446"
@@ -34,6 +35,8 @@ desktopGeometry:
 ---
 
 # QianCraft 设计与交互契约
+
+Studio 的小字号导航、标签和说明使用 `#565E65`，确保它在 rail、shell、command、canvas、inspector、card 与 selected 七种浅色表面上均达到至少 4.5:1；旧 Workbench 的既有 `#626970` 次级文字合同保持不变。
 
 ## 1. 产品体验方向
 
