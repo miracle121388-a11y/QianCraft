@@ -18,12 +18,14 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 from uuid import uuid4
 
+from app import __version__
 from app.adapters.image_generation_adapter import image_provider_status
 from app.collection import CollectionScheduler, CollectionStore, CultureSourceWatcher
 from app.config import MARKET_PLATFORM_CODES, load_settings
 from app.designer import DesignAgent, render_design_package_markdown, render_design_poster
 from app.pipeline import run_pipeline
 from app.schemas import DemoRequest, DesignerHandoff, DesignPackage
+from app.studio import StudioEngine, StudioScheduler, StudioStore, _local_date
 from app.workbench import (
     BUNDLED_GENERATED_DIR,
     DESIGN_RUNS_DIR,
@@ -64,27 +66,30 @@ WORKSPACE_PATH = WORKSPACE_DIR / "workspace.json"
 TOOL_RUNS_DIR = WORKSPACE_DIR / "design_runs"
 RESEARCH_RUNS_DIR = WORKSPACE_DIR / "research_runs"
 COLLECTION_DIR = WORKSPACE_DIR / "collection"
+STUDIO_DIR = WORKSPACE_DIR / "studio"
 
 DESIGN_LOCK = threading.Lock()
 RESEARCH_LOCK = threading.Lock()
 RESEARCH_JOB_STATE_LOCK = threading.Lock()
 COLLECTION_SERVICE_LOCK = threading.Lock()
+STUDIO_SERVICE_LOCK = threading.Lock()
 ACTIVE_RESEARCH_JOB_ID = ""
 COLLECTION_SERVICE: CollectionScheduler | None = None
+STUDIO_SERVICE: StudioScheduler | None = None
 
 
 def collection_health_response() -> tuple[dict[str, Any], HTTPStatus]:
     collection_health = collection_service().health()
+    studio_health = studio_service().health()
+    healthy = collection_health["ok"] and studio_health["ok"]
     payload = {
-        "ok": collection_health["ok"],
+        "ok": healthy,
+        "version": __version__,
         "root": str(ROOT_DIR),
         "collectionScheduler": collection_health,
+        "dailyDesignScheduler": studio_health,
     }
-    status = (
-        HTTPStatus.OK
-        if collection_health["ok"]
-        else HTTPStatus.SERVICE_UNAVAILABLE
-    )
+    status = HTTPStatus.OK if healthy else HTTPStatus.SERVICE_UNAVAILABLE
     return payload, status
 
 
@@ -1185,14 +1190,101 @@ def collection_service() -> CollectionScheduler:
         return COLLECTION_SERVICE
 
 
+def studio_service() -> StudioScheduler:
+    global STUDIO_SERVICE
+    with STUDIO_SERVICE_LOCK:
+        if STUDIO_SERVICE is None:
+            store = StudioStore(STUDIO_DIR)
+            engine = StudioEngine(
+                store,
+                CULTURE_PATH,
+                MARKET_DERIVED_DIR / "product_form_hotness.json",
+            )
+            STUDIO_SERVICE = StudioScheduler(store, engine)
+        return STUDIO_SERVICE
+
+
+def studio_overview() -> dict[str, Any]:
+    service = studio_service()
+    culture = service.engine.culture_library()
+    forms = service.engine.form_library()
+    today = service.store.designs_for_date(_local_date())
+    recent = [item for item in service.store.load_designs() if not item.get("superseded")]
+    return {
+        "schemaVersion": "1.0",
+        "today": {
+            "date": _local_date(),
+            "designCount": len(today),
+            "designs": today,
+            "policy": (
+                "每日 Top 3 是上限；组合必须通过来源、样本和显式渲染器门槛，"
+                "不足时不会补假结果。"
+            ),
+        },
+        "libraries": {
+            "culture": {
+                "recordCount": culture["recordCount"],
+                "sourceCount": culture["sourceCount"],
+                "updatedAt": culture["updatedAt"],
+            },
+            "forms": {
+                "recordCount": forms["recordCount"],
+                "sampleSize": forms["sampleSize"],
+                "platforms": forms["platforms"],
+                "generatedAt": forms["generatedAt"],
+            },
+        },
+        "automation": {
+            "dailyDesign": service.status(),
+            "collection": collection_service().status(),
+        },
+        "recentDesigns": recent[:12],
+        "truthBoundary": (
+            "文化库为已核验记录；形态库为历史真实平台快照；设计稿由本地显式形态"
+            "渲染器本次生成，不冒充图像模型效果图或量产工程图。"
+        ),
+    }
+
+
+def studio_designs(params: dict[str, list[str]]) -> dict[str, Any]:
+    service = studio_service()
+    origin = params.get("origin", [""])[0]
+    date = params.get("date", [""])[0]
+    query = params.get("q", [""])[0].strip().lower()
+    rows = service.store.load_designs()
+    if origin:
+        rows = [item for item in rows if item.get("origin") == origin]
+    if date:
+        rows = [item for item in rows if item.get("dailyDate") == date]
+    if query:
+        rows = [
+            item
+            for item in rows
+            if query
+            in " ".join(
+                [
+                    str(item.get("title", "")),
+                    str(item.get("subtitle", "")),
+                    str(item.get("concept", {}).get("statement", "")),
+                ]
+            ).lower()
+        ]
+    return {
+        "count": len(rows),
+        "designs": rows,
+    }
+
+
 class ToolRequestHandler(BaseHTTPRequestHandler):
-    server_version = "QianCraftTool/0.2"
+    server_version = "QianCraftTool/1.0"
 
     def _cors(self) -> None:
         origin = self.headers.get("Origin", "")
         allowed_origins = {
             "http://localhost:3000",
             "http://127.0.0.1:3000",
+            "http://localhost:3001",
+            "http://127.0.0.1:3001",
             "http://localhost:5173",
             "http://127.0.0.1:5173",
         }
@@ -1237,6 +1329,35 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/summary":
                 self._send_json(audit_summary())
+            elif parsed.path == "/api/studio/overview":
+                self._send_json(studio_overview())
+            elif parsed.path == "/api/studio/libraries/culture":
+                self._send_json(studio_service().engine.culture_library())
+            elif parsed.path == "/api/studio/libraries/forms":
+                self._send_json(studio_service().engine.form_library())
+            elif parsed.path == "/api/studio/combinations":
+                params = parse_qs(parsed.query)
+                culture_ids = params.get("culture_id") or None
+                form_ids = params.get("form_id") or None
+                combinations = studio_service().engine.ranked_combinations(
+                    culture_ids=culture_ids,
+                    form_ids=form_ids,
+                )
+                self._send_json({"count": len(combinations), "combinations": combinations[:100]})
+            elif parsed.path == "/api/studio/designs":
+                self._send_json(studio_designs(parse_qs(parsed.query)))
+            elif parsed.path == "/api/studio/automation/status":
+                self._send_json(studio_service().status())
+            elif parsed.path == "/api/studio/automation/events":
+                params = parse_qs(parsed.query)
+                limit = int(params.get("limit", ["60"])[0])
+                self._send_json({"events": studio_service().store.list_events(limit)})
+            elif parsed.path.startswith("/api/studio/designs/"):
+                design_id = parsed.path.removeprefix("/api/studio/designs/")
+                if "/" in design_id:
+                    self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
+                else:
+                    self._send_json(studio_service().store.get_design(design_id))
             elif parsed.path == "/api/culture":
                 self._send_json(culture_records())
             elif parsed.path == "/api/market":
@@ -1322,6 +1443,8 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                 self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
         except FileNotFoundError as exc:
             self._send_json({"error": str(exc)}, HTTPStatus.NOT_FOUND)
+        except (TypeError, ValueError) as exc:
+            self._send_json({"error": str(exc)}, HTTPStatus.UNPROCESSABLE_ENTITY)
         except Exception as exc:  # noqa: BLE001 - API converts failures to explicit JSON
             self._send_json({"error": str(exc)}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -1330,6 +1453,16 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/workspace":
                 self._send_json(save_workspace(self._read_json()))
+            elif parsed.path == "/api/studio/automation/schedule":
+                self._send_json(studio_service().configure(self._read_json()))
+            elif parsed.path.startswith("/api/studio/designs/"):
+                design_id = parsed.path.removeprefix("/api/studio/designs/")
+                if "/" in design_id:
+                    self._send_json({"error": "not found"}, HTTPStatus.NOT_FOUND)
+                else:
+                    self._send_json(
+                        studio_service().engine.revise_design(design_id, self._read_json())
+                    )
             elif parsed.path == "/api/collection/schedule":
                 self._send_json(collection_service().configure(self._read_json()))
             elif parsed.path.startswith("/api/workbench/workspaces/"):
@@ -1350,6 +1483,24 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/design/generate":
                 self._send_json(generate_design(), HTTPStatus.CREATED)
+            elif parsed.path == "/api/studio/combinations":
+                self._send_json(
+                    studio_service().engine.generate_manual(self._read_json()),
+                    HTTPStatus.CREATED,
+                )
+            elif parsed.path == "/api/studio/automation/run":
+                self._send_json(studio_service().run_now(), HTTPStatus.ACCEPTED)
+            elif (
+                parsed.path.startswith("/api/studio/designs/")
+                and parsed.path.endswith("/regenerate")
+            ):
+                design_id = parsed.path.removeprefix("/api/studio/designs/").removesuffix(
+                    "/regenerate"
+                )
+                self._send_json(
+                    studio_service().engine.revise_design(design_id, self._read_json()),
+                    HTTPStatus.CREATED,
+                )
             elif parsed.path == "/api/research/run":
                 self._send_json(start_research_job(self._read_json()), HTTPStatus.ACCEPTED)
             elif parsed.path == "/api/collection/run":
@@ -1493,6 +1644,14 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
                 and filename in {"design_poster.png"}
             ):
                 path = DESIGN_RUNS_DIR / workspace_id / run_id / filename
+        elif len(parts) == 4 and parts[:2] == ["assets", "studio"]:
+            design_id, filename = parts[2], parts[3]
+            safe_design = bool(re.fullmatch(r"QCD-[A-F0-9]{12}", design_id))
+            safe_filename = bool(re.fullmatch(r"v[1-9][0-9]*\.png", filename))
+            if safe_design and safe_filename:
+                candidate = STUDIO_DIR / "assets" / design_id / filename
+                if candidate.is_file():
+                    path = candidate
         if path is None or not path.is_file():
             self._send_json({"error": "asset not found"}, HTTPStatus.NOT_FOUND)
             return
@@ -1511,7 +1670,9 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
 
 def serve(host: str = "127.0.0.1", port: int = 8787) -> None:
     collector = collection_service()
+    studio = studio_service()
     collector.start()
+    studio.start()
     server = ThreadingHTTPServer((host, port), ToolRequestHandler)
     print(f"QianCraft Tool API: http://{host}:{port}")
     try:
@@ -1520,6 +1681,7 @@ def serve(host: str = "127.0.0.1", port: int = 8787) -> None:
         pass
     finally:
         server.server_close()
+        studio.stop()
         collector.stop()
 
 

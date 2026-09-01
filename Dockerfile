@@ -28,6 +28,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
     QIANCRAFT_CONTINUOUS_COLLECTION=true \
     QIANCRAFT_CULTURE_WATCH_MINUTES=360 \
     QIANCRAFT_MARKET_REFRESH_MINUTES=240 \
+    QIANCRAFT_DAILY_DESIGN_ENABLED=true \
+    QIANCRAFT_DAILY_DESIGN_HOUR=7 \
+    QIANCRAFT_DAILY_DESIGN_MINUTE=0 \
     QIANCRAFT_RUNTIME_ROOT=/app/data/runtime \
     QIANCRAFT_WORKBENCH_DIR=/app/data/runtime/workbench \
     QIANCRAFT_TOOL_WORKSPACE_DIR=/app/data/runtime/tool_workspace
@@ -59,7 +62,7 @@ COPY deploy/nginx.conf.template /app/deploy/nginx.conf.template
 COPY deploy/start-zeabur.sh /app/deploy/start-zeabur.sh
 RUN sed -i 's/\r$//' /app/deploy/start-zeabur.sh \
     && chmod 0755 /app/deploy/start-zeabur.sh \
-    && mkdir -p /app/data/runtime/workbench /app/data/runtime/tool_workspace /app/runtime/auth
+    && mkdir -p /app/data/runtime/workbench /app/data/runtime/tool_workspace/studio /app/runtime/auth
 
 EXPOSE 8080
 

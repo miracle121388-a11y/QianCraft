@@ -1,6 +1,6 @@
 # QianCraft 前端质量工作流
 
-> 适用版本：0.9.2 及以后
+> 适用版本：0.10.0 及以后
 >
 > 当前 C2 验收范围：1440×960 电脑端；功能门跨 Windows/macOS/Linux，像素基线固定为 Windows Chromium
 >
@@ -8,15 +8,16 @@
 
 ## 1. 质量目标
 
-QianCraft 是证据工具，不是官网。前端质量按以下顺序判断：
+QianCraft 是结果优先的证据工具，不是官网。前端质量按以下顺序判断：
 
-1. 当前任务、证据状态和下一步动作是否明确。
-2. 画布、节点、Dock、Inspector 与弹层是否能直接、可逆地操作。
-3. 文化事实、市场时间窗、引用、缓存/失败、人工决策和生产前边界是否未被视觉包装掩盖。
-4. Tonal Focus Review 固定色块是否准确承担区域、选中、焦点和状态职责。
-5. 当前授权范围内的目标视口是否通过语义、交互、静态和像素门。
+1. 首页是否先展示真实两库计数、当天设计和自动化，而不是中间工作流。
+2. 文化、形态、设计与运行状态能否逐条追溯，错误时是否拒绝占位成功。
+3. 自由组合与设计版本编辑是否直接、可逆，旧版本是否保留。
+4. 高级画布、节点、Dock、Inspector 与弹层是否仍能在 `/workflow` 操作。
+5. Tonal Focus 固定色块是否准确承担区域、选中、焦点和状态职责。
+6. 当前目标视口是否通过语义、交互、静态和像素门。
 
-本轮用户明确把 C2 缩小为 desktop-only。Task 4 的手机/平板 C2 增量已完整撤销，因此不能用既有移动组件、旧跨端测试记录或未变化的 mobile snapshots 推导“C2 手机/平板已适配”。
+0.10.0 保留旧 C2 的 desktop-only 视觉基线，同时给结果优先主界面提供窄屏布局。窄屏 CSS 存在不等于已经完成真实 mobile/tablet 产品验收；当前权威 UI 门仍是 Windows desktop Chromium。
 
 ## 2. 外部基准
 
@@ -30,13 +31,13 @@ QianCraft 是证据工具，不是官网。前端质量按以下顺序判断：
 
 ## 3. C2 固定视觉合同
 
-电脑端的计算样式必须来自以下固定令牌：
+结果优先 Studio 与旧工作台共享以下计算样式令牌；几何要求按产品层级分别判断：
 
 | Role | Value | Required surface |
 |---|---:|---|
 | shell | `#E6E2DA` | 应用外壳 |
-| command | `#D9E1E8` | 60px command bar |
-| rail | `#D7E1DC` | 72px tool rail 与 210px Dock |
+| command | `#D9E1E8` | Studio 86px 顶栏 / 旧工作台 60px command bar |
+| rail | `#D7E1DC` | Studio 224px 一级导航 / 旧工作台 72px rail 与 210px Dock |
 | canvas | `#E3E8EB` | React Flow / 详情主工作面 |
 | inspector | `#E7DDD4` | 330px Inspector |
 | node | `#F0EEE9` | 节点、字段、次操作 |
@@ -48,7 +49,8 @@ QianCraft 是证据工具，不是官网。前端质量按以下顺序判断：
 
 必须检查：
 
-- 60px command、72px rail、210px bottom Dock、330px right Inspector 的桌面几何。
+- Studio 的 224px 标注导航、真实事实卡、结果卡、运行状态和每页唯一主动作。
+- `/workflow` 的 60px command、72px rail、210px bottom Dock、330px right Inspector 桌面几何。
 - selected 面 + primary 边线/handle；选择前后节点尺寸、坐标和拓扑不变。
 - 每个任务区只有一个 primary 主动作；次操作使用 node/rule/text。
 - `live/cache/stale/warning/error/degraded/blocked/offline` 文字、时间边界、原因和可恢复路径未被隐藏。
@@ -84,9 +86,10 @@ pnpm test:ui
 pnpm quality
 ```
 
-当前 `desktop-chromium` 在 1440×960 定义 31 项：30 项功能门在支持 Chromium 的系统执行，最后 1 项像素门只在 Windows 执行。覆盖：
+0.10.0 的 `desktop-chromium` 在 1440×960 定义 32 项：31 项功能门在支持 Chromium 的系统执行，最后 1 项旧工作台像素门只在 Windows 执行。覆盖：
 
-- `/` 与九个 `/nodes/*` 路由的 axe A/AA/2.2 AA 规则、唯一 `h1`、破图、缺失 `alt`、文档/主内容横向溢出。
+- 新 Studio 六个一级路由的真实 API 载入、22/10/378 计数、每日结果数量、axe A/AA/2.2 AA、唯一 `h1` 和横向溢出。
+- `/workflow` 与九个 `/nodes/*` 路由的 axe、唯一 `h1`、破图、缺失 `alt`、文档/主内容横向溢出。
 - 真实 C2 五色表面、60/72/210/330 几何、Asset/History Dock、节点动作、Inspector、Decision Studio、九个详情页、collection primary、星图外围控件和 concept gallery 的计算样式。
 - 证据拖拽与“添加到画布”点击/键盘等价路径、中文画布语义、Workspace/Decision Studio/图谱的焦点圈、Escape 关闭与焦点归还。
 - 工作台指针平移、节点键盘移动、Windows forced-colors 焦点与星图层级。
@@ -94,16 +97,16 @@ pnpm quality
 - 持续采集的正式知识/候选/历史快照分层、授权阻断、输入保留、轮询断线后旧在线状态失效与写操作禁用。
 - 两张 Windows Chromium 电脑端视觉基线：workbench 与 Brief。
 
-本轮最终真实结果：
+0.10.0 本地静态、单元与构建门已经实际执行；Windows 浏览器门须由本轮 GitHub Actions 重现后再记录远端结果，不得沿用 0.9.2 数字：
 
 - `pnpm --dir web test`：5/5。
 - `pnpm --dir web typecheck`：通过。
 - `pnpm --dir web lint`：通过。
 - `pnpm --dir web build`：Vinext 五阶段 production build 通过。
 - `pnpm --dir web audit --audit-level=high`：完整依赖（含开发工具）0 个已知漏洞。
-- macOS `pnpm --dir web exec playwright test --project=desktop-chromium`：30 passed / 1 Windows 像素门按设计 skipped。
+- Windows CI `pnpm --dir web exec playwright test --project=desktop-chromium`：当前定义 32 项（其中 1 项权威像素门），本轮推送后以实际 Actions 结果为准。
 
-0.9.2 同轮 Python 回归为 77/77。历史 58/58、25/25 与 `35 passed / 1 intentionally skipped` 只代表各自旧版本，不能冒充当前跨平台或手机基线。
+0.10.0 Python 集合已在本地通过 83/83，Web 单测通过 5/5。0.9.2 的 77/77、Windows 31/31 与其他历史数字只代表旧版本，不能冒充当前发布结果。
 
 失败时报告写入 `web/.playwright-report/`，截图、axe 上下文和 trace 写入 `web/.playwright-results/`；两者不进 Git。
 
@@ -147,5 +150,5 @@ Task 5 只更新并目视复核两张 desktop 快照。两张 mobile snapshot �
 - axe 只能发现一部分无障碍问题；自动门通过不等于 WCAG 认证，仍需真实屏幕阅读器与残障用户测试。
 - 当前没有把 Lighthouse、真实用户 INP 或超大图谱压力测试设为阻断门；节点数量和数据规模显著增长时需要单独基线。
 - 视觉快照使用 `guizhou-miao-demo` 的本地真实 HTTP 数据，不能替代认证后线上复验。
-- C2 已在受保护线上 0.9.2 完成认证后九路由实机验收；GitHub Actions 的 Windows Chromium 同时完成 31/31，包含两张权威像素基线。
+- 受保护线上当前仍以已验收的 0.9.2 为发布基线；0.10.0 的 GitHub Actions 和 Zeabur 结果完成后必须另行更新，不能从本地构建推导远端通过。
 - 本流程止于本地产品前端质量，不授权部署、商业图稿批准、工厂下单或制造/合规就绪声明。

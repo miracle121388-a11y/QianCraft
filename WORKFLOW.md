@@ -1,7 +1,7 @@
 # QianCraft 工作流程与持续更新记录
 
 > 文档性质：项目级唯一工作流说明、当前状态快照与追加式更新台账
-> 当前版本：0.9.2
+> 当前版本：0.10.0
 > 最后维护：2026-09-01
 > 维护状态：强制持续维护
 
@@ -31,9 +31,9 @@
 
 | 项目 | 当前状态 |
 |---|---|
-| 产品名称 | QianCraft Creative Intelligence Workbench｜文化文创智能工作台 |
+| 产品名称 | QianCraft｜双库驱动的自动文创设计工具 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
-| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py` + `app/collection.py`；本地与受保护线上均为 0.9.2。电脑端 C2 “Tonal Focus Review” 保持 60px 雾蓝命令栏、72px 灰绿工具轨、雾蓝 React Flow 画布、打开时 210px 底部证据/资产/历史 Dock、330px 右侧暖陶 Inspector，完整几何只在至少 1280px 宽度启用，1024px 有负向回归保护。工作台保留真实 9 节点/10 连线、主键平移、`Shift + 拖动` 框选、滚轮缩放、节点独立拖动和点击/键盘等价路径；文化/市场控制面诚实区分正式知识、候选、378 条历史证据、实时状态与授权阻断。本轮 macOS 验收功能与可访问性，Windows Chromium CI 实际通过 31/31 并承担像素基线；不声明 mobile/tablet C2 已适配。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
+| 产品工作台 | 本地 0.10.0 主入口由 `app/studio.py` + `app/tool_api.py` + `web/app/studio-*` 驱动：首页展示两库真实计数、每日最多 Top 3 与自动化；一级入口为文化库、形态库、自由组合、全部设计和运行中心；设计详情显示 PNG、来源、评分、批次、SHA 与可下载历史版本，只有编辑结果时才出现文化/形态/融合/视觉/生产前验证五阶段。旧 9 节点/10 连线 Workbench 保留在 `/workflow`。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787`；本轮因 3000 被其他服务占用而实际运行在 `http://localhost:3001/`。受保护线上仍为已验收 0.9.2，0.10.0 发布结果待本轮实际部署后更新 |
 | GitHub 展示 | 项目 README 包含原创横版 SVG 首屏、真实状态徽章、在线实例、成果海报、A/B/C 三方向视觉、Workbench 快速开始、Mermaid 架构、可信边界、路线图与许可证说明 |
 | 小红书发布包 | `docs/social/xiaohongshu/2026-08-29/` 提供可直接复制的中文标题/正文/话题、8 张 1080×1440 轮播 PNG、可复现 HTML 排版源与素材/口径说明。当前传播核心为“让贵州非遗不只被看见，也被真正理解；让传统有出处、创新有根，并以被尊重的方式走进当代生活”。封面场景使用项目原创概念图作为参考重新生成，并明确标注概念视觉；全部页面区分历史快照、推断、概念样与量产/授权/合规边界，没有使用 `reference_only` 馆藏像素 |
 | 默认主题 | 贵州苗绣 |
@@ -44,6 +44,8 @@
 | 市场研究层 | 12 条结构化市场信号、12 条公开可追溯来源 |
 | 市场状态 | 当前 Windows 基线保留 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148）与 12 条不进榜公开核验记录。0.9.0 的市场刷新通道已具备持久调度、退避、立即运行与状态审计，但当前 `MEDIACRAWLER_LIVE_ENABLED=false` 且四平台没有已连接授权浏览器，所以真实状态为 `blocked`；没有创建假任务、没有改写 378 条历史证据，也没有把“已排期”写成实时产出 |
 | 产品形态榜 | `product_form_hotness.json` 已由 378 条历史真实平台快照恢复：Top 10 为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒；Top 5 为前五项。该榜只代表有限历史样本，不代表当前全平台实时趋势 |
+| Studio 组合与设计 | 正式双库形成 22 × 10 = 220 个候选；文化证据分公开为来源充分度 50% + 地域具体度 20% + 可转译字段完整度 30%，`combo-score-v1` 再按文化证据/形态热度/品类兼容/转译空间/边界安全 25/25/25/15/10 计算。少于 2 条可解析来源、存在缺失来源、无可转译元素、形态无可点击代表原记录、样本为 0 或无显式渲染器的组合直接淘汰；每日最多选择 3 个文化与形态均不重复的结果。10 种形态均有明确本地结构渲染器，每次实际生成 1440×960 PNG、版本、批次与 SHA-256；编辑生成 V2+ 时保留旧稿及其组合、文案、分数、时间与下载地址，不冒充图像模型或量产图 |
+| Studio 自动化 | `StudioScheduler` 与采集调度器在同一 Tool API 内独立运行；默认 `Asia/Shanghai` 07:00，排程/状态/事件/设计/PNG 持久化到 `data/runtime/tool_workspace/studio/`。启动发现当天无设计时补跑；普通同日轮次幂等，明确立即重跑才生成新批次并标记旧批次 superseded。`/api/health` 只有两个调度线程与心跳都正常才返回 200 |
 | 对标案例 | 8 条 |
 | LightRAG 实机图 | 612 个实体、697 条关系；“贵州苗绣”节点查询通过 |
 | 策划输出 | 当前正式输出来自实机运行 `20260828T060200Z-e44240e3`。该轮实际调用 GPT Researcher / DeepSeek，但清单中的 `generated_opportunities_accepted=0`：模型建议没有通过证据契约，当前 8 条 Opportunity Signals 全部来自可复现的本地证据规则基线，再经六维评分与 LightRAG 二次核验；Top 3 为 OPP-006、OPP-002、OPP-004。历史日志中“DeepSeek 实际生成当前 8 条”的说法不准确，本轮以追加勘误修正 |
@@ -53,11 +55,11 @@
 | 0.9.1 提交前复验 | 独立运行 `20260829T144536Z-2e6f3e5b`：`culture_knowledge=live`、`market_research=cache`、`strategist=cache`、`design_agent=live`、`poster_renderer=live`；消费提交随附的 378 条派生平台证据，生成 8 条机会、Top 3、DesignPackage、13 项产物与 1800×2400 海报，全部清单路径为仓库相对路径且文件存在。正式仓库产物随后从既有真实 DeepSeek `DesignerHandoff` 重跑设计/海报阶段，保留历史策划证据并更新 BOM 5 项标题、摘要与可迁移清单路径 |
 | Workbench Workspace | 默认 `guizhou-miao-demo` 以仓库基线初始化，后续写入 `data/runtime/workbench/`；Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept、任务书、A/B/C、`DecisionProfile`、机器/人工并列的 `decision_output`、研究任务和设计运行引用。New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；研究晋级时保留仍有效的人工 ID，对消失的机会/品类只做带审计记录的补齐；源证据与运行态分离，页面操作不会覆盖仓库基线 |
 | 图像生成适配 | `ImageGenerationAdapter` 保留 OpenAI-compatible `/images/generations` 与 Qwen Image 3.0 同步契约；此前 Qwen `qwen-image-3.0-pro` 三次同步实机生成及其否决/未选版本是历史可审计证据。当前本机与 Zeabur 均未配置独立图像 provider，因此 Regenerate / Generate More 会保留已有 A/B/C 并显示 warning，不会把旧资产写成新成功。批准的 `.impeccable/mocks/tonal-focus-review.png`（SHA-256 `131cd5be…ffeb`）只作为 C2 电脑端非字面比例、色块与聚焦参考；它不是产品数据资产或逐像素事实源 |
-| API | 当前本机被忽略的 `.env` 与 Zeabur Secret 均配置 DeepSeek；密钥值没有进入源码、命令、文档或输出。独立图像 provider 当前未配置，四平台授权状态未改变。0.9.2 的严格研究预检按运行主机能力判断：Windows、macOS 或具有图形会话的 Linux 可执行显式授权采集，无图形会话的 Zeabur 容器继续返回 422；空的兼容开关不再错误覆盖自动检测。旧版设计状态接口改为返回真实图像 provider 状态。`/api/health` 在调度线程死亡或心跳超过 45 秒时返回 503 |
-| 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 运行 0.9.2，部署 `6a95b5a29ed7d65609e27bf6` 为 `RUNNING`。远端实际安装 `qiancraft-0.9.2`；公网 `/healthz` 200、匿名首页/API 401，认证后首页、九路由、九详情 API、DesignPackage 和四项图像均为 200。HSTS/CSP/Permissions-Policy 已下发，80 请求突发实测 38 个 429 且健康仍为 200；API/Web/Nginx worker 以 `www-data` 运行，仅 Nginx master 为 root。持久卷为 ext4，发布前后快照均已校验并复制到卷外受控存储。当前仍是单 Tool API 副本；云端严格研究与图片重生成继续按缺失条件阻断 |
+| API | 0.10.0 新增 Studio overview、两库、组合、设计 CRUD/重生成、自动排程与事件接口，以及 `/assets/studio/{designId}/v{version}.png`。健康响应增加应用版本并同时检查采集与每日设计调度器。现有严格研究、采集、Workbench 和资产接口保持兼容。独立图像 provider 与四平台授权状态未改变；Studio PNG 使用本地显式结构渲染器，不依赖或冒充该 provider |
+| 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 当前已验收版本仍为 0.9.2、部署 `6a95b5a29ed7d65609e27bf6`。0.10.0 必须在 GitHub CI、实际 Zeabur 部署、健康版本、两个调度器、两库、今日设计、PNG 读取与匿名门禁均验证后才能改写为已上线；本行当前不提前声称完成 |
 | MediaCrawler | 独立 Python 3.13 环境按上游 requirements 完整安装，探针实际导入 `bili,dy,ks,tieba,wb,xhs,zhihu`。市场通道默认每 240 分钟预检一次，只有实时开关、运行时与用户授权全部成立才创建严格任务；当前实时开关关闭且四平台无已连接授权，本轮没有登录或抓取，378 条历史快照继续诚实保持 cache |
-| 自动测试 | 0.9.2 本地完整回归：Python 77/77、Workbench TypeScript 5/5、macOS `desktop-chromium` 30 passed / 1 个 Windows 像素基线按平台跳过。GitHub Actions 运行 `33417318879` 的 Ubuntu/macOS/Windows 全部通过，Windows `desktop-chromium` 31/31 含两张权威像素基线，4 个 Job annotation 均为 0。浏览器门覆盖工作台与 9 个详情路由的 axe、结构、破图/alt、溢出、C2 固定色块、1280px 完整几何及 1024px 负向门、焦点、等价路径、画布/星图交互、断线旧状态失效和授权阻断；没有运行或声明 mobile/tablet C2。自动 axe 不等同 WCAG 认证 |
-| 静态检查 | 0.9.2 本地实际通过 Conda `qiancraft` 环境下 Ruff、`uv lock --check`、Web typecheck、ESLint、peer 检查、Vinext 五阶段 production build、`bash -n deploy/start-zeabur.sh` 与 `git diff --check`。`pip-audit` 和 `pnpm audit --audit-level=high` 均为零已知漏洞；前端从初始 7 个生产/10 个全量 high 漏洞升级至零。同一套门已在远端 CI 重现且零 annotation |
+| 自动测试 | 0.10.0 本地 Python 83/83、Web 单测 5/5；新增 6 项 Studio 后端回归和一项六一级路由真实 API/axe 门。Windows desktop UI 门当前定义为 32 项，必须由本轮 GitHub Actions 实际执行后再记录远端结果，不能沿用 0.9.2 的 77/31 数字 |
+| 静态检查 | 0.10.0 本地 Ruff、`uv lock --check`、Web typecheck、ESLint、Vinext production build、完整 `pnpm audit`、Python `pip-audit --local`、`bash -n deploy/start-zeabur.sh`、`git diff --check` 与依赖单版本检查均通过；本轮改动文件长 `sk-` 模式为 0 命中。远端跨平台结果仍以本轮 GitHub Actions 为准 |
 | 运行态恢复 | `scripts/runtime_snapshot.py` 对 `data/runtime` 生成带 SHA-256 清单的 ZIP，发布前自校验；恢复前校验路径、大小、文件数和摘要，要求服务已停止及显式确认，并保留时间戳回滚目录。本轮发布前 0.9.1 运行态以 tar + 外部 SHA-256 校验，发布后 0.9.2 在 Zeabur 实际生成含 5 个文件/57,741 字节的 ZIP 快照并通过服务器和本地双重校验；两份均已复制到持久卷之外的权限受控目录。它不等同于定时异地备份、自动保留策略或已完成恢复演练 |
 | 凭证检查 | 本机 LLM 凭证只存在于被 Git 忽略的 `.env`，站点 Basic Auth 与服务器 LLM 凭证只存在于 Zeabur Secret；当前没有独立图像凭证。本轮对 QianCraft 自有受跟踪文件执行安全独立长 `sk-` 扫描为 0 命中。全仓扫描另检出 2 个既有、未改动的 extracted-upstream 示例字面量，分别位于 LightRAG 的完整 Docker Compose 示例和非官方示例脚本；它们不在本轮改动内且按上游边界不改写。扫描没有读取 `.env` 或 Secret 值，文档与最终交接不复述任何字面量、Cookie、API Key 或授权会话值 |
 
@@ -78,6 +80,32 @@
 - [`data/outputs/run_manifest.json`](data/outputs/run_manifest.json)
 
 ## 2. 端到端工作流程
+
+0.10.0 的默认产品主链先维护材料、再产出结果，工作流只在用户干预设计时出现：
+
+```text
+Culture Scheduler ──> 候选审核 ──> 22 条正式文化内容 ─┐
+                                                         ├─> StudioEngine：220 个组合
+Market Scheduler ──> 授权/归一化 ──> 10 种产品形态 ───┘         ├─ 25/25/25/15/10 评分
+                                                                  ├─ 来源/样本/渲染器门
+                                                                  └─ 文化与形态去重
+                                                                            │
+                                            ┌───────────────────────────────┴────────────────────────┐
+                                            ▼                                                        ▼
+                                每日北京时间 07:00 最多 Top 3                              用户自由组合 1–3 × 1–3
+                                            └───────────────────────────────┬────────────────────────┘
+                                                                            ▼
+                                                1440×960 PNG + 评分 + 来源 + 批次 + SHA-256
+                                                                            │
+                                                ┌───────────────────────────┴──────────────────────┐
+                                                ▼                                                  ▼
+                                      默认只审阅结果和依据                              看中结果后进入五阶段编辑
+                                                                                         └─> 保存新版本 V2+
+```
+
+`StudioScheduler` 与采集调度器都由 Tool API 启动，状态写入持久卷。启动补跑、同日幂等、明确重跑新批次和无合格组合时的空结果都由后端控制；前端不硬编码两库数量、分数或设计。当前结构概念板使用显式本地形态渲染器，不依赖独立图像 provider，也不声称是生成式商品效果图或量产工程图。
+
+以下是仍保留在 `/workflow` 的高级研究与 DesignPackage 流程：
 
 ```text
 用户请求 DemoRequest
@@ -146,7 +174,7 @@ Tool API 启动 / 容器持续运行
 
 所谓 7×24 是“调度与状态持续运行”，前提是 Tool API/容器单副本常驻、`data/runtime` 持久卷、进程重启策略、网络和平台授权持续有效；它不是无条件保证每轮都有新素材，也不是跨副本分布式队列。文化候选必须人工核验，市场平台未授权时必须诚实阻断。
 
-Creative Intelligence Workbench 在上述正式流水线之外增加一层可审计交互，不改写事实源：
+高级 Creative Intelligence Workbench 在上述正式流水线之外增加一层可审计交互，不改写事实源：
 
 ```text
 真实文件 / RunManifest / DesignPackage
@@ -359,9 +387,9 @@ pnpm quality
 pnpm start:local
 ```
 
-当前 C2 电脑端验收使用 `pnpm exec playwright test --project=desktop-chromium`，由 `web/playwright.config.ts` 通过 Conda `qiancraft` 启动 Tool API，并在 1440×960 运行 31 项。macOS 本轮为 30 passed / 1 个 Windows 像素基线按平台跳过；固定像素比较由 Windows Chromium/CI 执行。`pnpm test:ui` 仍保留历史 desktop/mobile 双项目入口，但只有获得对应响应式授权、完成实现并准备复验时才运行。详细口径见 [`docs/frontend_quality_workflow.md`](docs/frontend_quality_workflow.md)。
+当前 C2 电脑端验收使用 `pnpm exec playwright test --project=desktop-chromium`，由 `web/playwright.config.ts` 启动 Tool API，并在 1440×960 定义 32 项：新增一项循环验证 Studio 六个一级路由、真实 22/10/378 计数与 axe，旧 Windows 像素基线仍只由 Windows Chromium/CI 执行。本轮本地没有冒充执行该跨平台门，推送后以新的 GitHub Actions 结果为准。`pnpm test:ui` 仍保留历史 desktop/mobile 双项目入口，但只有获得对应响应式授权、完成实现并准备复验时才运行。详细口径见 [`docs/frontend_quality_workflow.md`](docs/frontend_quality_workflow.md)。
 
-工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`。前端只通过 HTTP 使用真实 Python 数据；Workspace、研究任务、采集调度/事件/候选、设计运行与生成资产写入被 Git 忽略的 `data/runtime/`，`data/workbench/` 和 `data/tool_workspace/` 仅作首次初始化/历史基线。Tool API 启动时同时启动持续采集调度器；文化默认每 360 分钟巡检登记来源并把新发现写入人工候选，市场默认每 240 分钟做严格授权预检。条件缺失时阻断，不走兜底；后台轮询、心跳、下次运行和连续失败在页面上保持可见。严格实时研究要求完整上游配置，运行中刷新页面从服务端任务号续接。
+工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`；端口冲突时可由启动脚本显式改到 3001，本轮实际使用后者。前端只通过 HTTP 使用真实 Python 数据；Workspace、研究任务、采集调度/事件/候选、设计运行与生成资产写入被 Git 忽略的 `data/runtime/`，`data/workbench/` 和 `data/tool_workspace/` 仅作首次初始化/历史基线。Tool API 启动时同时启动持续采集与每日设计两个调度器；文化默认每 360 分钟巡检登记来源，市场默认每 240 分钟做严格授权预检，每日设计默认在 `Asia/Shanghai` 07:00 运行并在冷启动缺少当日产物时补跑。条件缺失时阻断，不走兜底；后台轮询、心跳、下次运行和连续失败在页面上保持可见。严格实时研究要求完整上游配置，运行中刷新页面从服务端任务号续接。
 
 ### 7.4 安装 API 与探针
 
@@ -408,7 +436,7 @@ conda run --no-capture-output -n qiancraft python scripts/probe_market_platforms
 
 ```bash
 # 本地存在 Docker 时可先构建同一生产镜像
-docker build -t qiancraft:0.9.2 .
+docker build -t qiancraft:0.10.0 .
 
 # Zeabur CLI 在已选择项目/环境/服务后上传精简发布目录
 npx --yes zeabur@latest deploy --service-id <service-id> --environment-id <environment-id> --interactive=false
@@ -450,6 +478,7 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 涉及 Design Agent 时，已核对交接 SHA-256、证据编号、量产状态、参考像素声明、海报尺寸与渲染摘要。
 - [ ] 涉及 Workbench 时，已核对 7 类节点契约、9 个默认实例的详情页、引用解析/缺失审计、Workspace Schema 1.1 与旧数据兼容、DecisionProfile 版本/ID 白名单/权重归一化、系统分和人工分并列、节点阶段深链、下游 stale 传播、严格研究 202/轮询/刷新续接/全 live 晋级门、Brief 实际 DesignPackage、Concept 旧资产标识、Poster 实际渲染和真实 API 错误态。
 - [ ] 涉及持续采集时，已核对持久配置/状态/事件/候选/指纹、真实心跳、下次运行、退避、API 重启 interrupted、文化全部成功与部分失败的 healthy/degraded 区分、候选人工晋级门、市场实时开关/运行时/四平台授权阻断，以及只有 `live_verified` 才覆盖正式证据；不得把排期、预检、历史快照或部分成功写成实时产出。
+- [ ] 涉及 Studio 时，已核对两库数量来自实际文件、文化引用可解析、形态代表原记录可点击、评分公式/分项/样本窗公开、无证据或无渲染器时明确拒绝、每日 Top 3 去重、同日幂等/明确重跑 superseded、自由组合 1–3 × 1–3、编辑 V2+ 保留旧 PNG/谱系、生成资产 SHA，以及 `massProductionReady=false` 的生产边界。
 - [ ] 涉及前端排版或交互时，已按用户授权范围运行目标 Playwright project，并核对 Tonal Focus Review 固定色值、60/72/210/330 电脑端几何、没有大面积纯白/渐变/玻璃/光晕/装饰色、黑色只作为真实关系画布例外、系统中文字体回退、画布可读比例、页面溢出、拖拽等价路径、知识星图、断线语义、可访问名称与焦点闭环。若范围包含 mobile/tablet，才另行补 44px、手势、抽屉、safe area、目标视口与真实设备门；未授权/未运行的范围不得写成通过。
 - [ ] 涉及视觉基线时，已逐张人工查看获批目标项目的快照后再决定是否更新；desktop-only 任务只更新/验收 desktop，不运行会覆盖 mobile 的总更新命令。axe 与像素回归只作为门槛证据，不写成完整 WCAG 认证。
 - [ ] 涉及上线时，已核对匿名鉴权、健康检查、认证后页面/API、持久卷目录、运行日志和部署域名；不能只依据平台状态声明完成。
@@ -457,6 +486,38 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-09-01｜0.10.0｜双库驱动、结果优先的每日设计 Studio
+
+变更：
+
+- 把默认首页从中间工作流改为结果优先 Studio：一级展示今日设计、22 条在地文化、10 种产品形态/378 条历史样本、自动化状态；提供文化库、形态库、自由组合、全部设计、设计详情与运行中心，旧高级 Workbench 保留在 `/workflow`。
+- 新增真实双库组合与设计引擎：220 个候选使用公开的文化证据分和 `combo-score-v1`，先经过来源、代表原记录、样本、转译字段和显式形态渲染器硬门，再每日选文化/形态均不重复的 Top 3；10 个形态渲染器实际写出 1440×960 PNG、批次、版本与 SHA-256。
+- 新增 `StudioScheduler`：北京时间 07:00、启动补跑、同日幂等、明确立即重跑、旧批次 superseded、持久心跳/事件/排程；与采集调度器共同进入 `/api/health`。自由组合允许 1–3 条文化 × 1–3 个形态，编辑器允许替换内容/形态、改融合文稿与视觉参数并生成 V2+，旧稿及组合、分数、时间、SHA 和下载地址均保留。
+- 删除 Studio 层任何假数据口径：数量、样本、来源、分数、设计和运行状态全部由实际 API 返回；缺少合格组合或 CJK 字体时明确失败，不套通用设计、空记录或乱码字体兜底。结构图明确标注为本地结构概念稿、`imageGenerationUsed=false`、`massProductionReady=false`。
+
+原因：
+
+- 产品核心是持续维护“在地文化内容 + 爆款产品形态”两套原始材料并自动形成可审阅的设计结果。默认展示中间节点会遮住材料与产出，也无法回答数字、评分和设计是否真实；工作流应只在用户看中设计并需要介入时出现。
+
+验证：
+
+- 本地 `pytest` 83/83、Workbench TypeScript 5/5；Ruff、`uv lock --check`、TypeScript no-emit、ESLint、Vinext 五阶段 production build、完整 `pnpm audit`、`pip-audit --local`、启动脚本语法、`git diff --check` 与 React/React DOM/React Flow 单版本检查均通过，依赖审计为 0 个已知漏洞。
+- 独立 HTTP 实测完成手动组合 201、编辑生成 V2 200，V1/V2 SHA 不同且旧新 PNG 均可读取；本地主进程健康响应为 0.10.0，采集/每日设计双调度器在线，文化 22/来源 32、形态 10/样本 378、当日活跃设计 3，六个一级路由、动态设计/编辑路由和 PNG 均为 200，非法文化 ID 为 422。
+- 新增 6 项 Studio 后端回归，覆盖真实两库、Top 3 去重、幂等/重跑、自由组合/V2、零样本拒绝与启动补跑；Windows desktop UI 门增加一项六路由真实 API/axe 检查，总数定义为 32，须由本轮 GitHub Actions 实际执行后再追加远端结果。
+
+边界：
+
+- 378 是已保存的历史真实平台快照，不是今日实时销量；当前四平台授权/云端上游采集条件仍未满足，市场通道必须继续显示 `blocked`，不能用每日设计成功掩盖采集阻断。
+- Studio 当前输出是可追溯的结构概念稿，不是生成式商品摄影、量产工程图或商业艺术批准。自动化依赖单副本常驻进程、持久卷、网络与平台重启策略；多副本前仍需分布式锁或外部队列。
+- 本日志只记录已完成的本地实现与验证；GitHub Actions 和 Zeabur 0.10.0 的部署号、远端鉴权、持久化与业务 API 结果将在实际完成后另行追加，当前不提前声称上线。
+
+涉及文件：
+
+- `app/studio.py`、`app/tool_api.py`、`app/designer/poster.py`、`tests/test_studio.py`、`tests/test_collection.py`
+- `web/app/studio-*`、`web/app/page.tsx`、`web/app/create/`、`web/app/designs/`、`web/app/libraries/`、`web/app/operations/`、`web/app/workflow/`、`web/tests/ui/ui-quality.spec.ts`
+- `.env.example`、`.github/workflows/quality.yml`、`Dockerfile`、`pyproject.toml`、`uv.lock`、`web/package.json`
+- `README.md`、`PRODUCT.md`、`DESIGN.md`、`docs/architecture.md`、`docs/continuous_collection.md`、`docs/deployment_zeabur.md`、`docs/frontend_quality_workflow.md`、`docs/real_machine_test.md`、`WORKFLOW.md`
 
 ### 2026-09-01｜0.9.2｜GitHub 跨平台门与 Zeabur 上线验收
 

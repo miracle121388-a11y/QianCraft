@@ -2,42 +2,37 @@
 
 ## 产品边界
 
-QianCraft 是贵州非遗文创的“证据到概念设计系统”，不是通用搜索器，也不是自动量产发布器。它把文化检索、市场采集、策略研究与节点画布收敛在一套自有接口后面：LightRAG 负责本地知识图谱运行，MediaCrawler 只负责合规授权数据的采集，GPT Researcher 只负责基于给定上下文形成策略，XYFlow 只提供画布运行时；QianCraft 自有 Design Agent 和 Workbench 定义业务节点、证据状态、编辑语义与设计交付。
+QianCraft 0.10.0 是“双库驱动的自动文创设计系统”，不是通用搜索器、营销官网或自动量产发布器。默认产品面只呈现两座持续维护的材料库、每日设计结果和运行状态；评分与工作流在用户检查或修改某个结果时才逐层出现。LightRAG、MediaCrawler、GPT Researcher 与 XYFlow 继续作为隔离的高级研究能力，主路径由 QianCraft 自有 Studio Engine、调度器、Tool API 和结果界面控制。
 
 ```text
-data/culture/knowledge_graph.json
-          │
-          ▼
-LightRAGAdapter ──> CultureDNA + VisualReferencePack ─────────┐
+公开文化来源 ──culture_watch──> 待审核候选 ──人工字段核验──┐
+                                                              ▼
+                                         在地文化库（22 记录 / 32 来源）
                                                               │
-verified market evidence ─────────────────────────────────────┤
-          │                                                   ├─> Strategist
-authorized MediaCrawler/xhs+dy+bili+wb (optional)              │      ├─> 机会六维加权 - 文化风险
-          └─> 统一MarketPost ─> 平台内热度 ─> 产品形态榜 ───────┘      ├─> LightRAG 二次核验
-                                                                      └─> Top 3 DesignerHandoff
-                                                                                   │
-                                                                                   ▼
-                                                                         DesignAgent
-                                                                           ├─> DesignPackage
-                                                                           ├─> 工厂首样拆解
-                                                                           └─> PosterRenderRequest
-                                                                                     │
-                                                           原创产品主视觉（可选）────┤
-                                                                                     ▼
-                                                                         精确文字海报排版器
-                                                                                     │
-                                                                                     ▼
-                                                                          DesignPoster + Manifest
-                                                                                     │
-                                                                                     ▼
-                                                              QianCraft Creative Intelligence Workbench
-                                                               ├─> 7 类业务节点 / 9 个默认实例
-                                                               ├─> 7 阶段人工决策 / 版本化 DecisionProfile
-                                                               ├─> Inspector / 版本 / stale 传播
-                                                               └─> Workspace JSON / 可编辑海报 PNG
+                                                              ├──────────┐
+                                                              │          │
+授权平台采集 ──market_refresh──> 归一化历史/实时证据 ──> 产品形态库     │
+                                         （10 形态 / 378 历史样本）      │
+                                                              │          ▼
+                                                              └─> StudioEngine
+                                                                    ├─> 220 个组合评分
+                                                                    ├─> 来源/样本/渲染器门
+                                                                    ├─> 每日最多 Top 3
+                                                                    ├─> 自由组合
+                                                                    └─> 版本化 1440×960 PNG
+                                                                              │
+                                        ┌─────────────────────────────────────┼──────────────────┐
+                                        ▼                                     ▼                  ▼
+                              今日设计 / 全部设计                      设计详情与谱系          运行中心
+                                                                              │
+                                                                              ▼
+                                                            五阶段结果工作流编辑器（V2+）
+
+高级研究分支：LightRAG + MediaCrawler + GPT Researcher + Design Agent
+                                └─> 原 9 节点 Workbench（/workflow）
 ```
 
-流水线现在越过 Designer Handoff，形成一个选定方向的概念造型、首样尺寸、BOM、图案应用、装配、质检和展示海报；它在 `production_release` 前停止。所有尺寸、公差与材料都是报价/首样假设，不是开模图或量产工程定稿；社区授权、工程验证、产品合规与商业发布仍需后续人工关口。
+Studio 主链直接生成带评分、来源、版本、SHA-256 和生产边界的结构概念板；高级研究链仍可越过 Designer Handoff 形成 DesignPackage、首样尺寸、BOM、装配、质检和展示海报。两条链都在 `production_release` 前停止。所有尺寸、公差与材料都是报价/首样假设，不是开模图或量产工程定稿；社区授权、工程验证、产品合规与商业发布仍需后续人工关口。
 
 ## 目录职责
 
@@ -48,7 +43,9 @@ QianCraft/
 │   ├── strategist/            # 唯一策划师、证据锁和固定任务提示
 │   ├── designer/              # 设计选案、制造拆解、Markdown 与海报排版
 │   ├── collection.py          # 持久化文化巡检、候选队列与市场增量调度器
+│   ├── studio.py              # 双库读取、组合评分、PNG 生成、版本与每日调度器
 │   ├── workbench.py           # 7 类节点、工作区 JSON、版本与运行语义
+│   ├── tool_api.py            # Studio、采集和旧 Workbench 的统一 HTTP API
 │   ├── config.py              # 模式、路径、凭证、隔离运行时配置
 │   ├── pipeline.py            # 并行取证、顺序策划、原子化输出
 │   └── schemas.py             # 跨模块唯一数据契约
@@ -58,12 +55,13 @@ QianCraft/
 │   ├── design/assets/         # 原创生成式产品主视觉，不存馆藏参考像素
 │   ├── benchmark/             # 可迁移案例，不直接等同于设计答案
 │   ├── demo_cache/            # 明确标注的回退结果
-│   ├── workbench/             # 画布工作区与生成视觉资产
+│   ├── runtime/               # 被忽略的采集、Studio 设计和 Workbench 持久运行态
+│   ├── workbench/             # 随仓库发布的旧工作台基线与生成视觉资产
 │   └── outputs/               # 策略、交接、设计包、海报与运行清单
 ├── docs/                      # 架构、图谱、测试和下一阶段产品方向
 ├── scripts/                   # 命令行、环境探针与运行态快照/恢复入口
 ├── tests/                     # 契约、证据、安全、恢复、降级和输出测试
-├── web/                       # Tonal Focus 工具工作台、知识星图、采集控制面与 9 个节点详情页
+├── web/                       # 结果优先 Studio、双库、设计编辑、运行中心与旧 Workbench
 ├── deploy/                    # Nginx 鉴权/反代与 Zeabur 进程编排
 ├── Dockerfile                # Vinext + Python + Nginx 单服务生产镜像
 ├── flow/xyflow-main/          # 节点画布源码审计边界与原许可证
@@ -74,9 +72,30 @@ QianCraft/
 
 保留外部源码目录是许可证、供应链审计和未来升级所需的来源边界。品牌入口、业务命名、提示词、节点类型、状态机、数据结构、知识图谱和输出格式都属于根目录的 QianCraft 自有层。
 
-## Creative Intelligence Workbench
+## 结果优先 Studio
 
-Workbench 桌面使用命令栏、工具轨、按需 Dock、可缩放/平移的空间画布和 Inspector；移动端把外周面板变为可逆覆盖层，不把桌面三栏机械缩小。画布支持空白区直接平移、节点拖动、键盘移动和 Flow Map 直达。每张节点卡的“查看展示页”和双击动作会进入 `/nodes/{nodeId}?workspace={workspaceId}`；详情页按文化、市场、量分、任务书、视觉、概念与海报采用不同信息结构，同时保留独立运行、从此处运行、保存、导出和相邻节点跳转。文化页以自定义 SVG 星图呈现 22 条记录、32 个来源和分类引力点，支持搜索聚焦、节点选择、桌面滚轮/拖动、键盘平移，以及触屏显式操作模式下的单指平移和双指缩放；默认触屏手势仍允许页面纵向滚动。前端不导入 Python 模块，所有事实读取、编辑保存与节点运行都经过 `app/tool_api.py` 的 HTTP API；API 地址可由 `NEXT_PUBLIC_QIANCRAFT_API_URL` 配置，但密钥只留在服务端。
+`app/studio.py` 的 `StudioEngine` 是主产品链的事实处理层。它只读取正式文化图谱和产品形态榜，生成完整笛卡尔组合并公开计算 `combo-score-v1`：文化证据 25%、形态热度 25%、品类兼容 25%、转译空间 15%、边界安全 10%。文化来源少于 2、没有可转译元素、形态样本为 0 或没有显式渲染器的组合直接淘汰。每日选择器再执行文化与形态去重；不足 3 个时输出更少，不调用通用兜底。
+
+`StudioStore` 把排程、状态、事件、批次、设计版本和 PNG 写到 `data/runtime/tool_workspace/studio/`。每日批次先完整生成全部文件，再一次性写入设计索引；明确重跑会把旧批次标为 `superseded`，而不是删除。人工编辑始终产生新版本并保留前一版本摘要。`StudioScheduler` 使用 `Asia/Shanghai` 时区、持久化每日时间和启动补跑；健康接口检查实际线程、心跳与开关。
+
+前端的一级路由为 `/`、`/libraries/culture`、`/libraries/forms`、`/create`、`/designs` 和 `/operations`。结果详情 `/designs/{id}` 展示 PNG、来源、评分与谱系；只有 `/designs/{id}/edit` 才展开文化、形态、融合、视觉和生产前验证五阶段。前端不保存事实，也不重算分数。
+
+主要 Studio 接口：
+
+| 接口 | 作用 |
+|---|---|
+| `GET /api/studio/overview` | 今日设计、两库真实计数和两个调度器状态 |
+| `GET /api/studio/libraries/culture` | 已核验文化记录、来源和转译边界 |
+| `GET /api/studio/libraries/forms` | 产品形态、样本、平台覆盖和代表原记录 |
+| `GET /api/studio/combinations` | 可复现组合分数与门槛 |
+| `POST /api/studio/combinations` | 自由组合并实际写入设计与 PNG |
+| `GET/PUT /api/studio/designs/{id}` | 读取设计或生成下一版本 |
+| `POST /api/studio/designs/{id}/regenerate` | 显式生成下一版本 |
+| `GET/PUT/POST /api/studio/automation/*` | 状态、事件、排程和立即重跑 |
+
+## 高级 Creative Intelligence Workbench
+
+Workbench 现在位于 `/workflow`。桌面继续使用命令栏、工具轨、按需 Dock、可缩放/平移的空间画布和 Inspector；它承担深入研究和原七阶段决策，不再是默认首页。画布支持空白区直接平移、节点拖动、键盘移动和 Flow Map 直达。每张节点卡的“查看展示页”和双击动作会进入 `/nodes/{nodeId}?workspace={workspaceId}`；详情页按文化、市场、量分、任务书、视觉、概念与海报采用不同信息结构。前端不导入 Python 模块，所有事实读取、编辑保存与节点运行都经过 `app/tool_api.py` 的 HTTP API；密钥只留在服务端。
 
 人工决策工作台覆盖文化选材、市场范围、评分与候选、设计意图、视觉方向、方案比较和海报呈现七个阶段。`guided` 系统建议与 `manual` 人工配置分开标识；系统原分、事实记录和引用保持只读，人工只保存 ID、权重、取舍和设计意图。保存后建立 `DecisionProfile` 新版本，并把任务书及视觉、概念、海报统一标记为 `stale`。完整字段与失效语义见 [`human_decision_workflow.md`](human_decision_workflow.md)。
 

@@ -32,12 +32,15 @@
 
 同日发布收口：GitHub Actions 运行 `33417318879` 在 Ubuntu/macOS/Windows 全部通过，Windows desktop-chromium 为 31/31，4 个 Job 的 annotation 均为 0。Zeabur 部署 `6a95b5a29ed7d65609e27bf6` 实际构建并运行 `qiancraft-0.9.2`；公网健康 200、匿名门禁 401、认证后九路由/九 API、DesignPackage 与 4 项图像全为 200。隔离工作区真实完成 Design Agent、DesignPackage 和 322,090 字节海报；Regenerate/Generate More 在无 provider 时为 warning，严格研究为 422，临时数据已清理。Nginx 安全头、80 请求突发中的 38 个 429、非 root worker、ext4 持久卷和发布后可验证 ZIP 快照均通过；运行日志严重错误行为 0。
 
+0.10.0 本地实机把默认入口改为双库驱动 Studio。实际 API 返回文化 22 条/来源 32 条、产品形态 10 种/历史平台样本 378 条，并由启动补跑生成当天 3 个文化与形态均不重复的结构概念设计。首页、两库、自由组合、全部设计、运行中心、动态设计详情/编辑和 PNG 均经真实 HTTP 返回 200；非法文化 ID 返回 422。隔离 HTTP 验收完成手动组合 201、编辑重生成 V2 200，V1/V2 SHA-256 不同且两张 PNG 同时保留；本地查看新生成图确认 CJK 字体正常。当前本地 0.10.0 已完成 83/83 Python、5/5 Web 单测及静态/构建/依赖门；32 项 Windows desktop UI 与 Zeabur 远端结果仍须以本轮推送后的实际记录为准，本段不提前冒充线上通过。
+
 ## 环境
 
 - macOS / zsh（本轮）与 Windows / PowerShell（既有权威像素基线）
 - Conda `qiancraft` / CPython 3.13.15
 - `uv` 0.12.7（只在 Conda 环境中执行锁文件检查）
 - 主虚拟环境：Conda `qiancraft`，由 `environment.yml` 创建
+- 0.10.0 本轮本地实现环境：项目 `.venv` / CPython 3.12.13、Ruff 0.16.5、uv 0.12.8、Node.js 22.23.2、pnpm 11.19.0；不改变仓库规定的跨平台 Conda/CI 基线
 - MediaCrawler：0.9.1 Windows 历史验收使用独立 `.venv-qiancraft`；当前 macOS/Zeabur 未配置该上游运行时，0.9.2 标准改为独立 Conda 环境并由 `MEDIACRAWLER_PYTHON` 指向其解释器
 - DeepSeek 目标模型：`deepseek-v4-flash`
 
@@ -50,6 +53,7 @@
 | GPT Researcher | 导入与模型前置条件通过 | 0.14.7 可导入且当前 LLM 探针通过；本轮没有在缺少四平台授权的情况下伪造一轮完整实时研究，既有正式运行仍保留历史 external-context writer 结果 |
 | MediaCrawler | 运行时通过；当前授权缺失 | 隔离运行时和 7 个平台模块可导入；历史正式复核中小红书 115、B站 101、微博 148 条为 live，抖音保留 14 条 cache。当前四平台授权会话均未连接，云端精简镜像也不含该上游运行时 |
 | Workbench 严格后台研究 | 通过（按失败口径） | 修复后任务 `20260828T202303Z-2bae17ff` 实际从网页启动并回调完成：culture/strategist live，market cache，四平台 unavailable，状态 `failed_no_fallback`。8 项研究产物与失败审计落盘、设计未被误调用、工作区未晋级；这证明失败会被完整保存而不是伪造成可用结果 |
+| Studio 双库与每日设计 | 本地通过；远端待发布 | API 实取文化 22/来源 32、形态 10/历史样本 378，并公开文化证据三分项、组合五分项、代表原记录、样本窗与边界。启动补跑产生当天 3 个去重设计；普通同日运行复用批次，明确重跑创建新批次并 supersede 旧批次。手动组合与 V2 编辑实际写出不同 SHA 的 1440×960 PNG，旧稿谱系和下载地址保留；零样本或来源/渲染器门不满足时明确失败 |
 | 四平台统一与热度 | 通过 | 四个快照共 378 条真实平台记录；统一榜单样本数为 378，Top 10 依次为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒，Top 5 为前五项；本轮重算分数范围 36.6–57.3，均在 0–100 内 |
 | Visual Reference Pack | 通过 | 12 条官方/权威馆藏参考、5 个 Pattern Primitive、3 组无伪造 HEX 的颜色关系；全部未明权利图片标为 `reference_only` |
 | Opportunity Score | 通过 | 当前正式文件为 8 条证据规则基线，`generated_opportunities_accepted=0`；全部具备六项正向分、文化风险和可解释综合分，20/20/20/15/15/10 加权后扣 20% 风险。历史模型候选数量不等于当前正式接受数 |
@@ -73,8 +77,8 @@
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 预期 warning | 独立 Images API 未配置；同一 DeepSeek 服务的 `/images/generations` 实测 HTTP 404。现有 A/B/C 可展示，但 Regenerate 与 Generate More 不会把项目资产冒充为一次新 API 结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 通过 | Python `pytest` 77/77；Workbench TypeScript 5/5；macOS desktop-chromium Playwright 30 passed / 1 Windows 像素门 skipped；GitHub Actions `33417318879` 在 Ubuntu/macOS/Windows 全绿，Windows desktop-chromium 31/31 并实际执行两张权威像素基线。4 个 Job 的 annotation 均为 0 |
-| 静态检查与构建 | 通过 | Conda 内 Ruff、TypeScript no-emit、零 warning ESLint、Vinext 五阶段 production build、`uv lock --check`、完整 `pnpm audit`、Python `pip-audit`、`bash -n deploy/start-zeabur.sh` 与 `git diff --check` 均无错误或已知漏洞；同套门已由远端 CI 重现 |
+| 自动测试 | 0.10.0 本地通过；跨平台待本轮 CI | Python `pytest` 83/83、Workbench TypeScript 5/5。新增 6 项 Studio 回归；Windows desktop-chromium 门定义为 32 项，其中新增一项循环验证六个 Studio 一级路由、真实 API 计数与 axe。0.9.2 的 GitHub Actions 77/77 与 Windows 31/31 只保留为历史事实，不能代表 0.10.0 |
+| 静态检查与构建 | 0.10.0 本地通过 | Ruff、TypeScript no-emit、ESLint、Vinext 五阶段 production build、`uv lock --check`、完整 `pnpm audit`、Python `pip-audit --local`、`bash -n deploy/start-zeabur.sh`、`git diff --check` 与 React/React DOM/React Flow 单版本检查均通过；依赖审计为 0 个已知漏洞，本轮改动文件长 `sk-` 模式 0 命中。远端重现结果待本轮 GitHub Actions |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 
 ## 可复现命令
@@ -126,3 +130,4 @@ pnpm start:local
 12. Workbench 已部署为受 Basic Auth 保护的远端产品验证环境；Vinext 与 Python API 在容器内仍只绑定回环地址，运行态由持久卷承载，密钥由部署变量注入。0.9.2 已补手工校验快照、原子恢复与回滚，但异地定时备份、用户级账户、权限审计、分布式任务队列、外部告警和密钥轮换仍是多人正式运营条件。精简云端镜像没有 MediaCrawler/LightRAG/GPT Researcher 上游运行时，因此严格研究会预检阻断；完整实爬应在有本人授权浏览器的本机运行。
 13. 本轮使用上传的 React Flow 源码核对集成版本和能力边界，但没有改写其源码、许可证或版权通知；产品界面统一使用 QianCraft 自有名称和业务语言。
 14. 0.9.0 引入的持续采集依赖 Tool API 单副本持续运行、持久卷、平台重启策略、网络和用户授权；它不是跨副本分布式队列。线上 0.9.2 的线程、心跳与持久卷已验收，但市场通道仍被上游运行时和真实授权条件阻断，不能据此宣称四平台已在 7×24 小时持续产出。
+15. 0.10.0 的每日 Studio 设计同样依赖单副本常驻进程和持久卷；其 PNG 是带来源、评分和版本的结构概念稿，不是图像模型商品摄影、量产工程图或生产放行。市场库当前 378 条是历史真实快照，自动设计按时运行不等于四平台实时采集已经恢复。
