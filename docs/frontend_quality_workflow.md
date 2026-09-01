@@ -98,7 +98,7 @@ pnpm quality
 - 云端授权浏览器卡片只在服务端报告入口与连接状态时出现，并明确区分“浏览器已连接”、启用平台登录/本轮采集和 dy 暂停状态。
 - 两张 Windows Chromium 电脑端视觉基线：workbench 与 Brief。
 
-0.10.0 合并态的本地静态、单元、构建与 macOS 浏览器门已经实际执行；GitHub Actions 运行 `33520872498` 已对合并提交 `d677bdd` 完成当次 Windows 浏览器与跨平台 Python 复验：
+0.10.0 合并态的本地静态、单元、构建与 macOS 浏览器门已经实际执行；部署源提交 `91534b0` 的 GitHub Actions 运行 `33521833733` 已再次完成 Windows 浏览器与跨平台 Python 复验：
 
 - `pnpm --dir web test`：5/5。
 - `pnpm --dir web typecheck`：通过。
@@ -152,5 +152,5 @@ Task 5 只更新并目视复核两张 desktop 快照。两张 mobile snapshot �
 - axe 只能发现一部分无障碍问题；自动门通过不等于 WCAG 认证，仍需真实屏幕阅读器与残障用户测试。
 - 当前没有把 Lighthouse、真实用户 INP 或超大图谱压力测试设为阻断门；节点数量和数据规模显著增长时需要单独基线。
 - 视觉快照使用 `guizhou-miao-demo` 的本地真实 HTTP 数据，不能替代认证后线上复验。
-- 受保护线上当前运行合并前的 0.10.0 核心链路与同源授权浏览器；Studio 默认入口尚未重新部署。本轮 GitHub Actions 已独立实测通过，但 CI 不能代替 Zeabur 部署与认证后线上验收。
+- 受保护线上 0.10.0 当前部署 `6a96ec9f40c09e36c3ebb590` 已切换默认 Studio 入口，并保留 `/workflow` 高级工作台与同源授权浏览器。认证后主页、一级页、动态设计页、9 个旧节点页及相应 API/PNG 已远端验收为 200；这不扩大本文档的 desktop-only 视觉承诺。
 - 本流程止于本地产品前端质量，不授权部署、商业图稿批准、工厂下单或制造/合规就绪声明。

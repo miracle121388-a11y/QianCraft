@@ -52,7 +52,7 @@ QianCraft 是一套“双库驱动的自动文创设计工具”，不是官网�
 - 所有设计都记录文化来源、代表市场记录、评分公式、渲染器、版本和文件摘要。
 - 两个持久调度线程分别负责持续采集和每日设计；健康接口同时检查线程与心跳。
 - 原有九节点空间工作台保留在 `/workflow`，作为高级研究和旧式全链路操作入口。
-- 受保护 Zeabur 0.10.0 部署 `6a96bdf25158a7aaa4e62007` 已验证 LightRAG、GPT Researcher、隔离 MediaCrawler、托管 Chromium/noVNC 与图像 provider；严格任务 `20260901T121642Z-e1a435ff` 同轮得到小红书 113、B站 110、微博 149 条规范化 live 记录并晋级工作区，抖音未进入清单。
+- 受保护 Zeabur 0.10.0 当前部署 `6a96ec9f40c09e36c3ebb590` 已同时验收双库 Studio、日设计调度器、LightRAG、GPT Researcher、隔离 MediaCrawler、托管 Chromium/noVNC 与图像 provider；上一个三平台严格任务 `20260901T121642Z-e1a435ff` 的小红书 113、B站 110、微博 149 条 live 记录及 `live_verified` 工作区在发布后保持不变，抖音未进入清单。
 - 仓库 378 条四平台快照与线上 372 条三平台当轮实时记录是两个独立事实口径，Studio 产品形态库当前仍读取前者并明确标注历史时间边界。
 
 ## 组合评分

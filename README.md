@@ -25,7 +25,7 @@
 > [!IMPORTANT]
 > QianCraft 当前止于概念设计、工厂询价和首样沟通。输出不是生产工程图、合规证书、社区/商业授权或“爆款保证”。
 
-受保护的在线工具：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，凭证由项目维护者单独提供；密钥只由服务器 Secret 注入。线上核心运行时为已验收的 0.10.0 部署 `6a96bdf25158a7aaa4e62007`：LightRAG、GPT Researcher、隔离 MediaCrawler、图像 provider、托管 Chromium/noVNC 和三平台严格实时研究均已通过。当前这次双库 Studio 前端合并仍需在推送后重新部署和远端验收，不能仅凭 GitHub 合并写成线上页面已经切换。
+受保护的在线工具：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，凭证由项目维护者单独提供；密钥只由服务器 Secret 注入。0.10.0 当前部署 `6a96ec9f40c09e36c3ebb590` 已验收双库 Studio、日设计调度器、旧 Workbench、LightRAG、GPT Researcher、隔离 MediaCrawler、图像 provider 与托管 Chromium/noVNC；当前严格采集只启用小红书、B站和微博，抖音暂停。
 
 ## 产品逻辑
 
