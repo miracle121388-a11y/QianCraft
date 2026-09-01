@@ -98,7 +98,7 @@ pnpm quality
 - 云端授权浏览器卡片只在服务端报告入口与连接状态时出现，并明确区分“浏览器已连接”、启用平台登录/本轮采集和 dy 暂停状态。
 - 两张 Windows Chromium 电脑端视觉基线：workbench 与 Brief。
 
-0.10.0 合并态的本地静态、单元、构建与 macOS 浏览器门已经实际执行；Windows 浏览器门须由本轮 GitHub Actions 重现后再记录远端结果，不得沿用 0.9.2 数字：
+0.10.0 合并态的本地静态、单元、构建与 macOS 浏览器门已经实际执行；GitHub Actions 运行 `33520872498` 已对合并提交 `d677bdd` 完成当次 Windows 浏览器与跨平台 Python 复验：
 
 - `pnpm --dir web test`：5/5。
 - `pnpm --dir web typecheck`：通过。
@@ -106,9 +106,9 @@ pnpm quality
 - `pnpm --dir web build`：Vinext 五阶段 production build 通过。
 - `pnpm --dir web audit --audit-level=high`：完整依赖（含开发工具）0 个已知漏洞。
 - macOS `pnpm --dir web exec playwright test --project=desktop-chromium`：31 passed / 1 个 Windows 权威像素门按设计 skipped。
-- Windows CI `pnpm --dir web exec playwright test --project=desktop-chromium`：当前定义 32 项（其中 1 项权威像素门），本轮推送后以实际 Actions 结果为准。
+- Windows CI `pnpm --dir web exec playwright test --project=desktop-chromium`：32/32 通过（其中 1 项权威像素门）。
 
-合并后的 0.10.0 Python 回归为 98/98，Web 单测为 5/5，macOS desktop-chromium 为 31 passed / 1 skipped。合并前本地实时链路 91/91、团队 Studio 分支 83/83，以及 0.9.2 的 77/77、Windows 31/31 都只代表各自分支或旧版本，不能冒充本次跨平台发布结果。
+合并后的 0.10.0 Python 本地与 Ubuntu/macOS/Windows CI 均为 98/98，Web 单测为 5/5，macOS desktop-chromium 为 31 passed / 1 skipped，Windows desktop-chromium 为 32/32。合并前本地实时链路 91/91、团队 Studio 分支 83/83，以及 0.9.2 的 77/77、Windows 31/31 都只代表各自分支或旧版本，不能冒充本次结果。
 
 失败时报告写入 `web/.playwright-report/`，截图、axe 上下文和 trace 写入 `web/.playwright-results/`；两者不进 Git。
 
@@ -152,5 +152,5 @@ Task 5 只更新并目视复核两张 desktop 快照。两张 mobile snapshot �
 - axe 只能发现一部分无障碍问题；自动门通过不等于 WCAG 认证，仍需真实屏幕阅读器与残障用户测试。
 - 当前没有把 Lighthouse、真实用户 INP 或超大图谱压力测试设为阻断门；节点数量和数据规模显著增长时需要单独基线。
 - 视觉快照使用 `guizhou-miao-demo` 的本地真实 HTTP 数据，不能替代认证后线上复验。
-- 受保护线上当前运行合并前的 0.10.0 核心链路与同源授权浏览器；Studio 默认入口尚未重新部署。最近既有 GitHub Actions 的 Windows Chromium 为 31/31，且对应旧基线；本轮 CI 与 Zeabur 结果必须分别实测，不能从旧 CI 或本地构建推导。
+- 受保护线上当前运行合并前的 0.10.0 核心链路与同源授权浏览器；Studio 默认入口尚未重新部署。本轮 GitHub Actions 已独立实测通过，但 CI 不能代替 Zeabur 部署与认证后线上验收。
 - 本流程止于本地产品前端质量，不授权部署、商业图稿批准、工厂下单或制造/合规就绪声明。

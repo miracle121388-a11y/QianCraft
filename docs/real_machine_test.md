@@ -46,6 +46,8 @@ Zeabur 0.10.0 运行态实测不是“文件存在”口径：LightRAG 在持久
 
 同日完成团队 Studio 与本地 Zeabur 实时链路的合并验收。空白隔离运行目录冷启动后，设计归档会在每日补跑期间自动刷新，不再永久停留在 0 项；当前 Zeabur 和浏览器验收集合显式固定为 xhs/bili/wb，dy 保持暂停，通用 Demo 仍保留四平台历史基线；旧节点详情的工作台返回入口统一指向 `/workflow`。隔离 HTTP 实测 `/api/health` 同时确认两个调度器在线，22/10/378 与当日 3 项一致；手动组合 201、详情 200、编辑 V2 200、PNG 200，版本 SHA 不同且非法文化 ID 为 422。合并态本地通过 Python 98/98、Web 5/5、macOS desktop-chromium 31 passed / 1 个 Windows 像素门 skipped，以及静态、构建和依赖审计；Zeabur 仍是合并前部署，不能据此宣称 Studio 已上线。
 
+合并提交 `d677bdd` 推送后，GitHub Actions 运行 `33520872498` 实际完成 Ubuntu/macOS/Windows Python 98/98 和 Windows desktop-chromium 32/32；4 个 Job 全部 success，annotation 均为 0。该结果只收口代码与 CI，没有触发 Zeabur 部署。
+
 ## 环境
 
 - macOS / zsh（本轮）与 Windows / PowerShell（既有权威像素基线）
@@ -89,8 +91,8 @@ Zeabur 0.10.0 运行态实测不是“文件存在”口径：LightRAG 在持久
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 通过 | Zeabur 独立图像 provider 已安全配置并实际生成 1024×1024 PNG；其他环境缺配置时仍保持 warning，不把旧 A/B/C 资产冒充新结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 本地通过；跨平台待本轮 CI | Python `pytest` 98/98、Workbench TypeScript 5/5；macOS desktop-chromium 31 passed / 1 个 Windows 像素门按设计 skipped。32 项 Windows 门等待本轮 GitHub Actions，不沿用旧 CI |
-| 静态检查与构建 | 本地通过 | Conda 内 Ruff、`uv lock --check`、TypeScript no-emit、零 warning ESLint、Vinext 五阶段 production build、完整 `pnpm audit`、Python `pip-audit --local`、`sh -n deploy/start-zeabur.sh` 与 `git diff --check` 均通过；两类依赖审计为 0 个已知漏洞，跨平台结果等待本轮 CI |
+| 自动测试 | 本地与跨平台通过 | Python `pytest` 本地及 Ubuntu/macOS/Windows CI 均为 98/98，Workbench TypeScript 5/5；macOS desktop-chromium 31 passed / 1 个 Windows 像素门按设计 skipped，Windows desktop-chromium 32/32 |
+| 静态检查与构建 | 本地与 CI 通过 | Conda 内 Ruff、`uv lock --check`、TypeScript no-emit、零 warning ESLint、Vinext 五阶段 production build、完整 `pnpm audit`、Python `pip-audit --local`、`sh -n deploy/start-zeabur.sh` 与 `git diff --check` 均通过；两类依赖审计为 0 个已知漏洞，GitHub Actions 运行 `33520872498` 同样通过适用门 |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 
 ## 可复现命令

@@ -58,7 +58,7 @@
 | API | 0.10.0 新增 Studio overview、两库、组合、设计 CRUD/重生成、自动排程与事件接口，以及 `/assets/studio/{designId}/v{version}.png`；健康响应同时检查采集与每日设计调度器。现有严格研究、采集、Workbench 和资产接口保持兼容。Zeabur Secret 已配置 DeepSeek 与图像 provider；镜像内含 LightRAG、GPT Researcher、MediaCrawler 与受保护图形会话。预检返回启用/暂停平台清单，暂停项不阻断；`browser_connected=true` 仍不等于任何平台授权有效。Studio PNG 使用本地显式结构渲染器，不依赖或冒充图像 provider |
 | 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 运行已验收的 0.10.0 核心运行时，部署 `6a96bdf25158a7aaa4e62007` 为 `RUNNING` 且公网 `/healthz=200`；三上游、图像 provider、三平台严格任务、持久卷和回环浏览器均已验收。当前合并新增的 Studio 主入口与第二调度器尚未重新部署，因此不能把既有部署号写成 Studio 已上线 |
 | MediaCrawler | Zeabur 使用独立 `/opt/mediacrawler-venv` 安装上游 requirements，再以 `deploy/mediacrawler-runtime-overrides.txt` 修复安全版本并移除未使用的 FastAPI/Starlette/Uvicorn；`MEDIACRAWLER_PYTHON` 解析保留虚拟环境符号链接，构建、启动、严格预检均实际导入 `httpx` 与 `CDPBrowserManager`。采集器复用托管 Chromium 回环 CDP，父/子进程均清理本轮新页面，超时会温和终止并脱敏错误。当前只运行 xhs/bili/wb；dy 适配代码与历史基线保留但明确暂停，不访问、不阻断、不计入晋级 |
-| 自动测试 | 合并态本地 Python 98/98、Web 5/5；macOS desktop-chromium 31 passed / 1 个 Windows 权威像素门按设计 skipped。32 项 Windows desktop 与 Ubuntu/macOS/Windows Python 门等待本轮推送后的 GitHub Actions，既有 CI 不冒充本次结果 |
+| 自动测试 | 合并态本地 Python 98/98、Web 5/5；macOS desktop-chromium 31 passed / 1 个 Windows 权威像素门按设计 skipped。GitHub Actions 运行 `33520872498` 已对合并提交 `d677bdd` 完成 Ubuntu/macOS/Windows Python 98/98 与 Windows desktop-chromium 32/32，4 个 Job 全部 success、annotation 为 0 |
 | 静态检查 | 合并态 Ruff、`uv lock --check`、Web typecheck、零 warning ESLint、Vinext 五阶段 production build、`sh -n deploy/start-zeabur.sh`、`git diff --check`、Python `pip-audit --local` 与完整 `pnpm audit --audit-level=high` 均通过；依赖审计为 0 个已知漏洞 |
 | 运行态恢复 | `scripts/runtime_snapshot.py` 对 `data/runtime` 生成带 SHA-256 清单的 ZIP，发布前自校验；恢复前校验路径、大小、文件数和摘要，要求服务已停止及显式确认，并保留时间戳回滚目录。0.10.0 明确排除 `browser-profile/`，清单写入 `containsBrowserAuthorization=false`，验证器也拒绝含该目录的归档。既有卷外 0.10.0 快照仍是持久备份基线；最终三平台任务后另在服务器 `/tmp` 生成并校验 118 文件、18,890,725 未压缩字节、4,100,550 字节 ZIP，SHA-256 `2a3b4e57…435c`，但它只是在线验收件，不是独立持久备份。快照不导出登录态，恢复或迁移后必须重新授权 |
 | 凭证检查 | 本机 LLM 凭证只存在于被 Git 忽略的 `.env`，站点 Basic Auth、服务器 LLM 与图像凭证只存在于 Zeabur Secret；没有读取、回显或写入仓库。最终隔离发布上下文为 1,121 文件、49,984 KiB，符号链接、浏览器 profile、实际长密钥与私钥模式均为 0；唯一 `secret.yaml` 是上游 LightRAG Kubernetes 模板。浏览器登录数据库只保留在权限 0700 的持久目录且不进入快照。全仓仍有 2 个既有、未改动的 extracted-upstream 示例字面量，按上游边界保留 |
@@ -393,7 +393,7 @@ pnpm quality
 pnpm start:local
 ```
 
-当前 C2 电脑端验收使用 `pnpm exec playwright test --project=desktop-chromium`，由 `web/playwright.config.ts` 启动 Tool API，并在 1440×960 定义 32 项：其中一项循环验证 Studio 六个一级路由、真实 22/10/378 计数与 axe，旧 Windows 像素基线仍只由 Windows Chromium/CI 执行。本轮 macOS 空白隔离运行态实际得到 31 passed / 1 个 Windows 像素门按设计 skipped，并验证启动补跑后设计归档自动刷新、节点详情返回 `/workflow` 及 xhs/bili/wb 启用、dy 暂停；推送后的 Windows 与跨平台 Python 结果仍以新 GitHub Actions 为准。`pnpm test:ui` 保留历史 desktop/mobile 双项目入口，但只有获得对应响应式授权、完成实现并准备复验时才运行。详细口径见 [`docs/frontend_quality_workflow.md`](docs/frontend_quality_workflow.md)。
+当前 C2 电脑端验收使用 `pnpm exec playwright test --project=desktop-chromium`，由 `web/playwright.config.ts` 启动 Tool API，并在 1440×960 定义 32 项：其中一项循环验证 Studio 六个一级路由、真实 22/10/378 计数与 axe，旧 Windows 像素基线仍只由 Windows Chromium/CI 执行。本轮 macOS 空白隔离运行态实际得到 31 passed / 1 个 Windows 像素门按设计 skipped，并验证启动补跑后设计归档自动刷新、节点详情返回 `/workflow` 及 xhs/bili/wb 启用、dy 暂停；GitHub Actions 运行 `33520872498` 已在 Windows Chromium 实际通过 32/32，同轮 Ubuntu/macOS/Windows Python 也全部通过。`pnpm test:ui` 保留历史 desktop/mobile 双项目入口，但只有获得对应响应式授权、完成实现并准备复验时才运行。详细口径见 [`docs/frontend_quality_workflow.md`](docs/frontend_quality_workflow.md)。
 
 工作台默认为 `http://localhost:3000/`，本地 API 为 `http://127.0.0.1:8787/`；端口冲突时可由启动脚本显式改到 3001，本轮实际使用后者。前端只通过 HTTP 使用真实 Python 数据；Workspace、研究任务、采集调度/事件/候选、设计运行与生成资产写入被 Git 忽略的 `data/runtime/`，`data/workbench/` 和 `data/tool_workspace/` 仅作首次初始化/历史基线。Tool API 启动时同时启动持续采集与每日设计两个调度器；文化默认每 360 分钟巡检登记来源，市场默认每 240 分钟做严格授权预检，每日设计默认在 `Asia/Shanghai` 07:00 运行并在冷启动缺少当日产物时补跑。条件缺失时阻断，不走兜底；后台轮询、心跳、下次运行和连续失败在页面上保持可见。严格实时研究要求完整上游配置，运行中刷新页面从服务端任务号续接。
 
@@ -493,6 +493,28 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-09-01｜0.10.0｜合并 main 跨平台 CI 收口
+
+变更：
+
+- 将合并提交 `d677bdd` 推送到 `origin/main`，并把该提交的真实跨平台结果同步到当前测试状态、前端质量流程和实机记录。
+
+原因：
+
+- 本地回归不能代替 Windows 权威像素门和三系统 Python 差异验证；只有推送后的当次运行能为合并结果收口。
+
+验证：
+
+- GitHub Actions [运行 `33520872498`](https://github.com/miracle121388-a11y/QianCraft/actions/runs/33520872498) 完成 Ubuntu/macOS/Windows Python 98/98、Linux Ruff/锁/依赖审计、Windows Web 单测/类型/ESLint/构建/审计与 desktop-chromium 32/32；4 个 Job 均为 `success`，annotation 均为 0。
+
+边界：
+
+- 本条只收口 GitHub 代码合并与 CI，未触发 Zeabur 部署。线上仍是合并前的 0.10.0 核心运行时；Studio 上线必须另行部署和认证后业务验收。mobile/tablet 也不在本轮验收范围。
+
+涉及文件：
+
+- `WORKFLOW.md`、`docs/frontend_quality_workflow.md`、`docs/real_machine_test.md`
 
 ### 2026-09-01｜0.10.0｜双库 Studio 与 Zeabur 实时链路合并验收
 
