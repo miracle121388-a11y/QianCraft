@@ -6,13 +6,16 @@ import json
 import os
 import re
 import socket
+import subprocess
 import sys
 import threading
 from collections import Counter
 from dataclasses import replace
 from datetime import UTC, datetime
+from functools import lru_cache
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
@@ -71,6 +74,13 @@ RESEARCH_JOB_STATE_LOCK = threading.Lock()
 COLLECTION_SERVICE_LOCK = threading.Lock()
 ACTIVE_RESEARCH_JOB_ID = ""
 COLLECTION_SERVICE: CollectionScheduler | None = None
+
+PLATFORM_LABELS = {
+    "xhs": "小红书",
+    "dy": "抖音",
+    "bili": "B站",
+    "wb": "微博",
+}
 
 
 def collection_health_response() -> tuple[dict[str, Any], HTTPStatus]:
@@ -136,6 +146,27 @@ def _port_open(host: str, port: int) -> bool:
         return False
 
 
+def _strict_mediacrawler_timeout_seconds(configured_seconds: int) -> int:
+    """Reserve enough time for six sequential keywords on each live platform."""
+
+    return max(600, configured_seconds)
+
+
+def _platform_scope_label(platforms: tuple[str, ...] | list[str]) -> str:
+    return "、".join(PLATFORM_LABELS.get(code, code) for code in platforms)
+
+
+def _enabled_platforms_are_live(
+    platform_modes: dict[str, str], enabled_platforms: tuple[str, ...]
+) -> bool:
+    expected = set(enabled_platforms)
+    return (
+        bool(expected)
+        and set(platform_modes) == expected
+        and all(mode == "live" for mode in platform_modes.values())
+    )
+
+
 def _interactive_crawl_supported() -> bool:
     """Return whether this process can launch a user-visible authorization browser."""
 
@@ -147,12 +178,57 @@ def _interactive_crawl_supported() -> bool:
     return bool(os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"))
 
 
+def _distribution_available(distribution: str) -> bool:
+    try:
+        version(distribution)
+        return True
+    except PackageNotFoundError:
+        return False
+
+
+@lru_cache(maxsize=8)
+def _mediacrawler_runtime_available(executable: str, source_root: str) -> bool:
+    """Verify the configured interpreter can load the CDP crawler dependencies."""
+
+    try:
+        result = subprocess.run(
+            [
+                executable,
+                "-c",
+                "import httpx; from tools.cdp_browser import CDPBrowserManager",
+            ],
+            cwd=source_root,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return result.returncode == 0
+
+
 def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
     settings = load_settings()
     image_status = image_provider_status(settings)
     crawler_entry = settings.mediacrawler_path / "main.py"
     interactive_supported = _interactive_crawl_supported()
     explicit_crawl = allow_interactive and interactive_supported
+    lightrag_ready = (
+        (settings.lightrag_path / "lightrag").is_dir()
+        and _distribution_available("lightrag-hku")
+    )
+    gpt_researcher_ready = (
+        (settings.gpt_researcher_path / "gpt_researcher").is_dir()
+        and _distribution_available("gpt-researcher")
+    )
+    crawler_runtime_ready = (
+        crawler_entry.is_file()
+        and settings.mediacrawler_python.is_file()
+        and _mediacrawler_runtime_available(
+            str(settings.mediacrawler_python), str(settings.mediacrawler_path)
+        )
+    )
     checks = [
         {
             "id": "llm",
@@ -177,21 +253,31 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
         {
             "id": "crawler_runtime",
             "label": "市场采集运行时",
-            "ok": settings.mediacrawler_python.exists() and crawler_entry.exists(),
+            "ok": crawler_runtime_ready,
             "detail": (
-                "可用"
-                if settings.mediacrawler_python.exists() and crawler_entry.exists()
-                else "MediaCrawler 源码或独立 Python 环境不存在"
+                "源码、解释器与 CDP 依赖可用"
+                if crawler_runtime_ready
+                else "MediaCrawler 源码、独立 Python 环境或 CDP 依赖不可用"
             ),
         },
         {
             "id": "lightrag",
             "label": "文化检索运行时",
-            "ok": (settings.lightrag_path / "lightrag").is_dir(),
+            "ok": lightrag_ready,
             "detail": (
-                "源码可用"
-                if (settings.lightrag_path / "lightrag").is_dir()
-                else "LightRAG 运行模块不存在"
+                "源码与 Python 包可用"
+                if lightrag_ready
+                else "LightRAG 源码或 Python 包不存在"
+            ),
+        },
+        {
+            "id": "gpt_researcher",
+            "label": "策划研究运行时",
+            "ok": gpt_researcher_ready,
+            "detail": (
+                "源码与 Python 包可用"
+                if gpt_researcher_ready
+                else "GPT Researcher 源码或 Python 包不存在"
             ),
         },
         {
@@ -203,8 +289,24 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
     ]
     method = settings.mediacrawler_login_method
     cdp_ready = _port_open("127.0.0.1", settings.mediacrawler_cdp_port)
+    enabled_platforms = tuple(settings.mediacrawler_platforms)
+    enabled_platform_set = set(enabled_platforms)
+    disabled_platforms = tuple(
+        code for code in MARKET_PLATFORM_CODES if code not in enabled_platform_set
+    )
     platform_checks: list[dict[str, Any]] = []
     for platform in MARKET_PLATFORM_CODES:
+        if platform not in enabled_platform_set:
+            platform_checks.append(
+                {
+                    "id": f"auth_{platform}",
+                    "label": f"{PLATFORM_LABELS[platform]}授权入口",
+                    "ok": False,
+                    "enabled": False,
+                    "detail": "已暂停，不参与本轮采集或严格晋级。",
+                }
+            )
+            continue
         cookie_ready = bool(settings.mediacrawler_cookies.get(platform, ""))
         if method == "cookie":
             ok = cookie_ready
@@ -212,7 +314,7 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
         elif method == "cdp":
             ok = cdp_ready or explicit_crawl
             detail = (
-                "已连接授权浏览器"
+                "浏览器已连接；登录态由本轮逐平台验证"
                 if cdp_ready
                 else "将启动本机已保存的授权浏览器资料"
                 if explicit_crawl
@@ -224,8 +326,9 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
         platform_checks.append(
             {
                 "id": f"auth_{platform}",
-                "label": f"{platform.upper()} 授权入口",
+                "label": f"{PLATFORM_LABELS[platform]}授权入口",
                 "ok": ok,
+                "enabled": True,
                 "detail": detail,
             }
         )
@@ -233,7 +336,9 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
     blockers = [
         f"{item['label']}：{item['detail']}"
         for item in checks
-        if item["id"] != "image_provider" and not item["ok"]
+        if item["id"] != "image_provider"
+        and item.get("enabled", True)
+        and not item["ok"]
     ]
     return {
         "research_ready": not blockers,
@@ -241,6 +346,24 @@ def _strict_preflight(*, allow_interactive: bool = False) -> dict[str, Any]:
         "interactive_launch": explicit_crawl,
         "interactive_supported": interactive_supported,
         "login_method": method,
+        "enabled_platforms": list(enabled_platforms),
+        "disabled_platforms": list(disabled_platforms),
+        "browser_session": {
+            "available": bool(
+                os.environ.get("QIANCRAFT_BROWSER_AUTH_URL", "").strip()
+                and interactive_supported
+            ),
+            "connected": cdp_ready,
+            "authorization_url": os.environ.get(
+                "QIANCRAFT_BROWSER_AUTH_URL", ""
+            ).strip(),
+            "detail": (
+                "云端授权浏览器已连接；本轮启用平台为"
+                f"{_platform_scope_label(enabled_platforms)}。"
+                if cdp_ready
+                else "云端授权浏览器尚未连接。"
+            ),
+        },
         "checks": checks,
         "blockers": blockers,
     }
@@ -954,12 +1077,20 @@ def run_strict_research(
         run_id = f"{started.strftime('%Y%m%dT%H%M%SZ')}-research"
         run_dir = RESEARCH_RUNS_DIR / run_id
         base_settings = load_settings().with_mode("live")
+        managed_cdp_ready = (
+            base_settings.mediacrawler_login_method == "cdp"
+            and base_settings.mediacrawler_cdp_connect_existing
+            and _port_open("127.0.0.1", base_settings.mediacrawler_cdp_port)
+        )
         settings = replace(
             base_settings,
             outputs_dir=run_dir / "outputs",
             demo_cache_dir=run_dir / "no_fallback_cache",
             market_raw_dir=run_dir / "market" / "raw",
             market_derived_dir=run_dir / "market" / "derived",
+            mediacrawler_timeout_seconds=_strict_mediacrawler_timeout_seconds(
+                base_settings.mediacrawler_timeout_seconds
+            ),
             mediacrawler_live_enabled=(
                 True if allow_interactive else base_settings.mediacrawler_live_enabled
             ),
@@ -967,7 +1098,9 @@ def run_strict_research(
                 True if allow_interactive else base_settings.mediacrawler_interactive_login
             ),
             mediacrawler_cdp_connect_existing=(
-                False if allow_interactive else base_settings.mediacrawler_cdp_connect_existing
+                base_settings.mediacrawler_cdp_connect_existing
+                if managed_cdp_ready or not allow_interactive
+                else False
             ),
         )
         request = DemoRequest()
@@ -981,9 +1114,13 @@ def run_strict_research(
         platform_modes = {
             code: status.status for code, status in manifest.market_platforms.items()
         }
-        if set(component_modes.values()) != {"live"} or any(
-            mode != "live" for mode in platform_modes.values()
-        ):
+        components_verified = set(component_modes) == required and all(
+            mode == "live" for mode in component_modes.values()
+        )
+        platforms_verified = _enabled_platforms_are_live(
+            platform_modes, base_settings.mediacrawler_platforms
+        )
+        if not components_verified or not platforms_verified:
             failure = {
                 "run_id": run_id,
                 "workspace_id": workspace_id,
@@ -1008,7 +1145,11 @@ def run_strict_research(
             "platform_modes": platform_modes,
             "output_count": len(manifest.outputs),
             "workspace_updated_at": promoted["updated_at"],
-            "detail": "文化、四平台、策划均为本轮 live；结果已回写到当前工作区。",
+            "detail": (
+                "文化、策划及启用平台（"
+                f"{_platform_scope_label(list(base_settings.mediacrawler_platforms))}）"
+                "均为本轮 live；结果已回写到当前工作区。"
+            ),
         }
         _atomic_json(run_dir / "strict_result.json", success)
         return success
@@ -1091,7 +1232,7 @@ def _research_job_worker(
             "status": "running",
             "stage": "culture_market_strategy",
             "started_at": datetime.now(UTC).isoformat(),
-            "detail": "正在执行知识检索、四平台采集和模型策划。",
+            "detail": "正在执行知识检索、已启用平台采集和模型策划。",
         }
     )
     _save_research_job(job)

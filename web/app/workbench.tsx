@@ -1839,7 +1839,7 @@ export function Workbench() {
             aria-label="启动严格实时全链路"
             className="run-all-button"
             disabled={busy}
-            title={researchBlockers.length ? researchBlockers.join('；') : '启动真实知识检索、四平台采集和模型策划'}
+            title={researchBlockers.length ? researchBlockers.join('；') : '启动真实知识检索、启用平台采集和模型策划'}
             type="button"
             onClick={() => void runSequence(undefined, true)}
           ><Play aria-hidden="true" fill="currentColor" size={16} /><span>{busy ? '实时运行中' : '实时运行'}</span></button>

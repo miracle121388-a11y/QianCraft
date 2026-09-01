@@ -8,6 +8,7 @@ import re
 import socket
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
+from http.client import HTTPConnection, HTTPException
 from pathlib import Path
 from typing import Any, Literal
 
@@ -116,7 +117,7 @@ SourceMode = Literal["live", "cache", "unavailable"]
 
 
 class MediaCrawlerAdapter:
-    """Use the existing MediaCrawler runtime for four authorized market sources."""
+    """Use the existing MediaCrawler runtime for the configured market sources."""
 
     def __init__(self, settings: Settings):
         self.settings = settings
@@ -232,7 +233,7 @@ class MediaCrawlerAdapter:
         )
         if live_count:
             mode: SourceMode = "live"
-            engine = "MediaCrawler four-platform authorized market signals"
+            engine = "MediaCrawler authorized market signals"
             ok = True
         elif platform_cache_count or curated_posts:
             mode = "cache"
@@ -275,7 +276,7 @@ class MediaCrawlerAdapter:
             ],
             "derived_path": "",
             "hotness_path": portable_artifact_path(hotness_path, self.settings.root_dir),
-            "detail": f"四平台状态：{platform_summary}。",
+            "detail": f"启用平台状态：{platform_summary}。",
         }
         derived_path = self._write_derived(posts, market_source, market_platforms)
 
@@ -347,7 +348,7 @@ class MediaCrawlerAdapter:
         if method == "cookie" and not self._platform_cookie(platform):
             return False, f"{platform} Cookie 未配置；login_state=missing。"
         if method == "qrcode" and not self.settings.mediacrawler_interactive_login:
-            return False, "二维码登录需由用户显式运行四平台探测脚本的 --authorize。"
+            return False, "二维码登录需由用户显式运行平台探测脚本的 --authorize。"
         if method == "cdp":
             browser_ready = _port_open("127.0.0.1", self.settings.mediacrawler_cdp_port)
             if not browser_ready and not self.settings.mediacrawler_interactive_login:
@@ -419,6 +420,17 @@ class MediaCrawlerAdapter:
             child_environment["QIANCRAFT_MEDIACRAWLER_COOKIE"] = platform_cookie
 
         interactive = self.settings.mediacrawler_interactive_login
+        managed_cdp = (
+            auth_method == "cdp"
+            and self.settings.mediacrawler_cdp_connect_existing
+        )
+        existing_cdp_targets = (
+            await asyncio.to_thread(
+                _cdp_page_target_ids, self.settings.mediacrawler_cdp_port
+            )
+            if managed_cdp
+            else None
+        )
         process = await asyncio.create_subprocess_exec(
             *command,
             cwd=str(root),
@@ -431,17 +443,37 @@ class MediaCrawlerAdapter:
             ),
         )
         timed_out = False
+        communicate_task = asyncio.create_task(process.communicate())
         try:
             stdout, _ = await asyncio.wait_for(
-                process.communicate(), timeout=self.settings.mediacrawler_timeout_seconds
+                asyncio.shield(communicate_task),
+                timeout=self.settings.mediacrawler_timeout_seconds,
             )
         except TimeoutError:
-            process.kill()
-            await process.wait()
             timed_out = True
-            stdout = b""
+            try:
+                process.terminate()
+            except ProcessLookupError:
+                pass
+            try:
+                stdout, _ = await asyncio.wait_for(
+                    asyncio.shield(communicate_task), timeout=20
+                )
+            except TimeoutError:
+                try:
+                    process.kill()
+                except ProcessLookupError:
+                    pass
+                stdout, _ = await communicate_task
+        finally:
+            if managed_cdp:
+                await asyncio.to_thread(
+                    _close_new_cdp_page_targets,
+                    self.settings.mediacrawler_cdp_port,
+                    existing_cdp_targets,
+                )
+        output = (stdout or b"").decode("utf-8", errors="replace")[-1600:]
         if process.returncode != 0 and not timed_out:
-            output = (stdout or b"").decode("utf-8", errors="replace")[-1600:]
             raise RuntimeError(f"MediaCrawler exit={process.returncode}: {output}")
 
         files = sorted(
@@ -456,7 +488,8 @@ class MediaCrawlerAdapter:
         if not files:
             if timed_out:
                 raise RuntimeError(
-                    "MediaCrawler timed out before producing any content records"
+                    "MediaCrawler timed out before producing any content records: "
+                    f"{output}"
                 )
             raise RuntimeError("MediaCrawler completed but produced no content records")
         raw_items: list[dict[str, Any]] = []
@@ -1072,6 +1105,65 @@ def _port_open(host: str, port: int) -> bool:
         return False
 
 
+def _cdp_page_targets(port: int) -> list[dict[str, Any]] | None:
+    connection = HTTPConnection("127.0.0.1", port, timeout=5)
+    try:
+        connection.request("GET", "/json/list")
+        response = connection.getresponse()
+        if response.status != 200:
+            return None
+        payload = json.loads(response.read().decode("utf-8"))
+        if not isinstance(payload, list):
+            return None
+        return [item for item in payload if isinstance(item, dict)]
+    except (HTTPException, OSError, ValueError):
+        return None
+    finally:
+        connection.close()
+
+
+def _cdp_page_target_ids(port: int) -> set[str] | None:
+    targets = _cdp_page_targets(port)
+    if targets is None:
+        return None
+    return {
+        str(item["id"])
+        for item in targets
+        if item.get("type") == "page" and item.get("id")
+    }
+
+
+def _new_cdp_page_target_ids(
+    existing: set[str] | None,
+    targets: list[dict[str, Any]] | None,
+) -> set[str]:
+    if existing is None or targets is None:
+        return set()
+    return {
+        str(item["id"])
+        for item in targets
+        if item.get("type") == "page"
+        and item.get("id")
+        and str(item["id"]) not in existing
+    }
+
+
+def _close_new_cdp_page_targets(port: int, existing: set[str] | None) -> None:
+    target_ids = _new_cdp_page_target_ids(existing, _cdp_page_targets(port))
+    for target_id in target_ids:
+        if not re.fullmatch(r"[A-Fa-f0-9]+", target_id):
+            continue
+        connection = HTTPConnection("127.0.0.1", port, timeout=5)
+        try:
+            connection.request("GET", f"/json/close/{target_id}")
+            response = connection.getresponse()
+            response.read()
+        except (HTTPException, OSError):
+            continue
+        finally:
+            connection.close()
+
+
 def _looks_like_auth_failure(exc: Exception) -> bool:
     text = str(exc).lower()
     return any(
@@ -1266,8 +1358,15 @@ def _atomic_write(path: Path, content: str) -> None:
 def _safe_error(exc: Exception) -> str:
     message = re.sub(r"sk-[A-Za-z0-9_-]+", "<redacted>", str(exc))
     message = re.sub(
+        r"(?i)([?&](?:api_key|data|qr|sign)=)[^&\s]+",
+        r"\1<redacted>",
+        message,
+    )
+    message = re.sub(
         r"(?i)(cookie|token|session|sessdata)(\s*[=:]\s*)[^\s;,]+",
         r"\1\2<redacted>",
         message,
     )
-    return f"{type(exc).__name__}: {message[:1000]}"
+    if len(message) > 1000:
+        message = f"{message[:350]}...[truncated]...{message[-600:]}"
+    return f"{type(exc).__name__}: {message}"

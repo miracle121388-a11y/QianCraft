@@ -25,6 +25,16 @@ def _resolve_path(value: str, default: str) -> Path:
     return path.resolve() if path.is_absolute() else (ROOT_DIR / path).resolve()
 
 
+def _resolve_executable_path(value: str, default: str) -> Path:
+    """Normalize an executable path without dereferencing virtualenv symlinks."""
+
+    raw = value.strip() if value else default
+    path = Path(raw).expanduser()
+    if not path.is_absolute():
+        path = ROOT_DIR / path
+    return Path(os.path.abspath(path))
+
+
 def portable_artifact_path(path: Path, root_dir: Path = ROOT_DIR) -> str:
     """Keep project artifacts relocatable while preserving external absolute paths."""
 
@@ -77,6 +87,7 @@ class Settings:
     mediacrawler_path: Path
     mediacrawler_python: Path
     lightrag_path: Path
+    lightrag_storage_dir: Path
     lightrag_base_url: str
     mediacrawler_live_enabled: bool
     mediacrawler_platform: str
@@ -162,7 +173,7 @@ def load_settings() -> Settings:
         mediacrawler_path=_resolve_path(
             env("MEDIACRAWLER_PATH"), "market-intel_agent/MediaCrawler-main"
         ),
-        mediacrawler_python=_resolve_path(
+        mediacrawler_python=_resolve_executable_path(
             env("MEDIACRAWLER_PYTHON"),
             (
                 "market-intel_agent/MediaCrawler-main/.venv-qiancraft/Scripts/python.exe"
@@ -171,6 +182,9 @@ def load_settings() -> Settings:
             ),
         ),
         lightrag_path=_resolve_path(env("LIGHTRAG_PATH"), "local_culture/LightRAG-main"),
+        lightrag_storage_dir=_resolve_path(
+            env("LIGHTRAG_STORAGE_DIR"), "data/culture/lightrag_storage"
+        ),
         lightrag_base_url=env("LIGHTRAG_BASE_URL"),
         mediacrawler_live_enabled=_as_bool(env("MEDIACRAWLER_LIVE_ENABLED", "false")),
         mediacrawler_platform=env("MEDIACRAWLER_PLATFORM", "xhs").strip().lower(),

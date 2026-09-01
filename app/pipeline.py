@@ -266,7 +266,7 @@ def render_strategy_markdown(strategy: PreDesignStrategy, statuses: list[Any]) -
                         f"#{item.rank} {item.product_form}({item.cross_platform_hot_score})"
                         for item in trend.hot_product_forms
                     )
-                    or "尚无真实四平台样本，未生成排名"
+                    or "尚无真实启用平台样本，未生成排名"
                 )
             ),
             ("- Top 5 优先形态：" + ("、".join(trend.priority_product_forms) or "尚未生成")),

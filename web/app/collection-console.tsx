@@ -37,7 +37,7 @@ type CollectionFocus = 'culture' | 'market' | 'all';
 
 const LANE_LABELS: Record<CollectionLaneId, { title: string; short: string }> = {
   culture_watch: { title: '文化来源巡检', short: '文化' },
-  market_refresh: { title: '四平台增量采集', short: '市场' },
+  market_refresh: { title: '平台增量采集', short: '市场' },
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -126,9 +126,20 @@ function LanePipeline({
   onInterval: (laneId: CollectionLaneId, minutes: number) => void;
 }) {
   const isCulture = laneId === 'culture_watch';
+  const platformCodes = ['xhs', 'dy', 'bili', 'wb'];
+  const configuredPlatforms = runtime.market.preflight.enabled_platforms;
+  const enabledPlatforms = configuredPlatforms?.length
+    ? configuredPlatforms
+    : platformCodes.filter((code) => (
+      runtime.market.preflight.checks.find((item) => item.id === `auth_${code}`)?.enabled
+        ?? true
+    ));
+  const laneTitle = isCulture
+    ? LANE_LABELS[laneId].title
+    : `${enabledPlatforms.length} 个平台增量采集`;
   const steps = isCulture
     ? ['巡检已核验来源', '识别页面变化', '发现同域候选', '人工核验后入图']
-    : ['检查授权与运行时', '四平台独立采集', '统一字段与去重', '全 live 才晋级'];
+    : ['检查授权与运行时', '启用平台独立采集', '统一字段与去重', '全 live 才晋级'];
   const blocked = lane.status === 'blocked';
   const disabled = busy !== '' || !runtime.enabled || !lane.enabled;
   return (
@@ -137,7 +148,7 @@ function LanePipeline({
         <div className="collection-lane-title">
           <span>{laneIcon(laneId)}</span>
           <div>
-            <h3>{LANE_LABELS[laneId].title}</h3>
+            <h3>{laneTitle}</h3>
             <p>{lane.detail}</p>
           </div>
         </div>
@@ -147,7 +158,7 @@ function LanePipeline({
         </div>
       </header>
 
-      <ol className="collection-pipeline" aria-label={`${LANE_LABELS[laneId].title}处理步骤`}>
+      <ol className="collection-pipeline" aria-label={`${laneTitle}处理步骤`}>
         {steps.map((step, index) => (
           <li key={step} className={lane.status === 'running' && index < 3 ? 'is-active' : ''}>
             <span>{index + 1}</span>
@@ -157,19 +168,39 @@ function LanePipeline({
       </ol>
 
       {!isCulture ? (
-        <div className="collection-platform-matrix" aria-label="四平台授权与采集状态">
-          {['xhs', 'dy', 'bili', 'wb'].map((code) => {
+        <div className="collection-platform-matrix" aria-label="平台授权与采集状态">
+          {platformCodes.map((code) => {
             const check = runtime.market.preflight.checks.find((item) => item.id === `auth_${code}`);
             const runMode = (lane.metrics.platformModes as Record<string, string> | undefined)?.[code];
-            const ready = check?.ok ?? false;
+            const enabled = check?.enabled ?? enabledPlatforms.includes(code);
+            const ready = enabled && (check?.ok ?? false);
             return (
-              <div className={ready ? 'is-ready' : 'is-blocked'} key={code}>
+              <div className={!enabled ? 'is-disabled' : ready ? 'is-ready' : 'is-blocked'} key={code}>
                 <span>{PLATFORM_LABELS[code]}</span>
-                <strong>{runMode ? `本轮 ${runMode}` : ready ? '授权可用' : '等待授权'}</strong>
+                <strong>{!enabled ? '已暂停' : runMode ? `本轮 ${runMode}` : ready ? '浏览器已连接' : '等待授权'}</strong>
                 <small>{check?.detail || '尚未执行授权预检'}</small>
               </div>
             );
           })}
+        </div>
+      ) : null}
+
+      {!isCulture && runtime.market.preflight.browser_session?.available ? (
+        <div className="collection-browser-session">
+          <div>
+            <ShieldCheck aria-hidden="true" size={16} />
+            <p>
+              <strong>{enabledPlatforms.length} 个平台授权浏览器</strong>
+              <span>{runtime.market.preflight.browser_session.detail} 浏览器连通不等于平台登录已通过。</span>
+            </p>
+          </div>
+          <a
+            href={runtime.market.preflight.browser_session.authorization_url}
+            rel="noreferrer"
+            target="_blank"
+          >
+            打开授权页<ExternalLink aria-hidden="true" size={14} />
+          </a>
         </div>
       ) : null}
 
@@ -437,7 +468,7 @@ export function CollectionConsole({
           <p>{focus === 'culture'
             ? '监测已核验来源的变化，发现新候选，但不跳过人工证据审核。'
             : focus === 'market'
-              ? '按计划复检四个平台；每个平台独立记账，失败轮不覆盖已核验快照。'
+              ? '按计划复检配置中启用的平台；各平台独立记账，暂停平台不参与晋级。'
               : '文化来源与平台市场两条通道各自排程、可暂停、可追溯。'}</p>
         </div>
         <button

@@ -13165,6 +13165,16 @@ a:focus-visible,
   background: var(--qc-white);
 }
 
+.collection-platform-matrix > div.is-disabled {
+  background: color-mix(in srgb, var(--qc-line) 28%, transparent);
+  opacity: 0.68;
+}
+
+.collection-platform-matrix > div.is-disabled::before {
+  border-style: dashed;
+  background: transparent;
+}
+
 .collection-platform-matrix span,
 .collection-platform-matrix strong,
 .collection-platform-matrix small {
@@ -13188,6 +13198,68 @@ a:focus-visible,
 .collection-platform-matrix small {
   color: var(--qc-secondary);
   font-size: 10px;
+}
+
+.collection-browser-session {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 68px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--qc-line);
+  margin: -12px 0 24px;
+  gap: 20px;
+}
+
+.collection-browser-session > div {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 10px;
+}
+
+.collection-browser-session > div > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--qc-secondary);
+}
+
+.collection-browser-session p {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  gap: 3px;
+}
+
+.collection-browser-session strong {
+  color: var(--qc-graphite);
+  font-size: 12px;
+}
+
+.collection-browser-session span {
+  color: var(--qc-secondary);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.collection-browser-session > a {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid var(--qc-line-strong);
+  border-radius: 4px;
+  color: var(--qc-graphite);
+  font-size: 11px;
+  font-weight: 650;
+  text-decoration: none;
+  gap: 6px;
+}
+
+.collection-browser-session > a:hover {
+  border-color: var(--qc-graphite);
 }
 
 .collection-lane-facts {
@@ -14038,6 +14110,17 @@ a:focus-visible,
 
   .collection-platform-matrix > div:nth-child(3)::before {
     display: none;
+  }
+
+  .collection-browser-session {
+    display: grid;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .collection-browser-session > a {
+    width: 100%;
+    min-height: 44px;
   }
 
   .collection-lane-facts dl {

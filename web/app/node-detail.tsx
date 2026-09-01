@@ -424,7 +424,7 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
 
   const executeResearch = useCallback(async () => {
     const queued = await startResearchRun(workspaceId, true);
-    setNotice({ tone: 'neutral', text: '已启动真实知识检索、四平台采集和模型策划。' });
+    setNotice({ tone: 'neutral', text: '已启动真实知识检索、启用平台采集和模型策划。' });
     let job = queued;
     for (let attempt = 0; attempt < 960; attempt += 1) {
       await new Promise((resolve) => window.setTimeout(resolve, 1250));

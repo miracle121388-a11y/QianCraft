@@ -733,11 +733,14 @@ test('持续采集页面区分已核验知识、候选资料与授权阻断', as
   await marketDisclosure.locator('summary').click();
   const marketConsole = page.locator('.collection-console--market');
   await expect(marketConsole).toBeVisible();
-  await expect(marketConsole.locator('.collection-platform-matrix')).toHaveAttribute('aria-label', '四平台授权与采集状态');
+  await expect(marketConsole.locator('.collection-platform-matrix')).toHaveAttribute('aria-label', '平台授权与采集状态');
   await expect(
     marketConsole.locator('.collection-platform-matrix').getByText('等待授权', { exact: true }),
-  ).toHaveCount(4);
-  await expect(marketConsole).toContainText('失败轮不覆盖已核验快照');
+  ).toHaveCount(3);
+  await expect(
+    marketConsole.locator('.collection-platform-matrix').getByText('已暂停', { exact: true }),
+  ).toHaveCount(1);
+  await expect(marketConsole).toContainText('暂停平台不参与晋级');
   await expect(page.getByText('378', { exact: true })).toBeVisible();
 });
 

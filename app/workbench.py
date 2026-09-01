@@ -1051,14 +1051,36 @@ def promote_research_run(
         for item in manifest.get("components", [])
         if item.get("component") in {"culture_knowledge", "market_research", "strategist"}
     }
-    platform_modes = {
-        code: str(manifest.get("market_platforms", {}).get(code, {}).get("status", ""))
-        for code in MARKET_PLATFORMS
-    }
-    if set(component_modes.values()) != {"live"} or any(
-        mode != "live" for mode in platform_modes.values()
+    declared_platforms = manifest.get("market_source", {}).get("platforms", [])
+    if (
+        not isinstance(declared_platforms, list)
+        or not declared_platforms
+        or any(not isinstance(code, str) for code in declared_platforms)
+        or len(declared_platforms) != len(set(declared_platforms))
+        or any(code not in MARKET_PLATFORMS for code in declared_platforms)
     ):
-        raise ValueError("只有文化、市场、策划及四平台全部 live 的运行可以晋级。")
+        raise ValueError("研究运行没有声明有效且非空的启用平台集合。")
+    platform_payload = manifest.get("market_platforms", {})
+    if (
+        not isinstance(platform_payload, dict)
+        or set(platform_payload) != set(declared_platforms)
+        or any(
+            not isinstance(platform_payload.get(code), dict)
+            for code in declared_platforms
+        )
+    ):
+        raise ValueError("研究运行的平台状态与声明的启用平台集合不一致。")
+    platform_modes = {
+        code: str(platform_payload.get(code, {}).get("status", ""))
+        for code in declared_platforms
+    }
+    required_components = {"culture_knowledge", "market_research", "strategist"}
+    if (
+        set(component_modes) != required_components
+        or any(mode != "live" for mode in component_modes.values())
+        or any(mode != "live" for mode in platform_modes.values())
+    ):
+        raise ValueError("只有文化、市场、策划及全部启用平台为 live 的运行可以晋级。")
 
     destination = RESEARCH_DIR / workspace_id / manifest_run_id
     outputs = manifest.get("outputs", {})
@@ -1818,7 +1840,7 @@ def run_workbench_node(workspace_id: str, node_id: str) -> dict[str, Any]:
         )
         save_workbench_workspace(workspace_id, workspace)
         raise RuntimeError(
-            "研究节点必须通过“实时运行”执行知识检索、四平台采集与模型策划；"
+            "研究节点必须通过“实时运行”执行知识检索、启用平台采集与模型策划；"
             "系统不会把读取旧文件标成新运行成功。"
         )
     if node["type"] == "DesignBriefNode":

@@ -17,6 +17,7 @@ ARCHIVE_PREFIX = "runtime/"
 MAX_FILE_COUNT = 100_000
 MAX_UNCOMPRESSED_BYTES = 2 * 1024 * 1024 * 1024
 RESTORE_CONFIRMATION = "RESTORE_QIANCRAFT_RUNTIME"
+EXCLUDED_RUNTIME_PREFIXES = ("browser-profile",)
 
 
 def runtime_root(configured: Path | None = None) -> Path:
@@ -52,6 +53,9 @@ def _archive_files(root: Path) -> list[Path]:
     if not root.is_dir() or root.is_symlink():
         raise ValueError(f"运行态根目录必须是普通目录：{root}")
     for candidate in sorted(root.rglob("*")):
+        relative = candidate.relative_to(root)
+        if relative.parts and relative.parts[0] in EXCLUDED_RUNTIME_PREFIXES:
+            continue
         if candidate.is_symlink():
             raise ValueError(f"运行态快照拒绝符号链接：{candidate}")
         if candidate.is_file() and not candidate.name.endswith(".tmp"):
@@ -85,6 +89,8 @@ def create_backup(root: Path, output: Path) -> dict[str, Any]:
         "sourceName": root.name,
         "fileCount": len(entries),
         "totalBytes": total_bytes,
+        "excludedPaths": [f"{prefix}/" for prefix in EXCLUDED_RUNTIME_PREFIXES],
+        "containsBrowserAuthorization": False,
         "files": entries,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -138,6 +144,13 @@ def verify_backup(archive_path: Path) -> dict[str, Any]:
             rows = manifest.get("files")
             if not isinstance(rows, list):
                 raise TypeError("快照清单格式无效。")
+            for row in rows:
+                relative = PurePosixPath(str(row["path"]))
+                if (
+                    relative.parts
+                    and relative.parts[0] in EXCLUDED_RUNTIME_PREFIXES
+                ):
+                    raise ValueError("运行态快照不得包含平台浏览器授权资料。")
             expected_names = {f"{ARCHIVE_PREFIX}{row['path']}" for row in rows}
             actual_names = set(info_by_name) - {MANIFEST_NAME}
             if expected_names != actual_names:

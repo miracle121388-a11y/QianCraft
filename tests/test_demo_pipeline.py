@@ -14,6 +14,8 @@ from app.adapters.media_crawler_adapter import (
     UNIFIED_MARKET_KEYWORDS,
     XHS_MVP_KEYWORDS,
     MediaCrawlerAdapter,
+    _new_cdp_page_target_ids,
+    _safe_error,
 )
 from app.config import load_settings, portable_artifact_path
 from app.designer import DesignAgent
@@ -84,6 +86,36 @@ def test_project_artifact_paths_are_portable(tmp_path: Path) -> None:
     assert portable_artifact_path(external_artifact, settings.root_dir) == str(
         external_artifact.resolve()
     )
+
+
+def test_managed_cdp_cleanup_selects_only_new_page_targets() -> None:
+    targets = [
+        {"id": "BASE", "type": "page"},
+        {"id": "NEW", "type": "page"},
+        {"id": "WORKER", "type": "service_worker"},
+    ]
+
+    assert _new_cdp_page_target_ids({"BASE"}, targets) == {"NEW"}
+    assert _new_cdp_page_target_ids(None, targets) == set()
+
+
+def test_safe_error_preserves_tail_and_redacts_credentials() -> None:
+    error = RuntimeError(
+        "cookie=private-value "
+        "https://example.invalid/login?api_key=private-app-key&qr=private-qr&sign=private-sign "
+        + ("x" * 1200)
+        + " FINAL_CAUSE"
+    )
+
+    detail = _safe_error(error)
+
+    assert "private-value" not in detail
+    assert "private-app-key" not in detail
+    assert "private-qr" not in detail
+    assert "private-sign" not in detail
+    assert "cookie=<redacted>" in detail
+    assert "...[truncated]..." in detail
+    assert detail.endswith("FINAL_CAUSE")
 
 
 @pytest.mark.asyncio

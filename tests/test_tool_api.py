@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+from dataclasses import replace
+from pathlib import Path
 
 import pytest
 
@@ -64,6 +66,48 @@ def test_strict_research_requires_explicit_runtime_authorization(
         start_research_job({"workspace_id": "guizhou-miao-demo", "allow_interactive": False})
 
 
+def test_strict_research_reserves_formal_platform_timeout() -> None:
+    assert tool_api._strict_mediacrawler_timeout_seconds(180) == 600
+    assert tool_api._strict_mediacrawler_timeout_seconds(900) == 900
+
+
+def test_strict_research_requires_every_enabled_platform_and_no_extra() -> None:
+    enabled = ("xhs", "bili", "wb")
+
+    assert tool_api._enabled_platforms_are_live(
+        {"xhs": "live", "bili": "live", "wb": "live"}, enabled
+    )
+    assert not tool_api._enabled_platforms_are_live(
+        {"xhs": "live", "bili": "live"}, enabled
+    )
+    assert not tool_api._enabled_platforms_are_live(
+        {"xhs": "live", "dy": "live", "bili": "live", "wb": "live"}, enabled
+    )
+
+
+def test_strict_preflight_marks_douyin_as_paused(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    settings = replace(
+        load_settings(), mediacrawler_platforms=("xhs", "bili", "wb")
+    )
+    monkeypatch.setattr(tool_api, "load_settings", lambda: settings)
+
+    preflight = _strict_preflight(allow_interactive=False)
+    douyin = next(item for item in preflight["checks"] if item["id"] == "auth_dy")
+
+    assert preflight["enabled_platforms"] == ["xhs", "bili", "wb"]
+    assert preflight["disabled_platforms"] == ["dy"]
+    assert douyin == {
+        "id": "auth_dy",
+        "label": "抖音授权入口",
+        "ok": False,
+        "enabled": False,
+        "detail": "已暂停，不参与本轮采集或严格晋级。",
+    }
+    assert not any("抖音" in blocker for blocker in preflight["blockers"])
+
+
 def test_strict_research_rejects_interactive_launch_without_display(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -74,6 +118,36 @@ def test_strict_research_rejects_interactive_launch_without_display(
     assert explicit["interactive_launch"] is False
     assert explicit["interactive_supported"] is False
     assert any("没有可交互图形会话" in item for item in explicit["blockers"])
+
+
+def test_strict_preflight_rejects_wrong_mediacrawler_interpreter(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    source_root = tmp_path / "MediaCrawler"
+    source_root.mkdir()
+    (source_root / "main.py").write_text("# probe\n", encoding="utf-8")
+    interpreter = tmp_path / "python"
+    interpreter.touch()
+    settings = replace(
+        load_settings(),
+        mediacrawler_path=source_root,
+        mediacrawler_python=interpreter,
+    )
+    monkeypatch.setattr(tool_api, "load_settings", lambda: settings)
+    monkeypatch.setattr(
+        tool_api,
+        "_mediacrawler_runtime_available",
+        lambda executable, source: False,
+    )
+
+    preflight = _strict_preflight(allow_interactive=True)
+    runtime = next(
+        item for item in preflight["checks"] if item["id"] == "crawler_runtime"
+    )
+
+    assert runtime["ok"] is False
+    assert "CDP 依赖不可用" in runtime["detail"]
 
 
 def test_interactive_support_empty_override_uses_platform_detection(

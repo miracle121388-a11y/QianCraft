@@ -59,7 +59,7 @@ desktopGeometry:
 
 **Creative North Star: “Tonal Focus Review / 低饱和聚焦评审”**
 
-QianCraft 0.9.2 的电脑端延续 C2 Tonal Focus Review。它仍是高密度证据工具，不是营销官网：暖矿物外壳承接整体环境，雾蓝命令栏与画布、灰绿工具/证据区、暖陶 Inspector 通过固定色块定位任务；低饱和深灰蓝只承担选中、焦点和主动作。简约来自减少无意义修饰，而不是把工作区清空成大面积纯白。
+QianCraft 0.10.0 的电脑端延续 C2 Tonal Focus Review。它仍是高密度证据工具，不是营销官网：暖矿物外壳承接整体环境，雾蓝命令栏与画布、灰绿工具/证据区、暖陶 Inspector 通过固定色块定位任务；低饱和深灰蓝只承担选中、焦点和主动作。简约来自减少无意义修饰，而不是把工作区清空成大面积纯白。
 
 本轮只承诺 **1440×960 电脑端**。30 项功能门在 macOS Chromium 已通过，Windows CI 承担同一功能集与两张权威像素基线；既有 mobile/tablet 行为仍留在原组件和样式中，但没有把手机/平板写成当前 C2 已适配或已验证。
 
@@ -71,6 +71,7 @@ QianCraft 0.9.2 的电脑端延续 C2 Tonal Focus Review。它仍是高密度证
 - 文化层继续展示 22 条正式记录、32 个登记来源与独立人工候选门；市场层继续展示 378 条带时间边界的历史真实快照。
 - 策略层继续展示 8 条机会、Top 3、六维量分、引用与机器/人工并列决策；不得用视觉层改写事实或评分。
 - `live / cache / stale / warning / error / blocked / degraded` 必须保持诚实语义。排程存在、曾经成功或历史快照都不能冒充当前在线。
+- 市场控制面在平台矩阵下提供受保护的云端授权浏览器入口；“浏览器已连接”、启用平台登录/本轮搜索成功和暂停平台必须使用不同文案，不能共用成功徽章。当前 Zeabur 为小红书/B站/微博启用、抖音暂停。
 - 产品阶段止于 `DesignPackage`、工厂询价/首样简报与概念海报；不代表生产发布、工厂下单、商业图稿批准、DFM、制造或合规就绪。
 
 ## 2. Color system
@@ -199,7 +200,7 @@ Task 4 曾实现的 tablet/mobile C2 覆盖层已完整撤销。本文件不为 
 - 当前 C2 电脑端门：前端单测 5/5，macOS desktop-chromium 30 passed / 1 Windows 像素门 skipped，typecheck、零 warning lint 与 Vinext production build 通过；两张电脑端像素基线只由 Windows CI 执行。
 - 两张 mobile snapshot 从 Task 5 起点到终点字节不变，但本轮没有运行 mobile project，因此它们不是当前 C2 通过证据。
 - 像素基线只可在目标 Windows Chromium、相同字体环境中，由人工确认变化有意后更新。不得用另一平台的抗锯齿差异覆盖现有基线。
-- 0.9.2 C2 已发布并验收于受 Basic Auth 保护的 Zeabur 实例，Windows Chromium CI 同时通过两张权威像素基线。当前 C2 仍只承诺 desktop-chromium，不能把发布成功扩写为 mobile/tablet 设计验收。
+- 0.10.0 C2 已发布到受 Basic Auth 保护的 Zeabur 实例，并在市场控制面增加同一鉴权边界内的授权浏览器入口；Windows Chromium CI 的两张权威像素基线未被本轮功能扩展改写。当前 C2 仍只承诺 desktop-chromium，不能把发布成功扩写为 mobile/tablet 设计验收。
 
 ## 8. Do / Don’t
 
@@ -217,6 +218,6 @@ Task 4 曾实现的 tablet/mobile C2 覆盖层已完整撤销。本文件不为 
 - 不添加渐变、玻璃、backdrop blur、光晕、装饰网格、高饱和环境色或无意义缩略图。
 - 不让选中节点扩张、位移、抬升或展开详情；不让拖拽成为唯一输入路径。
 - 不把黑色星图例外扩散成全站深色主题。
-- 不把 378 条历史快照、排程或曾经授权写成当前四平台实时产出。
+- 不把 378 条历史快照、排程或曾经授权写成当前实时产出；只把同轮严格验证通过的启用平台写成 live，暂停平台不得混入。
 - 不把 desktop-only C2 写成 mobile/tablet 已适配、已通过或已在真实设备验证。
 - 不从当前概念包声称生产发布、工厂下单、商业图稿批准、社区授权完成或制造/合规就绪。

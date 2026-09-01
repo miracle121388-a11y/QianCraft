@@ -262,6 +262,7 @@ export interface ResearchCheck {
   id: string;
   label: string;
   ok: boolean;
+  enabled?: boolean;
   detail: string;
 }
 
@@ -269,7 +270,16 @@ export interface ResearchPreflight {
   research_ready: boolean;
   image_generation_ready: boolean;
   interactive_launch: boolean;
+  interactive_supported?: boolean;
   login_method: string;
+  enabled_platforms?: string[];
+  disabled_platforms?: string[];
+  browser_session?: {
+    available: boolean;
+    connected: boolean;
+    authorization_url: string;
+    detail: string;
+  };
   checks: ResearchCheck[];
   blockers: string[];
 }

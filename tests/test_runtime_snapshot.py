@@ -15,6 +15,8 @@ def _runtime(root: Path) -> None:
     (root / "tool_workspace" / "collection" / "state.json").write_text(
         '{"status": "healthy"}\n', encoding="utf-8"
     )
+    (root / "browser-profile" / "Default").mkdir(parents=True)
+    (root / "browser-profile" / "Default" / "Cookies").write_bytes(b"private-session")
 
 
 def _duplicate_manifest_archive(path: Path) -> None:
@@ -35,6 +37,10 @@ def test_runtime_snapshot_round_trip_preserves_verified_files(tmp_path: Path) ->
 
     assert created == verified == restored
     assert created["fileCount"] == 2
+    assert created["excludedPaths"] == ["browser-profile/"]
+    assert created["containsBrowserAuthorization"] is False
+    with ZipFile(archive) as handle:
+        assert not any("browser-profile" in name for name in handle.namelist())
     assert (root / "workbench" / "workspace.json").read_text(encoding="utf-8") == (
         '{"version": 2}\n'
     )
@@ -67,3 +73,18 @@ def test_runtime_snapshot_rejects_path_traversal(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="重复文件名"):
         verify_backup(duplicate)
+
+
+def test_runtime_snapshot_rejects_browser_authorization_payload(tmp_path: Path) -> None:
+    archive = tmp_path / "browser-session.zip"
+    with ZipFile(archive, "w") as handle:
+        handle.writestr("runtime/browser-profile/Default/Cookies", "private")
+        handle.writestr(
+            "manifest.json",
+            '{"schemaVersion":"1.0","fileCount":1,"totalBytes":7,'
+            '"files":[{"path":"browser-profile/Default/Cookies",'
+            '"size":7,"sha256":"unused"}]}',
+        )
+
+    with pytest.raises(ValueError, match="不得包含平台浏览器授权资料"):
+        verify_backup(archive)

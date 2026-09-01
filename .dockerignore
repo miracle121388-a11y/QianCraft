@@ -23,9 +23,6 @@ qiancraft.egg-info
 uv.lock
 
 flow
-local_culture
-market-intel_agent
-researcher_agent
 tests
 docs
 
@@ -46,6 +43,7 @@ web/.env*
 
 scripts/*
 !scripts/runtime_snapshot.py
+!scripts/probe_market_platforms.py
 
 data/culture/lightrag_storage
 data/market/raw

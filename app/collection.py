@@ -341,7 +341,7 @@ class CollectionStore:
                     "intervalMinutes": _int_env(
                         "QIANCRAFT_MARKET_REFRESH_MINUTES", 240, 30, 10_080
                     ),
-                    "label": "四平台增量采集",
+                    "label": "平台增量采集",
                 },
             },
         }
@@ -975,7 +975,7 @@ class CollectionScheduler:
         lane.update(
             {
                 "status": "running",
-                "detail": "严格知识检索与四平台增量采集已进入后台队列。",
+                "detail": "严格知识检索与已启用平台增量采集已进入后台队列。",
                 "jobId": str(job.get("job_id", "")),
                 "metrics": {},
             }
@@ -1167,7 +1167,8 @@ class CollectionScheduler:
             "market": {
                 "preflight": preflight,
                 "promotionPolicy": (
-                    "只有文化、四平台和策划均为本轮 live 才晋级；失败轮只保留审计。"
+                    "只有文化、配置中启用的平台和策划均为本轮 live 才晋级；"
+                    "暂停平台不参与，失败轮只保留审计。"
                 ),
             },
         }

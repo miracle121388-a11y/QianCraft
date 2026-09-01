@@ -12,7 +12,7 @@ LightRAGAdapter ──> CultureDNA + VisualReferencePack ───────�
                                                               │
 verified market evidence ─────────────────────────────────────┤
           │                                                   ├─> Strategist
-authorized MediaCrawler/xhs+dy+bili+wb (optional)              │      ├─> 机会六维加权 - 文化风险
+authorized MediaCrawler/configured platforms                  │      ├─> 机会六维加权 - 文化风险
           └─> 统一MarketPost ─> 平台内热度 ─> 产品形态榜 ───────┘      ├─> LightRAG 二次核验
                                                                       └─> Top 3 DesignerHandoff
                                                                                    │
@@ -88,7 +88,7 @@ Workbench 桌面使用命令栏、工具轨、按需 Dock、可缩放/平移的�
 
 ## 持续采集控制面
 
-`app/collection.py` 在 Tool API 进程内维护两条持久化通道。`culture_watch` 轮换巡检已登记文化来源，使用 HTTP 条件请求与内容哈希识别变化，只把同域相关文章写入候选队列；请求前及每次重定向后都会拒绝本机、私网、链路本地、云元数据、保留地址和解析到这些地址的域名。正式图谱仍要求人工完成字段级证据映射。`market_refresh` 先检查实时开关、MediaCrawler 和四平台授权，条件齐备才启动现有严格研究任务，且只接受 `live_verified`。调度配置、心跳、事件、候选和来源指纹写入 `data/runtime/tool_workspace/collection/`，不会覆盖仓库文化/市场基线。
+`app/collection.py` 在 Tool API 进程内维护两条持久化通道。`culture_watch` 轮换巡检已登记文化来源，使用 HTTP 条件请求与内容哈希识别变化，只把同域相关文章写入候选队列；请求前及每次重定向后都会拒绝本机、私网、链路本地、云元数据、保留地址和解析到这些地址的域名。正式图谱仍要求人工完成字段级证据映射。`market_refresh` 先检查实时开关、MediaCrawler 和配置中启用平台的授权，条件齐备才启动现有严格研究任务，且只接受 `live_verified`。调度配置、心跳、事件、候选和来源指纹写入 `data/runtime/tool_workspace/collection/`，不会覆盖仓库文化/市场基线。
 
 前端每 12 秒读取控制面；请求失败立即显示连接中断并禁用写操作，心跳超过 45 秒也视为离线。文化批次必须本轮所有来源成功才是 `healthy`，部分失败为 `degraded` 且连续失败不清零。市场历史证据先于折叠运维台展示，避免把 378 条历史快照与新一轮授权状态混在一起。完整运行条件、状态和 API 见 [`continuous_collection.md`](continuous_collection.md)。
 
@@ -110,7 +110,9 @@ Workbench 桌面使用命令栏、工具轨、按需 Dock、可缩放/平移的�
 
 图像适配器只接受独立的 `IMAGE_PROVIDER / IMAGE_API_KEY / IMAGE_BASE_URL / IMAGE_MODEL`。缺项时 Visual Generation Node 为 `warning`，内置 A/B/C 项目资产仍可作为 `success` 概念证据展示，但不会被说成当次 API 新生成。默认工作区会从版本化文件恢复 B/C 及其 SHA-256；可编辑海报由浏览器 Canvas 按标题、文案、板块显示与顺序实时导出 1800 × 2400 PNG，页脚始终保留概念/首样边界。
 
-生产环境采用一个容器：Nginx 在平台注入的端口统一处理 Basic Auth、API 单 IP 限流、HSTS/CSP/Permissions-Policy 等安全头，把 `/api`、`/assets` 转到回环地址的 Tool API，把其他请求转到回环地址的 Vinext；`/healthz` 单独免鉴权并转发真实 `/api/health`。启动脚本监控 Tool API、Vinext 与 Nginx，任一子进程退出就让容器失败；调度线程死亡或心跳超过 45 秒时健康 API 返回 503，Docker HEALTHCHECK 也失败，由已配置的平台重启策略恢复。`/app/data/runtime` 是唯一运行态持久卷，镜像内文化/市场证据只作为基线读取；`scripts/runtime_snapshot.py` 可创建自校验 ZIP、拒绝危险路径并原子恢复/保留回滚目录。该结构能在单副本持续调度，但不是分布式队列；多 API 副本前需增加唯一领导者，生产备份仍需复制到独立存储。部署细节见 [`deployment_zeabur.md`](deployment_zeabur.md)。
+生产环境采用一个容器：Nginx 在平台注入的端口统一处理 Basic Auth、API 单 IP 限流、HSTS/CSP/Permissions-Policy 等安全头，把 `/api`、`/assets` 转到回环 Tool API，把普通页面转到回环 Vinext，并把 `/browser-auth/` 转到回环 noVNC；`/healthz` 单独免鉴权并转发真实 `/api/health`。LightRAG 与 GPT Researcher 安装在主 Python 环境，MediaCrawler 使用独立 Python 环境；Xvfb、Openbox、Chromium、x11vnc 与 websockify共同提供云端授权桌面。CDP、VNC 与 noVNC 上游均只绑定 `127.0.0.1`，公网仍只有 Nginx 的 Basic Auth 入口。当前 Zeabur 启用 xhs/bili/wb，dy 暂停。
+
+启动脚本监控 Tool API、Vinext、Nginx 和五个浏览器会话进程，任一必需子进程退出就让容器失败；调度线程死亡或心跳超过 45 秒时健康 API 返回 503，Docker HEALTHCHECK 也失败，由平台重启策略恢复。`/app/data/runtime` 是唯一运行态持久卷：工作区、研究任务、LightRAG 索引和 Chromium profile 可跨重启保留，镜像内文化/市场证据只作为基线读取。`scripts/runtime_snapshot.py` 可创建自校验 ZIP、拒绝危险路径并原子恢复，但强制排除含平台登录态的 `browser-profile/`；恢复后浏览器授权需单独保留或重新登录。该结构能在单副本持续调度，但不是分布式队列；多 API 副本前需增加唯一领导者，生产备份仍需复制到独立存储。部署细节见 [`deployment_zeabur.md`](deployment_zeabur.md)。
 
 ## 运行和降级
 
@@ -150,9 +152,10 @@ Pattern Primitive 只抽取网格、排列、主次、叙事节奏和材料层�
 
 - API Key 只从被忽略的 `.env` 或本地 `api.txt` 读取，日志、异常和最终输出都会掩码。
 - MediaCrawler Cookie 不进入命令行参数，而通过隔离子进程环境传递并在进程启动后立即移除。
-- 二维码/CDP 只通过 `scripts/probe_market_platforms.py --authorize`（旧小红书脚本继续兼容）由用户显式启动；普通 demo/live 策略运行不会擅自弹出登录窗口。
-- 四平台使用同一 23 词全集，正式默认各取 6 词；每平台约 50–150 条、总量约 200–600 条，单平台硬上限 150。规范化快照、上游原始文件与派生榜单分层保存。
-- 主项目统一使用 Conda `qiancraft`；MediaCrawler 使用独立 Conda 环境并由 `MEDIACRAWLER_PYTHON` 指向解释器，避免其固定依赖版本污染主运行时。
+- Zeabur 的授权桌面只经受 Basic Auth 保护的 `/browser-auth/` 暴露；Chromium profile 保存在权限 `0700` 的持久目录，CDP/VNC 不开放公网。Cookie 不进入仓库、命令行、普通快照或 API 响应。
+- 本地二维码/CDP 仍只通过 `scripts/probe_market_platforms.py --authorize`（旧小红书脚本继续兼容）由用户显式启动；普通本地 demo/live 运行不会擅自弹出登录窗口。托管 CDP 每轮记录既有页面，只关闭该爬虫新建的页面，不终止共享 Chromium，也不累积搜索标签；抖音首页仅等待 `domcontentloaded`，避免无关长连接使导航假超时。
+- 启用平台使用同一 23 词全集，正式默认各取 6 词；每平台目标约 50–150 条且硬上限 150。规范化快照、上游原始文件与派生榜单分层保存；暂停平台既不访问也不进入严格晋级集合。
+- 本地开发统一使用 Conda `qiancraft`，MediaCrawler 使用独立 Conda 环境。Zeabur 镜像对应使用 `/opt/venv` 与 `/opt/mediacrawler-venv` 两个隔离环境，并由 `MEDIACRAWLER_PYTHON=/opt/mediacrawler-venv/bin/python` 指向后者；配置解析保留虚拟环境符号链接语义，构建、启动与严格预检都实际导入 `httpx` 和 CDP 管理器，避免路径存在但落到系统 Python 的假就绪状态。
 - MediaCrawler 当前许可证只允许非商业学习/研究；商业化必须取得授权或替换数据采集实现。
 - 祭祀、丧葬、祖源、支系身份、完整服饰构图、秘密知识和具体传承人作品进入概念设计前必须再次获得相应社区确认。
 

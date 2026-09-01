@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import socket
 import sys
 from dataclasses import replace
 from datetime import UTC, datetime
@@ -17,6 +18,14 @@ from app.adapters.media_crawler_adapter import (
     MediaCrawlerAdapter,
 )
 from app.config import load_settings
+
+
+def _cdp_port_open(port: int) -> bool:
+    try:
+        with socket.create_connection(("127.0.0.1", port), timeout=0.5):
+            return True
+    except OSError:
+        return False
 
 
 def _arguments() -> argparse.Namespace:
@@ -51,6 +60,10 @@ async def _main() -> int:
     max_results = 20 if args.formal else max(10, min(20, args.max_results))
     record_limit = 150 if args.formal else 20
     base = load_settings()
+    managed_cdp_connected = (
+        base.mediacrawler_cdp_connect_existing
+        and _cdp_port_open(base.mediacrawler_cdp_port)
+    )
     probe_root = (
         base.root_dir
         / "data"
@@ -70,7 +83,7 @@ async def _main() -> int:
         mediacrawler_cdp_connect_existing=(
             base.mediacrawler_cdp_connect_existing
             if not args.authorize
-            else False
+            else managed_cdp_connected
         ),
         mediacrawler_timeout_seconds=max(60, args.timeout),
         mediacrawler_keyword_limit=keyword_limit,

@@ -109,6 +109,7 @@ def test_research_promotion_requires_only_research_artifacts(
     evidence_path.write_text("{}", encoding="utf-8")
     manifest_path = output_dir / "run_manifest.json"
     run_id = "20260829T000000Z-research"
+    enabled_platforms = ("xhs", "bili", "wb")
     manifest = {
         "run_id": run_id,
         "finished_at": "2026-08-29T00:00:00+00:00",
@@ -117,9 +118,12 @@ def test_research_promotion_requires_only_research_artifacts(
             for component in ("culture_knowledge", "market_research", "strategist")
         ],
         "market_platforms": {
-            platform: {"status": "live"} for platform in workbench.MARKET_PLATFORMS
+            platform: {"status": "live"} for platform in enabled_platforms
         },
-        "market_source": {"derived_path": str(evidence_path)},
+        "market_source": {
+            "platforms": list(enabled_platforms),
+            "derived_path": str(evidence_path),
+        },
         "outputs": {key: str(target) for key, (target, _source) in sources.items()},
     }
     manifest["outputs"]["manifest"] = str(manifest_path)
@@ -129,6 +133,9 @@ def test_research_promotion_requires_only_research_artifacts(
     promoted_dir = workbench.RESEARCH_DIR / payload["workspace_id"] / run_id
 
     assert promoted["metadata"]["research_run_id"] == run_id
+    assert promoted["metadata"]["research_platform_modes"] == {
+        platform: "live" for platform in enabled_platforms
+    }
     assert (promoted_dir / "pre_design_strategy.json").is_file()
     assert (promoted_dir / "run_manifest.json").is_file()
     assert not (promoted_dir / "design_specification.json").exists()

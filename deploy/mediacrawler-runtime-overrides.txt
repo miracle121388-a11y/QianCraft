@@ -1,0 +1,5 @@
+# QianCraft only invokes MediaCrawler's CLI crawler. Keep security-fixed shared
+# libraries here; its unused FastAPI server packages are removed in Dockerfile.
+aiomysql>=0.3.0,<0.4
+python-dotenv>=1.2.2,<2
+requests>=2.33.0,<3

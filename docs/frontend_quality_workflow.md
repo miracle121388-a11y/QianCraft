@@ -1,6 +1,6 @@
 # QianCraft 前端质量工作流
 
-> 适用版本：0.9.2 及以后
+> 适用版本：0.10.0 及以后
 >
 > 当前 C2 验收范围：1440×960 电脑端；功能门跨 Windows/macOS/Linux，像素基线固定为 Windows Chromium
 >
@@ -92,6 +92,7 @@ pnpm quality
 - 工作台指针平移、节点键盘移动、Windows forced-colors 焦点与星图层级。
 - 知识星图搜索聚焦、选点、按钮/真实滚轮缩放、拖动画布与键盘平移。
 - 持续采集的正式知识/候选/历史快照分层、授权阻断、输入保留、轮询断线后旧在线状态失效与写操作禁用。
+- 云端授权浏览器卡片只在服务端报告入口与连接状态时出现，并明确区分“浏览器已连接”、启用平台登录/本轮采集和 dy 暂停状态。
 - 两张 Windows Chromium 电脑端视觉基线：workbench 与 Brief。
 
 本轮最终真实结果：
@@ -103,7 +104,7 @@ pnpm quality
 - `pnpm --dir web audit --audit-level=high`：完整依赖（含开发工具）0 个已知漏洞。
 - macOS `pnpm --dir web exec playwright test --project=desktop-chromium`：30 passed / 1 Windows 像素门按设计 skipped。
 
-0.9.2 同轮 Python 回归为 77/77。历史 58/58、25/25 与 `35 passed / 1 intentionally skipped` 只代表各自旧版本，不能冒充当前跨平台或手机基线。
+0.10.0 当前 Python 回归为 91/91，其中新增虚拟环境解释器符号链接、CDP 依赖预检、浏览器页面清理、敏感查询参数脱敏、严格超时和启用平台精确晋级回归。历史 85/85、82/82、80/80、77/77、58/58、25/25 与 `35 passed / 1 intentionally skipped` 只代表各自旧状态，不能冒充当前跨平台或手机基线。
 
 失败时报告写入 `web/.playwright-report/`，截图、axe 上下文和 trace 写入 `web/.playwright-results/`；两者不进 Git。
 
@@ -147,5 +148,5 @@ Task 5 只更新并目视复核两张 desktop 快照。两张 mobile snapshot �
 - axe 只能发现一部分无障碍问题；自动门通过不等于 WCAG 认证，仍需真实屏幕阅读器与残障用户测试。
 - 当前没有把 Lighthouse、真实用户 INP 或超大图谱压力测试设为阻断门；节点数量和数据规模显著增长时需要单独基线。
 - 视觉快照使用 `guizhou-miao-demo` 的本地真实 HTTP 数据，不能替代认证后线上复验。
-- C2 已在受保护线上 0.9.2 完成认证后九路由实机验收；GitHub Actions 的 Windows Chromium 同时完成 31/31，包含两张权威像素基线。
+- C2 已在受保护线上 0.10.0 保持九路由与同源受保护授权浏览器入口；最近既有 GitHub Actions 的 Windows Chromium 为 31/31，包含两张权威像素基线，但该 CI 运行对应 0.9.2，未追溯冒充 0.10.0 CI。
 - 本流程止于本地产品前端质量，不授权部署、商业图稿批准、工厂下单或制造/合规就绪声明。

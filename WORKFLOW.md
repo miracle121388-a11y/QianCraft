@@ -1,7 +1,7 @@
 # QianCraft 工作流程与持续更新记录
 
 > 文档性质：项目级唯一工作流说明、当前状态快照与追加式更新台账
-> 当前版本：0.9.2
+> 当前版本：0.10.0
 > 最后维护：2026-09-01
 > 维护状态：强制持续维护
 
@@ -33,7 +33,7 @@
 |---|---|
 | 产品名称 | QianCraft Creative Intelligence Workbench｜文化文创智能工作台 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
-| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py` + `app/collection.py`；本地与受保护线上均为 0.9.2。电脑端 C2 “Tonal Focus Review” 保持 60px 雾蓝命令栏、72px 灰绿工具轨、雾蓝 React Flow 画布、打开时 210px 底部证据/资产/历史 Dock、330px 右侧暖陶 Inspector，完整几何只在至少 1280px 宽度启用，1024px 有负向回归保护。工作台保留真实 9 节点/10 连线、主键平移、`Shift + 拖动` 框选、滚轮缩放、节点独立拖动和点击/键盘等价路径；文化/市场控制面诚实区分正式知识、候选、378 条历史证据、实时状态与授权阻断。本轮 macOS 验收功能与可访问性，Windows Chromium CI 实际通过 31/31 并承担像素基线；不声明 mobile/tablet C2 已适配。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
+| 产品工作台 | `web/` + `app/tool_api.py` + `app/workbench.py` + `app/collection.py`；本地与受保护线上版本均为 0.10.0。电脑端 C2 “Tonal Focus Review” 保持 60px 雾蓝命令栏、72px 灰绿工具轨、雾蓝 React Flow 画布、打开时 210px 底部证据/资产/历史 Dock、330px 右侧暖陶 Inspector，完整几何只在至少 1280px 宽度启用，1024px 有负向回归保护。市场控制面通过受 Basic Auth 保护的“云端授权浏览器”入口，把浏览器连接、平台授权、当轮实采分开表达；当前显示小红书/B站/微博启用、抖音暂停。工作台仍保留真实 9 节点/10 连线、主键平移、`Shift + 拖动` 框选、滚轮缩放、节点独立拖动和点击/键盘等价路径；不声明 mobile/tablet C2 已适配。默认本地站点 `http://localhost:3000/`，API 为 `127.0.0.1:8787` |
 | GitHub 展示 | 项目 README 包含原创横版 SVG 首屏、真实状态徽章、在线实例、成果海报、A/B/C 三方向视觉、Workbench 快速开始、Mermaid 架构、可信边界、路线图与许可证说明 |
 | 小红书发布包 | `docs/social/xiaohongshu/2026-08-29/` 提供可直接复制的中文标题/正文/话题、8 张 1080×1440 轮播 PNG、可复现 HTML 排版源与素材/口径说明。当前传播核心为“让贵州非遗不只被看见，也被真正理解；让传统有出处、创新有根，并以被尊重的方式走进当代生活”。封面场景使用项目原创概念图作为参考重新生成，并明确标注概念视觉；全部页面区分历史快照、推断、概念样与量产/授权/合规边界，没有使用 `reference_only` 馆藏像素 |
 | 默认主题 | 贵州苗绣 |
@@ -42,24 +42,24 @@
 | 苗绣检索 | 同时保留花溪挑花、剑河锡绣、松桃苗绣与雷山工艺差异 |
 | 视觉参考包 | 12 条权威参考、5 个 Pattern Primitive、3 组无伪造 HEX 的文字色彩关系；默认 `reference_only` |
 | 市场研究层 | 12 条结构化市场信号、12 条公开可追溯来源 |
-| 市场状态 | 当前 Windows 基线保留 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148）与 12 条不进榜公开核验记录。0.9.0 的市场刷新通道已具备持久调度、退避、立即运行与状态审计，但当前 `MEDIACRAWLER_LIVE_ENABLED=false` 且四平台没有已连接授权浏览器，所以真实状态为 `blocked`；没有创建假任务、没有改写 378 条历史证据，也没有把“已排期”写成实时产出 |
+| 市场状态 | 仓库基线保留 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148）与 12 条不进榜公开核验记录。用户明确暂停需要交互验证码的抖音，当前 Zeabur 启用 xhs/bili/wb。六关键词严格任务 `20260901T121642Z-e1a435ff` 在同一隔离轮次得到 xhs 113、bili 110、wb 149 条规范化实时记录，文化、市场、策划均为 `live`，最终 `live_verified` 并回写线上工作区；清单不含 dy，未拼入旧探针或历史基线。仓库 378 条仍保持历史口径，线上当前工作区为另一次 372 条三平台实时运行 |
 | 产品形态榜 | `product_form_hotness.json` 已由 378 条历史真实平台快照恢复：Top 10 为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒；Top 5 为前五项。该榜只代表有限历史样本，不代表当前全平台实时趋势 |
 | 对标案例 | 8 条 |
-| LightRAG 实机图 | 612 个实体、697 条关系；“贵州苗绣”节点查询通过 |
+| LightRAG 实机图 | Zeabur 持久目录上的 LightRAG 实机建立 612 个实体、697 条关系，探针读取 100 条关系边；引擎为本地 KG，未走回退，容器重发后可复用索引 |
 | 策划输出 | 当前正式输出来自实机运行 `20260828T060200Z-e44240e3`。该轮实际调用 GPT Researcher / DeepSeek，但清单中的 `generated_opportunities_accepted=0`：模型建议没有通过证据契约，当前 8 条 Opportunity Signals 全部来自可复现的本地证据规则基线，再经六维评分与 LightRAG 二次核验；Top 3 为 OPP-006、OPP-002、OPP-004。历史日志中“DeepSeek 实际生成当前 8 条”的说法不准确，本轮以追加勘误修正 |
 | Design Agent | 自动模式从 Top 3 中选择 OPP-006，缩窄为“针格模块｜花溪挑花互动冰箱贴（概念样）”；工具支持人工从 8 条机会中选择 1–3 条、指定主机会、编辑交接/产品字段并生成带输入 SHA 的独立运行；没有匹配生成器时直接报错，不套用通用兜底模板 |
 | 工厂首样拆解 | 5 项原型尺寸、5 项 BOM、1 组原创网格应用、6 步装配、6 项质检、3 个文化门、3 个工程门与 5 个工厂问题；不宣称量产就绪 |
 | 设计海报 | 1800 × 2400；原创生成式成品/爆炸主视觉 + 本地精确中文排版；未使用 `reference_only` 馆藏像素 |
 | 0.9.1 提交前复验 | 独立运行 `20260829T144536Z-2e6f3e5b`：`culture_knowledge=live`、`market_research=cache`、`strategist=cache`、`design_agent=live`、`poster_renderer=live`；消费提交随附的 378 条派生平台证据，生成 8 条机会、Top 3、DesignPackage、13 项产物与 1800×2400 海报，全部清单路径为仓库相对路径且文件存在。正式仓库产物随后从既有真实 DeepSeek `DesignerHandoff` 重跑设计/海报阶段，保留历史策划证据并更新 BOM 5 项标题、摘要与可迁移清单路径 |
 | Workbench Workspace | 默认 `guizhou-miao-demo` 以仓库基线初始化，后续写入 `data/runtime/workbench/`；Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept、任务书、A/B/C、`DecisionProfile`、机器/人工并列的 `decision_output`、研究任务和设计运行引用。New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；研究晋级时保留仍有效的人工 ID，对消失的机会/品类只做带审计记录的补齐；源证据与运行态分离，页面操作不会覆盖仓库基线 |
-| 图像生成适配 | `ImageGenerationAdapter` 保留 OpenAI-compatible `/images/generations` 与 Qwen Image 3.0 同步契约；此前 Qwen `qwen-image-3.0-pro` 三次同步实机生成及其否决/未选版本是历史可审计证据。当前本机与 Zeabur 均未配置独立图像 provider，因此 Regenerate / Generate More 会保留已有 A/B/C 并显示 warning，不会把旧资产写成新成功。批准的 `.impeccable/mocks/tonal-focus-review.png`（SHA-256 `131cd5be…ffeb`）只作为 C2 电脑端非字面比例、色块与聚焦参考；它不是产品数据资产或逐像素事实源 |
-| API | 当前本机被忽略的 `.env` 与 Zeabur Secret 均配置 DeepSeek；密钥值没有进入源码、命令、文档或输出。独立图像 provider 当前未配置，四平台授权状态未改变。0.9.2 的严格研究预检按运行主机能力判断：Windows、macOS 或具有图形会话的 Linux 可执行显式授权采集，无图形会话的 Zeabur 容器继续返回 422；空的兼容开关不再错误覆盖自动检测。旧版设计状态接口改为返回真实图像 provider 状态。`/api/health` 在调度线程死亡或心跳超过 45 秒时返回 503 |
-| 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 运行 0.9.2，部署 `6a95b5a29ed7d65609e27bf6` 为 `RUNNING`。远端实际安装 `qiancraft-0.9.2`；公网 `/healthz` 200、匿名首页/API 401，认证后首页、九路由、九详情 API、DesignPackage 和四项图像均为 200。HSTS/CSP/Permissions-Policy 已下发，80 请求突发实测 38 个 429 且健康仍为 200；API/Web/Nginx worker 以 `www-data` 运行，仅 Nginx master 为 root。持久卷为 ext4，发布前后快照均已校验并复制到卷外受控存储。当前仍是单 Tool API 副本；云端严格研究与图片重生成继续按缺失条件阻断 |
-| MediaCrawler | 独立 Python 3.13 环境按上游 requirements 完整安装，探针实际导入 `bili,dy,ks,tieba,wb,xhs,zhihu`。市场通道默认每 240 分钟预检一次，只有实时开关、运行时与用户授权全部成立才创建严格任务；当前实时开关关闭且四平台无已连接授权，本轮没有登录或抓取，378 条历史快照继续诚实保持 cache |
-| 自动测试 | 0.9.2 本地完整回归：Python 77/77、Workbench TypeScript 5/5、macOS `desktop-chromium` 30 passed / 1 个 Windows 像素基线按平台跳过。GitHub Actions 运行 `33417318879` 的 Ubuntu/macOS/Windows 全部通过，Windows `desktop-chromium` 31/31 含两张权威像素基线，4 个 Job annotation 均为 0。浏览器门覆盖工作台与 9 个详情路由的 axe、结构、破图/alt、溢出、C2 固定色块、1280px 完整几何及 1024px 负向门、焦点、等价路径、画布/星图交互、断线旧状态失效和授权阻断；没有运行或声明 mobile/tablet C2。自动 axe 不等同 WCAG 认证 |
-| 静态检查 | 0.9.2 本地实际通过 Conda `qiancraft` 环境下 Ruff、`uv lock --check`、Web typecheck、ESLint、peer 检查、Vinext 五阶段 production build、`bash -n deploy/start-zeabur.sh` 与 `git diff --check`。`pip-audit` 和 `pnpm audit --audit-level=high` 均为零已知漏洞；前端从初始 7 个生产/10 个全量 high 漏洞升级至零。同一套门已在远端 CI 重现且零 annotation |
-| 运行态恢复 | `scripts/runtime_snapshot.py` 对 `data/runtime` 生成带 SHA-256 清单的 ZIP，发布前自校验；恢复前校验路径、大小、文件数和摘要，要求服务已停止及显式确认，并保留时间戳回滚目录。本轮发布前 0.9.1 运行态以 tar + 外部 SHA-256 校验，发布后 0.9.2 在 Zeabur 实际生成含 5 个文件/57,741 字节的 ZIP 快照并通过服务器和本地双重校验；两份均已复制到持久卷之外的权限受控目录。它不等同于定时异地备份、自动保留策略或已完成恢复演练 |
-| 凭证检查 | 本机 LLM 凭证只存在于被 Git 忽略的 `.env`，站点 Basic Auth 与服务器 LLM 凭证只存在于 Zeabur Secret；当前没有独立图像凭证。本轮对 QianCraft 自有受跟踪文件执行安全独立长 `sk-` 扫描为 0 命中。全仓扫描另检出 2 个既有、未改动的 extracted-upstream 示例字面量，分别位于 LightRAG 的完整 Docker Compose 示例和非官方示例脚本；它们不在本轮改动内且按上游边界不改写。扫描没有读取 `.env` 或 Secret 值，文档与最终交接不复述任何字面量、Cookie、API Key 或授权会话值 |
+| 图像生成适配 | `ImageGenerationAdapter` 保留 OpenAI-compatible `/images/generations` 与 Qwen Image 3.0 同步契约。Zeabur 已通过 Secret 配置独立 provider，实测 `dashscope-native` / `qwen-image-3.0-pro` 返回有效 1024×1024 PNG（1,206,400 字节）；Regenerate / Generate More 已具备机器侧运行条件。旧资产与每次新结果仍按独立版本记录。批准的 `.impeccable/mocks/tonal-focus-review.png`（SHA-256 `131cd5be…ffeb`）只作为 C2 电脑端非字面比例、色块与聚焦参考；它不是产品数据资产或逐像素事实源 |
+| API | Zeabur Secret 已配置 DeepSeek 与图像 provider；密钥值没有进入源码、命令、文档或输出。0.10.0 镜像内含 LightRAG、GPT Researcher、MediaCrawler 与受保护图形会话，严格研究的机器预检全部通过；MediaCrawler 预检实际用配置解释器导入 `httpx` 与 CDP 管理器，不把“路径存在”当作就绪。预检返回启用/暂停平台清单，暂停项不阻断；`browser_connected=true` 仍只证明 CDP 可达，不等于任何平台授权有效。GPT Researcher 实机使用 `deepseek-v4-flash` 完成外部上下文写作且未回退；`/api/health` 在调度线程死亡或心跳超过 45 秒时仍返回 503 |
+| 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 运行 0.10.0，当前部署 `6a96bdf25158a7aaa4e62007` 为 `RUNNING`。公网 `/healthz` 为 200；镜像集成三个上游研究运行时、持久 LightRAG、Xvfb/Openbox/Chromium/x11vnc/noVNC/websockify；应用与浏览器 worker 以 `www-data` 运行，CDP/VNC/noVNC 只监听回环地址。关键运行文件与本地 SHA-256 一致，当前仍是单 Tool API 副本 |
+| MediaCrawler | Zeabur 使用独立 `/opt/mediacrawler-venv` 安装上游 requirements，再以 `deploy/mediacrawler-runtime-overrides.txt` 修复安全版本并移除未使用的 FastAPI/Starlette/Uvicorn；`MEDIACRAWLER_PYTHON` 解析保留虚拟环境符号链接，构建、启动、严格预检均实际导入 `httpx` 与 `CDPBrowserManager`。采集器复用托管 Chromium 回环 CDP，父/子进程均清理本轮新页面，超时会温和终止并脱敏错误。当前只运行 xhs/bili/wb；dy 适配代码与历史基线保留但明确暂停，不访问、不阻断、不计入晋级 |
+| 自动测试 | 0.10.0 本地完整回归：Python 91/91、Workbench TypeScript 5/5、macOS `desktop-chromium` 30 passed / 1 个 Windows 像素基线按平台跳过。GitHub Actions 运行 `33417318879` 仍是上一版 0.9.2 的已通过跨平台基线，未把它追溯写成 0.10.0 CI。浏览器门覆盖工作台与 9 个详情路由的 axe、结构、破图/alt、溢出、C2 固定色块、焦点、等价路径、画布/星图交互、断线旧状态失效、启用/暂停平台语义；新增解释器符号链接、CDP 依赖、超时终止、页面清理、敏感查询参数脱敏和精确启用平台晋级回归。没有声明 mobile/tablet C2；自动 axe 不等同 WCAG 认证 |
+| 静态检查 | 0.10.0 本地实际通过 Conda `qiancraft` 环境下 Ruff、`uv lock --check`、Web typecheck、ESLint、Vinext 五阶段 production build、POSIX `sh -n deploy/start-zeabur.sh` 与 `git diff --check`。主运行时、GPT Researcher/LightRAG 临时审计环境及加固 MediaCrawler 环境的 `pip-audit` 均为零已知漏洞，`pnpm audit --audit-level=high` 也为零已知漏洞 |
+| 运行态恢复 | `scripts/runtime_snapshot.py` 对 `data/runtime` 生成带 SHA-256 清单的 ZIP，发布前自校验；恢复前校验路径、大小、文件数和摘要，要求服务已停止及显式确认，并保留时间戳回滚目录。0.10.0 明确排除 `browser-profile/`，清单写入 `containsBrowserAuthorization=false`，验证器也拒绝含该目录的归档。既有卷外 0.10.0 快照仍是持久备份基线；最终三平台任务后另在服务器 `/tmp` 生成并校验 118 文件、18,890,725 未压缩字节、4,100,550 字节 ZIP，SHA-256 `2a3b4e57…435c`，但它只是在线验收件，不是独立持久备份。快照不导出登录态，恢复或迁移后必须重新授权 |
+| 凭证检查 | 本机 LLM 凭证只存在于被 Git 忽略的 `.env`，站点 Basic Auth、服务器 LLM 与图像凭证只存在于 Zeabur Secret；没有读取、回显或写入仓库。最终隔离发布上下文为 1,121 文件、49,984 KiB，符号链接、浏览器 profile、实际长密钥与私钥模式均为 0；唯一 `secret.yaml` 是上游 LightRAG Kubernetes 模板。浏览器登录数据库只保留在权限 0700 的持久目录且不进入快照。全仓仍有 2 个既有、未改动的 extracted-upstream 示例字面量，按上游边界保留 |
 
 当前正式产物：
 
@@ -93,11 +93,11 @@
         │
         ├──> MediaCrawlerAdapter
         │       ├── 读取公开核验市场基线
-        │       ├── live 且用户明确授权时依次走 xhs/dy/bili/wb Cookie / QR / CDP
-        │       ├── 四平台共用关键词池；每平台约50–150条，总量约200–600条
+        │       ├── live 且用户明确授权时依次运行配置中启用的平台；当前 Zeabur 为 xhs/bili/wb，dy 暂停
+        │       ├── 启用平台共用关键词池；每平台约50–150条，目标总量随启用数量计算
         │       ├── 统一字段、清洗、去重、反垃圾与产品形态识别
         │       ├── 平台内百分位热度 → 跨平台产品形态 Top 10 / Top 5
-        │       └── 形成 TrendDNA + 四路独立状态；失败平台明确为 cache/unavailable
+        │       └── 形成 TrendDNA + 启用平台独立状态；失败平台明确为 cache/unavailable，暂停平台不参与晋级
         │
         ├──> BenchmarkCase：载入可迁移案例
         │
@@ -124,7 +124,7 @@
                                               ├── 可选原创生成式成品/爆炸主视觉
                                               ├── 本地精确中文、尺寸、BOM 与工艺排版
                                               ├── 写 1800×2400 PNG + RenderManifest
-                                              └── 更新 RunManifest（五组件、四平台状态与13个正式路径）
+                                              └── 更新 RunManifest（五组件、实际运行平台状态与13个正式路径）
 ```
 
 Culture DNA 与 Trend DNA 可并行取得；Strategist 必须在两者、Visual Reference Pack 和 Benchmark Case 完整后运行；Design Agent 必须在 Designer Handoff 原子落盘后重新从文件读取。生成模型不得反向改写文化事实、视觉权利状态或市场原始记录，也不得把参考图像像素带入概念视觉。
@@ -139,7 +139,7 @@ Tool API 启动 / 容器持续运行
                 │       ├→ 全部来源成功 = healthy；部分失败 = degraded
                 │       └→ pending_review → 人工审核 → 结构化图谱（不自动晋级）
                 └→ market_refresh（默认 240 分钟）
-                        ├→ 实时开关、MediaCrawler 运行时与四平台授权预检
+                        ├→ 实时开关、MediaCrawler 运行时与配置中启用平台的授权预检
                         ├→ 条件不齐 = blocked + 事件 + 下次调度
                         └→ 条件齐备才创建严格研究任务；仅 live_verified 晋级
 ```
@@ -155,7 +155,7 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
                   │
                   ├→ Strict Research Job：202 后台任务 → 持久化 job.json → 前端轮询/刷新续接
                   │          ├→ 每轮独立 outputs/raw/derived，不读取 demo fallback
-                  │          └→ 文化 + 策划 + xhs/dy/bili/wb 全部 live 才原子晋级
+                  │          └→ 文化 + 策划 + 配置中启用平台全部 live，且清单平台集合精确一致，才原子晋级
                   ├→ 持续采集控制：真实心跳 / 调度暂停 / 立即运行 / 事件 / 候选审核 / 授权阻断
                   ├→ 证据中心：22 条正式文化记录 / 32 来源 / 待核验候选 / 四平台 378 历史快照 / Top 10
                   ├→ React Flow：Culture + Market → Strategy → Brief → Visual → A/B/C → Poster
@@ -173,7 +173,7 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 
 工作台前端不直接导入 Python，只通过 HTTP API 读取事实、保存工作区和运行节点。`/api/workbench/workspaces/{workspaceId}/nodes/{nodeId}/detail` 按节点类型返回专用内容与解析后的引用对象；文化页展示关系与 22 条记录，市场页展示 378 条历史快照派生榜和代表原记录，策略页展示机会及六维量分，设计页继续贯通任务书、视觉方向、文化转译、BOM 与海报。`POST /api/workbench/workspaces/{workspaceId}/decisions` 校验并保存 `DecisionProfile`，按选中范围重算人工排序、立即刷新 Culture/Market/Strategy 节点，并把 Brief 之后的依赖节点标为 stale；保存选择本身不会静默调用模型。每个节点详情通过 `workspace` 与 `decision` 查询参数深链到对应编辑阶段。节点动作使用异步 `fetch` 并即时显示 `running`；图像服务或其他调用失败时变为 `error/warning`，不会锁死界面。
 
-“严格实时研究”先检查 LLM、MediaCrawler 授权/运行时与 LightRAG，然后以 202 后台任务执行；任务状态和结果写入独立 `job.json`，刷新或离开页面后仍可续接。研究流水线只运行到 `designer_handoff.json`，不让下游设计异常吞掉真实平台状态；即使预检通过，运行后也必须确认文化、市场、策划和四个平台全部为 `live`，否则该轮只保留失败审计，不晋级、不覆盖旧证据。晋级后前端才依次运行 Brief/Design Agent、Visual/Concept 与 Poster；没有真实生成器或图像 provider 的步骤保持 warning/error。
+“严格实时研究”先检查 LLM、MediaCrawler 授权/运行时与 LightRAG，然后以 202 后台任务执行；任务状态和结果写入独立 `job.json`，刷新或离开页面后仍可续接。研究流水线只运行到 `designer_handoff.json`，不让下游设计异常吞掉真实平台状态；即使预检通过，运行后也必须确认文化、市场、策划均为 `live`，平台状态键与配置中启用集合精确一致且全部为 `live`，否则该轮只保留失败审计，不晋级、不覆盖旧证据。暂停平台保持可见但不进入任务。晋级后前端才依次运行 Brief/Design Agent、Visual/Concept 与 Poster；没有真实生成器或图像 provider 的步骤保持 warning/error。
 
 ## 3. 运行模式与降级
 
@@ -182,7 +182,7 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 | `demo` | 结构化图谱 | 公开核验基线；四平台真实快照存在时只标 `cache` | 本地证据规则 | Design Agent 本地运行；无主视觉时几何海报标 `cache` | 离线验收、开发和稳定演示 |
 | `auto` | 尝试 LightRAG live，允许明确回退 | 仅在显式开关及授权登录态齐备时逐平台抓取；无 raw 时读取提交随附 `derived/latest.json` | 尝试 GPT Researcher + DeepSeek，允许明确回退 | 原创主视觉存在时海报标 `live` | 默认实机运行；显式 `--mode auto` 始终覆盖环境中的 demo/live 默认值 |
 | `live` | 上游失败报错 | 未授权时仍使用合规缓存；授权失败写清状态 | 模型失败报错 | 保持同一证据锁与量产前门禁 | 严格集成测试 |
-| `tool-strict` | 必须 live | 四平台必须全部 live，任何 cache/unavailable 均失败 | 必须 live 且模型建议通过契约；先在研究边界落盘 | 研究晋级后由工作台继续运行；无生成器或 provider 即 warning/error | Web 工具中的“严格实时研究” |
+| `tool-strict` | 必须 live | 配置中启用的平台必须且只能全部 live，任何 cache/unavailable 或集合偏差均失败；暂停平台不运行 | 必须 live 且模型建议通过契约；先在研究边界落盘 | 研究晋级后由工作台继续运行；无生成器或 provider 即 warning/error | Web 工具中的“严格实时研究” |
 
 组件统一状态为 `live|cache|unavailable`，登录状态为 `authorized|missing|expired`，不能互相冒充。当前项目没有使用 mock 数据。
 
@@ -198,7 +198,7 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 | `app/pipeline.py` | 端到端编排、原子输出和运行清单 | 新步骤必须说明顺序、失败策略与状态字段 |
 | `app/collection.py` | 文化来源巡检、市场严格任务预检、持久调度/心跳/退避、候选/指纹/事件、公共页面抓取与人工审核门 | 只有全部已探测文化来源成功才是 healthy，部分失败必须 degraded；候选不得自动写入正式图谱；市场缺开关、运行时或授权必须 blocked，不创建假任务。公共 URL 的输入、DNS 解析结果和每次重定向都必须拒绝本机、私网、链路本地与内部域名；TCP 连接钉住已校验公网地址且不使用环境代理，防止 SSRF 与 DNS rebinding |
 | `app/tool_api.py` | 工具 API、真实计数、采集状态/事件/候选/配置/动作、真实健康心跳、分页来源查询、节点专用详情、七阶段人工决策写入、严格预检、202 后台研究任务/轮询/中断恢复、设计运行与资产路由 | 本地或容器内只绑定回环地址并由受保护代理转发；不得向前端返回凭证；job 异常必须脱敏并持久化；历史、当前、live、cache、系统推荐和人工选择必须分开标注；客户端断开不得把 BrokenPipe 误写为第二次响应 |
-| `app/workbench.py` | 7 类节点注册、默认贵州苗绣链路、Workspace Schema 1.1 校验/兼容迁移/原子保存、DecisionProfile 校验/人工排序/下游 stale、研究晋级、Concept 动作、真实 Poster 渲染、文化/市场/馆藏/平台记录引用目录与详情组装 | 只有隔离运行中的文化/市场/策划和四平台全部 live 才可晋级；人工选择只在新结果中 ID 消失时带审计补齐。节点类型、状态、连线、引用、Concept 与资产路径均须服务端校验；馆藏 `reference_only` 不得改写为可用像素 |
+| `app/workbench.py` | 7 类节点注册、默认贵州苗绣链路、Workspace Schema 1.1 校验/兼容迁移/原子保存、DecisionProfile 校验/人工排序/下游 stale、研究晋级、Concept 动作、真实 Poster 渲染、文化/市场/馆藏/平台记录引用目录与详情组装 | 只有隔离运行中的文化/市场/策划与清单声明的非空平台集合全部 live，且平台状态键精确一致，才可晋级；人工选择只在新结果中 ID 消失时带审计补齐。节点类型、状态、连线、引用、Concept 与资产路径均须服务端校验；馆藏 `reference_only` 不得改写为可用像素 |
 | `data/culture/` | 文化图谱、视觉参考和 LightRAG 存储 | 事实先写结构化图谱；视觉图像权利与来源分开记录 |
 | `data/market/` | 核验基线、`raw/` 原始抓取、`derived/` 派生证据 | 未披露互动数保持为 0；原始与派生不可混写 |
 | `data/design/assets/` | 原创生成式成品/爆炸主视觉 | 不保存馆藏参考图像；每项正式使用资产必须进入渲染摘要 |
@@ -209,16 +209,18 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 | `data/workbench/` | 仓库随附的 Workspace Schema 1.1 与 A/B/C 概念视觉基线 | 作为首次启动模板；浏览器写入不得覆盖该目录 |
 | `data/runtime/workbench/` | 实际 Workspace、研究晋级产物、DesignPackage、概念版本与海报 | 被 Git 忽略并在容器挂载持久卷；每个工作区/运行使用受校验目录，JSON 原子写入，不保存 Base64 或凭证 |
 | `data/runtime/tool_workspace/` | 严格研究 `job.json`、每轮隔离 raw/derived/outputs、旧版工具设计运行与 `collection/` 的调度配置/状态/事件/候选/指纹 | 后台任务、失败审计和设计运行都保留独立 ID；容器必须挂载持久卷；非正式平台探针另写隔离目录，不覆盖 canonical 证据 |
-| `scripts/` | 正式流水线、工具 API/一键启动、环境探针、四平台 Smoke Test、显式授权入口与 `runtime_snapshot.py` 运行态快照/校验/恢复工具 | 登录和工具启动命令变化同步维护本文件“标准命令”；恢复必须停服务、显式确认并保留回滚目录，快照须复制到独立存储 |
+| `data/runtime/lightrag_storage/` | Zeabur 上 LightRAG 的持久索引 | 使用由输入摘要隔离的工作目录；容器替换后复用，运行态快照包含该目录并逐文件校验 |
+| `data/runtime/browser-profile/` | Zeabur 托管 Chromium 的平台本人授权会话 | 权限固定 0700，只由 `www-data` 读取；不得进入仓库、日志、API 或运行态快照。容器启动只清除 Chromium 过期 singleton 锁，不清除登录数据库；卷迁移或恢复后重新登录 |
+| `scripts/` | 正式流水线、工具 API/一键启动、环境探针、复用托管 CDP 的平台 Smoke Test、显式授权入口与 `runtime_snapshot.py` 运行态快照/校验/恢复工具 | 登录和工具启动命令变化同步维护本文件“标准命令”；恢复必须停服务、显式确认并保留回滚目录，快照须复制到独立存储且排除浏览器授权资料 |
 | `tests/` | 数据、证据、采集调度/候选门、SSRF、部署安全、运行态恢复、路径可迁移与端到端契约 | 修复缺陷时优先增加回归测试；授权缺失、部分来源失败、重启恢复、显式模式、私网 URL/重定向和随附缓存必须有明确断言 |
 | `docs/` | 专题说明与阶段性产品材料，包含人工决策契约、排版令牌、画布比例、视觉验收基线和 `frontend_quality_workflow.md` 自动/人工前端门 | 本文件保留总览，专题细节链接到 docs；自动 axe 与像素基线不得写成完整无障碍认证 |
 | `docs/social/` | 面向外部渠道的经核验内容包、发布顺序、确定性排版源和渠道专用视觉 | 只使用项目自有或已获许可素材；数据状态、文化来源、概念/量产边界与生成图身份必须在正文和图片中保持一致；实际发布由用户在目标平台预览确认 |
 | `docs/assets/` | GitHub README 等文档专用视觉资产 | 只放项目自有或已获许可素材；保持相对路径与无障碍文本 |
 | `PRODUCT.md`、`DESIGN.md` | 产品意图、核心工作流与长期设计宪法 | 产品角色、信息优先级、视觉令牌或交互原则改变时同步维护；不得让文档与实际 CSS/组件漂移 |
 | `.impeccable/` | 机器可读设计契约、界面简报、成品截图与资产来源记录 | Detector 每轮最多运行一次；截图只作审阅证据，不把外部参考资产混入正式产品素材 |
-| `web/` | Tonal Focus Review 电脑端工作台、五阶段导航、60px command、72px tool rail、210px bottom Dock、330px right Inspector、七阶段 Human Decision Studio、可拖动/缩放 React Flow 画布、深色文化知识星图例外、持续采集控制面、9 个动态详情页、证据台账、API Client、Workspace UI、Canvas PNG 导出、自托管中文排版系统与 Playwright/axe/视觉回归门 | C2 使用固定暖矿物/雾蓝/灰绿/暖陶/浅石/低饱和蓝令牌；禁止大面积纯白、渐变、玻璃、光晕与装饰色。页面不得把历史/cache/排期写成 live；市场历史证据优先于运维控制；断线必须使旧在线状态失效；拖拽必须有点击/键盘等价路径。当前 C2 只承诺电脑端，mobile/tablet 沿用既有代码但未纳入本轮适配与验收 |
+| `web/` | Tonal Focus Review 电脑端工作台、五阶段导航、60px command、72px tool rail、210px bottom Dock、330px right Inspector、七阶段 Human Decision Studio、可拖动/缩放 React Flow 画布、深色文化知识星图例外、持续采集控制面、受保护云端授权浏览器卡片、9 个动态详情页、证据台账、API Client、Workspace UI、Canvas PNG 导出、自托管中文排版系统与 Playwright/axe/视觉回归门 | C2 使用固定暖矿物/雾蓝/灰绿/暖陶/浅石/低饱和蓝令牌；禁止大面积纯白、渐变、玻璃、光晕与装饰色。页面不得把浏览器连接、历史/cache/排期写成授权或 live；市场历史证据优先于运维控制；断线必须使旧在线状态失效；拖拽必须有点击/键盘等价路径。当前 C2 只承诺电脑端，mobile/tablet 沿用既有代码但未纳入本轮适配与验收 |
 | `web/tests/ui/` | 工作台与九个详情路由的 Playwright 质量门、axe、C2 计算样式/几何、工作台/星图/弹层核心交互、采集断线与恢复、forced-colors 与视觉基线 | macOS 本轮 30 passed / 1 个 Windows 像素门按平台跳过；功能断言必须跨平台，像素基线固定 Windows Chromium 并由 CI 执行。测试必须从用户可见语义定位，不得通过隐藏控件、禁用规则或无审阅更新快照来消除失败 |
-| `Dockerfile`、`deploy/` | Zeabur 单容器构建、Nginx 鉴权/反代、限流/安全响应头、Vinext、Tool API 与采集调度进程编排、真实健康检查 | Basic Auth 哈希只在启动时生成；`/healthz` 代理真实 API 心跳，线程死亡/心跳超过 45 秒返回 503，镜像 HEALTHCHECK 随之失败；API 使用共享限流区，响应包含 HSTS/CSP/Permissions-Policy；启动脚本任一 API/Web/Nginx 子进程退出即失败；运行态必须写入持久卷，当前只支持单副本调度 |
+| `Dockerfile`、`deploy/` | Zeabur 单容器构建、Nginx 鉴权/反代、限流/安全响应头、Vinext、Tool API、三个上游研究运行时、托管 Chromium/noVNC 与采集调度进程编排、真实健康检查 | Basic Auth 哈希只在启动时生成；`/browser-auth/` 与 Web/API 共用鉴权，CDP/VNC/noVNC 只监听回环；浏览器及应用 worker 均以 `www-data` 运行。`/healthz` 代理真实 API 心跳，线程死亡/心跳超过 45 秒返回 503；任一受管子进程退出即让容器失败并由平台重启。运行态必须写入持久卷，当前只支持单副本调度 |
 | `.github/workflows/quality.yml` | Ubuntu/macOS/Windows Python 回归、Linux Ruff/锁/依赖审计、Windows Web 构建/依赖/Playwright 像素门 | 使用最小只读权限、并发取消和 Conda `qiancraft` 环境；CI 通过才可视为跨平台交付门完成 |
 | 四个外部源码目录（含 `flow/xyflow-main/`） | 许可证审计和可替换运行时 | 不删除版权信息；非必要不直接修改；产品节点、状态和视觉留在 QianCraft 自有层 |
 
@@ -240,12 +242,12 @@ Creative Intelligence Workbench 在上述正式流水线之外增加一层可审
 - 没有来源披露时，点赞、收藏、评论和分享必须为 0。
 - 销量、订单、金额和用户调查只按来源原文口径记录，不外推平台全量结论。
 - `real_engagement_score` 只来自授权抓取的真实互动；`institutional_signal_score` 只表达机构证据；`derived_viral_score` 是项目内推导排序值，三者不可混称。
-- xhs/dy/bili/wb 使用同一 23 词全集；正式默认取 6 词、每词一页，单平台保留 50–150 条为目标并硬限制最多 150 条，四平台总目标 200–600 条。
+- xhs/dy/bili/wb 适配器保留同一 23 词全集；正式默认取 6 词、每词一页，单平台保留 50–150 条为目标并硬限制最多 150 条。实际运行只使用 `MEDIACRAWLER_PLATFORMS` 声明的非空集合；当前 Zeabur 为 xhs/bili/wb，dy 暂停。
 - 统一帖子保留 `platform/post_id/title/content/url/published_at/likes/favorites/comments/shares/views/product_form/search_keyword/retrieved_at`；平台缺失字段只能为 0 或空，不得推测。
 - Platform Hot Score 只在同平台内对实际可用指标和近期性做百分位加权；不同平台绝对互动数不得直接横比。
 - Cross-platform Hot Score = 60%覆盖平台平均热度 + 15%形态出现次数百分位 + 15%平台覆盖率 + 10%近期性；对外只称“跨平台市场热度与爆款潜力信号”。
 - 产品形态榜只使用本次真实抓取或其历史真实快照，公开研究基线不进入榜单；最终最多 Top 10，`priority_product_forms` 最多 5 项。
-- 规范化平台快照写 `data/market/raw/{xhs,dy,bili,wb}.jsonl`，上游原始文件写 `raw/_upstream/`，清洗/评分/榜单只写 `derived/`；RunManifest 必须记录实际路径与四平台独立状态。
+- 规范化平台快照按实际平台写 `data/market/raw/{platform}.jsonl`，上游原始文件写 `raw/_upstream/`，清洗/评分/榜单只写 `derived/`；RunManifest 必须记录实际路径、启用平台清单与对应独立状态。仓库仍保留四平台历史文件，不代表暂停平台参与当前运行。
 
 ### 5.3 策划机会
 
@@ -327,6 +329,9 @@ conda run -n qiancraft python -m pip install -e "./researcher_agent/gpt-research
 ```bash
 conda create -n qiancraft-mediacrawler python=3.13 pip -y
 conda run -n qiancraft-mediacrawler python -m pip install -r market-intel_agent/MediaCrawler-main/requirements.txt
+conda run -n qiancraft-mediacrawler python -m pip install --upgrade -r deploy/mediacrawler-runtime-overrides.txt
+conda run -n qiancraft-mediacrawler python -m pip uninstall -y fastapi starlette uvicorn
+conda run -n qiancraft-mediacrawler python -m pip check
 conda run -n qiancraft-mediacrawler python -c "import sys; print(sys.executable)"
 ```
 
@@ -389,26 +394,26 @@ pnpm --dir web audit --audit-level=high
 
 网页“实时运行”会调用 `POST /api/research/run`；状态由 `GET /api/research/jobs/{jobId}` 返回。它是长任务，不应通过重复 POST 轮询。只有返回 `live_verified` 后，工作台才继续执行 Brief/Design Agent 与 Poster。
 
-### 7.6 四平台探测与用户显式授权
+### 7.6 平台探测与用户显式授权
 
 ```bash
 # 无交互状态探针，不打开浏览器
 conda run --no-capture-output -n qiancraft python scripts/probe_market_platforms.py
 
-# 首次授权逐个平台执行，依次把 platform 改成 xhs、dy、bili、wb
+# 首次授权逐个平台执行，把 platform 改为当前计划启用的平台
 conda run --no-capture-output -n qiancraft python scripts/probe_market_platforms.py --platform xhs --method cdp --authorize
 
-# 四平台授权后统一复核正式小规模抓取
+# 统一复核适配器支持的平台；暂停项不会进入服务器严格任务
 conda run --no-capture-output -n qiancraft python scripts/probe_market_platforms.py --platform all --method cdp --formal --authorize
 ```
 
-可把 `cdp` 换成 `qrcode`；Cookie 模式使用四个独立环境变量。只有用户确认平台条款、上游许可和用途后才执行。单平台只有实际登录、搜索并保存至少 5 条带 ID 和互动字段的真实结果后才是 `live/authorized`；历史真实快照只能是 `cache`，没有快照则是 `unavailable`。
+Zeabur 0.10.0 直接访问受 Basic Auth 保护的 `/browser-auth/vnc.html?autoconnect=1&resize=scale&path=browser-auth/websockify`，由用户本人完成启用平台的密码、扫码、验证码或风控交互；探针发现回环 9222 已有托管 CDP 时直接复用，不再启动第二个浏览器。可把本地 `cdp` 换成 `qrcode`；Cookie 模式使用平台独立环境变量。单平台只有实际登录、搜索并保存至少 5 条带 ID 和互动字段的真实结果后才是 `live/authorized`；浏览器已连接、历史快照或曾经登录都不能代替该结论。当前 Zeabur 的 `MEDIACRAWLER_PLATFORMS=xhs,bili,wb`，dy 因交互验证码暂停，恢复前不得自动访问或宣称可用。
 
 ### 7.7 容器与 Zeabur 发布验收
 
 ```bash
 # 本地存在 Docker 时可先构建同一生产镜像
-docker build -t qiancraft:0.9.2 .
+docker build -t qiancraft:0.10.0 .
 
 # Zeabur CLI 在已选择项目/环境/服务后上传精简发布目录
 npx --yes zeabur@latest deploy --service-id <service-id> --environment-id <environment-id> --interactive=false
@@ -418,7 +423,7 @@ curl --fail --silent --show-error https://qiancraft-studio-2026.zeabur.app/healt
 curl --silent --output /dev/null --write-out '%{http_code}\n' https://qiancraft-studio-2026.zeabur.app/
 ```
 
-生产发布使用 `.dockerignore` 排除原始平台数据、上游源码、测试缓存与本地密钥；部署变量由 Zeabur Secret 管理，不使用 `variable list` 等可能回显值的命令。发布成功必须继续以认证请求检查 Bootstrap、九个节点详情、静态资源与至少一个独立节点动作，单看平台“RUNNING”状态不算验收完成。完整拓扑见 [`docs/deployment_zeabur.md`](docs/deployment_zeabur.md)。
+生产发布使用 `.dockerignore` 排除原始平台数据、上游测试/评估/缓存、浏览器资料与本地密钥，但重新纳入运行所需的 LightRAG、GPT Researcher、MediaCrawler 源码及两个运维脚本；部署变量由 Zeabur Secret 管理，不使用 `variable list` 等可能回显值的命令。发布成功必须继续检查匿名鉴权、Bootstrap、九个节点详情、静态资源、图像/研究上游、回环端口、持久目录和受保护浏览器，单看平台“RUNNING”状态不算验收完成。完整拓扑见 [`docs/deployment_zeabur.md`](docs/deployment_zeabur.md)。
 
 ### 7.8 运行态快照与恢复
 
@@ -431,7 +436,7 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py ve
 conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py restore /safe-independent-storage/qiancraft-runtime.zip --confirm-service-stopped --confirm RESTORE_QIANCRAFT_RUNTIME
 ```
 
-`/safe-independent-storage/` 是占位路径，必须替换为 Zeabur 持久卷之外、访问受控的真实存储。快照工具不是自动异地备份服务；发布前/后快照、复制、保留周期和恢复演练仍须由运维流程执行。
+`/safe-independent-storage/` 是占位路径，必须替换为 Zeabur 持久卷之外、访问受控的真实存储。快照明确包含 Workspace、调度与 LightRAG 索引，但排除 `browser-profile/` 并在校验阶段拒绝任何含授权资料的归档；恢复或迁移后由用户重新登录所需平台。快照工具不是自动异地备份服务；发布前/后快照、复制、保留周期和恢复演练仍须由运维流程执行。服务器 `/tmp` 中的校验 ZIP 只算在线验收件，不满足独立持久备份要求。
 
 ## 8. 每次更新的完成定义
 
@@ -449,7 +454,8 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 正式输出需要更新时，已生成新的 JSON、Markdown 和 RunManifest。
 - [ ] 涉及 Design Agent 时，已核对交接 SHA-256、证据编号、量产状态、参考像素声明、海报尺寸与渲染摘要。
 - [ ] 涉及 Workbench 时，已核对 7 类节点契约、9 个默认实例的详情页、引用解析/缺失审计、Workspace Schema 1.1 与旧数据兼容、DecisionProfile 版本/ID 白名单/权重归一化、系统分和人工分并列、节点阶段深链、下游 stale 传播、严格研究 202/轮询/刷新续接/全 live 晋级门、Brief 实际 DesignPackage、Concept 旧资产标识、Poster 实际渲染和真实 API 错误态。
-- [ ] 涉及持续采集时，已核对持久配置/状态/事件/候选/指纹、真实心跳、下次运行、退避、API 重启 interrupted、文化全部成功与部分失败的 healthy/degraded 区分、候选人工晋级门、市场实时开关/运行时/四平台授权阻断，以及只有 `live_verified` 才覆盖正式证据；不得把排期、预检、历史快照或部分成功写成实时产出。
+- [ ] 涉及持续采集时，已核对持久配置/状态/事件/候选/指纹、真实心跳、下次运行、退避、API 重启 interrupted、文化全部成功与部分失败的 healthy/degraded 区分、候选人工晋级门、市场实时开关/运行时/启用平台授权阻断、暂停平台排除，以及只有平台集合精确匹配且全部 live 的 `live_verified` 才覆盖正式证据；不得把排期、预检、历史快照或部分成功写成实时产出。
+- [ ] 涉及云端平台浏览器时，CDP/VNC/noVNC 必须只监听回环、入口继承站点鉴权、进程使用非 root 用户、Profile 权限为 0700、快照排除授权资料；UI/API 必须区分浏览器连接、平台登录、实际搜索与 `live_verified`，用户密码/扫码/验证码/Cookie 不由项目或自动化代填、导出或回显。
 - [ ] 涉及前端排版或交互时，已按用户授权范围运行目标 Playwright project，并核对 Tonal Focus Review 固定色值、60/72/210/330 电脑端几何、没有大面积纯白/渐变/玻璃/光晕/装饰色、黑色只作为真实关系画布例外、系统中文字体回退、画布可读比例、页面溢出、拖拽等价路径、知识星图、断线语义、可访问名称与焦点闭环。若范围包含 mobile/tablet，才另行补 44px、手势、抽屉、safe area、目标视口与真实设备门；未授权/未运行的范围不得写成通过。
 - [ ] 涉及视觉基线时，已逐张人工查看获批目标项目的快照后再决定是否更新；desktop-only 任务只更新/验收 desktop，不运行会覆盖 mobile 的总更新命令。axe 与像素回归只作为门槛证据，不写成完整 WCAG 认证。
 - [ ] 涉及上线时，已核对匿名鉴权、健康检查、认证后页面/API、持久卷目录、运行日志和部署域名；不能只依据平台状态声明完成。
@@ -457,6 +463,107 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-09-01｜0.10.0｜三平台 live_verified、抖音暂停与最终部署
+
+变更：
+
+- 按用户决定暂停会触发交互验证码的抖音。最终 Zeabur 运行集合固定为 `MEDIACRAWLER_PLATFORMS=xhs,bili,wb`；dy 适配代码、授权资料与 378 条四平台历史基线均保留，但当前不访问、不阻断、不计入运行结果。市场控制台继续显示四张平台卡，并把 dy 明确标为“已暂停”。
+- 严格契约从硬编码四平台改为精确配置集合：预检返回启用/暂停清单，Tool API 只接受三个研究组件全部 live、平台状态键与配置集合完全一致且每项 live 的结果；Workbench 再次以清单声明的非空集合独立校验，防止缺平台、额外缓存或旧探针误晋级。持续采集状态与成功文案同步按启用范围生成。
+- 加固 MediaCrawler 长任务收口：父/子 CDP 包装层都记录并关闭本轮新页面，保留用户原有标签；超时先温和终止再强制结束，错误尾部可审计；`api_key`、`data`、`qr`、`sign` 等敏感查询参数在持久错误前统一脱敏。严格任务最短预算提升到 600 秒，避免正常三平台轮次被短超时截断。
+- 发布最终部署 `6a96bdf25158a7aaa4e62007`，执行同轮严格研究并晋级线上工作区；成功后恢复市场调度，保持默认四小时复检。同步 README、产品、架构、持续采集、部署、实机、前端质量与本工作流。
+
+原因：
+
+- 抖音风控需要不稳定的人机交互，用户明确要求暂不处理。内部 Demo 的当前真实范围应是可稳定复验的小红书、B站和微博，而不是让一个暂停平台永久阻断全部研究，也不能通过降低“启用平台必须全部 live”的真实性门来制造成功。
+
+验证：
+
+- Zeabur 部署 `6a96bdf25158a7aaa4e62007` 为 `RUNNING`，公网 `/healthz=200`。远端最终环境确认启用 `xhs,bili,wb`、暂停 `dy`，LightRAG、GPT Researcher、MediaCrawler、图像 provider、托管 CDP/noVNC 与三个启用平台预检全部 ready；四个关键运行文件 SHA-256 与本地完全一致。
+- 六关键词严格任务 `20260901T121642Z-e1a435ff`（隔离运行 `20260901T121642Z-research`，清单 `20260901T121642Z-52c8cbbc`）实际得到 xhs 113、bili 110、wb 149 条规范化实时记录，共 372 条；文化、市场、策划和三平台状态均为 `live`，最终 `live_verified`，8 项研究产物存在且工作区 `research_run_id` 与清单一致。清单没有 dy，平台缓存数为 0；12 条公开核验基线仍独立存在。任务清理后 CDP 页面数回到原有 4。
+- 市场调度在严格任务期间暂停以避免并发，成功后已恢复 `enabled=true`；状态 healthy、无活动任务、调度线程在线，下次运行按约四小时排期。
+- 本地 Conda `qiancraft` 完整回归 Python 91/91；Ruff、`uv lock --check`、`sh -n deploy/start-zeabur.sh`、`git diff --check`、Web typecheck、零 warning ESLint、5/5 TypeScript 单测和 Vinext 五阶段 production build 通过。macOS `desktop-chromium` 为 30 passed / 1 个 Windows 像素门按设计 skipped；未把未执行的 mobile project 写成通过。
+- 最终隔离发布目录为 1,121 文件、49,984 KiB，符号链接、浏览器 profile、实际长密钥和私钥模式均为 0。在线运行态 ZIP 自校验为 118 文件、18,890,725 未压缩字节、4,100,550 字节，SHA-256 `2a3b4e57ee112aecd4455c2d41ec76cd9120e4f84721350acf0e357450d6435c`，且 `containsBrowserAuthorization=false`。
+
+边界：
+
+- dy 当前是明确“不支持运行”的暂停项；项目不会绕过验证码。恢复抖音必须由用户本人重新授权，将 dy 加回配置，并重新通过包含 dy 的同轮严格任务后才能宣称可用。其余平台会话也可能因过期或风控需要本人重登。
+- 372 条是线上当前三平台实时工作区，378 条是仓库四平台历史基线；两者不能合并或互相冒充。浏览器 connected、历史登录、单平台探针或调度排期都不等于当轮 `live_verified`。
+- 最终在线 ZIP 位于服务器 `/tmp`，只是经校验的发布验收件，不是独立持久备份；既有卷外备份策略仍须继续执行。Browser Profile、Cookie、API Key 和站点口令均未导出。
+- 站点仍是共享 Basic Auth、单 Tool API 副本的内部 Demo；不是多用户生产系统或分布式任务队列。本轮仍停在 DesignPackage、工厂报价/首样简报与概念海报，没有生产放行、工厂下单、商业艺术批准或制造/合规就绪声明。
+
+涉及文件：
+
+- 运行与后端：`Dockerfile`、`.env.example`、`app/adapters/media_crawler_adapter.py`、`app/adapters/mediacrawler_runner.py`、`app/collection.py`、`app/pipeline.py`、`app/tool_api.py`、`app/workbench.py`
+- 前端：`web/app/collection-console.tsx`、`web/app/globals.css`、`web/app/node-detail.tsx`、`web/app/workbench-model.ts`、`web/app/workbench.tsx`
+- 测试：`tests/test_tool_api.py`、`tests/test_workbench.py`、`tests/test_mediacrawler_runner.py`、`web/tests/ui/ui-quality.spec.ts`
+- 文档：`README.md`、`PRODUCT.md`、`DESIGN.md`、`docs/architecture.md`、`docs/continuous_collection.md`、`docs/deployment_zeabur.md`、`docs/real_machine_test.md`、`docs/frontend_quality_workflow.md`、`WORKFLOW.md`
+
+### 2026-09-01｜0.10.0｜四平台授权实采、解释器与抖音/CDP 修复
+
+变更：
+
+- 用户在受保护 Zeabur 浏览器完成 xhs/dy/bili/wb 登录后执行逐平台真实探针；首次探针暴露通用路径解析把 `/opt/mediacrawler-venv/bin/python` 的符号链接解引用成 `/usr/bin/python3.11`，实际丢失 `httpx` 等独立环境依赖。新增专用可执行路径解析，构建、启动和严格预检都以配置解释器真实导入 CDP 依赖，路径存在但依赖不可用时直接阻断。
+- 在 QianCraft 自有 `mediacrawler_runner.py` 包装层为抖音首页使用 `domcontentloaded`，避免平台长连接让完整 `load` 产生 30 秒假超时；共享 CDP 记录连接前既有页面，清理时只关闭该轮新建页面，不终止 Chromium、不关闭用户标签，也不长期累积搜索页。未修改 MediaCrawler 上游源码或许可证。
+- 发布部署 `6a964d01fff9450cc032d1ba` 验证解释器修复并执行首轮严格任务；随后发布 `6a96589cfff9450cc032d417` 收口抖音导航与页面清理。同步 README、产品证明、架构、持续采集、部署、实机、前端质量与本工作流。
+
+原因：
+
+- 用户要求在本人四平台登录后完成其余未完成工作。机器预检必须验证“正确解释器能够运行 CDP 代码”，登录成功也必须由当轮真实搜索产物确认；不能把浏览器在线、历史探针或三个平台成功拼成四平台 `live_verified`。
+
+验证：
+
+- 本地 Conda `qiancraft` 完整回归 Python 85/85，Ruff、`sh -n deploy/start-zeabur.sh` 与 `git diff --check` 通过。新增测试覆盖 `load_settings()` 保留虚拟环境符号链接、错误解释器预检失败、抖音 CLI 平台识别/DOM-ready 参数，以及共享浏览器只关闭新建页面。
+- 1,353 文件隔离发布上下文保持 0 个符号链接，部署源与本地修改一致；实际长 API Key 与私钥模式均为 0 命中。部署 `6a964d01fff9450cc032d1ba`、`6a96589cfff9450cc032d417` 的远端构建均通过三运行时安装、MediaCrawler `pip check` 和 `httpx + CDPBrowserManager + main` 导入；后者为当前 `RUNNING`，公网 `/healthz=200`。
+- 四平台小规模实采实际得到 xhs 20、dy 14、bili 20、wb 16。严格任务 `20260901T041626Z-3deaef24` 实际得到 culture/market/strategist live、xhs 60、bili 55、wb 65、dy 0；因此状态为 `failed_no_fallback`，没有晋级。可见抖音搜索页显示登录提示、无安全验证和 0 个视频链接，说明下一步是本人重新认证抖音搜索会话，而不是绕过登录或改写真实性门。
+
+边界：
+
+- 当前最终容器已打开抖音搜索登录页，等待用户本人重新认证。只有重新认证后新的严格任务同时得到 culture、strategist 与四个平台全 live，才可标记 `live_verified`、晋级工作区并创建最终运行态快照；不得把本条首轮失败记录回写成成功。
+- Browser Profile 仍只存在于权限 0700 的持久卷目录，不进入 Secret、仓库、命令、日志或普通运行态快照。平台会话仍可能过期；站点仍是共享 Basic Auth、单 API 副本的内部 Demo。
+- 本轮仍停在 DesignPackage、工厂报价/首样简报与概念海报；没有生产放行、工厂下单、商业艺术批准或制造/合规就绪声明。上游许可证与平台条款仍适用。
+
+涉及文件：
+
+- 运行与后端：`Dockerfile`、`deploy/start-zeabur.sh`、`app/config.py`、`app/tool_api.py`、`app/adapters/mediacrawler_runner.py`
+- 测试：`tests/test_config.py`、`tests/test_tool_api.py`、`tests/test_deployment.py`、`tests/test_mediacrawler_runner.py`
+- 文档：`README.md`、`PRODUCT.md`、`docs/architecture.md`、`docs/continuous_collection.md`、`docs/deployment_zeabur.md`、`docs/real_machine_test.md`、`docs/frontend_quality_workflow.md`、`WORKFLOW.md`
+
+### 2026-09-01｜0.10.0｜Zeabur 三研究运行时、持久授权浏览器与图像链路
+
+变更：
+
+- 将 LightRAG 1.5.7、GPT Researcher 0.14.7 和隔离 MediaCrawler Python 运行时随 0.10.0 镜像部署；LightRAG 存储迁入持久卷，严格预检同时验证源码与已安装发行包，MediaCrawler 以安全覆盖依赖加固并复用托管 CDP，任务清理不再关闭共享浏览器。
+- 在单容器中增加 Xvfb、Openbox、Chromium、x11vnc、noVNC 与 websockify。CDP、VNC、noVNC 只监听回环地址，`/browser-auth/` 继承站点 Basic Auth；所有浏览器/应用 worker 使用 `www-data`，浏览器 Profile 权限为 0700。容器替换时只清除 Chromium stale singleton 锁，保留登录数据库。
+- Web 市场控制面新增云端授权入口，并把“浏览器已连接”与“四平台登录/当轮实采”分开。平台探针和严格研究在托管 CDP 已存在时直接复用；四个平台仍须逐轮实际搜索且至少保存 5 条合格记录才能标为 `live/authorized`。
+- 运行态快照开始强制排除 `browser-profile/`，清单写入 `containsBrowserAuthorization=false`，验证器拒绝任何包含平台授权资料的归档；Workspace、调度记录、失败审计和 LightRAG 索引仍可备份与恢复。
+- Zeabur 已通过 Secret 配置用户提供的图像 API，并同步 README、产品/设计契约、架构、持续采集、部署、实机、前端质量与当前工作流事实；任何密钥、Cookie 或站点口令均未写入仓库或输出。
+
+原因：
+
+- 用户要求把此前缺失的图像生成、LightRAG、GPT Researcher、MediaCrawler 与四平台授权运行条件全部放到 Zeabur，用于内部 Demo。机器条件必须真实可运行，同时平台密码、扫码、验证码、风控和 Cookie 必须留在受保护浏览器中由用户本人处理。
+
+验证：
+
+- 本地 Conda `qiancraft` 实测 Python 80/80、Ruff、`uv lock --check`、主环境 `pip-audit`、POSIX 启动脚本语法与 `git diff --check` 通过；Web 单测 5/5、typecheck、ESLint、Vinext 五阶段 production build 和 `pnpm audit --audit-level=high` 通过。macOS desktop-chromium 为 30 passed / 1 个 Windows 像素门按设计 skipped；最近既有 GitHub 跨平台运行仍是 0.9.2 基线，没有冒充 0.10.0 CI。
+- 1,353 文件/77,684,736 字节的隔离发布上下文通过敏感文件名、凭证模式和符号链接 0 命中审计。部署 `6a9639c0be05255ec5e2833a`、`6a963bd7be05255ec5e283d2` 因 Zeabur CLI 跳过点号示例文件及一次 Docker Hub DNS 瞬断失败；移除无必要示例文件依赖后，`6a963cd7be05255ec5e28416` 首次运行，最终 `6a96415cbe05255ec5e2854f` 加入 CDP 复用与 stale lock 修复并进入 `RUNNING`。
+- 最终容器实际报告 QianCraft 0.10.0、LightRAG 1.5.7、GPT Researcher 0.14.7，三份源码、两份就绪标记、ext4 持久卷、0700 Profile、LightRAG 目录、回环 CDP 9222/noVNC 6080 与全部严格预检均可用。进程清单确认 Xvfb/Openbox/x11vnc/Chromium/websockify/API/Web/Nginx worker 均为 `www-data`。
+- 公网 `/healthz=200`，匿名首页/API/`/browser-auth/vnc.html=401`；使用容器 Secret 做不回显值的认证请求后，首页、健康 API、Bootstrap 与 noVNC 均为 200，默认 Workspace 保持 9 节点/10 边，研究预检为 ready 且浏览器 connected。
+- LightRAG 在持久卷实际建立 612 实体/697 关系并返回 100 条探针边；GPT Researcher 使用 `deepseek-v4-flash` 完成外部上下文写作，`used_fallback=false`。Zeabur 图像 provider 实际返回有效 1024×1024 PNG（1,206,400 字节）。严格研究 `20260901T030939Z-research` 实际完成 culture/strategist live，但因四平台当轮均 unavailable 得到 market cache 与 `failed_no_fallback`，没有晋级或覆盖 378 条历史快照。
+- 发布前运行态快照 `qiancraft-runtime-0.9.2-pre-0.10.0-20260901T023012Z.zip` 的 SHA-256 为 `fb51d741…294c`。发布后快照为 24 文件/4,525,180 未压缩字节、515,043 字节 ZIP，服务器与本地 Conda 双重校验通过，卷外副本为 `qiancraft-runtime-0.10.0-post-20260901T032429Z.zip`，SHA-256 `95338942…66a5`；清单明确排除 `browser-profile/`，传输用临时副本已精确清理。
+
+边界：
+
+- 机器侧缺口已经关闭；当前唯一待用户本人完成的是在受保护云端浏览器中登录 xhs/dy/bili/wb。登录完成后仍须执行四平台最小实采和完整严格研究，只有四路都产生当轮有效记录才可把结果标为 `live_verified`。在此之前 378 条市场数据继续是历史快照。
+- Browser Profile 只存在于持久卷，不进入 Secret、仓库、普通日志或快照；卷迁移、恢复或平台会话过期后必须重新授权。本站仍是共享 Basic Auth、单 API 副本的内部 Demo，不等于用户级权限系统、定时异地备份、恢复演练或生产监控。
+- 本轮仍停在 DesignPackage、工厂报价/首样简报与概念海报；没有生产放行、工厂下单、商业艺术批准或制造/合规就绪声明。MediaCrawler 的上游许可证和平台条款仍适用。
+
+涉及文件：
+
+- 运行时与部署：`Dockerfile`、`.dockerignore`、`.env.example`、`deploy/start-zeabur.sh`、`deploy/nginx.conf.template`、`deploy/mediacrawler-runtime-overrides.txt`
+- 后端与运维：`app/config.py`、`app/tool_api.py`、`app/adapters/lightrag_adapter.py`、`app/adapters/mediacrawler_runner.py`、`scripts/probe_market_platforms.py`、`scripts/runtime_snapshot.py`
+- 前端与测试：`web/app/collection-console.tsx`、`web/app/workbench-model.ts`、`web/app/globals.css`、`web/app/tonal-focus.css`、`tests/test_deployment.py`、`tests/test_runtime_snapshot.py`
+- 版本与文档：`app/__init__.py`、`pyproject.toml`、`uv.lock`、`web/package.json`、`qiancraft.egg-info/PKG-INFO`、`README.md`、`PRODUCT.md`、`DESIGN.md`、`docs/architecture.md`、`docs/continuous_collection.md`、`docs/deployment_zeabur.md`、`docs/frontend_quality_workflow.md`、`docs/real_machine_test.md`、`WORKFLOW.md`
 
 ### 2026-09-01｜0.9.2｜GitHub 跨平台门与 Zeabur 上线验收
 
@@ -1996,11 +2103,11 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 
 - C2 Tonal Focus Review 当前只实现并验收 1440×960 电脑端：前端单测 5/5、`desktop-chromium` 31/31、typecheck、lint 与 production build 通过。用户取消手机/平板适配后，Task 4 增量已完整撤销；两张 mobile snapshot 仅在 Task 5 中从起点到终点保持字节不变，且没有做 C2 mobile 复验。后续任何 mobile/tablet 结论都必须重新获得授权、实现并运行对应自动/真实设备门。自动检查也不能替代真实屏幕阅读器、残障用户、跨平台字体渲染与超大图谱性能测试。
 - Human Decision Studio 已让文化、市场、机会、量分、任务书、视觉、概念和海报具备人工可变输入；下一步可在不改事实层的前提下增加 DecisionProfile 命名版本、差异对比、撤销/重做、多人批注和方案分支合并。
-- Workbench 的研究任务、Design Agent、DesignPackage 和 Poster 已形成可持久化本地/远端闭环，刷新页面可续接研究轮询；0.9.2 远端隔离工作区已真实完成 Design Agent、DesignPackage 与 322,090 字节 Poster 后精确清理。此前 Qwen Image 3.0 三次同步实机生成是历史证据，当前本机与服务器的独立图像 provider 均未配置；后续新 Concept 必须按当次实际运行结果标注，旧成功资产继续与新结果分开记录。
-- 本机被忽略的 `.env` 已配置 `LLM_API_KEY`，DeepSeek 探针可达并确认目标模型可用；但本轮只完成独立探针，没有重新执行完整 DeepSeek/GPT Researcher 策划流水线。正式产物继续保留既有真实模型运行证据，独立 auto 验收的 strategist cache 结论也不被此次配置状态追溯改写；正式 live 结论仍须来自新的完整集成运行。
-- 当前 Zeabur 0.9.2 实例已通过 Nginx Basic Auth、回环 API、Secret 变量、安全响应头、429 限流、非 root worker、ext4 持久卷、可校验快照、真实健康检查与远端业务动作验收，调度器线程在线且心跳新鲜；若扩大为多人正式使用，仍需补用户级身份、权限审计、定时异地备份/恢复演练、外部告警、口令轮换、对象存储和分布式任务队列。
-- 四平台授权资料均曾建立，但会话不是永久有效。0.8.0 最终严格轮的 xhs/dy/bili/wb 均为 unavailable，整轮没有晋级；较早正式复核中 xhs/bili/wb 为 live、dy 复用 14 条历史快照。后续每次仍必须按实际结果写 `live/cache/unavailable`，不能因曾经授权或启动过浏览器而固定写 live。
-- 精简 Zeabur 镜像只发布 QianCraft 产品层与证据基线，不包含 MediaCrawler、LightRAG 和 GPT Researcher 上游源码/运行时；云端“实时运行”会如实预检阻断。若未来需要服务器实爬，必须另行解决平台授权浏览器、许可、队列、超时与长期会话，而不能复制本机 Cookie 到镜像。
+- Workbench 的研究任务、Design Agent、DesignPackage 和 Poster 已形成可持久化本地/远端闭环，刷新页面可续接研究轮询；0.10.0 Zeabur 图像 provider 已实测返回有效 1024×1024 PNG，Regenerate / Generate More 具备机器侧条件。每次新 Concept 仍必须按该次实际运行结果标注，旧成功资产继续与新结果分开记录。
+- Zeabur 的 GPT Researcher 已使用 `deepseek-v4-flash` 和外部上下文完成独立写作探针且 `used_fallback=false`，LightRAG 也已完成持久图谱探针；这证明两个上游运行时可用，不追溯改写既有正式产物。新的正式 `live_verified` 结论仍须来自四平台登录后完整严格研究轮。
+- 当前 Zeabur 0.10.0 实例已具备 Nginx Basic Auth、回环 API/浏览器端口、Secret 变量、安全响应头、非 root worker、ext4 持久卷、可校验快照、真实健康检查与三个上游运行时；若扩大为多人正式使用，仍需补用户级身份、权限审计、定时异地备份/恢复演练、外部告警、口令轮换、对象存储和分布式任务队列。
+- 四平台授权资料均曾建立，但会话不是永久有效。0.10.0 提供持久且受保护的云端浏览器，由用户本人完成登录；截至本日志写入时尚未完成本轮四平台实际搜索，所以 378 条样本仍是历史快照。后续每轮必须按实际结果写 `live/cache/unavailable`，不能因浏览器已连接、曾经授权或机器预检通过而固定写 live。
+- Zeabur 0.10.0 镜像已包含 MediaCrawler、LightRAG、GPT Researcher 上游源码/运行时和托管 Chromium；机器侧缺口已经关闭。仍需遵守上游许可证与平台条款，平台密码、扫码、验证码和风控只能由用户本人处理，不能把 Cookie 复制进镜像、仓库、快照或日志。
 - 当前 378 条真实平台快照已经形成 Top 10 / Top 5，可作为下一阶段候选品类输入，但样本规模、关键词和时间窗都有限，不能据此直接定案或宣称全平台趋势。
 - MediaCrawler 仍缺少商业使用许可；现阶段只可在符合上游许可证和平台条款的非商业学习/研究场景使用。
 - 文化图谱虽有权威公开来源，具体村寨的纹样名称、可公开范围、授权意愿与收益方式仍需田野核验。

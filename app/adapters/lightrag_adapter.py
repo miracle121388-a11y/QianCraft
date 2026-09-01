@@ -11,7 +11,7 @@ from typing import Any
 
 import numpy as np
 
-from app.config import Settings
+from app.config import Settings, portable_artifact_path
 from app.schemas import (
     ComponentStatus,
     CultureDNA,
@@ -445,9 +445,7 @@ class LightRAGAdapter:
         custom_kg = self._to_custom_kg()
         graph_bytes = self.settings.culture_graph_path.read_bytes()
         graph_hash = hashlib.sha256(graph_bytes).hexdigest()[:12]
-        working_dir = (
-            self.settings.root_dir / "data" / "culture" / "lightrag_storage" / graph_hash
-        )
+        working_dir = self.settings.lightrag_storage_dir / graph_hash
         working_dir.mkdir(parents=True, exist_ok=True)
         marker = working_dir / ".qiancraft_indexed"
 
@@ -479,7 +477,9 @@ class LightRAGAdapter:
             edges = await rag.chunk_entity_relation_graph.get_node_edges(matched_name)
             return {
                 "lightrag_status": "indexed_and_queried",
-                "lightrag_workspace": str(working_dir.relative_to(self.settings.root_dir)),
+                "lightrag_workspace": portable_artifact_path(
+                    working_dir, self.settings.root_dir
+                ),
                 "dataset_hash": graph_hash,
                 "indexed_entities": len(custom_kg["entities"]),
                 "indexed_relationships": len(custom_kg["relationships"]),
