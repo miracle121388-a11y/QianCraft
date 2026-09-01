@@ -487,6 +487,29 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 
 ## 9. 更新日志
 
+### 2026-09-01｜0.10.0｜每日调度回归门消除跨平台竞态
+
+变更：
+
+- 调整每日调度器回归测试的完成条件：同时等待 3 个设计原子落盘和持久状态从 `running` 转为 `healthy`，再断言心跳与最终状态；不改变产品调度、生成顺序或成功口径。
+
+原因：
+
+- 首次 0.10.0 GitHub Actions 运行 `33509223628` 中，macOS/Windows Python 通过，Ubuntu 在 PNG 已落盘但状态文件尚未完成最后一次原子更新的毫秒窗口读取到 `running`，形成测试时序竞态。产品随后会正确进入 `healthy`，但测试不应把“文件出现”等同于整轮事务完成。
+
+验证：
+
+- 失败日志精确定位在 `test_scheduler_catches_up_today_and_keeps_a_fresh_heartbeat` 的最终状态断言；修复后将先在本地重复执行该用例与全套门，再以新的 GitHub Actions 跨平台结果为准。
+
+边界：
+
+- 本次不放宽业务断言：仍必须在 5 秒内同时满足 3 个当日设计、`healthy` 状态和新鲜心跳；若调度确实卡在 `running`，测试仍会失败。
+
+涉及文件：
+
+- `tests/test_studio.py`
+- `WORKFLOW.md`
+
 ### 2026-09-01｜0.10.0｜双库驱动、结果优先的每日设计 Studio
 
 变更：

@@ -129,7 +129,13 @@ def test_scheduler_catches_up_today_and_keeps_a_fresh_heartbeat(studio) -> None:
     scheduler.start()
     try:
         deadline = time.monotonic() + 5
-        while time.monotonic() < deadline and len(store.designs_for_date(_local_date())) < 3:
+        while time.monotonic() < deadline:
+            status = scheduler.status()
+            if (
+                len(store.designs_for_date(_local_date())) == 3
+                and status["daily"]["status"] == "healthy"
+            ):
+                break
             time.sleep(0.03)
         assert len(store.designs_for_date(_local_date())) == 3
         assert scheduler.health()["ok"] is True
