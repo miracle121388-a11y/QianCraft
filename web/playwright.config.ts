@@ -7,6 +7,8 @@ if (!/^[A-Za-z0-9_.-]+$/.test(condaEnvironment)) {
 const pythonCommand = process.env.QIANCRAFT_PYTHON_COMMAND?.trim()
   || `conda run --no-capture-output -n ${condaEnvironment} python -m app.tool_api --port 8787`;
 const chromiumExecutablePath = process.env.QIANCRAFT_CHROMIUM_EXECUTABLE_PATH?.trim();
+const canonicalMarketPlatforms = process.env.MEDIACRAWLER_PLATFORMS?.trim()
+  || 'xhs,bili,wb';
 
 export default defineConfig({
   testDir: './tests/ui',
@@ -61,6 +63,9 @@ export default defineConfig({
     {
       command: pythonCommand,
       cwd: '..',
+      env: {
+        MEDIACRAWLER_PLATFORMS: canonicalMarketPlatforms,
+      },
       url: 'http://127.0.0.1:8787/api/health',
       reuseExistingServer: true,
       timeout: 120_000,

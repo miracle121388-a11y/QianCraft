@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "qiancraft"
 version = "0.10.0"
-description = "贵州非遗文化知识图谱、市场前策与概念设计系统"
+description = "持续维护在地文化与产品形态双库的自动文创设计系统"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

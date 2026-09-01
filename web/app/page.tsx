@@ -1,5 +1,5 @@
-import Workbench from './workbench';
+import StudioApp from './studio-app';
 
 export default function Home() {
-  return <Workbench />;
+  return <StudioApp view="home" />;
 }

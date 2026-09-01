@@ -1,71 +1,57 @@
 ---
 name: QianCraft
-description: Evidence-led creative intelligence workbench using the Tonal Focus Review system
+description: Result-first dual-library cultural product design tool
 direction:
-  name: "Tonal Focus Review"
+  name: "Dual Library / Result First"
   mode: "Operate"
-  approvedMock: ".impeccable/mocks/tonal-focus-review.png"
-  approvedMockSha256: "131cd5bedadd5be42888ace5d946ebaa2d4c3f3dc935e29393fd1127ebf7ffeb"
-  implementationScope: "desktop 1440x960"
+  version: "0.10.0"
+  legacyWorkbench: "/workflow"
 colors:
   shell: "#E6E2DA"
   command: "#D9E1E8"
   rail: "#D7E1DC"
   canvas: "#E3E8EB"
   inspector: "#E7DDD4"
-  node: "#F0EEE9"
+  card: "#F0EEE9"
   selected: "#CBD9E6"
   primary: "#345C7D"
   text: "#20262C"
   textSecondary: "#626970"
+  studioTextSecondary: "#565E65"
   rule: "#C4C8C7"
   success: "#637E6A"
-  warning: "#B1844C"
-  danger: "#9A6757"
-  neutral: "#7B8086"
-  starCanvasException: "#070708"
+  warning: "#9A7446"
+  danger: "#925F52"
 typography:
-  uiFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Noto Sans SC Variable", "Noto Sans SC", "Segoe UI", "Microsoft YaHei", sans-serif'
+  uiFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Noto Sans SC Variable", "Noto Sans SC", "Segoe UI", "Microsoft YaHei", sans-serif'
   technicalFamily: 'SFMono-Regular, Cascadia Code, Consolas, monospace'
-  detailTitle: "clamp(32px, 3.5vw, 46px) / 1.15 / 520"
-  decisionTitle: "clamp(28px, 2.4vw, 34px) / 1.18 / 520"
-  sectionTitle: "22px / 1.25 / 520"
-  panelTitle: "19px / 1.3 / 620"
-  body: "14-16px / 1.6-1.7 / 400"
-  command: "13px / 1.45 / 560"
-  label: "12px / 1.45 / 560"
-  micro: "11px / 1.45 / 400"
-spacing:
-  base: "4px"
-  scale: ["4px", "8px", "10px", "12px", "16px", "20px", "24px", "32px", "40px", "48px", "56px"]
 radii:
-  input: "10px"
-  control: "11px"
+  control: "8px"
   image: "12px"
-  node: "14px"
-  container: "14px"
   card: "14px"
-  pill: "9999px"
 desktopGeometry:
-  commandBar: "60px"
-  toolRail: "72px"
-  evidenceDock: "210px"
-  inspector: "330px"
+  navigation: "224px"
+  commandBar: "86px minimum"
 ---
 
-# Design System: QianCraft
+# QianCraft 设计与交互契约
 
-## 1. Current direction
+Studio 的小字号导航、标签和说明使用 `#565E65`，确保它在 rail、shell、command、canvas、inspector、card 与 selected 七种浅色表面上均达到至少 4.5:1；旧 Workbench 的既有 `#626970` 次级文字合同保持不变。
 
-**Creative North Star: “Tonal Focus Review / 低饱和聚焦评审”**
+## 1. 产品体验方向
 
-QianCraft 0.10.0 的电脑端延续 C2 Tonal Focus Review。它仍是高密度证据工具，不是营销官网：暖矿物外壳承接整体环境，雾蓝命令栏与画布、灰绿工具/证据区、暖陶 Inspector 通过固定色块定位任务；低饱和深灰蓝只承担选中、焦点和主动作。简约来自减少无意义修饰，而不是把工作区清空成大面积纯白。
+QianCraft 0.10.0 的主界面是**结果优先的生产工具**。首屏先回答四个问题：
 
-本轮只承诺 **1440×960 电脑端**。30 项功能门在 macOS Chromium 已通过，Windows CI 承担同一功能集与两张权威像素基线；既有 mobile/tablet 行为仍留在原组件和样式中，但没有把手机/平板写成当前 C2 已适配或已验证。
+1. 两座材料库现在各有多少真实内容？
+2. 今天自动生成了哪些设计？
+3. 每个结果为什么被选中，能否追溯？
+4. 自动化是否真的在线，下一次何时执行？
 
-批准构图为 `.impeccable/mocks/tonal-focus-review.png`，SHA-256 为 `131cd5bedadd5be42888ace5d946ebaa2d4c3f3dc935e29393fd1127ebf7ffeb`。它只冻结区域比例、色块关系、聚焦节奏和工作台构图，不是产品数据资产，也不是逐像素实现稿。
+默认界面不再展示完整工作流画布。工作流属于结果的三级编辑面：只有用户打开一份设计并选择“进入工作流编辑”后才出现。原九节点空间工作台继续保留在 `/workflow`，作为高级研究入口，不与首页争夺注意力。
 
-### Product facts that visual work must preserve
+## 2. 层级与路由
+
+跨层级的事实与状态必须保持一致：
 
 - 工作台继续读取真实 HTTP API、Workspace Schema 1.1、9 个默认节点实例和 10 条真实连线。
 - 文化层继续展示 22 条正式记录、32 个登记来源与独立人工候选门；市场层继续展示 378 条带时间边界的历史真实快照。
@@ -74,150 +60,150 @@ QianCraft 0.10.0 的电脑端延续 C2 Tonal Focus Review。它仍是高密度�
 - 市场控制面在平台矩阵下提供受保护的云端授权浏览器入口；“浏览器已连接”、启用平台登录/本轮搜索成功和暂停平台必须使用不同文案，不能共用成功徽章。当前 Zeabur 为小红书/B站/微博启用、抖音暂停。
 - 产品阶段止于 `DesignPackage`、工厂询价/首样简报与概念海报；不代表生产发布、工厂下单、商业图稿批准、DFM、制造或合规就绪。
 
-## 2. Color system
+### 一级：日常工作入口
 
-### Fixed C2 surfaces
+| 导航 | 任务 | 首要内容 |
+|---|---|---|
+| 今日设计 | 审阅系统当天产出 | 三项真实计数、最多 3 个设计、自动化状态 |
+| 在地文化库 | 检查内容材料 | 正式记录、来源、可转译元素、文化边界 |
+| 产品形态库 | 检查载体材料 | 形态排名、热度、样本、平台覆盖、原记录 |
+| 自由组合 | 主动发起新设计 | 1–3 条文化内容、1–3 个形态、文稿和配色 |
+| 全部设计 | 找回历史结果 | 自动/手动筛选、版本入口 |
+| 运行中心 | 证明自动化成立 | 线程、心跳、排程、阻断、最近事件 |
 
-| Role | Token | Value | Use |
-|---|---|---:|---|
-| Warm mineral shell | `--qc-shell` | `#E6E2DA` | 应用外壳与五区之间的环境底色 |
-| Mist-blue command | `--qc-command` | `#D9E1E8` | 60px 命令栏、Decision Studio 顶/底区 |
-| Gray-green rail | `--qc-rail` | `#D7E1DC` | 72px 工具轨、210px 证据 Dock、阶段轨 |
-| Mist-blue canvas | `--qc-canvas-tonal` | `#E3E8EB` | React Flow 主画布、详情主工作区 |
-| Warm-clay Inspector | `--qc-inspector` | `#E7DDD4` | 330px Inspector 与审核语境 |
-| Light-stone node | `--qc-node` | `#F0EEE9` | 节点、字段、次按钮、紧凑工作面 |
-| Selected surface | `--qc-selected` | `#CBD9E6` | 当前节点、当前资产、活动页签与 hover |
-| Primary / focus | `--qc-primary` | `#345C7D` | 唯一主动作、选中边线、当前路径与焦点 |
-| Primary text | `--qc-text` | `#20262C` | 标题、正文、关键字段 |
-| Secondary text | `--qc-text-secondary` | `#626970` | 元数据、辅助说明，不承载关键风险边界 |
-| Rule | `--qc-rule` | `#C4C8C7` | 1px 分隔与输入/卡片边界 |
-| Success | `--qc-success` | `#637E6A` | 已成功且仍有效的状态标记 |
-| Warning | `--qc-warning` | `#B1844C` | stale、warning、degraded、paused |
-| Danger | `--qc-danger` | `#9A6757` | error、failed、blocked |
-| Neutral | `--qc-neutral` | `#7B8086` | cache、idle 与中性状态 |
+### 二级：结果详情
 
-### Selection and action rules
+`/designs/{id}` 同屏展示：
 
-- 节点或资产被选中时使用 `#CBD9E6` 面、`#345C7D` 边线/handle，并保持原尺寸、坐标和连线布局。
-- 每个任务区只保留一个 `#345C7D` 主动作；前景使用当前实现的近白 `#F7F8F8`，但不得把近白扩展为大面积页面或面板。
-- 次操作使用浅石面、规则线和主文字；hover 可以进入 selected 面，但不能增加光晕、渐变或装饰色。
-- 可见键盘焦点使用清晰的 primary outline。颜色不是唯一语义，控件名称、状态文字、边线和形状必须同时存在。
+- 当前真实 PNG 与版本；
+- 设计名称、融合文稿、目标人群和场景；
+- 采用的文化内容及原始来源；
+- 采用的产品形态及代表市场记录；
+- 五项评分和公开公式；
+- 批次、时间、渲染方式、SHA-256 和图像模型使用状态；
+- 生产前验证边界；
+- 进入编辑器的唯一主要入口。
 
-### Status grammar
+### 三级：工作流编辑
 
-- `live / success / healthy / completed`：success 实心标记 + 明确中文状态。
-- `cache / cached / idle`：neutral 实心或中性标记 + 缓存时间/来源说明。
-- `stale / warning / degraded / paused`：warning 空心标记 + 原因和下一步。
-- `error / failed`：danger 实心或方形标记 + 错误说明和可恢复路径。
-- `blocked`：danger 空心标记 + 实时开关、运行时或授权缺项；不得被历史证据或正常排程覆盖。
-- `running`：保留动画时也必须有静态文字；reduced motion 下停止连续动画而不移除状态结果。
+`/designs/{id}/edit` 只保留与修改当前结果直接相关的五步：
 
-### Dark culture-constellation exception
+1. 文化内容：增加、移除或替换，来源事实只读。
+2. 产品形态：增加、移除或替换，样本与热度只读。
+3. 融合方案：修改名称、受众、场景、概念文稿和补充要求。
+4. 设计稿：选择配色、查看当前文件和生成方式。
+5. 生产前验证：只展示真实待办，不能自动标为完成。
 
-文化关系星图内部继续使用既有 `#070708` 深色功能画布和白色关系点/线。这是为了在空间关系中检索、选点、缩放和平移的任务性例外：
+保存会产生 V2+，右侧持续显示当前结果，避免用户在流程中失去目标。
 
-- 只允许 `.constellation-stage`、其 SVG、节点与 hit area 保持深色。
-- 搜索、筛选、工具栏、说明、图例、控制和证据 Inspector 使用 C2 node/canvas/rule/text 语法。
-- 深色不得扩散到普通详情页、导航、卡片、营销背景、装饰星空或无意义网格。
+## 3. 首页布局
 
-### Forbidden treatments
+桌面采用 `224px 导航 + 弹性工作区`：
 
-- 大面积纯白或近白工作面。
-- 渐变、mesh gradient、玻璃、`backdrop-filter`、霓虹、光晕和装饰性环境光。
-- 高饱和彩色 chrome、无业务含义的彩色分区、彩虹状态或旧亮蓝主题。
-- 以投影堆叠普通卡片；电脑端只有真实覆盖画布的 Inspector 可使用克制阴影，Decision Studio 与普通卡片均无阴影，关闭覆盖关系后阴影必须消失。
-- 把来源图像的内容色扩散到按钮、边线、导航或状态系统。
+- 左侧导航始终显示完整栏目名，底部把“高级流程画布”降为次级入口。
+- 顶部命令栏显示当前页标题、解释和当前页唯一主要动作。
+- 首页第一排是三张可点击事实卡：文化记录/来源、形态/样本、今日产出。
+- 第二排是当日设计卡。图片、评分、文化转译、形态与版本都来自 API。
+- 第三排是文化巡检、市场刷新、每日生成三条运行状态。
+- 末尾固定显示真实性边界，不用营销口号替代数据。
 
-## 3. Typography, spacing and shape
+没有设计时展示真实原因和立即运行入口；不得使用示例卡、占位成绩或“即将生成”的假成功。
 
-产品 UI 继续使用 system/SF-like/Noto Sans SC 无衬线链。节点 ID、运行 ID、字段名和 JSON 才使用 SFMono/Cascadia/Consolas 等宽链。C2 不改变既有字体资源和中文回退契约。
+## 4. 两座文档型知识库
 
-- Detail title：520，`clamp(32px, 3.5vw, 46px)`，行高 1.15。
-- Decision title：520，`clamp(28px, 2.4vw, 34px)`，行高 1.18。
-- Section / panel title：22px/19px，520/620。
-- 正文：14–16px，400，行高 1.6–1.7；连续阅读控制在约 72–76ch。
-- 命令/标签/元数据：13/12/11px；11px 只用于短 ID 或次级元数据，不承载操作和风险说明。
-- 间距以 4px 为基准，常用 8/12/16/20/24/32px；C2 通过色块和留白建立层级，不增加装饰分隔。
-- 字段/控件/图像/节点/容器使用 10/11/12/14px 紧凑圆角，普通表面不得超过 14px；pill 只作为短按钮和状态徽章的语义例外。
+### 在地文化库
 
-## 4. Desktop layout
+- 顶部明确显示正式记录和登记来源总数。
+- 支持按名称、地域、工艺、类别和可转译元素检索。
+- 每张记录展示文化类别、地域、工艺、可转译元素和不可转译边界。
+- 来源默认收起，但必须可展开并直接打开原网页。
+- 候选文化资料仍由采集控制面处理，不与正式记录混在一起。
 
-1440×960 工作台采用五区：
+### 产品形态库
 
-1. 顶部 `60px` command bar，横向承载品牌、Workspace、阶段和唯一主动作。
-2. command 下方左侧 `72px` tool rail，承载证据、资产、历史和 Inspector 触发器。
-3. rail 右侧为弹性 React Flow 主画布，使用雾蓝 canvas；真实节点/连线和当前焦点链优先。
-4. Dock 打开时在画布底部占 `210px`，从 rail 右缘铺到 viewport 右缘；证据、资产和历史复用同一插槽并独立滚动。
-5. Inspector 打开时以 `330px` 固定宽度贴右覆盖画布/Dock，使用暖陶面；关闭后不继续占据或拦截工作区。
+- 使用排名表，不伪装成商城卡片。
+- 每行展示榜单名次、跨平台热度、样本数、平台覆盖、入榜原因和渲染器支持。
+- 代表原记录可展开，显示平台、引用号和实际互动字段。
+- 历史样本必须显示时间/缓存边界；没有实时授权时不得使用“今日爆款”措辞。
 
-空白画布继续支持主键拖动平移、`Shift + 拖动` 框选、滚轮缩放；节点拖动只移动节点。证据拖拽继续提供可见“添加到画布”点击/键盘路径。Dock、Inspector、Workspace 和 Decision Studio 都是可逆上下文，关闭后应回到原任务和触发点。
+## 5. 视觉语法
 
-Task 4 曾实现的 tablet/mobile C2 覆盖层已完整撤销。本文件不为 760px 以下新增 C2 几何承诺；现有移动组件行为可以继续存在，但必须等后续获得授权、实现并运行 mobile/real-device 验收后才能写成当前 C2 能力。
+主界面继续使用低饱和 Tonal Focus 色系，但区域职责改为结果优先：
 
-## 5. Components
+| 角色 | 色值 | 用途 |
+|---|---:|---|
+| 外壳 | `#E6E2DA` | 页面环境与大区间隔 |
+| 命令栏 | `#D9E1E8` | 页标题和当前动作 |
+| 导航/证据 | `#D7E1DC` | 一级导航、知识库与运行背景 |
+| 工作区 | `#E3E8EB` | 结果列表和信息主面 |
+| 人工干预 | `#E7DDD4` | 编辑、警告、验证语境 |
+| 卡片 | `#F0EEE9` | 设计、字段、次级控件 |
+| 选中 | `#CBD9E6` | 当前选项与筛选 |
+| 主动作/焦点 | `#345C7D` | 每页唯一主动作、选择边线和键盘焦点 |
 
-### Command bar and tool rail
+约束：
 
-- 命令栏使用 command 面；活动阶段以 primary 文字/底线定位，不改变几何。
-- 工具轨使用 rail 面；默认图标为 secondary text，hover 使用 node 面，active 使用 primary 面 + node 前景。
-- Workspace/phase popover 使用 canvas/node/rule，不恢复旧白/黑主题或玻璃模糊。
+- 不使用渐变、玻璃、光晕、装饰网格或民族元素背景。
+- 不用大面积纯白来假装简洁。
+- 普通卡片无阴影，依靠 1px 规则线和色块建立层级。
+- 原创设计稿可以保留自身颜色，但不能把图像色扩散到导航和状态系统。
+- 状态不能只靠颜色；必须同时有中文文本和形状标记。
+- 标题与正文使用 Noto Sans SC/system 字体；仅 ID、SHA 和技术字段使用等宽字体。
 
-### Flow nodes and edges
+## 6. 结果卡与设计稿
 
-- 普通节点使用 node 面、rule 边线与 text；选择只切换 selected/primary。
-- 关系线默认 rule，选中路径为 primary；MiniMap、controls、context、legend 和 monitor 使用 node/rule，并清除渐变和光晕。
-- 摘要、字段和操作进入 Inspector 或独立详情页，不因选中而展开节点。
+- 设计图比例为 3:2，桌面卡片不裁掉文字信息板。
+- 左上角显示每日排名或“手动”，右上角显示版本。
+- “真实产物”只代表 API 返回的文件存在且能读取，不代表图像模型、打样或量产。
+- 设计详情必须同时显示生成方式和 `imageGenerationUsed`。
+- 下载链接指向当前版本的真实文件；SHA-256 与下载字节一致。
+- 自动重跑产生新批次，旧批次保留但标为 superseded；默认列表不把已替代批次当作今天的新结果。
 
-### Dock and Inspector
+## 7. 自由组合交互
 
-- Evidence/Asset/History Dock 根面与 sticky heading 使用 rail；列表项使用 node 或透明面，活动项使用 selected/primary。
-- 证据正式库、候选、历史市场快照、实时控制和运行事件保持分层；市场证据在运维控制之前出现。
-- Inspector 使用暖陶根面；字段与只读卡使用 node，primary action 使用 primary；七个页签和标题不改变 API 或工作区数据。
+- 文化与形态都用可多选卡；选中顺序显示 1、2、3。
+- 每组至少选 1 项、最多 3 项，控件和后端同时校验。
+- 右侧固定摘要显示当前组合、预计生成数量和真实性说明。
+- 提交时显示进度，失败保留用户选择与错误原因。
+- 成功后直接进入新设计详情，而不是停在无意义的成功提示。
 
-### Decision Studio and node details
+## 8. 自动化与错误语义
 
-- Decision Studio 使用 shell 环境、command header/footer、rail stage nav、canvas panel 与 node fields；保存人工决策是唯一主动作。
-- 九个详情页共享 shell/canvas/node/inspector/rule/text 语法，真实 `.detail-editor`、引用台账、排名、机会、概念、海报、BOM 和 collection console 均纳入 C2。
-- 详情 topbar 和旧概念资产提示不得使用 `backdrop-filter` 或玻璃效果。
-- 文化星图内部深色画布保持例外，外围控件和右侧证据区遵守 C2。
+运行中心把三条任务分开：
 
-### Product imagery and citations
+- 文化来源巡检；
+- 产品形态增量采集；
+- 每日 Top 3 设计。
 
-- 只允许项目自有、来源可追溯的产品 hero、Concept A/B/C 与 1800×2400 概念海报进入产品图像位；保留 alt、用途、生成状态和权利边界。
-- `reference_only` 馆藏像素、无来源缩略图、模型构图中的示意人物/时间/文件名/缩略图都不得冒充产品内容。
-- 每个事实、机会、视觉参考和设计结果继续通过引用台账/原始链接可追溯；缺失 provider 或本轮失败时显示诚实 warning，并区分“保留上次成功资产”与“本轮未生成”。
+每条都显示 `status / detail / lastSuccessAt / nextRunAt / schedule`。页面定时轮询只刷新显示，不能作为“线程在线”的证据；线程和心跳来自服务端。
 
-## 6. Accessibility and interaction
+状态语法：
 
-- 桌面质量门继续覆盖 axe A/AA/2.2 AA 规则、唯一 `h1`、图片完整性/alt、横向溢出、拖拽等价路径、中文画布语义、弹层焦点、forced-colors、键盘和视觉快照。
-- Culture Graph、Workspace 与 Decision Studio 保持可访问名称/描述、初始焦点、Tab 焦点圈、Escape 关闭和触发器焦点归还。
-- 知识星图桌面路径继续覆盖搜索聚焦、选点、按钮/滚轮缩放、拖动画布和键盘平移；forced-colors 下中心、普通与选中节点不能合并成同一视觉角色。
-- 自动 axe、forced-colors 和像素回归只能证明已覆盖的自动门，不等于完整 WCAG 认证；真实屏幕阅读器、残障用户、真实触屏设备和跨平台字体仍需专项验证。
-- 本轮 C2 最终验证仅为 desktop-chromium 1440×960；旧 mobile 自动门和快照不能冒充 C2 移动验收。
+- `healthy / generated`：本轮真实完成。
+- `running`：服务端任务正在执行。
+- `scheduled`：已排程但尚未执行。
+- `degraded`：部分来源失败，结果未完全满足。
+- `blocked`：运行时、开关或授权缺失，没有伪启动。
+- `failed / interrupted`：真实失败或重启中断。
+- `not_ready`：生产前验证尚无可核验记录。
 
-## 7. Validation and change discipline
+## 9. 响应式与可访问性
 
-- 当前 C2 电脑端门：前端单测 5/5，macOS desktop-chromium 30 passed / 1 Windows 像素门 skipped，typecheck、零 warning lint 与 Vinext production build 通过；两张电脑端像素基线只由 Windows CI 执行。
-- 两张 mobile snapshot 从 Task 5 起点到终点字节不变，但本轮没有运行 mobile project，因此它们不是当前 C2 通过证据。
-- 像素基线只可在目标 Windows Chromium、相同字体环境中，由人工确认变化有意后更新。不得用另一平台的抗锯齿差异覆盖现有基线。
-- 0.10.0 C2 已发布到受 Basic Auth 保护的 Zeabur 实例，并在市场控制面增加同一鉴权边界内的授权浏览器入口；Windows Chromium CI 的两张权威像素基线未被本轮功能扩展改写。当前 C2 仍只承诺 desktop-chromium，不能把发布成功扩写为 mobile/tablet 设计验收。
+- 低于 980px 时编辑器和自由组合摘要进入文档流，不再固定侧栏。
+- 低于 760px 时一级导航变为横向可滚动栏，顶部动作换行，设计卡单列。
+- 交互控件最小高度 44px；表格在窄屏改为标签化行，不强迫页面横向滚动。
+- 每页只有一个 `h1`；图片保留说明性 alt；来源详情可用键盘展开。
+- 键盘焦点使用 3px primary outline；运行中心内部受限高度的阻断列表必须可聚焦、具备可读名称并允许键盘滚动；reduced-motion 下停止持续旋转之外的非必要动画。
+- 自动 axe 与像素门只能证明覆盖的检查，不等于完整 WCAG 或真实设备认证。
 
-## 8. Do / Don’t
+## 10. 可信边界
 
-### Do
-
-- 使用固定 C2 色块表达区域职责，让主画布和当前焦点链保持最高任务优先级。
-- 保持 60/72/210/330 电脑端几何、真实九节点/十连线、共享 Decision/详情语法和深色文化星图例外。
-- 让状态同时具有文字、颜色、轮廓或形状，并区分实时、缓存、过期、警告、失败和阻断。
-- 保持引用、历史时间窗、权利状态、人工改写和生产前边界可见。
-- 把批准构图作为非字面比例/色块参考，只消费真实 API、中文内容和现有工作流。
-
-### Don’t
-
-- 不恢复 Monochrome 的大面积白/冷灰/纯黑产品级语法，也不恢复暖纸旧主题或亮蓝系统色。
-- 不添加渐变、玻璃、backdrop blur、光晕、装饰网格、高饱和环境色或无意义缩略图。
-- 不让选中节点扩张、位移、抬升或展开详情；不让拖拽成为唯一输入路径。
-- 不把黑色星图例外扩散成全站深色主题。
+- 22、32、10、378 和每日设计数量全部由 API 读取，不能硬编码到页面。
+- 分数必须由后端公开公式计算，前端只展示。
+- 文化与市场来源必须能打开；缺失来源的组合不得生成。
+- 本地形态渲染器生成的是结构概念板，不是生成式商品效果图；未配置独立图像 provider 时不得暗示使用了图像模型。
+- 任何设计都必须保留“概念阶段、非量产工程图、需文化/授权/工程/合规复核”的边界。
+- 旧空间工作台继续遵守其已批准的 C2 桌面几何；新结果首页不继承“画布优先”的层级。
+- 旧空间工作台继续保持 60/72/210/330 电脑端几何、固定 C2 色块、真实九节点/十连线和深色文化星图例外；不得把 desktop-only 验收扩写为 mobile/tablet 已通过。
 - 不把 378 条历史快照、排程或曾经授权写成当前实时产出；只把同轮严格验证通过的启用平台写成 live，暂停平台不得混入。
-- 不把 desktop-only C2 写成 mobile/tablet 已适配、已通过或已在真实设备验证。
-- 不从当前概念包声称生产发布、工厂下单、商业图稿批准、社区授权完成或制造/合规就绪。
+- 当前 Zeabur 图像 provider 已真实可用；Studio 仍必须准确标注其结构概念板由本地渲染器生成，不能借用 provider 状态暗示调用了图像模型。

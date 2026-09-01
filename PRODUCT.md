@@ -1,63 +1,96 @@
-# QianCraft product record
+# QianCraft 产品契约
 
-## Product
+## 产品定义
 
-QianCraft Creative Intelligence Workbench is an evidence-backed operating tool for turning Guizhou local-culture research and bounded market observations into traceable cultural-creative product directions. It is a working instrument, not a marketing homepage or an autonomous answer generator.
+QianCraft 是一套“双库驱动的自动文创设计工具”，不是官网、灵感展示页，也不是把工作流画布放在首屏的演示系统。
 
-## Primary users and jobs
+系统持续维护两类原始材料：
 
-- Cultural researchers inspect records, relationships, citations and rights boundaries.
-- Product strategists compare platform evidence, adjust weights and select opportunities without overwriting source facts.
-- Designers turn a selected opportunity into an editable brief, concept set, concept poster and factory quote/sample brief.
-- Project reviewers audit where a decision came from, what remains uncertain and which downstream nodes are stale.
+1. **在地文化内容库**：贵州地域文化、非遗技艺、社区活动、符号语义、可转译元素和不可转译边界。
+2. **产品形态库**：全国范围内已出现市场信号的产品载体，例如冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰和毛绒。
 
-## Core outcome
+系统每天把内容与形态进行受约束组合，选择评分最高且文化/形态互不重复的最多 3 个组合，生成 3 份可追溯、可编辑的结构概念设计稿。没有通过来源、样本或渲染器门槛的组合不会进入结果，也不会用兜底模板补足数量。
 
-A user can move through Culture → Market → Strategy → Design → Delivery, intervene at every stage, inspect every node on a dedicated page, and leave with an editable, cited concept package that stops before production release, factory ordering, commercial artwork approval or manufacturing/compliance readiness.
+## 用户真正要看的三件事
 
-## Current operating proof
+- **原始材料**：两座持续维护、能逐条查看来源的知识库。
+- **最终产出**：今天自动生成的设计以及全部历史设计。
+- **真实运行状态**：采集和每日生成是否在线、何时运行、为什么阻断。
 
-- 22 verified Guizhou cultural records and 32 cultural, ethics, legal and collection references; discovered material stays in a separate human-review queue and never enters the formal graph automatically.
-- A searchable culture constellation connects records, categories and source references. Desktop users can select, pan, wheel-zoom and operate it from the keyboard; compact touch layouts preserve page scrolling until the user explicitly enters constellation-control mode, then support one-finger pan and two-finger zoom.
-- A persistent collection control surface exposes schedule, heartbeat, last attempt/success, partial failure, authorization blockers, candidate review and event history. A polling or heartbeat failure invalidates the previous online state instead of leaving stale success visible.
-- 378 clearly time-bounded historical samples across Xiaohongshu, Douyin, Bilibili and Weibo remain the repository baseline. On Zeabur, Douyin is explicitly paused because interactive verification is unstable. Strict job `20260901T121642Z-e1a435ff` produced 113 / 110 / 149 normalized live records for Xiaohongshu / Bilibili / Weibo, with culture and strategy also live, and promoted the isolated run without merging old probes or Douyin history.
-- Eight evidence-rule baseline opportunities (`generated_opportunities_accepted=0`), nine node instances, ten relationships and three comparable concept directions; Top 3 is OPP-006 / OPP-002 / OPP-004.
-- A seven-stage Human Decision Studio, editable node detail pages, workspace persistence, citations, deep links and honest live/cache/stale/warning/error states.
-- A working Design Agent handoff through `DesignPackage`, sample/quotation brief and 1800 × 2400 concept poster.
-- A repeatable desktop UI gate across the workbench and all nine node routes: Python 91 passed, frontend unit tests 5 passed, and macOS desktop Playwright passed 30 functional tests with the Windows-only visual test intentionally skipped. Windows CI owns the two canonical pixel baselines. Typecheck, zero-warning lint, production build, Ruff, lockfile and full Python/pnpm dependency audits pass.
-- Version 0.10.0 is accepted locally and on protected Zeabur deployment `6a96bdf25158a7aaa4e62007`. LightRAG, GPT Researcher, isolated MediaCrawler, managed Chromium/noVNC and the configured image provider all have real runtime probes. The strict contract now requires exactly every configured active platform to be live; paused platforms remain visible but cannot silently block or inflate a run. API rate limiting, CSP/HSTS/security headers, loopback-only browser ports, non-root workers and runtime backup verification remain enforced. The scheduler is still a single-instance thread rather than a distributed queue; browser connectivity alone is never treated as platform authorization or a verified run.
+评分、工作流节点和中间 JSON 是审计与干预手段，不是默认首页内容。用户只有在看中某个结果并准备修改时，才进入工作流编辑器。
 
-## Experience direction
+## 核心使用路径
 
-Tonal Focus Review:
+### 自动路径
 
-- Calm functional color blocks replace both the earlier dark decorative treatment and the later pure-white monochrome treatment. Warm mineral frames the app, mist blue identifies global commands, muted sage groups tools and evidence, fog blue defines the canvas, and soft clay distinguishes the Inspector.
-- A 60px desktop command bar and 72px tool rail frame a dominant node canvas. Evidence, assets and history use a contextual 210px lower drawer; the 330px Inspector overlaps from the right only when it helps the selected task.
-- System/SF-like sans typography, fine neutral rules, compact semantic radii and one restrained overlay shadow make the surface feel precise without turning it into a marketing homepage.
-- Large product surfaces are not pure white. Color remains low-saturation and functional: it communicates region, selection, focus or status, never ornament. The interface uses no gradients, glass, glow, ethnic decoration or saturated ambient effects.
-- Original product, evidence and concept imagery may retain source color. Interface status never relies on color alone; every state also has text, iconography or shape.
-- The selected node keeps its geometry and advances through a deep desaturated blue keyline, a light-blue selected surface and bound Inspector/evidence context rather than expansion or decorative effects.
-- The canvas behaves as a direct-manipulation work surface: drag empty space with the primary pointer or one finger to pan, Shift-drag to box-select, wheel/pinch to zoom, and drag a node without moving the viewport.
-- The culture relationship view is the one deliberate black-canvas exception inside the otherwise low-saturation tool. It renders an operational constellation, not a decorative hero: search, category filter, record selection, evidence inspection and view controls remain visible.
-- On compact touch layouts the constellation defaults to `pan-y pinch-zoom` so the page remains scrollable. Only the explicit “操作星图” mode takes over one-finger pan and two-finger zoom, and “完成” returns control to the page.
-- Collection surfaces separate verified knowledge, pending candidates, historical snapshots and current runtime status. Market evidence and its date window appear before the expandable live-collection controls.
-- Every draggable evidence record also exposes a visible “add to canvas” control, so pointer dragging is never the only way to create a canvas node.
-- At 760px and below, the header keeps a compact current-phase selector and a 44px deep-blue Run action; controls stay at least 44px, and peripheral panels become reversible overlays.
-- The Human Decision Studio keeps deep-blue Save as the sole primary action, groups secondary actions by content width and preserves the complete evidence-to-decision chain on desktop and mobile.
-- The Culture constellation overlay, Workspace dialog and Human Decision dialog move focus inside, keep keyboard focus contained, close with Escape and return focus to the invoking control; canvas announcements and movement instructions are localized in Chinese.
-- Reduced-motion, increased-contrast and Windows forced-colors preferences retain usable status, focus and selection semantics instead of erasing feedback.
+`持续采集 → 人工晋级文化事实 / 核验形态样本 → 组合评分 → 每日 Top 3 → 真实 PNG 概念稿 → 结果详情`
 
-## Non-negotiable boundaries
+- 文化来源默认每 6 小时巡检；新页面只进入候选队列，不能自动成为正式文化事实。
+- 市场通道默认每 4 小时检查真实采集前置；当前 Zeabur 启用小红书、B站和微博，抖音因交互验证码暂停。缺少任何启用平台授权时明确 `blocked`，378 条历史样本不会冒充本轮实时结果。
+- 每日设计任务默认在 `Asia/Shanghai` 07:00 执行。容器重启后，如果当天没有产出，会执行一次补跑。
+- 同一天普通调度不会重复生成；人工点击“立即重跑”会产生新批次，并把旧批次标记为已替代，历史仍保留。
 
-- Preserve citations, evidence type, time boundary, rights status and machine-versus-human decisions.
-- Do not describe historical cached platform data as current live trends.
-- Do not promote a discovered URL into verified cultural knowledge without field-level evidence and human review.
-- Do not describe the scheduler as continuously producing live market material while the live switch or four platform authorizations are blocked; 7×24 operation is conditional on the single-instance runtime, persistent volume, restart policy, network and authorization.
-- Do not use `reference_only` collection pixels in generated or commercial artwork.
-- Do not conceal missing image providers, failed calls or stale downstream work.
-- Do not expose API keys, crawler cookies or site credentials in the client, repository, logs or documentation.
-- Do not claim mass-production, DFM, compliance, community authorization or factory-order readiness from the current concept package.
+### 结果干预路径
 
-## Success criteria
+`设计详情 → 查看文化/形态证据与评分 → 进入工作流编辑 → 增加或替换内容/形态 → 修改融合文稿或视觉方向 → 保存并生成 V2+`
 
-The workbench should feel like a restrained professional creative tool: the current task is obvious, important evidence stays one action away, every node can be inspected and operated independently, and complexity appears progressively instead of competing for attention all at once. The culture constellation must remain explorable without trapping compact-page scrolling; collection status must remain honest when a source degrades, authorization blocks or the control plane disconnects. Material UI changes must pass the local quality workflow in `docs/frontend_quality_workflow.md`; an automated pass is evidence, not a claim of complete accessibility certification.
+修改不会覆盖旧版本。每个新版本保留时间、组合、评分、生成方式、图像尺寸和 SHA-256。
+
+### 自由组合路径
+
+`自由组合 → 选择 1–3 条文化内容 + 1–3 个产品形态 → 补充文稿/配色 → 生成 → 进入同一结果详情与版本编辑器`
+
+提交后端仍会重新验证文化 ID、来源数量、真实市场样本和显式形态渲染器；前端选择不等于绕过质量门。
+
+## 当前真实数据与能力
+
+- 22 条已核验文化记录，关联 32 个登记来源。
+- 10 种产品形态，来自 378 条有时间边界的历史真实平台样本。
+- 22 × 10 共 220 个候选组合；系统逐个计算并公开五项分数。
+- 当前数据下每日自动选择 3 个文化与形态均不重复的组合。
+- 10 种形态都有明确的本地结构渲染器；每次生成实际写入 1440 × 960 PNG，而非返回假 URL 或静态占位图。
+- 所有设计都记录文化来源、代表市场记录、评分公式、渲染器、版本和文件摘要。
+- 两个持久调度线程分别负责持续采集和每日设计；健康接口同时检查线程与心跳。
+- 原有九节点空间工作台保留在 `/workflow`，作为高级研究和旧式全链路操作入口。
+- 受保护 Zeabur 0.10.0 部署 `6a96bdf25158a7aaa4e62007` 已验证 LightRAG、GPT Researcher、隔离 MediaCrawler、托管 Chromium/noVNC 与图像 provider；严格任务 `20260901T121642Z-e1a435ff` 同轮得到小红书 113、B站 110、微博 149 条规范化 live 记录并晋级工作区，抖音未进入清单。
+- 仓库 378 条四平台快照与线上 372 条三平台当轮实时记录是两个独立事实口径，Studio 产品形态库当前仍读取前者并明确标注历史时间边界。
+
+## 组合评分
+
+当前 `combo-score-v1` 公开计算：
+
+| 维度 | 权重 | 依据 |
+|---|---:|---|
+| 文化证据 | 25% | 来源数量、字段完整度与记录证据分 |
+| 形态热度 | 25% | 形态库实际热度分和样本规模 |
+| 品类兼容 | 25% | 文化类别与产品载体的显式匹配规则 |
+| 转译空间 | 15% | 可现代转译元素的丰富度 |
+| 边界安全 | 10% | 不可转译项、文化敏感性和边界完整度 |
+
+系统不能把这个分数描述为销量概率、游客流量预测或“爆款保证”。它只是当前证据与规则下的组合优先级。
+
+## 信息架构
+
+- `/`：今日设计——真实数据概览、当日最多 3 个设计、自动化状态。
+- `/libraries/culture`：在地文化库——逐条查看来源、可转译元素与边界。
+- `/libraries/forms`：产品形态库——排名、热度、样本、平台覆盖和代表原记录。
+- `/create`：自由组合——多选内容和形态，立即生成。
+- `/designs`：全部设计——自动与手动产出、历史版本入口。
+- `/designs/{id}`：设计详情——结果、证据、评分、谱系和生产前边界。
+- `/designs/{id}/edit`：工作流编辑——只在需要修改结果时展示五阶段。
+- `/operations`：运行中心——两个调度线程、三条任务通道、排程、阻断和事件。
+- `/workflow`：原高级空间工作台。
+
+## 不可突破的边界
+
+- 历史缓存不能标成当前实时趋势；自动排程不能标成自动采集成功。
+- 新发现的文化 URL 必须经过人工字段级核验，不能直接晋级正式库。
+- `reference_only` 图像像素不能进入生成稿或商业图稿。
+- 当前 PNG 是本地确定性结构概念板，不冒充图像模型效果图、生产工程图或工厂打样照片。
+- 当前结果止于概念验证、工厂询价和首样沟通；不代表社区授权、商业艺术批准、DFM、合规或量产就绪。
+- 单容器线程不是分布式队列。多副本部署前必须加入领导者、分布式锁或外部任务系统。
+- API Key、平台 Cookie 和站点凭证只能由本地忽略文件或部署 Secret 注入。
+
+## 完成标准
+
+用户能够从首页直接看到当天真实设计，进入两库检查每条材料，查看每个设计的来源与分数，自由组合生成新设计，并在看中结果后按阶段修改和重生成。运行中心必须能证明调度线程、心跳、上次/下次运行和真实阻断；任何缺失条件都应失败或降级，而不是展示虚构成功。

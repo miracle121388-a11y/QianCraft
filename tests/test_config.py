@@ -5,7 +5,17 @@ from pathlib import Path
 
 import pytest
 
-from app.config import _resolve_executable_path, load_settings
+from app.config import (
+    MARKET_PLATFORM_CODES,
+    _market_platforms,
+    _resolve_executable_path,
+    load_settings,
+)
+
+
+def test_market_platform_default_preserves_historical_demo_scope() -> None:
+    assert _market_platforms("") == MARKET_PLATFORM_CODES
+    assert _market_platforms("wb,dy") == ("dy", "wb")
 
 
 def test_executable_path_preserves_virtualenv_symlink(

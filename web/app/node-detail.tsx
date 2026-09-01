@@ -504,20 +504,20 @@ export default function NodeDetail({ nodeId, workspaceId }: { nodeId: string; wo
   return (
     <main className={`node-detail-page node-detail-page--${node.type}`}>
       <header className="detail-topbar">
-        <Link className="detail-brand" href={`/?workspace=${encodeURIComponent(workspaceId)}`} aria-label="返回 QianCraft 工作台">
+        <Link className="detail-brand" href={`/workflow?workspace=${encodeURIComponent(workspaceId)}`} aria-label="返回 QianCraft 工作台">
           <ArrowLeft aria-hidden="true" size={16} strokeWidth={1.8} />
           <b>Q</b>
           <strong>QianCraft</strong>
         </Link>
         <div className="detail-breadcrumb">
-          <Link href={`/?workspace=${encodeURIComponent(workspaceId)}`}>工作台</Link>
+          <Link href={`/workflow?workspace=${encodeURIComponent(workspaceId)}`}>工作台</Link>
           <i>/</i>
           <span>{nodeLabel}</span>
           <i>/</i>
           <strong>{node.data.title}</strong>
         </div>
         <div className="detail-top-actions">
-          <Link aria-label="打开人工决策" className="detail-decision-link" href={`/?workspace=${encodeURIComponent(workspaceId)}&decision=${NODE_DECISION_STAGE[node.type]}`}>
+          <Link aria-label="打开人工决策" className="detail-decision-link" href={`/workflow?workspace=${encodeURIComponent(workspaceId)}&decision=${NODE_DECISION_STAGE[node.type]}`}>
             <SlidersHorizontal aria-hidden="true" size={14} />
             <span>人工决策</span>
           </Link>

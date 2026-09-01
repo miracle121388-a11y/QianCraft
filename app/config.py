@@ -189,7 +189,7 @@ def load_settings() -> Settings:
         mediacrawler_live_enabled=_as_bool(env("MEDIACRAWLER_LIVE_ENABLED", "false")),
         mediacrawler_platform=env("MEDIACRAWLER_PLATFORM", "xhs").strip().lower(),
         mediacrawler_platforms=_market_platforms(
-            env("MEDIACRAWLER_PLATFORMS", "xhs,dy,bili,wb")
+            env("MEDIACRAWLER_PLATFORMS", ",".join(MARKET_PLATFORM_CODES))
         ),
         mediacrawler_cookie=env("MEDIACRAWLER_COOKIE"),
         mediacrawler_cookies={

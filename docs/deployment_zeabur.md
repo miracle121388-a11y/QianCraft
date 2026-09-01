@@ -41,6 +41,8 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 部署 `6a96589cfff9450cc032d417` 进一步让抖音首页在 DOM ready 后继续，并让每轮 CDP 只关闭本轮新建页面、保留共享浏览器。用户随后决定暂不处理抖音交互验证码。当前最终部署 `6a96bdf25158a7aaa4e62007` 将运行集合固定为 `xhs,bili,wb`，UI/API 明确显示 dy 已暂停，并把严格晋级契约改为“配置中启用的平台必须且只能全部 live”。任务 `20260901T121642Z-e1a435ff` 实际得到 xhs 113、bili 110、wb 149 条规范化 live 记录，文化、市场、策划均为 live，状态为 `live_verified` 且已回写线上工作区；公网 `/healthz=200`。
 
+本次代码合并进一步把默认入口改为双库驱动、结果优先的 Studio，并增加独立每日设计调度器、Top 3 批次、自由组合、设计详情与版本编辑；这些变更尚未重新部署。只有实际部署完成并验证 `/healthz` 的两个调度线程、两库计数、当日设计与 PNG 后，才可把上述能力记录为线上可用。
+
 ## 必需配置
 
 - 服务端口：使用平台注入的 `PORT`。
@@ -52,6 +54,8 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 - `QIANCRAFT_CONTINUOUS_COLLECTION=true`：启动持续采集调度器。
 - `QIANCRAFT_CULTURE_WATCH_MINUTES=360`：文化来源巡检间隔。
 - `QIANCRAFT_MARKET_REFRESH_MINUTES=240`：启用平台增量复检间隔。
+- `QIANCRAFT_DAILY_DESIGN_ENABLED=true`：启动每日设计调度器。
+- `QIANCRAFT_DAILY_DESIGN_HOUR=7`、`QIANCRAFT_DAILY_DESIGN_MINUTE=0`：`Asia/Shanghai` 每日执行时间。
 - `QIANCRAFT_RUNTIME_ROOT=/app/data/runtime`：快照脚本统一运行态根目录；镜像已内置该默认值。
 - `QIANCRAFT_BROWSER_SESSION_ENABLED=true`：启用云端持久授权浏览器。
 - `QIANCRAFT_BROWSER_PROFILE_DIR=/app/data/runtime/browser-profile`：平台登录资料目录，权限 `0700`。
@@ -65,7 +69,7 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 ## 数据边界
 
-`/app/data/runtime/workbench` 保存画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs、旧版工具设计运行，以及 `collection/` 下的排程配置、心跳、事件、候选与来源指纹；`/app/data/runtime/lightrag_storage` 保存文化索引；`/app/data/runtime/browser-profile` 只保存托管浏览器资料。文化图谱、市场证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；页面刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted。
+`/app/data/runtime/workbench` 保存旧高级画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs、旧版工具设计运行，`collection/` 下的采集配置/心跳/事件/候选，以及 `studio/` 下的每日排程、事件、批次、设计版本和 PNG；`/app/data/runtime/lightrag_storage` 保存文化索引；`/app/data/runtime/browser-profile` 只保存托管浏览器资料。文化图谱、市场/形态证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；研究任务刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted，每日调度器则会在当天无产出时补跑。
 
 单容器、单 Tool API 副本可以按上述持久卷和平台重启策略持续调度；它不是分布式任务队列。扩到多个 API 副本前必须加入唯一领导者、分布式锁或外部队列，否则每个副本都会运行自己的排程。仓库已提供带路径/数量/体积/SHA-256 校验的手工快照与原子恢复工具，并在恢复时保留旧运行目录。生产仍需把快照复制到独立卷或站外存储，并为心跳、连续失败、候选积压与授权过期配置外部告警；同卷快照和页面“在线”都不能代替异地备份与平台级监控。
 

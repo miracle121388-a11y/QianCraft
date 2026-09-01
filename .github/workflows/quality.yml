@@ -33,6 +33,9 @@ jobs:
           activate-environment: qiancraft
           auto-activate: false
           environment-file: environment.yml
+      - name: Install CJK rendering font
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
       - name: Python tests
         run: conda run --no-capture-output -n qiancraft python -m pytest -q
       - name: Ruff
@@ -54,6 +57,7 @@ jobs:
       CI: "true"
       QIANCRAFT_CONDA_ENV: qiancraft
       QIANCRAFT_CONTINUOUS_COLLECTION: "true"
+      MEDIACRAWLER_PLATFORMS: xhs,bili,wb
     steps:
       - uses: actions/checkout@v6
       - uses: conda-incubator/setup-miniconda@v4

@@ -4,7 +4,7 @@ import { expect, test, type Page, type TestInfo } from '@playwright/test';
 const WORKSPACE_ID = 'guizhou-miao-demo';
 
 const ROUTES = [
-  { name: 'workbench', path: `/?workspace=${WORKSPACE_ID}`, surface: '.workbench-shell' },
+  { name: 'workbench', path: `/workflow?workspace=${WORKSPACE_ID}`, surface: '.workbench-shell' },
   { name: 'culture', path: `/nodes/culture?workspace=${WORKSPACE_ID}`, surface: '.node-detail-page' },
   { name: 'market', path: `/nodes/market?workspace=${WORKSPACE_ID}`, surface: '.node-detail-page' },
   { name: 'strategy', path: `/nodes/strategy?workspace=${WORKSPACE_ID}`, surface: '.node-detail-page' },
@@ -14,6 +14,15 @@ const ROUTES = [
   { name: 'concept-b', path: `/nodes/concept-b?workspace=${WORKSPACE_ID}`, surface: '.node-detail-page' },
   { name: 'concept-c', path: `/nodes/concept-c?workspace=${WORKSPACE_ID}`, surface: '.node-detail-page' },
   { name: 'poster', path: `/nodes/poster?workspace=${WORKSPACE_ID}`, surface: '.node-detail-page' },
+] as const;
+
+const STUDIO_ROUTES = [
+  { name: '今日设计', path: '/', ready: '.studio-facts' },
+  { name: '在地文化内容库', path: '/libraries/culture', ready: '.studio-document-head' },
+  { name: '爆款产品形态库', path: '/libraries/forms', ready: '.studio-form-table' },
+  { name: '自由组合', path: '/create', ready: '.studio-composer' },
+  { name: '全部设计', path: '/designs', ready: '.studio-design-grid--archive' },
+  { name: '运行中心', path: '/operations', ready: '.studio-operation-summary' },
 ] as const;
 
 async function openRoute(page: Page, route: (typeof ROUTES)[number]) {
@@ -47,6 +56,37 @@ function violationSummary(violations: Awaited<ReturnType<AxeBuilder['analyze']>>
     targets: violation.nodes.map((node) => node.target),
   }));
 }
+
+test('结果优先工具的六个一级页面读取真实 API 且可审计', async ({ page }) => {
+  for (const route of STUDIO_ROUTES) {
+    await page.goto(route.path);
+    await page.locator(route.ready).waitFor({ state: 'visible' });
+    await expect(page.locator('.studio-shell')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(route.name);
+    const health = await page.evaluate(() => ({
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      h1Count: document.querySelectorAll('h1').length,
+      placeholderFacts: document.body.textContent?.includes('22 条文化记录 · 378 个市场官') ?? false,
+    }));
+    expect(health).toEqual({ overflow: 0, h1Count: 1, placeholderFacts: false });
+    const accessibility = await new AxeBuilder({ page })
+      .include('.studio-shell')
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    expect(violationSummary(accessibility.violations), route.name).toEqual([]);
+  }
+
+  const overview = await page.request.get('http://127.0.0.1:8787/api/studio/overview');
+  expect(overview.ok()).toBe(true);
+  const payload = await overview.json() as {
+    today: { designCount: number };
+    libraries: { culture: { recordCount: number }; forms: { recordCount: number; sampleSize: number } };
+  };
+  expect(payload.libraries.culture.recordCount).toBe(22);
+  expect(payload.libraries.forms).toMatchObject({ recordCount: 10, sampleSize: 378 });
+  expect(payload.today.designCount).toBeGreaterThan(0);
+  expect(payload.today.designCount).toBeLessThanOrEqual(3);
+});
 
 for (const route of ROUTES) {
   test(`${route.name} 满足可访问性、溢出与资源门槛`, async ({ page }, testInfo) => {
@@ -87,6 +127,13 @@ for (const route of ROUTES) {
       missingAlt: [],
       h1Count: 1,
     });
+
+    if (route.name !== 'workbench') {
+      await expect(page.getByRole('link', { name: '返回 QianCraft 工作台' })).toHaveAttribute(
+        'href',
+        `/workflow?workspace=${WORKSPACE_ID}`,
+      );
+    }
 
     if (testInfo.project.name === 'mobile-chromium') {
       const undersized = await page.locator('button, select, summary, a.detail-download, [role="button"]').evaluateAll((elements) => (

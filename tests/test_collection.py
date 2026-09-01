@@ -251,6 +251,15 @@ def test_scheduler_health_rejects_dead_or_stale_heartbeat(
     )
 
     monkeypatch.setattr(tool_api, "COLLECTION_SERVICE", scheduler)
+    monkeypatch.setattr(
+        tool_api,
+        "studio_service",
+        lambda: type(
+            "HealthyStudio",
+            (),
+            {"health": lambda self: {"ok": True, "online": True, "status": "healthy"}},
+        )(),
+    )
     assert scheduler.health()["ok"] is False
     dead_payload, dead_status = tool_api.collection_health_response()
     assert dead_status is HTTPStatus.SERVICE_UNAVAILABLE
@@ -261,7 +270,9 @@ def test_scheduler_health_rejects_dead_or_stale_heartbeat(
         assert scheduler.health(now=now)["ok"] is True
         live_payload, live_status = tool_api.collection_health_response()
         assert live_status is HTTPStatus.OK
+        assert live_payload["version"] == "0.10.0"
         assert live_payload["collectionScheduler"]["online"] is True
+        assert live_payload["dailyDesignScheduler"]["ok"] is True
 
         state = store.load_state()
         state["scheduler"]["heartbeatAt"] = (now - timedelta(seconds=46)).isoformat()

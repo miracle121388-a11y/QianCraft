@@ -5,6 +5,7 @@ app/collection.py
 app/config.py
 app/pipeline.py
 app/schemas.py
+app/studio.py
 app/tool_api.py
 app/workbench.py
 app/adapters/__init__.py
@@ -24,8 +25,11 @@ qiancraft.egg-info/dependency_links.txt
 qiancraft.egg-info/requires.txt
 qiancraft.egg-info/top_level.txt
 tests/test_collection.py
+tests/test_config.py
 tests/test_demo_pipeline.py
 tests/test_deployment.py
+tests/test_mediacrawler_runner.py
 tests/test_runtime_snapshot.py
+tests/test_studio.py
 tests/test_tool_api.py
 tests/test_workbench.py

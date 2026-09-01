@@ -1,10 +1,10 @@
 # QianCraft 四平台市场热度口径
 
-本模块只回答“哪些文创产品形态在当前四个平台表现出更强的市场热度与爆款潜力信号”。它不是销量、价格或人群心理预测模型。
+本模块只回答“哪些文创产品形态在当前证据覆盖的平台表现出更强的市场热度与爆款潜力信号”。它不是销量、价格或人群心理预测模型。
 
 ## 数据范围
 
-固定平台为小红书 `xhs`、抖音 `dy`、B站 `bili`、微博 `wb`。四个平台共用同一关键词池；正式 MVP 默认每个平台 6 个关键词、每词抓一页，清洗后单平台最多保留 150 条，总体目标约 200–600 条。只有用户本人授权后真实搜索所得记录，或这些记录的历史快照，才能进入产品形态榜。12 条公开机构/媒体/产品研究基线继续服务策划证据，但不会冒充平台帖子。
+系统保留小红书 `xhs`、抖音 `dy`、B站 `bili`、微博 `wb` 四个平台适配器，但实际运行集合由 `MEDIACRAWLER_PLATFORMS` 明确配置。通用 Demo 默认保留四平台历史基线；当前 Zeabur 与浏览器验收运行时显式启用 xhs/bili/wb，dy 因交互验证码暂停；恢复时必须由用户本人重新授权并显式加入配置。启用平台共用同一关键词池；正式 MVP 默认每个平台 6 个关键词、每词抓一页，清洗后单平台最多保留 150 条，总体目标随启用数量计算。只有用户本人授权后真实搜索所得记录，或这些记录的历史快照，才能进入产品形态榜。12 条公开机构/媒体/产品研究基线继续服务策划证据，但不会冒充平台帖子。
 
 统一帖子字段包括 `platform / post_id / title / content / url / published_at / likes / favorites / comments / shares / views / product_form / search_keyword / retrieved_at`。平台未返回的字段保持 0 或空字符串，不推测补齐。
 
@@ -41,12 +41,12 @@ Cross-platform Hot Score
 - `cache`：本次未成功搜索，但存在该平台以前的真实抓取快照。
 - `unavailable`：本次未成功搜索，也没有该平台真实快照。
 
-四个平台状态分别写入 RunManifest 的 `market_platforms`。规范化快照位于 `data/market/raw/{platform}.jsonl`，上游原始文件位于 `data/market/raw/_upstream/`，最终榜单位于 `data/market/derived/product_form_hotness.json`。
+实际启用平台的状态分别写入 RunManifest 的 `market_platforms`，并与清单中的启用集合精确对应；暂停平台在预检/API 中可见，但不伪造本轮运行状态。规范化快照位于 `data/market/raw/{platform}.jsonl`，上游原始文件位于 `data/market/raw/_upstream/`，最终榜单位于 `data/market/derived/product_form_hotness.json`。
 
 ## 持续增量采集
 
-0.9.0 的 `market_refresh` 通道默认每 4 小时复检一次。每轮先执行严格预检：实时开关、MediaCrawler 隔离运行时、LLM/LightRAG 条件，以及 xhs / dy / bili / wb 四个平台的本人授权必须齐备。预检不通过时状态是 `blocked`，不会自动弹出登录、不会创建一个假任务，也不会把 378 条历史快照重新记为本轮 live。
+0.9.0 的 `market_refresh` 通道默认每 4 小时复检一次。每轮先执行严格预检：实时开关、MediaCrawler 隔离运行时、LLM/LightRAG 条件，以及配置中全部启用平台的本人授权必须齐备。当前集合是 xhs/bili/wb，dy 暂停且不参与预检。预检不通过时状态是 `blocked`，不会自动弹出登录、不会创建一个假任务，也不会把 378 条历史快照重新记为本轮 live。
 
-条件齐备时，调度器复用 `POST /api/research/run` 的隔离任务语义并持久化任务号。只有任务最终返回 `live_verified`，即文化、策划和四个平台本轮均为 live，通道才是 `healthy` 并允许晋级；部分 live、cache、unavailable、超时或执行错误均保留审计而不覆盖已核验快照。失败通道按连续失败次数缩短到有界复检间隔，但不会绕过授权门。
+条件齐备时，调度器复用 `POST /api/research/run` 的隔离任务语义并持久化任务号。只有任务最终返回 `live_verified`，即文化、策划和配置中的平台状态键精确匹配且全部为 live，通道才是 `healthy` 并允许晋级；部分 live、额外/缺失平台、cache、unavailable、超时或执行错误均保留审计而不覆盖已核验快照。失败通道按连续失败次数缩短到有界复检间隔，但不会绕过授权门。
 
 市场详情页先展示 378 条历史记录、发布范围、检索日期、四平台样本量、派生排序和代表记录；持续采集控制面折叠在其后。这样“历史证据是什么”与“下一轮为什么尚未运行”同时可见但不混写。完整排程、API 和部署条件见 [`continuous_collection.md`](continuous_collection.md)。
