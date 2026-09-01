@@ -487,6 +487,29 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 
 ## 9. 更新日志
 
+### 2026-09-01｜0.10.0｜运行中心滚动阻断列表键盘可达
+
+变更：
+
+- 把运行中心“市场实时采集前置”阻断列表定义为具备可读名称的可聚焦滚动区域，并沿用 Studio 3px primary 键盘焦点轮廓；列表内容和真实阻断状态不变。
+
+原因：
+
+- 第三次 0.10.0 GitHub Actions 运行 `33510640733` 中，Ubuntu/macOS/Windows Python 全部通过，Windows 旧 31 项门也全部通过；新增 Studio 六路由 axe 用例仅在运行中心发现 `scrollable-region-focusable`：受限为 180px 高的 `<ul>` 在内容溢出时不能由键盘进入。
+
+验证：
+
+- 失败运行实际为 Windows desktop-chromium 31/32，其唯一失败目标是 `.studio-blocker-list`；修正后将重跑 Studio 六路由 axe、前端静态/构建门和新的完整 GitHub Actions，最终结果以新运行记录为准。
+
+边界：
+
+- 本次只修正滚动区域的键盘入口、名称和可见焦点，不改变市场通道的授权前置、不把当前 `blocked` 改写为 `live`，也不声称 axe 等同完整 WCAG 认证。
+
+涉及文件：
+
+- `web/app/studio-app.tsx`、`web/app/studio.css`
+- `DESIGN.md`、`docs/frontend_quality_workflow.md`、`WORKFLOW.md`
+
 ### 2026-09-01｜0.10.0｜Studio 小字号对比度跨表面修正
 
 变更：

@@ -50,7 +50,8 @@
 .studio-shell input:focus-visible,
 .studio-shell select:focus-visible,
 .studio-shell textarea:focus-visible,
-.studio-shell summary:focus-visible {
+.studio-shell summary:focus-visible,
+.studio-blocker-list:focus-visible {
   outline: 3px solid var(--studio-primary);
   outline-offset: 2px;
 }

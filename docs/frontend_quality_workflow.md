@@ -88,7 +88,7 @@ pnpm quality
 
 0.10.0 的 `desktop-chromium` 在 1440×960 定义 32 项：31 项功能门在支持 Chromium 的系统执行，最后 1 项旧工作台像素门只在 Windows 执行。覆盖：
 
-- 新 Studio 六个一级路由的真实 API 载入、22/10/378 计数、每日结果数量、axe A/AA/2.2 AA、唯一 `h1` 和横向溢出。
+- 新 Studio 六个一级路由的真实 API 载入、22/10/378 计数、每日结果数量、axe A/AA/2.2 AA、唯一 `h1` 和横向溢出；运行中心受限高度的阻断列表是可命名、可聚焦、可键盘滚动的区域。
 - `/workflow` 与九个 `/nodes/*` 路由的 axe、唯一 `h1`、破图、缺失 `alt`、文档/主内容横向溢出。
 - 真实 C2 五色表面、60/72/210/330 几何、Asset/History Dock、节点动作、Inspector、Decision Studio、九个详情页、collection primary、星图外围控件和 concept gallery 的计算样式。
 - 证据拖拽与“添加到画布”点击/键盘等价路径、中文画布语义、Workspace/Decision Studio/图谱的焦点圈、Escape 关闭与焦点归还。
