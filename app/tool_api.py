@@ -1349,17 +1349,17 @@ def studio_overview() -> dict[str, Any]:
     service = studio_service()
     culture = service.engine.culture_library()
     forms = service.engine.form_library()
-    today = service.store.designs_for_date(_local_date())
+    today = service.engine.current_daily_designs()
     recent = [item for item in service.store.load_designs() if not item.get("superseded")]
     return {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "today": {
             "date": _local_date(),
             "designCount": len(today),
             "designs": today,
             "policy": (
-                "每日 Top 3 是上限；组合必须通过来源、样本和显式渲染器门槛，"
-                "不足时不会补假结果。"
+                "每日 Top 3 是上限；组合必须通过来源、样本和图像模型门槛，"
+                "并完成设计效果图与生产沟通图两次模型生成，不足或失败时不会补假结果。"
             ),
         },
         "libraries": {
@@ -1378,11 +1378,13 @@ def studio_overview() -> dict[str, Any]:
         "automation": {
             "dailyDesign": service.status(),
             "collection": collection_service().status(),
+            "imageGeneration": service.engine.image_generation_status(),
         },
         "recentDesigns": recent[:12],
         "truthBoundary": (
-            "文化库为已核验记录；形态库为历史真实平台快照；设计稿由本地显式形态"
-            "渲染器本次生成，不冒充图像模型效果图或量产工程图。"
+            "文化库为已核验记录；形态库为历史真实平台快照；新设计只有在图像模型"
+            "同时生成设计效果图与生产沟通图后才保存。生产沟通图仍是概念视觉，"
+            "不是尺寸准确的工程图、CAD、模具图或量产放行文件。"
         ),
     }
 
@@ -1788,7 +1790,12 @@ class ToolRequestHandler(BaseHTTPRequestHandler):
         elif len(parts) == 4 and parts[:2] == ["assets", "studio"]:
             design_id, filename = parts[2], parts[3]
             safe_design = bool(re.fullmatch(r"QCD-[A-F0-9]{12}", design_id))
-            safe_filename = bool(re.fullmatch(r"v[1-9][0-9]*\.png", filename))
+            safe_filename = bool(
+                re.fullmatch(
+                    r"v[1-9][0-9]*(?:-(?:design|production))?\.png",
+                    filename,
+                )
+            )
             if safe_design and safe_filename:
                 candidate = STUDIO_DIR / "assets" / design_id / filename
                 if candidate.is_file():

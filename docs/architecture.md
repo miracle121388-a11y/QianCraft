@@ -2,7 +2,7 @@
 
 ## 产品边界
 
-QianCraft 0.10.0 是“双库驱动的自动文创设计系统”，不是通用搜索器、营销官网或自动量产发布器。默认产品面只呈现两座持续维护的材料库、每日设计结果和运行状态；评分与工作流在用户检查或修改某个结果时才逐层出现。LightRAG、MediaCrawler、GPT Researcher 与 XYFlow 继续作为隔离的高级研究能力，主路径由 QianCraft 自有 Studio Engine、调度器、Tool API 和结果界面控制。
+QianCraft 0.11.0 是“双库驱动的自动文创设计系统”，不是通用搜索器、营销官网或自动量产发布器。默认产品面只呈现两座持续维护的材料库、每日设计结果和运行状态；评分与工作流在用户检查或修改某个结果时才逐层出现。LightRAG、MediaCrawler、GPT Researcher 与 XYFlow 继续作为隔离的高级研究能力，主路径由 QianCraft 自有 Studio Engine、调度器、图像生成适配器、Tool API 和结果界面控制。
 
 ```text
 公开文化来源 ──culture_watch──> 待审核候选 ──人工字段核验──┐
@@ -16,10 +16,10 @@ QianCraft 0.10.0 是“双库驱动的自动文创设计系统”，不是通用
                                                               │          ▼
                                                               └─> StudioEngine
                                                                     ├─> 220 个组合评分
-                                                                    ├─> 来源/样本/渲染器门
+                                                                    ├─> 来源/样本/图像模型门
                                                                     ├─> 每日最多 Top 3
                                                                     ├─> 自由组合
-                                                                    └─> 版本化 1440×960 PNG
+                                                                    └─> 版本化双 1024×1024 模型 PNG
                                                                               │
                                         ┌─────────────────────────────────────┼──────────────────┐
                                         ▼                                     ▼                  ▼
@@ -32,7 +32,7 @@ QianCraft 0.10.0 是“双库驱动的自动文创设计系统”，不是通用
                                 └─> 原 9 节点 Workbench（/workflow）
 ```
 
-Studio 主链直接生成带评分、来源、版本、SHA-256 和生产边界的结构概念板；高级研究链仍可越过 Designer Handoff 形成 DesignPackage、首样尺寸、BOM、装配、质检和展示海报。两条链都在 `production_release` 前停止。所有尺寸、公差与材料都是报价/首样假设，不是开模图或量产工程定稿；社区授权、工程验证、产品合规与商业发布仍需后续人工关口。
+Studio 主链先调用图像模型生成产品设计效果图，再优先把该图作为图生图输入生成生产沟通图；只有两次调用和文件校验都成功，才把带评分、来源、提示词、模型、输入/输出 SHA-256 与生产边界的结果写入索引。高级研究链仍可越过 Designer Handoff 形成 DesignPackage、首样尺寸、BOM、装配、质检和展示海报。两条链都在 `production_release` 前停止。生产沟通图只用于概念拆解，不是开模图、CAD 或量产工程定稿；社区授权、工程验证、产品合规与商业发布仍需后续人工关口。
 
 ## 目录职责
 
@@ -43,7 +43,7 @@ QianCraft/
 │   ├── strategist/            # 唯一策划师、证据锁和固定任务提示
 │   ├── designer/              # 设计选案、制造拆解、Markdown 与海报排版
 │   ├── collection.py          # 持久化文化巡检、候选队列与市场增量调度器
-│   ├── studio.py              # 双库读取、组合评分、PNG 生成、版本与每日调度器
+│   ├── studio.py              # 双库读取、组合评分、双模型视觉、版本与每日调度器
 │   ├── workbench.py           # 7 类节点、工作区 JSON、版本与运行语义
 │   ├── tool_api.py            # Studio、采集和旧 Workbench 的统一 HTTP API
 │   ├── config.py              # 模式、路径、凭证、隔离运行时配置
@@ -74,11 +74,11 @@ QianCraft/
 
 ## 结果优先 Studio
 
-`app/studio.py` 的 `StudioEngine` 是主产品链的事实处理层。它只读取正式文化图谱和产品形态榜，生成完整笛卡尔组合并公开计算 `combo-score-v1`：文化证据 25%、形态热度 25%、品类兼容 25%、转译空间 15%、边界安全 10%。文化来源少于 2、没有可转译元素、形态样本为 0 或没有显式渲染器的组合直接淘汰。每日选择器再执行文化与形态去重；不足 3 个时输出更少，不调用通用兜底。
+`app/studio.py` 的 `StudioEngine` 是主产品链的事实处理层。它只读取正式文化图谱和产品形态榜，生成完整笛卡尔组合并公开计算 `combo-score-v1`：文化证据 25%、形态热度 25%、品类兼容 25%、转译空间 15%、边界安全 10%。文化来源少于 2、没有可转译元素、形态样本为 0、没有明确形态提示词或图像 provider 未就绪的组合不能形成结果。每日选择器再执行文化与形态去重；不足 3 个时输出更少，不调用通用兜底。
 
-`StudioStore` 把排程、状态、事件、批次、设计版本和 PNG 写到 `data/runtime/tool_workspace/studio/`。每日批次先完整生成全部文件，再一次性写入设计索引；明确重跑会把旧批次标为 `superseded`，而不是删除。人工编辑始终产生新版本并保留前一版本摘要。`StudioScheduler` 使用 `Asia/Shanghai` 时区、持久化每日时间和启动补跑；健康接口检查实际线程、心跳与开关。
+`StudioStore` 把排程、状态、事件、批次、设计版本和 PNG 写到 `data/runtime/tool_workspace/studio/`。每个版本先在暂存路径完成设计效果图和生产沟通图两次模型调用，再原子登记；任一步失败会清理本轮文件且不写索引。每日批次全部完成后才一次性写入设计索引；明确重跑会把旧批次标为 `superseded`，而不是删除。人工编辑始终产生新版本并保留前一版本双图摘要。`StudioScheduler` 使用 `Asia/Shanghai` 时区、持久化每日时间和启动补跑；只有元数据与两张实际文件都存在才算当日完成，健康接口检查实际线程、心跳与开关。
 
-前端的一级路由为 `/`、`/libraries/culture`、`/libraries/forms`、`/create`、`/designs` 和 `/operations`。结果详情 `/designs/{id}` 展示 PNG、来源、评分与谱系；只有 `/designs/{id}/edit` 才展开文化、形态、融合、视觉和生产前验证五阶段。前端不保存事实，也不重算分数。
+前端的一级路由为 `/`、`/libraries/culture`、`/libraries/forms`、`/create`、`/designs` 和 `/operations`。结果详情 `/designs/{id}` 展示双图、提示词、模型谱系、来源与评分；只有 `/designs/{id}/edit` 才展开文化、形态、融合、视觉和生产沟通/验证五阶段。Studio 页面使用文档级纵向滚动，旧 `/workflow` 空间画布单独保留固定视口。前端不保存事实，也不重算分数。
 
 主要 Studio 接口：
 
@@ -88,7 +88,7 @@ QianCraft/
 | `GET /api/studio/libraries/culture` | 已核验文化记录、来源和转译边界 |
 | `GET /api/studio/libraries/forms` | 产品形态、样本、平台覆盖和代表原记录 |
 | `GET /api/studio/combinations` | 可复现组合分数与门槛 |
-| `POST /api/studio/combinations` | 自由组合并实际写入设计与 PNG |
+| `POST /api/studio/combinations` | 自由组合并实际写入两张模型 PNG |
 | `GET/PUT /api/studio/designs/{id}` | 读取设计或生成下一版本 |
 | `POST /api/studio/designs/{id}/regenerate` | 显式生成下一版本 |
 | `GET/PUT/POST /api/studio/automation/*` | 状态、事件、排程和立即重跑 |

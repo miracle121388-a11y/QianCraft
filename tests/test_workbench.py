@@ -278,6 +278,23 @@ def test_dashscope_native_adapter_uses_sync_multimodal_contract(
     }
     assert output_path.read_bytes() == image_bytes
     assert result["model"] == "qwen-image-3.0-pro"
+    assert result["mode"] == "text_to_image"
+    assert result["width"] == 1
+    assert result["height"] == 1
+
+    edited_path = tmp_path / "qwen-production.png"
+    edited = ImageGenerationAdapter(settings).generate(
+        "基于输入图生成生产沟通拆解图",
+        edited_path,
+        size="1024x1024",
+        reference_image_path=output_path,
+    )
+    edit_payload = json.loads(requests[2].content)
+    edit_content = edit_payload["input"]["messages"][0]["content"]
+    assert edit_content[0]["image"].startswith("data:image/png;base64,")
+    assert edit_content[1] == {"text": "基于输入图生成生产沟通拆解图"}
+    assert edited["mode"] == "image_to_image"
+    assert edited["reference_sha256"] == result["sha256"]
 
 
 def test_concept_can_be_duplicated_as_an_independent_branch(

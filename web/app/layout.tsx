@@ -9,7 +9,7 @@ const impeccableDirectionContract = `THESIS: QianCraft is a result-first operati
 PALETTE: Shell #E6E2DA; command #D9E1E8; rail/evidence #D7E1DC; canvas #E3E8EB; Inspector #E7DDD4; node #F0EEE9; selected #CBD9E6; primary/focus #345C7D; text #20262C; legacy secondary #626970; Studio compact secondary #565E65; rule #C4C8C7.
 STORY: Verify the culture and form libraries, review today's highest-scoring designs, open one result to inspect provenance, then edit its content, form, copy or visual stage only when needed.
 FIRST VIEWPORT: A labeled 224px navigation rail and compact command bar expose actual library counts, today's generated designs, automation status and a direct manual-combination action; no workflow canvas competes with the results.
-FORM: Result-first desktop tool composition for QianCraft 0.10.0; the existing Tonal Focus palette remains functional and the legacy spatial workbench survives at /workflow as an advanced surface.
+FORM: Result-first desktop tool composition for QianCraft 0.11.0; the existing Tonal Focus palette remains functional and the legacy spatial workbench survives at /workflow as an advanced surface.
 FINISH: no fallback facts, fake scores or placeholder success; every count, source, score, design byte, version and scheduler state comes from the API and stays inspectable`;
 
 const impeccableContractScript = `document.currentScript?.parentNode?.insertBefore(document.createComment(${JSON.stringify(impeccableDirectionContract)}), document.currentScript);`;
@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body>
-        <script data-impeccable-contract="dual-library-result-first-0.10.0" dangerouslySetInnerHTML={{ __html: impeccableContractScript }} />
+        <script data-impeccable-contract="dual-library-result-first-0.11.0" dangerouslySetInnerHTML={{ __html: impeccableContractScript }} />
         {children}
       </body>
     </html>

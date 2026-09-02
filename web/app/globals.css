@@ -51,6 +51,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+html:has(.studio-shell),
+body:has(.studio-shell) {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 button,
 input,
 textarea,
@@ -85,6 +93,7 @@ select:focus-visible {
   width: 100vw;
   min-width: 1220px;
   height: 100dvh;
+  overflow: hidden;
   background: var(--paper);
 }
 

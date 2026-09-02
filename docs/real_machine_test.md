@@ -1,6 +1,8 @@
 # QianCraft 实机验收记录
 
-验收日期：2026-09-01（Asia/Shanghai）
+验收日期：2026-09-02（Asia/Shanghai）
+
+0.11.0 发布候选把 Studio 的本地 Pillow 结构渲染器替换为强制双模型视觉：先生成设计效果图，再优先以该图作为参考生成生产沟通图；每个版本登记两次提示词、provider/model/mode、图生图输入与两张输出 SHA-256。测试适配器只存在于测试文件，生产代码没有本地占位分支。缺 provider、第二次调用失败、旧本地稿、模型元数据存在但实际文件缺失四种情况均已回归：前两种不写结果，后两种触发真实补跑。Studio 长页恢复文档滚动，旧 `/workflow` 和九个节点详情保持原固定/内部滚动合同。本地实际通过 Python 101/101、Web 5/5、macOS desktop-chromium 32 passed / 1 Windows 像素门按设计 skipped、Ruff、锁、类型、ESLint、Vinext 五阶段构建、启动脚本语法和两类依赖审计；真实 Qwen 双图只能在已配置 Secret 的 Zeabur 发布后验收，本段不提前写成远端通过。
 
 0.9.1 完整复验使用当前 Windows 工作区重新导入 LightRAG 1.5.7、GPT Researcher 0.14.7 与 MediaCrawler 隔离运行时；MediaCrawler 可导入 `bili,dy,ks,tieba,wb,xhs,zhihu`。当前机器与 Zeabur 服务器均已安全配置 LLM 凭证，DeepSeek `/models` 返回 200、3 个模型且目标 `deepseek-v4-flash` 存在；独立 Images API 与四平台授权会话仍未配置，因此没有把图片重生成或平台抓取写成当轮 live。正式 `20260828T060200Z-e44240e3` 保留此前真实 DeepSeek 业务运行证据。独立 `auto` 验收运行 `20260829T144536Z-2e6f3e5b` 实际得到 `culture=live / market=cache / strategist=cache / design=live / poster=live`，消费提交随附的 378 条派生平台证据并生成 13 项隔离产物；清单路径全部为仓库相对路径且文件存在。
 
@@ -69,7 +71,7 @@ Zeabur 0.10.0 运行态实测不是“文件存在”口径：LightRAG 在持久
 | GPT Researcher | 通过 | 0.14.7 在 Zeabur 实际调用 `deepseek-v4-flash`，返回指定 JSON，外部上下文 writer 成功且未走项目直连降级 |
 | MediaCrawler | 当前三平台严格实采通过；抖音暂停 | 云端解释器固定为 `/opt/mediacrawler-venv/bin/python`，源码、`httpx`、CDP 管理器、托管 Chromium 均实测。最终启用 xhs/bili/wb，严格任务规范化记录为 113/110/149；dy 不启动、不参与晋级，适配代码与历史证据保留 |
 | Workbench 严格后台研究 | 通过 | 云端任务 `20260901T121642Z-e1a435ff` 实际完成 culture/market/strategist live，且配置中启用的 xhs/bili/wb 全部 live，最终 `live_verified` 并原子晋级工作区；清单不含 dy，也未拼接旧探针或缓存 |
-| Studio 双库与每日设计 | 本地与远端通过 | API 实取文化 22/来源 32、形态 10/历史样本 378，并公开文化证据三分项、组合五分项、代表原记录、样本窗与边界。本地隔离 HTTP 已验收手动组合和 V2 编辑；Zeabur 当日 3 个去重设计在完整运行时重发后保留，3 张 1440×960 PNG 的 HTTP、类型、尺寸与 SHA 全通过。零样本或来源/渲染器门不满足时仍明确失败 |
+| Studio 双库与每日设计 | 0.11.0 本地契约通过；远端待本轮发布 | API 实取文化 22/来源 32、形态 10/历史样本 378，并公开文化证据三分项、组合五分项、代表原记录、样本窗与边界。测试适配器下的每日 Top 3、手动组合和 V2 编辑均为两张 1024×1024 模型契约 PNG，生产图输入 SHA 与设计图一致；无 provider、第二次调用失败或持久文件缺失时不复用假成功。0.10.0 Zeabur 仍保留 3 张历史 1440×960 本地结构稿，0.11.0 发布后必须由服务器真实 provider 补跑并另行验收 |
 | 四平台统一与热度 | 通过 | 四个快照共 378 条真实平台记录；统一榜单样本数为 378，Top 10 依次为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒，Top 5 为前五项；本轮重算分数范围 36.6–57.3，均在 0–100 内 |
 | Visual Reference Pack | 通过 | 12 条官方/权威馆藏参考、5 个 Pattern Primitive、3 组无伪造 HEX 的颜色关系；全部未明权利图片标为 `reference_only` |
 | Opportunity Score | 通过 | 当前正式文件为 8 条证据规则基线，`generated_opportunities_accepted=0`；全部具备六项正向分、文化风险和可解释综合分，20/20/20/15/15/10 加权后扣 20% 风险。历史模型候选数量不等于当前正式接受数 |
@@ -146,4 +148,4 @@ pnpm start:local
 12. Workbench 已部署为受 Basic Auth 保护的远端产品验证环境；Vinext、Python API、CDP、VNC 与 noVNC 上游都只绑定回环，运行态由持久卷承载，密钥由部署变量注入。0.10.0 包含 MediaCrawler/LightRAG/GPT Researcher 和托管授权浏览器，但异地定时备份、用户级账户、权限审计、分布式任务队列、外部告警和密钥轮换仍是多人正式运营条件。普通 ZIP 不备份平台登录 profile，恢复或卷丢失后须本人重新登录。
 13. 本轮使用上传的 React Flow 源码核对集成版本和能力边界，但没有改写其源码、许可证或版权通知；产品界面统一使用 QianCraft 自有名称和业务语言。
 14. 0.9.0 引入的持续采集依赖 Tool API 单副本持续运行、持久卷、平台重启策略、网络和用户授权；它不是跨副本分布式队列。线上 0.10.0 的机器条件、线程、心跳与持久卷已验收，但只有配置中启用的平台每轮全部实际产出才是 `live_verified`，不能因浏览器在线就宣称每轮都会持续产出。
-15. 0.10.0 的每日 Studio 设计同样依赖单副本常驻进程和持久卷；其 PNG 是带来源、评分和版本的结构概念稿，不是图像模型商品摄影、量产工程图或生产放行。市场库当前 378 条是历史真实快照，自动设计按时运行不等于配置中的实时平台每轮都已成功采集。
+15. 0.11.0 的每日 Studio 设计依赖单副本常驻进程、持久卷和真实图像 provider；新设计的两张 PNG 是模型产物，但生产沟通图仍不是尺寸准确的量产工程图、CAD、模具图或生产放行。市场库当前 378 条是历史真实快照，自动设计按时运行不等于配置中的实时平台每轮都已成功采集。

@@ -9,6 +9,10 @@ const pythonCommand = process.env.QIANCRAFT_PYTHON_COMMAND?.trim()
 const chromiumExecutablePath = process.env.QIANCRAFT_CHROMIUM_EXECUTABLE_PATH?.trim();
 const canonicalMarketPlatforms = process.env.MEDIACRAWLER_PLATFORMS?.trim()
   || 'xhs,bili,wb';
+const webPort = Number(process.env.QIANCRAFT_TEST_WEB_PORT?.trim() || '3000');
+if (!Number.isInteger(webPort) || webPort < 1024 || webPort > 65535) {
+  throw new Error('QIANCRAFT_TEST_WEB_PORT 必须是 1024–65535 的整数。');
+}
 
 export default defineConfig({
   testDir: './tests/ui',
@@ -29,7 +33,7 @@ export default defineConfig({
     ['html', { open: 'never', outputFolder: '.playwright-report' }],
   ],
   use: {
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL: `http://127.0.0.1:${webPort}`,
     colorScheme: 'light',
     contextOptions: { reducedMotion: 'reduce' },
     locale: 'zh-CN',
@@ -73,9 +77,9 @@ export default defineConfig({
       stderr: 'pipe',
     },
     {
-      command: 'pnpm exec vinext dev --hostname 127.0.0.1 --port 3000',
+      command: `pnpm exec vinext dev --hostname 127.0.0.1 --port ${webPort}`,
       cwd: '.',
-      url: 'http://127.0.0.1:3000',
+      url: `http://127.0.0.1:${webPort}`,
       reuseExistingServer: true,
       timeout: 120_000,
       stdout: 'pipe',

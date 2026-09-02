@@ -17,7 +17,7 @@ QianCraft 是结果优先的证据工具，不是官网。前端质量按以下�
 5. Tonal Focus 固定色块是否准确承担区域、选中、焦点和状态职责。
 6. 当前目标视口是否通过语义、交互、静态和像素门。
 
-0.10.0 保留旧 C2 的 desktop-only 视觉基线，同时给结果优先主界面提供窄屏布局。窄屏 CSS 存在不等于已经完成真实 mobile/tablet 产品验收；当前权威 UI 门仍是 Windows desktop Chromium。
+0.11.0 保留旧 C2 的 desktop-only 视觉基线，同时让结果优先 Studio 使用文档级纵向滚动；只有 `/workflow` 的空间画布继续固定在视口内。窄屏 CSS 存在不等于已经完成真实 mobile/tablet 产品验收；当前权威 UI 门仍是 Windows desktop Chromium。
 
 ## 2. 外部基准
 
@@ -86,9 +86,9 @@ pnpm test:ui
 pnpm quality
 ```
 
-0.10.0 的 `desktop-chromium` 在 1440×960 定义 32 项：31 项功能门在支持 Chromium 的系统执行，最后 1 项旧工作台像素门只在 Windows 执行。覆盖：
+0.11.0 的 `desktop-chromium` 在 1440×960 新增 Studio 文档滚动门；最后 1 项旧工作台像素门仍只在 Windows 执行。覆盖：
 
-- 新 Studio 六个一级路由的真实 API 载入、22/10/378 计数、每日结果数量、axe A/AA/2.2 AA、唯一 `h1` 和横向溢出；运行中心受限高度的阻断列表是可命名、可聚焦、可键盘滚动的区域。
+- 新 Studio 六个一级路由的真实 API 载入、22/10/378 计数、双模型视觉真实性、axe A/AA/2.2 AA、唯一 `h1`、横向溢出和长页面真实纵向滚动；运行中心受限高度的阻断列表是可命名、可聚焦、可键盘滚动的区域。
 - `/workflow` 与九个 `/nodes/*` 路由的 axe、唯一 `h1`、破图、缺失 `alt`、文档/主内容横向溢出。
 - 真实 C2 五色表面、60/72/210/330 几何、Asset/History Dock、节点动作、Inspector、Decision Studio、九个详情页、collection primary、星图外围控件和 concept gallery 的计算样式。
 - 证据拖拽与“添加到画布”点击/键盘等价路径、中文画布语义、Workspace/Decision Studio/图谱的焦点圈、Escape 关闭与焦点归还。
@@ -109,6 +109,8 @@ pnpm quality
 - Windows CI `pnpm --dir web exec playwright test --project=desktop-chromium`：32/32 通过（其中 1 项权威像素门）。
 
 合并后的 0.10.0 Python 本地与 Ubuntu/macOS/Windows CI 均为 98/98，Web 单测为 5/5，macOS desktop-chromium 为 31 passed / 1 skipped，Windows desktop-chromium 为 32/32。合并前本地实时链路 91/91、团队 Studio 分支 83/83，以及 0.9.2 的 77/77、Windows 31/31 都只代表各自分支或旧版本，不能冒充本次结果。
+
+0.11.0 发布候选本地实际通过 Python 101/101、Web 单测 5/5、typecheck、零 warning ESLint、Vinext 五阶段 production build、Ruff、锁文件与两类依赖审计；macOS desktop-chromium 为 32 passed / 1 个 Windows 权威像素门按设计 skipped。第一次全量运行发现若把全局 `body` 设为滚动容器，会影响旧节点页的 axe 背景判定；最终实现用 `:has(.studio-shell)` 只对 Studio 开启文档滚动，完整复验中 Studio 长页滚动、旧 Workbench、九个节点详情、交互与可访问性门全部通过。Windows 33/33 仍须等待本轮 GitHub Actions，不能从本地跳过项推断为已通过。
 
 失败时报告写入 `web/.playwright-report/`，截图、axe 上下文和 trace 写入 `web/.playwright-results/`；两者不进 Git。
 

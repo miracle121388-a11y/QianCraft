@@ -11,9 +11,11 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
-SCHEMA_VERSION = "1.0"
+from app.adapters.image_generation_adapter import ImageGenerationAdapter
+
+SCHEMA_VERSION = "1.1"
 SHANGHAI = timezone(timedelta(hours=8), name="Asia/Shanghai")
 DAILY_LIMIT = 3
 HEARTBEAT_MAX_AGE_SECONDS = 45
@@ -90,31 +92,10 @@ CATEGORY_COMPATIBILITY: dict[str, dict[str, float]] = {
     },
 }
 
-PALETTES: dict[str, dict[str, tuple[int, int, int]]] = {
-    "slate": {
-        "ink": (31, 38, 45),
-        "primary": (52, 92, 125),
-        "accent": (154, 103, 87),
-        "surface": (240, 238, 233),
-        "shell": (230, 226, 218),
-        "line": (196, 200, 199),
-    },
-    "indigo": {
-        "ink": (26, 34, 49),
-        "primary": (43, 65, 92),
-        "accent": (181, 132, 76),
-        "surface": (238, 239, 236),
-        "shell": (218, 225, 226),
-        "line": (184, 194, 196),
-    },
-    "vermilion": {
-        "ink": (39, 37, 35),
-        "primary": (111, 74, 64),
-        "accent": (174, 72, 57),
-        "surface": (242, 238, 230),
-        "shell": (229, 221, 210),
-        "line": (201, 190, 177),
-    },
+PALETTE_DIRECTIONS: dict[str, str] = {
+    "slate": "冷灰蓝、石墨与暖白，低饱和、精确、克制",
+    "indigo": "贵州靛青、岩灰与少量暖金，沉静、清晰、非仿古",
+    "vermilion": "赭朱、纸白与深褐，温暖、有手作触感但不复制传统标准色",
 }
 
 
@@ -187,75 +168,6 @@ def _unique(values: Iterable[str]) -> list[str]:
             seen.add(clean)
             result.append(clean)
     return result
-
-
-def _font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
-    candidates = [
-        Path("C:/Windows/Fonts/msyhbd.ttc" if bold else "C:/Windows/Fonts/msyh.ttc"),
-        Path("C:/Windows/Fonts/simhei.ttf" if bold else "C:/Windows/Fonts/simsun.ttc"),
-        Path("/System/Library/Fonts/PingFang.ttc"),
-        Path(
-            "/System/Library/Fonts/"
-            + ("STHeiti Medium.ttc" if bold else "STHeiti Light.ttc")
-        ),
-        Path("/System/Library/Fonts/Supplemental/Songti.ttc"),
-        Path(
-            "/usr/share/fonts/opentype/noto/"
-            + ("NotoSansCJK-Bold.ttc" if bold else "NotoSansCJK-Regular.ttc")
-        ),
-    ]
-    for candidate in candidates:
-        if candidate.exists():
-            return ImageFont.truetype(str(candidate), size=size, index=0)
-    raise RuntimeError(
-        "缺少中文字体，不能生成会把汉字显示成方框的设计稿；"
-        "请安装 Noto Sans CJK、微软雅黑、黑体或系统华文字体。"
-    )
-
-
-def _wrap(
-    draw: ImageDraw.ImageDraw,
-    text: str,
-    font: ImageFont.ImageFont,
-    width: int,
-) -> list[str]:
-    lines: list[str] = []
-    for paragraph in str(text).splitlines() or [""]:
-        current = ""
-        for character in paragraph:
-            candidate = current + character
-            if current and draw.textlength(candidate, font=font) > width:
-                lines.append(current)
-                current = character
-            else:
-                current = candidate
-        if current:
-            lines.append(current)
-    return lines
-
-
-def _draw_text(
-    draw: ImageDraw.ImageDraw,
-    xy: tuple[int, int],
-    text: str,
-    font: ImageFont.ImageFont,
-    fill: tuple[int, int, int],
-    width: int,
-    line_height: int,
-    max_lines: int,
-) -> int:
-    lines = _wrap(draw, text, font, width)
-    if len(lines) > max_lines:
-        lines = lines[:max_lines]
-        last = lines[-1]
-        while last and draw.textlength(last + "…", font=font) > width:
-            last = last[:-1]
-        lines[-1] = last + "…"
-    x, y = xy
-    for line in lines:
-        draw.text((x, y), line, font=font, fill=fill)
-        y += line_height
-    return y
 
 
 class StudioStore:
@@ -422,13 +334,56 @@ class StudioStore:
 
 
 class StudioEngine:
-    """Evidence-locked culture × product-form combination and design renderer."""
+    """Evidence-locked combinations with mandatory model-generated visuals."""
 
-    def __init__(self, store: StudioStore, culture_path: Path, forms_path: Path) -> None:
+    def __init__(
+        self,
+        store: StudioStore,
+        culture_path: Path,
+        forms_path: Path,
+        image_adapter: ImageGenerationAdapter | None = None,
+    ) -> None:
         self.store = store
         self.culture_path = culture_path.resolve()
         self.forms_path = forms_path.resolve()
+        self.image_adapter = image_adapter or ImageGenerationAdapter()
         self._lock = threading.RLock()
+
+    def image_generation_status(self) -> dict[str, Any]:
+        return self.image_adapter.status()
+
+    @staticmethod
+    def has_complete_model_visuals(design: dict[str, Any]) -> bool:
+        production_asset = design.get("production", {}).get("asset", {})
+        return bool(
+            design.get("provenance", {}).get("imageGenerationUsed") is True
+            and design.get("asset", {}).get("generation", {}).get("model")
+            and production_asset.get("generation", {}).get("model")
+            and design.get("asset", {}).get("imageUrl")
+            and production_asset.get("imageUrl")
+        )
+
+    def current_daily_designs(self) -> list[dict[str, Any]]:
+        return [
+            item
+            for item in self.store.designs_for_date(_local_date())
+            if self.has_complete_model_visuals(item) and self._stored_visuals_exist(item)
+        ]
+
+    def _stored_visuals_exist(self, design: dict[str, Any]) -> bool:
+        design_id = str(design.get("designId", ""))
+        if not re.fullmatch(r"QCD-[A-F0-9]{12}", design_id):
+            return False
+        filenames = (
+            str(design.get("asset", {}).get("filename", "")),
+            str(design.get("production", {}).get("asset", {}).get("filename", "")),
+        )
+        return all(
+            filename
+            and Path(filename).name == filename
+            and (self.store.assets_dir / design_id / filename).is_file()
+            for filename in filenames
+        )
 
     def culture_library(self) -> dict[str, Any]:
         payload = _load_json(self.culture_path, {"records": [], "sources": []})
@@ -663,35 +618,44 @@ class StudioEngine:
         with self._lock:
             daily_date = _local_date()
             existing = self.store.designs_for_date(daily_date)
-            if existing and not force:
+            current = [
+                item
+                for item in existing
+                if self.has_complete_model_visuals(item) and self._stored_visuals_exist(item)
+            ]
+            if current and len(current) == len(existing) and not force:
                 return {
-                    "batchId": str(existing[0].get("batchId", "")),
+                    "batchId": str(current[0].get("batchId", "")),
                     "dailyDate": daily_date,
-                    "generatedCount": len(existing),
-                    "designs": existing,
+                    "generatedCount": len(current),
+                    "designs": current,
                     "reused": True,
                 }
             selected = self._select_daily(DAILY_LIMIT)
             if not selected:
                 raise RuntimeError(
-                    "没有同时通过文化证据、市场样本和显式形态生成器门槛的组合。"
+                    "没有同时通过文化证据、市场样本和明确形态提示词门槛的组合。"
                 )
             batch_id = f"DAY-{daily_date.replace('-', '')}-{uuid4().hex[:8].upper()}"
-            designs = []
-            for rank, candidate in enumerate(selected, 1):
-                designs.append(
-                    self._create_design(
-                        culture_ids=[candidate["cultureId"]],
-                        form_ids=[candidate["productFormId"]],
-                        origin="daily",
-                        batch_id=batch_id,
-                        daily_date=daily_date,
-                        daily_rank=rank,
-                        trigger=trigger,
-                        scores=candidate["scores"],
-                        persist=False,
+            designs: list[dict[str, Any]] = []
+            try:
+                for rank, candidate in enumerate(selected, 1):
+                    designs.append(
+                        self._create_design(
+                            culture_ids=[candidate["cultureId"]],
+                            form_ids=[candidate["productFormId"]],
+                            origin="daily",
+                            batch_id=batch_id,
+                            daily_date=daily_date,
+                            daily_rank=rank,
+                            trigger=trigger,
+                            scores=candidate["scores"],
+                            persist=False,
+                        )
                     )
-                )
+            except Exception:
+                self._discard_unpersisted_assets(designs)
+                raise
             all_rows = self.store.load_designs()
             if existing:
                 existing_ids = {item["designId"] for item in existing}
@@ -715,9 +679,11 @@ class StudioEngine:
                     "generatedCount": len(designs),
                     "designIds": [item["designId"] for item in designs],
                     "selectionPolicy": (
-                        "按可解释组合分降序，文化记录与产品形态均做去重；Top 3 是上限，"
-                        "门槛不足时不会补假结果。"
+                        "按可解释组合分降序，文化记录与产品形态均做去重；每个结果必须"
+                        "同时完成模型设计效果图和模型生产沟通图。Top 3 是上限，"
+                        "门槛不足或任一模型调用失败时不会补假结果。"
                     ),
+                    "imageGeneration": self.image_generation_status(),
                 },
             )
             return {
@@ -728,7 +694,30 @@ class StudioEngine:
                 "reused": False,
             }
 
+    def _discard_unpersisted_assets(self, designs: list[dict[str, Any]]) -> None:
+        """Remove only files created for a failed, never-persisted daily batch."""
+
+        for design in designs:
+            asset_dir = self.store.assets_dir / str(design.get("designId", ""))
+            filenames = [
+                str(design.get("asset", {}).get("filename", "")),
+                str(design.get("production", {}).get("asset", {}).get("filename", "")),
+            ]
+            for filename in filenames:
+                if filename and Path(filename).name == filename:
+                    path = asset_dir / filename
+                    if path.is_file():
+                        path.unlink()
+            try:
+                asset_dir.rmdir()
+            except OSError:
+                pass
+
     def generate_manual(self, candidate: dict[str, Any]) -> dict[str, Any]:
+        with self._lock:
+            return self._generate_manual_locked(candidate)
+
+    def _generate_manual_locked(self, candidate: dict[str, Any]) -> dict[str, Any]:
         culture_ids = _unique(candidate.get("cultureIds", []))
         form_ids = _unique(candidate.get("productFormIds", []))
         if not 1 <= len(culture_ids) <= 3:
@@ -737,7 +726,7 @@ class StudioEngine:
             raise ValueError("自由组合必须选择 1–3 个产品形态。")
         combinations = self.ranked_combinations(culture_ids=culture_ids, form_ids=form_ids)
         if not combinations:
-            raise ValueError("所选组合没有通过证据或生成器门槛。")
+            raise ValueError("所选组合没有通过证据或形态提示词门槛。")
         scores = self._aggregate_scores(combinations)
         return self._create_design(
             culture_ids=culture_ids,
@@ -778,6 +767,14 @@ class StudioEngine:
         return result
 
     def revise_design(self, design_id: str, candidate: dict[str, Any]) -> dict[str, Any]:
+        with self._lock:
+            return self._revise_design_locked(design_id, candidate)
+
+    def _revise_design_locked(
+        self,
+        design_id: str,
+        candidate: dict[str, Any],
+    ) -> dict[str, Any]:
         current = self.store.get_design(design_id)
         culture_ids = _unique(
             candidate.get("cultureIds", [item["id"] for item in current["cultureItems"]])
@@ -789,7 +786,7 @@ class StudioEngine:
             raise ValueError("编辑后仍需保留 1–3 条文化内容和 1–3 个产品形态。")
         combinations = self.ranked_combinations(culture_ids=culture_ids, form_ids=form_ids)
         if not combinations:
-            raise ValueError("编辑后的组合没有通过证据或生成器门槛。")
+            raise ValueError("编辑后的组合没有通过证据或形态提示词门槛。")
         overrides = {
             "title": candidate.get("title", current["title"]),
             "concept": candidate.get("concept", current["concept"]["statement"]),
@@ -834,6 +831,12 @@ class StudioEngine:
                     "scoreOverall": float(current.get("scores", {}).get("overall", 0)),
                     "assetSha256": str(current.get("asset", {}).get("sha256", "")),
                     "imageUrl": str(current.get("asset", {}).get("imageUrl", "")),
+                    "productionAssetSha256": str(
+                        current.get("production", {}).get("asset", {}).get("sha256", "")
+                    ),
+                    "productionImageUrl": str(
+                        current.get("production", {}).get("asset", {}).get("imageUrl", "")
+                    ),
                 },
             ][-20:],
         )
@@ -893,7 +896,7 @@ class StudioEngine:
         )
         statement = _safe_text(overrides.get("concept") or default_statement, 500)
         palette = str(overrides.get("palette", "slate"))
-        if palette not in PALETTES:
+        if palette not in PALETTE_DIRECTIONS:
             raise ValueError("视觉配色必须是 slate、indigo 或 vermilion。")
         generated_at = _iso()
         design = {
@@ -921,7 +924,10 @@ class StudioEngine:
                     else "用户手动选择内容与形态，系统只执行证据门和兼容评分。"
                 ),
                 "rank": daily_rank,
-                "candidateGate": "来源≥2、存在可转译元素、形态样本>0、显式渲染器已注册",
+                "candidateGate": (
+                    "来源≥2、存在可转译元素、形态样本>0、形态提示词已注册、"
+                    "图像模型已配置且两张图均成功落盘"
+                ),
             },
             "concept": {
                 "statement": statement,
@@ -942,7 +948,7 @@ class StudioEngine:
                 "palette": palette,
                 "renderer": FORM_ARCHETYPES[primary_form["id"]]["renderer"],
                 "rendererLabel": FORM_ARCHETYPES[primary_form["id"]]["label"],
-                "style": "结构概念板 / 非摄影效果图",
+                "style": "产品设计效果图 / 图像模型生成",
             },
             "workflow": {
                 "lastRegeneratedFrom": "content_and_form" if version > 1 else "automatic_selection",
@@ -950,8 +956,13 @@ class StudioEngine:
                     {"id": "content", "label": "文化内容", "status": "verified", "editable": True},
                     {"id": "form", "label": "产品形态", "status": "verified_snapshot", "editable": True},
                     {"id": "fusion", "label": "融合方案", "status": "generated", "editable": True},
-                    {"id": "visual", "label": "设计稿", "status": "generated_local", "editable": True},
-                    {"id": "production", "label": "生产前验证", "status": "not_ready", "editable": False},
+                    {"id": "visual", "label": "设计效果图", "status": "generated_model", "editable": True},
+                    {
+                        "id": "production",
+                        "label": "生产沟通图 / 验证",
+                        "status": "concept_visual_generated",
+                        "editable": False,
+                    },
                 ],
             },
             "provenance": {
@@ -964,34 +975,46 @@ class StudioEngine:
                 ),
                 "marketSampleSize": sum(int(item["sampleSize"]) for item in form_items),
                 "marketSnapshotGeneratedAt": self.form_library()["generatedAt"],
-                "renderer": "QianCraft deterministic form renderer",
-                "imageGenerationUsed": False,
-                "claim": (
-                    "图像是本次真实生成的本地结构概念板；不是图像模型效果图，"
-                    "也没有使用 reference_only 馆藏像素。"
-                ),
+                "renderer": "pending image model generation",
+                "imageGenerationUsed": True,
+                "imageProvider": "",
+                "imageModel": "",
+                "claim": "等待两次真实图像模型调用完成。",
             },
             "production": {
-                "status": "concept_only",
+                "status": "concept_visual_generated",
+                "visualStatus": "generated_model",
                 "massProductionReady": False,
                 "boundary": (
-                    "仅用于方向选择和后续工作流编辑；社区共审、文化授权、材料、"
-                    "结构、成本、法规与工厂验证完成前不可直接量产。"
+                    "生产沟通图由生图模型根据设计效果图生成，只表达拆解与材料方向，"
+                    "不是尺寸准确的工程图、CAD、模具图或生产放行文件。社区共审、"
+                    "文化授权、材料、结构、成本、法规与工厂验证完成前不可直接量产。"
                 ),
             },
             "revisionHistory": revision_history or [],
         }
         asset_dir = self.store.assets_dir / design_id
-        asset_path = asset_dir / f"v{version}.png"
-        self._render_design(design, asset_path)
-        design["asset"] = {
-            "imageUrl": f"/assets/studio/{design_id}/v{version}.png",
-            "filename": asset_path.name,
-            "sha256": hashlib.sha256(asset_path.read_bytes()).hexdigest(),
-            "width": 1440,
-            "height": 960,
-            "generatedAt": generated_at,
-        }
+        generated_assets = self._generate_model_assets(design, asset_dir, version)
+        design["asset"] = generated_assets["designAsset"]
+        design["production"]["asset"] = generated_assets["productionAsset"]
+        provider = generated_assets["provider"]
+        design["provenance"].update(
+            {
+                "renderer": f"{provider['provider']} / {provider['model']}",
+                "imageProvider": provider["provider"],
+                "imageModel": provider["model"],
+                "claim": (
+                    "设计效果图与生产沟通图均由已配置的图像模型真实生成；"
+                    + (
+                        "生产沟通图以本版本设计效果图作为图生图输入。"
+                        if generated_assets["productionAsset"]["generation"]["mode"]
+                        == "image_to_image"
+                        else "生产沟通图以同一证据锁定方案再次调用图像模型生成。"
+                    )
+                    + "输入只含已登记的文字化文化事实与边界，未传入 reference_only 馆藏像素。"
+                ),
+            }
+        )
         if persist:
             self.store.upsert_design(design)
         return design
@@ -1012,211 +1035,154 @@ class StudioEngine:
         }
         return [mapping[item] for item in form_ids if item in mapping]
 
-    def _render_design(self, design: dict[str, Any], path: Path) -> None:
-        palette = PALETTES[design["visualDirection"]["palette"]]
-        canvas = Image.new("RGB", (1440, 960), palette["shell"])
-        draw = ImageDraw.Draw(canvas)
-        draw.rectangle((0, 0, 1440, 78), fill=palette["primary"])
-        draw.text((48, 22), "QIANCRAFT / CONCEPT SHEET", font=_font(24, True), fill=(248, 248, 245))
-        draw.text(
-            (1110, 24),
-            f"V{design['version']} · {design['updatedAt'][:10]}",
-            font=_font(20),
-            fill=(235, 237, 236),
-        )
-        draw.rounded_rectangle(
-            (42, 112, 870, 914), radius=24, fill=palette["surface"], outline=palette["line"], width=2
-        )
-        draw.rounded_rectangle(
-            (898, 112, 1398, 914), radius=24, fill=palette["surface"], outline=palette["line"], width=2
-        )
-        draw.text((82, 150), design["subtitle"], font=_font(22), fill=palette["accent"])
-        title_y = _draw_text(
-            draw,
-            (82, 190),
-            design["title"],
-            _font(52, True),
-            palette["ink"],
-            720,
-            66,
-            2,
-        )
-        product_box = (98, max(330, title_y + 32), 814, 810)
-        self._draw_product(draw, product_box, design["productForms"][0]["id"], palette)
-        draw.rounded_rectangle((112, 824, 800, 878), radius=16, fill=palette["shell"])
-        draw.text(
-            (138, 840),
-            "本地结构概念板 · 不含馆藏像素 · 非量产工程图",
-            font=_font(20, True),
-            fill=palette["ink"],
-        )
-        y = 148
-        sections = [
-            ("01 文化内容", "、".join(item["name"] for item in design["cultureItems"])),
-            ("02 产品形态", "、".join(item["name"] for item in design["productForms"])),
-            ("03 融合方案", design["concept"]["statement"]),
-            (
-                "04 组合评分",
-                f"{design['scores']['overall']:.1f} / 100 · {design['scores']['formula']}",
-            ),
-            (
-                "05 文化边界",
-                "；".join(design["concept"]["doNotUse"][:2])
-                or "保持地域、工艺和来源清晰；不复制完整传统纹样。",
-            ),
-            ("06 生产状态", design["production"]["boundary"]),
-        ]
-        for label, value in sections:
-            draw.text((936, y), label, font=_font(20, True), fill=palette["primary"])
-            y = _draw_text(
-                draw,
-                (936, y + 34),
-                value,
-                _font(20),
-                palette["ink"],
-                420,
-                30,
-                4 if label == "03 融合方案" else 3,
+    def _generate_model_assets(
+        self,
+        design: dict[str, Any],
+        asset_dir: Path,
+        version: int,
+    ) -> dict[str, Any]:
+        provider = self.image_generation_status()
+        if not provider.get("configured"):
+            raise RuntimeError(
+                "图像生成模型未配置；本次不会生成本地占位图。"
+                + str(provider.get("detail", ""))
             )
-            y += 24
-            if y < 870:
-                draw.line((936, y - 10, 1358, y - 10), fill=palette["line"], width=1)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        canvas.save(path, format="PNG", optimize=True)
+
+        design_prompt = self._design_visual_prompt(design)
+        production_prompt = self._production_visual_prompt(design)
+        asset_dir.mkdir(parents=True, exist_ok=True)
+        token = uuid4().hex[:10]
+        design_stage = asset_dir / f".v{version}-design-{token}.staging.png"
+        production_stage = asset_dir / f".v{version}-production-{token}.staging.png"
+        design_path = asset_dir / f"v{version}-design.png"
+        production_path = asset_dir / f"v{version}-production.png"
+        try:
+            design_result = self.image_adapter.generate(
+                design_prompt,
+                design_stage,
+                size="1024x1024",
+            )
+            production_result = self.image_adapter.generate(
+                production_prompt,
+                production_stage,
+                size="1024x1024",
+                reference_image_path=(
+                    design_stage if provider.get("supports_image_to_image") else None
+                ),
+            )
+            design_stage.replace(design_path)
+            production_stage.replace(production_path)
+            design_asset = self._model_asset(
+                design_path,
+                f"/assets/studio/{design['designId']}/{design_path.name}",
+                design_prompt,
+                "design_visual",
+                design_result,
+            )
+            production_asset = self._model_asset(
+                production_path,
+                f"/assets/studio/{design['designId']}/{production_path.name}",
+                production_prompt,
+                "production_communication_visual",
+                production_result,
+            )
+        except Exception as exc:
+            for path in (design_stage, production_stage, design_path, production_path):
+                if path.is_file():
+                    path.unlink()
+            raise RuntimeError(
+                "图像模型未能同时生成设计效果图和生产沟通图；"
+                "本次结果未保存，也没有使用本地占位图。"
+            ) from exc
+        return {
+            "provider": provider,
+            "designAsset": design_asset,
+            "productionAsset": production_asset,
+        }
 
     @staticmethod
-    def _draw_product(
-        draw: ImageDraw.ImageDraw,
-        box: tuple[int, int, int, int],
-        form: str,
-        palette: dict[str, tuple[int, int, int]],
-    ) -> None:
-        x1, y1, x2, y2 = box
-        cx = (x1 + x2) // 2
-        cy = (y1 + y2) // 2
-        ink = palette["ink"]
-        primary = palette["primary"]
-        accent = palette["accent"]
-        shell = palette["shell"]
-        if form == "冰箱贴":
-            for index, offset in enumerate((-150, 0, 150)):
-                top = cy - 155 + (index % 2) * 55
-                draw.rounded_rectangle(
-                    (cx + offset - 92, top, cx + offset + 92, top + 255),
-                    radius=36,
-                    fill=primary if index != 1 else accent,
-                    outline=ink,
-                    width=4,
-                )
-                for row in range(4):
-                    draw.line(
-                        (cx + offset - 54, top + 58 + row * 38, cx + offset + 54, top + 42 + row * 38),
-                        fill=shell,
-                        width=7,
-                    )
-        elif form == "徽章":
-            for radius, color in ((190, ink), (170, primary), (112, shell), (58, accent)):
-                draw.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), fill=color)
-            for angle_offset in (-110, -35, 40, 115):
-                draw.rounded_rectangle(
-                    (cx + angle_offset - 18, cy - 118, cx + angle_offset + 18, cy + 118),
-                    radius=16,
-                    outline=ink,
-                    width=5,
-                )
-        elif form == "盲盒":
-            draw.polygon(
-                [(cx - 210, cy - 120), (cx, cy - 235), (cx + 210, cy - 120), (cx, cy - 5)],
-                fill=shell,
-                outline=ink,
-            )
-            draw.polygon(
-                [(cx - 210, cy - 120), (cx, cy - 5), (cx, cy + 240), (cx - 210, cy + 115)],
-                fill=primary,
-                outline=ink,
-            )
-            draw.polygon(
-                [(cx + 210, cy - 120), (cx, cy - 5), (cx, cy + 240), (cx + 210, cy + 115)],
-                fill=accent,
-                outline=ink,
-            )
-            draw.ellipse((cx - 55, cy + 45, cx + 55, cy + 155), fill=shell, outline=ink, width=4)
-        elif form in {"包挂", "挂件"}:
-            draw.arc((cx - 90, cy - 270, cx + 90, cy - 80), 180, 360, fill=ink, width=18)
-            draw.rounded_rectangle(
-                (cx - 155, cy - 110, cx + 155, cy + 225),
-                radius=120,
-                fill=primary,
-                outline=ink,
-                width=5,
-            )
-            draw.rounded_rectangle(
-                (cx - 92, cy - 22, cx + 92, cy + 126),
-                radius=32,
-                fill=shell,
-                outline=accent,
-                width=8,
-            )
-        elif form == "伴手礼":
-            draw.rounded_rectangle(
-                (cx - 245, cy - 160, cx + 245, cy + 190),
-                radius=26,
-                fill=shell,
-                outline=ink,
-                width=5,
-            )
-            draw.rectangle((cx - 245, cy - 160, cx + 245, cy - 80), fill=primary)
-            draw.rectangle((cx - 38, cy - 160, cx + 38, cy + 190), fill=accent)
-            draw.line((cx - 170, cy + 58, cx + 170, cy + 58), fill=ink, width=4)
-        elif form == "潮玩":
-            draw.ellipse((cx - 145, cy - 230, cx + 145, cy + 20), fill=primary, outline=ink, width=5)
-            draw.rounded_rectangle(
-                (cx - 185, cy - 10, cx + 185, cy + 230),
-                radius=105,
-                fill=shell,
-                outline=ink,
-                width=5,
-            )
-            draw.ellipse((cx - 72, cy - 145, cx - 34, cy - 107), fill=accent)
-            draw.ellipse((cx + 34, cy - 145, cx + 72, cy - 107), fill=accent)
-        elif form == "香氛":
-            draw.rounded_rectangle(
-                (cx - 155, cy - 145, cx + 155, cy + 240),
-                radius=58,
-                fill=shell,
-                outline=ink,
-                width=5,
-            )
-            draw.rectangle((cx - 68, cy - 235, cx + 68, cy - 145), fill=primary, outline=ink, width=4)
-            draw.rounded_rectangle((cx - 96, cy - 20, cx + 96, cy + 125), radius=22, fill=accent)
-        elif form == "首饰":
-            draw.arc((cx - 235, cy - 285, cx + 235, cy + 185), 190, 350, fill=ink, width=9)
-            draw.polygon(
-                [(cx, cy - 55), (cx + 125, cy + 95), (cx, cy + 245), (cx - 125, cy + 95)],
-                fill=primary,
-                outline=ink,
-            )
-            draw.polygon(
-                [(cx, cy - 4), (cx + 68, cy + 95), (cx, cy + 185), (cx - 68, cy + 95)],
-                fill=shell,
-            )
-        else:  # 毛绒是唯一剩余且有显式注册的形态。
-            draw.ellipse((cx - 128, cy - 270, cx - 12, cy - 92), fill=primary, outline=ink, width=5)
-            draw.ellipse((cx + 12, cy - 270, cx + 128, cy - 92), fill=primary, outline=ink, width=5)
-            draw.rounded_rectangle(
-                (cx - 205, cy - 165, cx + 205, cy + 250),
-                radius=170,
-                fill=primary,
-                outline=ink,
-                width=5,
-            )
-            draw.rounded_rectangle(
-                (cx - 112, cy - 35, cx + 112, cy + 150),
-                radius=55,
-                fill=shell,
-                outline=accent,
-                width=8,
-            )
+    def _model_asset(
+        path: Path,
+        image_url: str,
+        prompt: str,
+        role: str,
+        result: dict[str, Any],
+    ) -> dict[str, Any]:
+        image_bytes = path.read_bytes()
+        sha256 = hashlib.sha256(image_bytes).hexdigest()
+        with Image.open(path) as image:
+            width, height = image.size
+            image_format = str(image.format or "").upper()
+        if image_format != "PNG":
+            raise RuntimeError("图像模型产物不是 PNG，拒绝登记为 Studio 最终图。")
+        declared_sha = str(result.get("sha256", ""))
+        if declared_sha and declared_sha != sha256:
+            raise RuntimeError("图像模型返回摘要与落盘文件不一致。")
+        generated_at = str(result.get("generated_at") or _iso())
+        return {
+            "imageUrl": image_url,
+            "filename": path.name,
+            "sha256": sha256,
+            "width": width,
+            "height": height,
+            "generatedAt": generated_at,
+            "generation": {
+                "role": role,
+                "provider": str(result.get("provider", "")),
+                "model": str(result.get("model", "")),
+                "mode": str(result.get("mode", "text_to_image")),
+                "prompt": prompt,
+                "promptSha256": str(
+                    result.get("prompt_sha256")
+                    or hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+                ),
+                "inputAssetSha256": str(result.get("reference_sha256", "")),
+            },
+        }
+
+    @staticmethod
+    def _design_visual_prompt(design: dict[str, Any]) -> str:
+        culture_names = "、".join(item["name"] for item in design["cultureItems"])
+        form_names = "、".join(item["name"] for item in design["productForms"])
+        translation = "；".join(design["concept"]["contentTranslation"]) or "结构与节奏"
+        boundaries = "；".join(design["concept"]["doNotUse"]) or "不复制完整传统纹样"
+        materials = "、".join(design["concept"]["materials"])
+        interactions = "；".join(design["concept"]["interaction"])
+        notes = design["concept"]["designNotes"] or "无额外要求"
+        palette = PALETTE_DIRECTIONS[design["visualDirection"]["palette"]]
+        return (
+            "为 QianCraft 生成一张真实可审阅的文创产品设计效果图。\n"
+            f"设计编号：{design['designId']}，版本：V{design['version']}。\n"
+            f"在地文化内容：{culture_names}。只转译这些文字化元素：{translation}。\n"
+            f"产品形态：{form_names}；融合方案：{design['concept']['statement']}\n"
+            f"目标人群：{design['concept']['audience']}；使用场景："
+            f"{'、'.join(design['concept']['useScenarios'])}。\n"
+            f"材料方向（均为待首样假设）：{materials}；使用动作：{interactions}。\n"
+            f"配色方向：{palette}；补充要求：{notes}。\n"
+            "画面要求：单一产品家族，完整成品为主视图，辅以一至两个细节视角；"
+            "中性浅色摄影棚背景，真实材质、合理比例、清楚的结构关系，高完成度工业设计可视化。"
+            "画面中不要出现文字、数字、标签、品牌、二维码、水印或人物。\n"
+            f"严格边界：{boundaries}；不得复制任何完整传统纹样、馆藏图像、神圣母题或来源图片像素；"
+            "不得虚构社区授权、非遗传承人联名、量产完成或检测通过。"
+        )
+
+    @staticmethod
+    def _production_visual_prompt(design: dict[str, Any]) -> str:
+        form_names = "、".join(item["name"] for item in design["productForms"])
+        materials = "、".join(design["concept"]["materials"])
+        boundaries = "；".join(design["concept"]["doNotUse"]) or "不复制完整传统纹样"
+        return (
+            "基于输入的同版本产品设计效果图，生成一张生产沟通用拆解视觉图。\n"
+            f"产品：{design['title']}；形态：{form_names}；设计编号：{design['designId']}。\n"
+            f"材料方向（尚未验证）：{materials}。融合方案：{design['concept']['statement']}\n"
+            "保持输入图中的产品身份、轮廓、配色和核心结构一致。采用干净的正交/三分之四视角，"
+            "把外壳、表面层、连接件、内部支撑、背部或包装等可合理推断的部件分层展开；"
+            "通过空间顺序表达装配关系，并在旁边保留一个完整成品小视图。"
+            "所有未确定结构只以概念方式表达，不发明精确尺寸、公差、认证、工厂或材料性能。"
+            "画面中不要出现文字、数字、尺寸线、标签、品牌、二维码、水印或人物。\n"
+            f"文化边界：{boundaries}；不得复制完整传统纹样或任何 reference_only 来源图片像素。"
+            "这是一张模型生成的生产沟通图，不是工程图、CAD、模具图或可直接下单文件。"
+        )
 
 
 class StudioScheduler:
@@ -1245,9 +1211,11 @@ class StudioScheduler:
                         "detail": "API 进程重启；旧批次未被冒充为成功，已重新排队。",
                     }
                 )
-            if not self.store.designs_for_date(_local_date()):
+            if not self.engine.current_daily_designs():
                 state["daily"]["nextRunAt"] = _iso(_now() + timedelta(seconds=3))
-                state["daily"]["detail"] = "今日尚无设计，启动后执行补跑。"
+                state["daily"]["detail"] = (
+                    "今日尚无同时包含模型设计效果图和生产沟通图的结果，启动后执行补跑。"
+                )
             state["scheduler"] = {
                 "status": "running",
                 "instanceId": self.instance_id,
@@ -1314,7 +1282,7 @@ class StudioScheduler:
                     {
                         "status": "running",
                         "lastAttemptAt": _iso(),
-                        "detail": "正在读取双库、评分并生成最多 3 个设计。",
+                        "detail": "正在读取双库、评分，并为最多 3 个设计生成效果图与生产沟通图。",
                     }
                 )
                 self.store.save_state(state)
@@ -1339,7 +1307,10 @@ class StudioScheduler:
                     "lastSuccessAt": _iso(),
                     "lastBatchId": result["batchId"],
                     "nextRunAt": _iso(self._next_run(config)),
-                    "detail": f"已生成 {result['generatedCount']} 个可审计设计。",
+                    "detail": (
+                        f"已生成 {result['generatedCount']} 个可审计设计，"
+                        "每个均含模型设计效果图与生产沟通图。"
+                    ),
                     "runCount": int(state["daily"].get("runCount", 0)) + 1,
                     "consecutiveFailures": 0,
                     "generatedCount": result["generatedCount"],
@@ -1433,7 +1404,7 @@ class StudioScheduler:
     def status(self) -> dict[str, Any]:
         config = self.store.load_config()
         state = self.store.load_state()
-        today = self.store.designs_for_date(_local_date())
+        today = self.engine.current_daily_designs()
         return {
             "schemaVersion": SCHEMA_VERSION,
             "enabled": config["enabled"],
@@ -1454,8 +1425,8 @@ class StudioScheduler:
                 "designIds": [item["designId"] for item in today],
             },
             "policy": (
-                "每天最多 3 个；只有通过证据与显式生成器门槛的组合才生成，"
-                "不足时如实少于 3 个。"
+                "每天最多 3 个；只有通过证据门且设计效果图、生产沟通图两次模型调用"
+                "全部成功的组合才保存，不足或失败时不生成占位图。"
             ),
         }
 

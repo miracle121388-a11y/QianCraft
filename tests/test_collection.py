@@ -270,7 +270,7 @@ def test_scheduler_health_rejects_dead_or_stale_heartbeat(
         assert scheduler.health(now=now)["ok"] is True
         live_payload, live_status = tool_api.collection_health_response()
         assert live_status is HTTPStatus.OK
-        assert live_payload["version"] == "0.10.0"
+        assert live_payload["version"] == "0.11.0"
         assert live_payload["collectionScheduler"]["online"] is True
         assert live_payload["dailyDesignScheduler"]["ok"] is True
 

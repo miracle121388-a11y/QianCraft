@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from pathlib import Path
@@ -14,10 +15,67 @@ CULTURE = ROOT / "data" / "culture" / "knowledge_graph.json"
 FORMS = ROOT / "data" / "market" / "derived" / "product_form_hotness.json"
 
 
+class FakeImageAdapter:
+    def __init__(self, *, configured: bool = True, fail_on_call: int = 0) -> None:
+        self.configured = configured
+        self.fail_on_call = fail_on_call
+        self.calls: list[dict[str, object]] = []
+
+    def status(self) -> dict[str, object]:
+        return {
+            "provider": "test-image-provider" if self.configured else "unconfigured",
+            "model": "test-image-model-v1" if self.configured else "",
+            "base_url_configured": self.configured,
+            "credential_configured": self.configured,
+            "configured": self.configured,
+            "supports_image_to_image": self.configured,
+            "detail": "测试生图模型已配置。" if self.configured else "未配置测试生图模型。",
+        }
+
+    def generate(
+        self,
+        prompt: str,
+        output_path: Path,
+        *,
+        size: str = "1024x1024",
+        reference_image_path: Path | None = None,
+    ) -> dict[str, object]:
+        if not self.configured:
+            raise ValueError("未配置测试生图模型。")
+        self.calls.append(
+            {
+                "prompt": prompt,
+                "output": output_path,
+                "reference": reference_image_path,
+            }
+        )
+        if self.fail_on_call and len(self.calls) == self.fail_on_call:
+            raise RuntimeError("模拟模型调用失败")
+        digest = hashlib.sha256(prompt.encode("utf-8")).digest()
+        image = Image.new("RGB", (1024, 1024), tuple(digest[:3]))
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        image.save(output_path, format="PNG")
+        image_bytes = output_path.read_bytes()
+        reference_sha = (
+            hashlib.sha256(reference_image_path.read_bytes()).hexdigest()
+            if reference_image_path is not None
+            else ""
+        )
+        return {
+            "provider": "test-image-provider",
+            "model": "test-image-model-v1",
+            "generated_at": "2026-09-02T00:00:00+00:00",
+            "sha256": hashlib.sha256(image_bytes).hexdigest(),
+            "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+            "reference_sha256": reference_sha,
+            "mode": "image_to_image" if reference_image_path else "text_to_image",
+        }
+
+
 @pytest.fixture
 def studio(tmp_path: Path) -> tuple[StudioStore, StudioEngine]:
     store = StudioStore(tmp_path / "studio")
-    return store, StudioEngine(store, CULTURE, FORMS)
+    return store, StudioEngine(store, CULTURE, FORMS, FakeImageAdapter())
 
 
 def test_libraries_report_actual_records_sources_and_market_samples(studio) -> None:
@@ -38,7 +96,7 @@ def test_libraries_report_actual_records_sources_and_market_samples(studio) -> N
     assert "60%" in forms["methodology"]["cross_platform_hot_score"]
 
 
-def test_daily_run_selects_three_distinct_real_combinations_and_renders_assets(studio) -> None:
+def test_daily_run_selects_three_distinct_real_combinations_and_generates_both_assets(studio) -> None:
     store, engine = studio
     result = engine.generate_daily(trigger="test")
 
@@ -50,12 +108,26 @@ def test_daily_run_selects_three_distinct_real_combinations_and_renders_assets(s
         assert design["scores"]["formula"]
         assert design["provenance"]["cultureSourceRefs"]
         assert design["provenance"]["marketSourceRefs"]
-        assert design["provenance"]["imageGenerationUsed"] is False
+        assert design["provenance"]["imageGenerationUsed"] is True
+        assert design["provenance"]["imageModel"] == "test-image-model-v1"
         assert design["production"]["massProductionReady"] is False
+        assert design["production"]["visualStatus"] == "generated_model"
         path = store.assets_dir / design["designId"] / design["asset"]["filename"]
+        production_path = (
+            store.assets_dir
+            / design["designId"]
+            / design["production"]["asset"]["filename"]
+        )
         assert path.is_file()
+        assert production_path.is_file()
         with Image.open(path) as image:
-            assert image.size == (1440, 960)
+            assert image.size == (1024, 1024)
+        with Image.open(production_path) as image:
+            assert image.size == (1024, 1024)
+        assert design["asset"]["generation"]["mode"] == "text_to_image"
+        assert design["production"]["asset"]["generation"]["mode"] == "image_to_image"
+        assert design["production"]["asset"]["generation"]["inputAssetSha256"] == design["asset"]["sha256"]
+        assert "不得复制" in design["asset"]["generation"]["prompt"]
 
 
 def test_daily_run_reuses_today_unless_manual_rerun_is_explicit(studio) -> None:
@@ -71,6 +143,75 @@ def test_daily_run_reuses_today_unless_manual_rerun_is_explicit(studio) -> None:
     assert len(store.designs_for_date(_local_date())) == 3
     all_today = store.designs_for_date(_local_date(), active_only=False)
     assert sum(bool(item["superseded"]) for item in all_today) == 3
+
+
+def test_legacy_local_daily_result_is_not_reused_as_a_model_result(studio) -> None:
+    store, engine = studio
+    store.save_designs(
+        [
+            {
+                "designId": "QCD-AAAAAAAAAAAA",
+                "batchId": "DAY-LEGACY",
+                "dailyDate": _local_date(),
+                "dailyRank": 1,
+                "origin": "daily",
+                "superseded": False,
+                "provenance": {"imageGenerationUsed": False},
+                "asset": {"imageUrl": "/assets/studio/QCD-AAAAAAAAAAAA/v1.png"},
+                "production": {"massProductionReady": False},
+            }
+        ]
+    )
+
+    result = engine.generate_daily(trigger="schedule")
+
+    assert result["reused"] is False
+    assert result["generatedCount"] == 3
+    legacy = next(
+        item for item in store.load_designs() if item["designId"] == "QCD-AAAAAAAAAAAA"
+    )
+    assert legacy["superseded"] is True
+
+
+def test_daily_model_metadata_without_files_is_not_reused(studio) -> None:
+    store, engine = studio
+    store.save_designs(
+        [
+            {
+                "designId": "QCD-BBBBBBBBBBBB",
+                "batchId": "DAY-INCOMPLETE",
+                "dailyDate": _local_date(),
+                "dailyRank": 1,
+                "origin": "daily",
+                "superseded": False,
+                "provenance": {"imageGenerationUsed": True},
+                "asset": {
+                    "filename": "v1-design.png",
+                    "imageUrl": "/assets/studio/QCD-BBBBBBBBBBBB/v1-design.png",
+                    "generation": {"model": "missing-file-model"},
+                },
+                "production": {
+                    "massProductionReady": False,
+                    "asset": {
+                        "filename": "v1-production.png",
+                        "imageUrl": (
+                            "/assets/studio/QCD-BBBBBBBBBBBB/v1-production.png"
+                        ),
+                        "generation": {"model": "missing-file-model"},
+                    },
+                },
+            }
+        ]
+    )
+
+    result = engine.generate_daily(trigger="schedule")
+
+    assert result["reused"] is False
+    assert result["generatedCount"] == 3
+    incomplete = next(
+        item for item in store.load_designs() if item["designId"] == "QCD-BBBBBBBBBBBB"
+    )
+    assert incomplete["superseded"] is True
 
 
 def test_manual_combination_and_edit_regenerate_from_actual_library_ids(studio) -> None:
@@ -100,15 +241,21 @@ def test_manual_combination_and_edit_regenerate_from_actual_library_ids(studio) 
     assert revised["productForms"][0]["id"] == "徽章"
     assert revised["title"] == "花溪针脚层叠徽章"
     assert revised["asset"]["sha256"] != design["asset"]["sha256"]
+    assert revised["production"]["asset"]["sha256"] != design["production"]["asset"]["sha256"]
     assert revised["revisionHistory"][-1]["version"] == 1
     assert revised["revisionHistory"][-1]["cultureNames"] == [
         "花溪苗绣",
         "苗族蜡染技艺",
     ]
     assert revised["revisionHistory"][-1]["productFormNames"] == ["冰箱贴", "包挂"]
-    assert revised["revisionHistory"][-1]["imageUrl"].endswith("/v1.png")
-    assert (store.assets_dir / design["designId"] / "v1.png").is_file()
-    assert (store.assets_dir / design["designId"] / "v2.png").is_file()
+    assert revised["revisionHistory"][-1]["imageUrl"].endswith("/v1-design.png")
+    assert revised["revisionHistory"][-1]["productionImageUrl"].endswith(
+        "/v1-production.png"
+    )
+    assert (store.assets_dir / design["designId"] / "v1-design.png").is_file()
+    assert (store.assets_dir / design["designId"] / "v1-production.png").is_file()
+    assert (store.assets_dir / design["designId"] / "v2-design.png").is_file()
+    assert (store.assets_dir / design["designId"] / "v2-production.png").is_file()
 
 
 def test_no_executable_form_means_no_daily_fake_result(tmp_path: Path) -> None:
@@ -117,10 +264,45 @@ def test_no_executable_form_means_no_daily_fake_result(tmp_path: Path) -> None:
         item["sample_size"] = 0
     forms = tmp_path / "forms.json"
     forms.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-    engine = StudioEngine(StudioStore(tmp_path / "runtime"), CULTURE, forms)
+    engine = StudioEngine(
+        StudioStore(tmp_path / "runtime"),
+        CULTURE,
+        forms,
+        FakeImageAdapter(),
+    )
 
     with pytest.raises(RuntimeError, match="没有同时通过"):
         engine.generate_daily()
+
+
+def test_missing_or_failed_image_model_never_persists_a_placeholder(tmp_path: Path) -> None:
+    missing_store = StudioStore(tmp_path / "missing")
+    missing_engine = StudioEngine(
+        missing_store,
+        CULTURE,
+        FORMS,
+        FakeImageAdapter(configured=False),
+    )
+    with pytest.raises(RuntimeError, match="不会生成本地占位图"):
+        missing_engine.generate_manual(
+            {"cultureIds": ["GZ-MIAO-HUAXI"], "productFormIds": ["冰箱贴"]}
+        )
+    assert missing_store.load_designs() == []
+    assert list(missing_store.assets_dir.rglob("*.png")) == []
+
+    failed_store = StudioStore(tmp_path / "failed")
+    failed_engine = StudioEngine(
+        failed_store,
+        CULTURE,
+        FORMS,
+        FakeImageAdapter(fail_on_call=2),
+    )
+    with pytest.raises(RuntimeError, match="没有使用本地占位图"):
+        failed_engine.generate_manual(
+            {"cultureIds": ["GZ-MIAO-HUAXI"], "productFormIds": ["冰箱贴"]}
+        )
+    assert failed_store.load_designs() == []
+    assert list(failed_store.assets_dir.rglob("*.png")) == []
 
 
 def test_scheduler_catches_up_today_and_keeps_a_fresh_heartbeat(studio) -> None:

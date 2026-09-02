@@ -1467,6 +1467,66 @@
 .studio-version-log strong { font-size: 10px; }
 .studio-version-log small { overflow: hidden; color: var(--studio-muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
 .studio-version-log a { min-height: 32px; display: inline-flex; align-items: center; padding: 6px 9px; border: 1px solid var(--studio-line); border-radius: 6px; color: var(--studio-primary); font-size: 9px; white-space: nowrap; }
+.studio-version-log__downloads { display: flex; gap: 5px; }
+
+.studio-generation-prompt {
+  margin-top: 10px;
+  border: 1px solid var(--studio-line);
+  border-radius: 8px;
+  background: var(--studio-shell);
+}
+
+.studio-generation-prompt summary {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  color: var(--studio-primary);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.studio-generation-prompt pre {
+  max-height: 260px;
+  overflow: auto;
+  margin: 0;
+  padding: 12px;
+  border-top: 1px solid var(--studio-line);
+  color: var(--studio-ink);
+  font: 10px/1.65 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.studio-generation-prompt > small {
+  display: block;
+  padding: 8px 12px;
+  border-top: 1px solid var(--studio-line);
+  color: var(--studio-muted);
+  font: 8px/1.5 var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.studio-production-visual {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.75fr) minmax(480px, 1.25fr);
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--studio-line);
+  border-radius: 12px;
+  background: var(--studio-warm);
+}
+
+.studio-production-visual > div { display: flex; flex-direction: column; align-items: flex-start; }
+.studio-production-visual h2,
+.studio-production-visual p { margin: 0; }
+.studio-production-visual h2 { margin-top: 7px; font-size: 20px; }
+.studio-production-visual p { margin: 8px 0 18px; color: var(--studio-muted); font-size: 11px; line-height: 1.6; }
+.studio-production-visual dl { width: 100%; }
+.studio-production-visual > div > a { margin-top: 14px; }
+.studio-production-visual > img { width: 100%; display: block; border: 1px solid var(--studio-line); border-radius: 10px; background: var(--studio-card); }
 
 .studio-workflow-preview {
   display: grid;
@@ -1578,6 +1638,20 @@
 .studio-editor-visual fieldset { display: grid; margin: 15px 0 0; }
 .studio-editor-visual > div > p { margin: auto 0 0; padding-top: 14px; border-top: 1px solid var(--studio-line); color: var(--studio-muted); font-size: 10px; line-height: 1.5; }
 
+.studio-editor-production {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.studio-editor-production > img { width: 100%; display: block; border: 1px solid var(--studio-line); border-radius: 10px; background: var(--studio-card); }
+.studio-editor-production > div { display: flex; flex-direction: column; gap: 8px; padding: 18px; border: 1px solid var(--studio-line); border-radius: 10px; background: var(--studio-card); }
+.studio-editor-production strong { font-size: 16px; }
+.studio-editor-production small,
+.studio-editor-production p { color: var(--studio-muted); font-size: 10px; line-height: 1.55; }
+.studio-editor-production p { margin: auto 0 0; padding-top: 12px; border-top: 1px solid var(--studio-line); }
+
 .studio-production-gates { display: grid; border: 1px solid var(--studio-line); border-radius: 9px; overflow: hidden; background: var(--studio-card); }
 .studio-production-gates > div { min-height: 62px; display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 13px; border-bottom: 1px solid var(--studio-line); }
 .studio-production-gates > div:last-child { border-bottom: 0; }
@@ -1623,7 +1697,7 @@
 .studio-operation-summary > div > span { display: grid; gap: 4px; }
 .studio-operation-summary > div strong { font-size: 16px; }
 .studio-operation-summary > div small { color: var(--studio-muted); font-size: 9px; }
-.studio-operation-summary dl { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; border: 1px solid var(--studio-line); border-radius: 8px; overflow: hidden; }
+.studio-operation-summary dl { display: grid; grid-template-columns: repeat(5, 1fr); margin: 0; border: 1px solid var(--studio-line); border-radius: 8px; overflow: hidden; }
 .studio-operation-summary dl > div { display: grid; gap: 4px; padding: 10px; border-right: 1px solid var(--studio-line); }
 .studio-operation-summary dl > div:last-child { border-right: 0; }
 .studio-operation-summary dt { color: var(--studio-muted); font-size: 9px; }
@@ -1754,6 +1828,7 @@
   .studio-design-hero__image { min-height: 280px; border-right: 0; border-bottom: 1px solid var(--studio-line); }
   .studio-design-hero__copy { padding: 22px; }
   .studio-design-hero__copy dl { margin-top: 28px; }
+  .studio-production-visual { grid-template-columns: 1fr; padding: 18px; }
   .studio-detail-grid { grid-template-columns: 1fr; }
   .studio-workflow-preview ol { grid-template-columns: 1fr; }
   .studio-workflow-preview li { min-height: 58px; }
@@ -1766,11 +1841,12 @@
   .studio-editor__panel { max-height: none; padding: 18px; }
   .studio-editor-choice-list,
   .studio-editor-form-list { grid-template-columns: 1fr; }
-  .studio-editor-visual { grid-template-columns: 1fr; }
+  .studio-editor-visual,
+  .studio-editor-production { grid-template-columns: 1fr; }
   .studio-operation-summary { grid-template-columns: 1fr; }
   .studio-operation-summary dl { grid-template-columns: repeat(2, 1fr); }
-  .studio-operation-summary dl > div:nth-child(2) { border-right: 0; }
-  .studio-operation-summary dl > div:nth-child(-n + 2) { border-bottom: 1px solid var(--studio-line); }
+  .studio-operation-summary dl > div:nth-child(even) { border-right: 0; }
+  .studio-operation-summary dl > div:nth-child(-n + 4) { border-bottom: 1px solid var(--studio-line); }
   .studio-operations-lower { grid-template-columns: 1fr; }
   .studio-event-log li { grid-template-columns: 72px minmax(0, 1fr); }
   .studio-event-log li .studio-status { display: none; }

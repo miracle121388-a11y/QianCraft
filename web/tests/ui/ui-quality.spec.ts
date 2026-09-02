@@ -79,13 +79,33 @@ test('结果优先工具的六个一级页面读取真实 API 且可审计', asy
   const overview = await page.request.get('http://127.0.0.1:8787/api/studio/overview');
   expect(overview.ok()).toBe(true);
   const payload = await overview.json() as {
-    today: { designCount: number };
+    today: { designCount: number; designs: Array<{ provenance: { imageGenerationUsed: boolean }; production: { asset?: { imageUrl: string } } }> };
     libraries: { culture: { recordCount: number }; forms: { recordCount: number; sampleSize: number } };
+    automation: { imageGeneration: { configured: boolean; model: string } };
   };
   expect(payload.libraries.culture.recordCount).toBe(22);
   expect(payload.libraries.forms).toMatchObject({ recordCount: 10, sampleSize: 378 });
-  expect(payload.today.designCount).toBeGreaterThan(0);
   expect(payload.today.designCount).toBeLessThanOrEqual(3);
+  expect(payload.today.designs).toHaveLength(payload.today.designCount);
+  for (const design of payload.today.designs) {
+    expect(design.provenance.imageGenerationUsed).toBe(true);
+    expect(design.production.asset?.imageUrl).toMatch(/-production\.png$/);
+  }
+  expect(typeof payload.automation.imageGeneration.configured).toBe('boolean');
+});
+
+test('Studio 长页面可以使用文档滚动到首屏以下', async ({ page }) => {
+  await page.goto('/libraries/culture');
+  await page.locator('.studio-library-grid').waitFor({ state: 'visible' });
+  const geometry = await page.evaluate(() => ({
+    clientHeight: document.scrollingElement?.clientHeight ?? 0,
+    scrollHeight: document.scrollingElement?.scrollHeight ?? 0,
+    bodyOverflowY: getComputedStyle(document.body).overflowY,
+  }));
+  expect(geometry.scrollHeight).toBeGreaterThan(geometry.clientHeight);
+  expect(geometry.bodyOverflowY).not.toBe('hidden');
+  await page.mouse.wheel(0, 720);
+  await expect.poll(() => page.evaluate(() => document.scrollingElement?.scrollTop ?? 0)).toBeGreaterThan(0);
 });
 
 for (const route of ROUTES) {

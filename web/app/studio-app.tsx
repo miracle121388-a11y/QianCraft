@@ -263,16 +263,17 @@ function FactStrip({ overview }: { overview: StudioOverview }) {
 }
 
 function DesignCard({ design, compact = false }: { design: StudioDesign; compact?: boolean }) {
+  const modelGenerated = design.provenance.imageGenerationUsed && Boolean(design.asset.generation?.model);
   return (
     <article className={`studio-design-card ${compact ? 'is-compact' : ''}`}>
       <a className="studio-design-card__image" href={`/designs/${design.designId}`} aria-label={`查看设计：${design.title}`}>
-        <img src={studioAssetUrl(design.asset.imageUrl)} alt={`${design.title}结构概念设计稿`} />
+        <img src={studioAssetUrl(design.asset.imageUrl)} alt={`${design.title}${modelGenerated ? '模型设计效果图' : '历史结构概念稿'}`} />
         {design.dailyRank ? <b>#{design.dailyRank}</b> : <b>手动</b>}
         <span>V{design.version}</span>
       </a>
       <div className="studio-design-card__body">
         <div className="studio-design-card__meta">
-          <StatusPill status="generated">真实产物</StatusPill>
+          <StatusPill status={modelGenerated ? 'generated_model' : 'generated_local'}>{modelGenerated ? '模型产物' : '历史结构稿'}</StatusPill>
           <span>{design.scores.overall.toFixed(1)} 分</span>
         </div>
         <h2><a href={`/designs/${design.designId}`}>{design.title}</a></h2>
@@ -323,8 +324,8 @@ function HomePage() {
     setError('');
     try {
       await runDailyDesign();
-      for (let attempt = 0; attempt < 30; attempt += 1) {
-        await new Promise((resolve) => window.setTimeout(resolve, 700));
+      for (let attempt = 0; attempt < 360; attempt += 1) {
+        await new Promise((resolve) => window.setTimeout(resolve, 1000));
         const payload = await load();
         if (payload && payload.automation.dailyDesign.daily.status !== 'running') break;
       }
@@ -340,8 +341,9 @@ function HomePage() {
       view="home"
       actions={(
         <>
+          {overview ? <StatusPill status={overview.automation.imageGeneration.configured ? 'healthy' : 'blocked'}>{overview.automation.imageGeneration.configured ? overview.automation.imageGeneration.model : '生图模型未配置'}</StatusPill> : null}
           {overview ? <StatusPill status={overview.automation.dailyDesign.daily.status}>自动化 {statusLabel(overview.automation.dailyDesign.daily.status)}</StatusPill> : null}
-          <button className="studio-primary" type="button" onClick={runNow} disabled={running || overview?.automation.dailyDesign.daily.status === 'running'}>
+          <button className="studio-primary" type="button" onClick={runNow} disabled={running || overview?.automation.dailyDesign.daily.status === 'running' || overview?.automation.imageGeneration.configured === false}>
             {running || overview?.automation.dailyDesign.daily.status === 'running' ? <LoaderCircle className="is-spinning" size={17} /> : <Play size={17} />}
             立即重跑今日 Top 3
           </button>
@@ -368,7 +370,7 @@ function HomePage() {
           ) : (
             <section className="studio-empty">
               <Clock3 size={26} />
-              <h2>今天还没有通过门槛的设计</h2>
+              <h2>今天还没有完整的双图设计</h2>
               <p>{overview.automation.dailyDesign.daily.detail}</p>
             </section>
           )}
@@ -602,7 +604,7 @@ function CreatePage() {
               <div className="studio-form-fields">
                 <label>设计名称<input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="例如：花溪针脚旅行徽章" maxLength={80} /></label>
                 <label className="is-wide">融合想法<textarea value={concept} onChange={(event) => setConcept(event.target.value)} placeholder="可以指定要保留的文化内容、使用动作或不希望出现的表达。" maxLength={500} rows={4} /></label>
-                <fieldset><legend>结构概念板配色</legend>{(['slate', 'indigo', 'vermilion'] as const).map((item) => <label key={item}><input type="radio" name="palette" value={item} checked={palette === item} onChange={() => setPalette(item)} /><span className={`studio-palette studio-palette--${item}`} />{item === 'slate' ? '冷灰蓝' : item === 'indigo' ? '靛青石' : '赭朱纸'}</label>)}</fieldset>
+                <fieldset><legend>模型视觉配色方向</legend>{(['slate', 'indigo', 'vermilion'] as const).map((item) => <label key={item}><input type="radio" name="palette" value={item} checked={palette === item} onChange={() => setPalette(item)} /><span className={`studio-palette studio-palette--${item}`} />{item === 'slate' ? '冷灰蓝' : item === 'indigo' ? '靛青石' : '赭朱纸'}</label>)}</fieldset>
               </div>
             </section>
           </div>
@@ -611,9 +613,9 @@ function CreatePage() {
             <h2>本次组合</h2>
             <div><small>文化内容</small>{cultureIds.length ? cultureIds.map((id) => <strong key={id}>{culture.records.find((item) => item.id === id)?.name}</strong>) : <p>尚未选择</p>}</div>
             <div><small>产品形态</small>{formIds.length ? formIds.map((id) => <strong key={id}>{id}</strong>) : <p>尚未选择</p>}</div>
-            <p className="studio-composer__truth"><ShieldCheck size={17} />提交后系统会重新验证 ID、来源、样本和渲染器；不满足门槛会直接失败。</p>
+            <p className="studio-composer__truth"><ShieldCheck size={17} />提交后系统会验证 ID、来源和样本，并真实调用模型生成设计效果图与生产沟通图；任一步失败都不会保存占位结果。</p>
             {error ? <p className="studio-inline-error" role="alert">{error}</p> : null}
-            <button className="studio-primary" type="submit" disabled={submitting || !cultureIds.length || !formIds.length}>{submitting ? <LoaderCircle className="is-spinning" size={18} /> : <Sparkles size={18} />}生成设计</button>
+            <button className="studio-primary" type="submit" disabled={submitting || !cultureIds.length || !formIds.length}>{submitting ? <LoaderCircle className="is-spinning" size={18} /> : <Sparkles size={18} />}{submitting ? '模型正在生成双图' : '调用模型生成双图'}</button>
           </aside>
         </form>
       )}
@@ -678,29 +680,68 @@ function DesignPage({ designId }: { designId: string }) {
   const [design, setDesign] = useState<StudioDesign | null>(null);
   const [error, setError] = useState('');
   useEffect(() => { void getStudioDesign(designId).then(setDesign).catch((cause) => setError(cause instanceof Error ? cause.message : String(cause))); }, [designId]);
+  const productionAsset = design?.production.asset;
+  const modelGenerated = Boolean(design?.provenance.imageGenerationUsed && design.asset.generation?.model && productionAsset?.generation?.model);
   return (
-    <StudioFrame view="design" actions={design ? <><a className="studio-secondary" href={studioAssetUrl(design.asset.imageUrl)} download><FileDown size={17} />下载设计稿</a><a className="studio-primary" href={`/designs/${design.designId}/edit`}><PencilLine size={17} />进入工作流编辑</a></> : undefined}>
+    <StudioFrame view="design" actions={design ? <>
+      <a className="studio-secondary" href={studioAssetUrl(design.asset.imageUrl)} download><FileDown size={17} />下载设计效果图</a>
+      {productionAsset ? <a className="studio-secondary" href={studioAssetUrl(productionAsset.imageUrl)} download><FileDown size={17} />下载生产沟通图</a> : null}
+      <a className="studio-primary" href={`/designs/${design.designId}/edit`}><PencilLine size={17} />进入工作流编辑</a>
+    </> : undefined}>
       {!design && !error ? <LoadingState /> : null}
       {error ? <ErrorState error={error} /> : null}
       {design ? (
         <div className="studio-design-detail">
           <section className="studio-design-hero">
-            <div className="studio-design-hero__image"><img src={studioAssetUrl(design.asset.imageUrl)} alt={`${design.title}结构概念设计稿`} /><span>真实生成 · 本地结构渲染器 · V{design.version}</span></div>
-            <div className="studio-design-hero__copy"><div><StatusPill status="generated" /><span>{design.origin === 'daily' ? `每日自动 #${design.dailyRank}` : '手动组合'}</span></div><h2>{design.title}</h2><p className="studio-design-subtitle">{design.subtitle}</p><p>{design.concept.statement}</p><dl><div><dt>组合评分</dt><dd>{design.scores.overall.toFixed(1)}</dd></div><div><dt>市场样本</dt><dd>{design.provenance.marketSampleSize} 条</dd></div><div><dt>来源引用</dt><dd>{design.provenance.cultureSourceRefs.length + design.provenance.marketSourceRefs.length} 条</dd></div></dl><a href={`/designs/${design.designId}/edit`}>调整内容、形态或文稿 <ArrowRight size={17} /></a></div>
+            <div className="studio-design-hero__image">
+              <img src={studioAssetUrl(design.asset.imageUrl)} alt={`${design.title}${modelGenerated ? '模型设计效果图' : '历史结构概念稿'}`} />
+              <span>{modelGenerated ? `真实模型生成 · ${design.provenance.imageModel} · V${design.version}` : `历史本地结构稿 · V${design.version}`}</span>
+            </div>
+            <div className="studio-design-hero__copy"><div><StatusPill status={modelGenerated ? 'generated_model' : 'generated_local'} /><span>{design.origin === 'daily' ? `每日自动 #${design.dailyRank}` : '手动组合'}</span></div><h2>{design.title}</h2><p className="studio-design-subtitle">{design.subtitle}</p><p>{design.concept.statement}</p><dl><div><dt>组合评分</dt><dd>{design.scores.overall.toFixed(1)}</dd></div><div><dt>市场样本</dt><dd>{design.provenance.marketSampleSize} 条</dd></div><div><dt>来源引用</dt><dd>{design.provenance.cultureSourceRefs.length + design.provenance.marketSourceRefs.length} 条</dd></div></dl><a href={`/designs/${design.designId}/edit`}>调整内容、形态或文稿 <ArrowRight size={17} /></a></div>
           </section>
+
+          {productionAsset ? (
+            <section className="studio-production-visual">
+              <div>
+                <span className="studio-eyebrow">PRODUCTION COMMUNICATION</span>
+                <h2>模型生成的生产沟通图</h2>
+                <p>它以同版本设计效果图为输入，表达部件拆解、材料方向与装配关系；尺寸、公差和可制造性仍须工程与工厂验证。</p>
+                <dl className="studio-provenance">
+                  <div><dt>生成模式</dt><dd>{productionAsset.generation?.mode === 'image_to_image' ? '图生图（设计稿作为输入）' : '文生图（同一方案输入）'}</dd></div>
+                  <div><dt>模型</dt><dd>{productionAsset.generation?.model || design.provenance.imageModel}</dd></div>
+                  <div><dt>输入图 SHA</dt><dd title={productionAsset.generation?.inputAssetSha256}>{productionAsset.generation?.inputAssetSha256 ? `${productionAsset.generation.inputAssetSha256.slice(0, 18)}…` : '没有图像输入'}</dd></div>
+                  <div><dt>产物 SHA</dt><dd title={productionAsset.sha256}>{productionAsset.sha256.slice(0, 18)}…</dd></div>
+                </dl>
+                <a className="studio-secondary" href={studioAssetUrl(productionAsset.imageUrl)} download><FileDown size={17} />下载原图</a>
+              </div>
+              <img src={studioAssetUrl(productionAsset.imageUrl)} alt={`${design.title}模型生产沟通拆解图`} />
+            </section>
+          ) : (
+            <p className="studio-truth-note studio-truth-note--warning"><TriangleAlert size={17} />这是旧版本本地结构概念稿，没有模型生成的生产沟通图；系统不会把它改写成模型产物。进入编辑器重新生成可建立新的双图版本。</p>
+          )}
+
           <section className="studio-detail-grid">
             <article><span className="studio-eyebrow">CONTENT</span><h2>采用的文化内容</h2>{design.cultureItems.map((item) => <div className="studio-evidence-row" key={item.id}><span><strong>{item.name}</strong><small>{item.category} · {item.region.slice(0, 2).join(' / ')}</small></span><b>{item.sourceRefs.length} 条来源</b><details><summary>查看来源</summary><div>{item.sourceDetails.map((source) => <a key={source.source_id} href={source.source_url} target="_blank" rel="noreferrer">{source.source_id} · {source.source_title}<ExternalLink size={13} /></a>)}</div></details></div>)}</article>
             <article><span className="studio-eyebrow">FORM</span><h2>采用的产品形态</h2>{design.productForms.map((item) => <div className="studio-evidence-row" key={item.id}><span><strong>{item.name}</strong><small>榜单第 {item.rank} · 热度 {item.hotScore.toFixed(1)}</small></span><b>{item.sampleSize} 条样本</b><details><summary>查看代表原记录</summary><div>{item.representativePosts.map((post) => <a key={post.source_ref} href={post.url} target="_blank" rel="noreferrer">{post.platform.toUpperCase()} · {post.title || post.content.slice(0, 40)}<ExternalLink size={13} /></a>)}</div></details></div>)}</article>
             <article><span className="studio-eyebrow">SCORE</span><h2>评分是怎么来的</h2><ScoreBreakdown design={design} /></article>
-            <article><span className="studio-eyebrow">LINEAGE</span><h2>产物与谱系</h2><dl className="studio-provenance"><div><dt>设计编号</dt><dd>{design.designId}</dd></div><div><dt>批次</dt><dd>{design.batchId}</dd></div><div><dt>生成时间</dt><dd>{formatStudioTime(design.asset.generatedAt)}</dd></div><div><dt>渲染方式</dt><dd>{design.provenance.renderer}</dd></div><div><dt>图像模型</dt><dd>{design.provenance.imageGenerationUsed ? '使用' : '未使用'}</dd></div><div><dt>SHA-256</dt><dd title={design.asset.sha256}>{design.asset.sha256.slice(0, 18)}…</dd></div></dl>{design.revisionHistory.length ? <details className="studio-version-log"><summary>查看 {design.revisionHistory.length} 个历史版本 <ChevronDown size={15} /></summary><ol>{[...design.revisionHistory].reverse().map((revision) => <li key={`${revision.version}-${revision.assetSha256}`}><span><strong>V{revision.version} · {revision.title}</strong><small>{revision.cultureNames.join(' × ')} / {revision.productFormNames.join(' + ')} · {revision.scoreOverall.toFixed(1)} 分</small><small>{formatStudioTime(revision.at)} · SHA {revision.assetSha256.slice(0, 12)}…</small></span><a href={studioAssetUrl(revision.imageUrl)} download>下载旧稿</a></li>)}</ol></details> : null}<p className="studio-boundary"><ShieldCheck size={17} />{design.provenance.claim}</p></article>
+            <article>
+              <span className="studio-eyebrow">LINEAGE</span>
+              <h2>产物与谱系</h2>
+              <dl className="studio-provenance"><div><dt>设计编号</dt><dd>{design.designId}</dd></div><div><dt>批次</dt><dd>{design.batchId}</dd></div><div><dt>生成时间</dt><dd>{formatStudioTime(design.asset.generatedAt)}</dd></div><div><dt>生成方式</dt><dd>{design.provenance.renderer}</dd></div><div><dt>图像模型</dt><dd>{modelGenerated ? `${design.provenance.imageProvider} / ${design.provenance.imageModel}` : '未使用（历史稿）'}</dd></div><div><dt>设计图 SHA</dt><dd title={design.asset.sha256}>{design.asset.sha256.slice(0, 18)}…</dd></div></dl>
+              {design.asset.generation ? <details className="studio-generation-prompt"><summary>查看设计效果图生成提示词 <ChevronDown size={15} /></summary><pre>{design.asset.generation.prompt}</pre><small>Prompt SHA-256 · {design.asset.generation.promptSha256}</small></details> : null}
+              {productionAsset?.generation ? <details className="studio-generation-prompt"><summary>查看生产沟通图生成提示词 <ChevronDown size={15} /></summary><pre>{productionAsset.generation.prompt}</pre><small>Prompt SHA-256 · {productionAsset.generation.promptSha256}</small></details> : null}
+              {design.revisionHistory.length ? <details className="studio-version-log"><summary>查看 {design.revisionHistory.length} 个历史版本 <ChevronDown size={15} /></summary><ol>{[...design.revisionHistory].reverse().map((revision) => <li key={`${revision.version}-${revision.assetSha256}`}><span><strong>V{revision.version} · {revision.title}</strong><small>{revision.cultureNames.join(' × ')} / {revision.productFormNames.join(' + ')} · {revision.scoreOverall.toFixed(1)} 分</small><small>{formatStudioTime(revision.at)} · SHA {revision.assetSha256.slice(0, 12)}…</small></span><span className="studio-version-log__downloads"><a href={studioAssetUrl(revision.imageUrl)} download>设计稿</a>{revision.productionImageUrl ? <a href={studioAssetUrl(revision.productionImageUrl)} download>生产沟通图</a> : null}</span></li>)}</ol></details> : null}
+              <p className="studio-boundary"><ShieldCheck size={17} />{design.provenance.claim}</p>
+            </article>
           </section>
-          <section className="studio-workflow-preview"><div><span className="studio-eyebrow">WORKFLOW</span><h2>需要改动时再进入工作流</h2><p>每个阶段都显示当前状态；内容、形态、融合文稿和设计稿可重新生成，生产前验证保持明确未完成。</p></div><ol>{design.workflow.stages.map((stage, index) => <li key={stage.id} data-status={stage.status}><b>{String(index + 1).padStart(2, '0')}</b><span><strong>{stage.label}</strong><small>{statusLabel(stage.status)}</small></span>{stage.editable ? <Check size={16} /> : <TriangleAlert size={16} />}</li>)}</ol><a className="studio-primary" href={`/designs/${design.designId}/edit`}><SlidersHorizontal size={17} />打开工作流编辑器</a></section>
+          <section className="studio-workflow-preview"><div><span className="studio-eyebrow">WORKFLOW</span><h2>需要改动时再进入工作流</h2><p>每个阶段都显示当前状态；内容、形态、融合文稿和设计稿可重新生成，生产沟通图随新设计稿重建，生产前验证保持明确未完成。</p></div><ol>{design.workflow.stages.map((stageItem, index) => <li key={stageItem.id} data-status={stageItem.status}><b>{String(index + 1).padStart(2, '0')}</b><span><strong>{stageItem.label}</strong><small>{statusLabel(stageItem.status)}</small></span>{stageItem.editable ? <Check size={16} /> : <TriangleAlert size={16} />}</li>)}</ol><a className="studio-primary" href={`/designs/${design.designId}/edit`}><SlidersHorizontal size={17} />打开工作流编辑器</a></section>
           <p className="studio-truth-note studio-truth-note--warning"><TriangleAlert size={17} />{design.production.boundary}</p>
         </div>
       ) : null}
     </StudioFrame>
   );
 }
+
 
 type EditStage = 'content' | 'form' | 'fusion' | 'visual' | 'production';
 
@@ -745,8 +786,9 @@ function EditPage({ designId }: { designId: string }) {
     { id: 'form', label: '产品形态', icon: Shapes },
     { id: 'fusion', label: '融合方案', icon: GitBranch },
     { id: 'visual', label: '设计稿', icon: ImageIcon },
-    { id: 'production', label: '生产前验证', icon: ShieldCheck },
+    { id: 'production', label: '生产沟通 / 验证', icon: ShieldCheck },
   ];
+  const currentModelVisual = Boolean(design?.provenance.imageGenerationUsed && design?.asset.generation?.model);
   return (
     <StudioFrame view="edit" actions={design ? <><a className="studio-secondary" href={`/designs/${design.designId}`}>返回设计详情</a><button className="studio-primary" type="button" onClick={save} disabled={saving}>{saving ? <LoaderCircle className="is-spinning" size={17} /> : <RefreshCw size={17} />}从此重新生成</button></> : undefined}>
       {!design || !culture || !forms ? (error ? <ErrorState error={error} /> : <LoadingState label="正在载入设计工作流" />) : (
@@ -756,11 +798,11 @@ function EditPage({ designId }: { designId: string }) {
             {stage === 'content' ? <><header><span>01 / CONTENT</span><h2>调整文化内容</h2><p>替换或增加内容会使融合方案和设计稿重新生成；来源事实本身不可编辑。</p></header><div className="studio-editor-choice-list">{culture.records.map((record) => { const selected = cultureIds.includes(record.id); return <button key={record.id} type="button" className={selected ? 'is-selected' : ''} aria-pressed={selected} onClick={() => setCultureIds((value) => toggleLimited(value, record.id, 3))}><SelectionBadge selected={selected} index={selected ? cultureIds.indexOf(record.id) + 1 : undefined} /><span><strong>{record.name}</strong><small>{record.category} · {record.sourceRefs.length} 条来源</small><em>{record.modernizableElements.slice(0, 2).join('；')}</em></span></button>; })}</div></> : null}
             {stage === 'form' ? <><header><span>02 / FORM</span><h2>替换或增加产品形态</h2><p>所有选项都来自形态库；热度、样本和代表原记录保持只读。</p></header><div className="studio-editor-form-list">{forms.records.map((record) => { const selected = formIds.includes(record.id); return <button key={record.id} type="button" className={selected ? 'is-selected' : ''} aria-pressed={selected} onClick={() => setFormIds((value) => toggleLimited(value, record.id, 3))}><SelectionBadge selected={selected} index={selected ? formIds.indexOf(record.id) + 1 : undefined} /><b>#{record.rank}</b><span><strong>{record.name}</strong><small>{record.sampleSize} 条样本 · {record.platformCoverage}/4 平台 · {record.hotScore.toFixed(1)}</small></span></button>; })}</div></> : null}
             {stage === 'fusion' ? <><header><span>03 / FUSION</span><h2>编辑融合方案</h2><p>这里是可人工改写的方案文稿；保存后会形成新版本，不覆盖历史设计稿。</p></header><div className="studio-editor-fields"><label>设计名称<input value={title} onChange={(event) => setTitle(event.target.value)} maxLength={80} /></label><label>目标人群<input value={audience} onChange={(event) => setAudience(event.target.value)} maxLength={120} /></label><label>使用场景<input value={useScenario} onChange={(event) => setUseScenario(event.target.value)} maxLength={120} /></label><label className="is-wide">融合方案<textarea value={concept} onChange={(event) => setConcept(event.target.value)} rows={7} maxLength={500} /></label><label className="is-wide">给设计环节的补充要求<textarea value={designNotes} onChange={(event) => setDesignNotes(event.target.value)} rows={4} maxLength={500} placeholder="例如：更强调可替换结构；不要出现人物形象。" /></label></div></> : null}
-            {stage === 'visual' ? <><header><span>04 / VISUAL</span><h2>设计稿与视觉方向</h2><p>当前图像是实际落盘的结构概念板。切换配色并重新生成会产生新版本与新 SHA-256。</p></header><div className="studio-editor-visual"><img src={studioAssetUrl(design.asset.imageUrl)} alt={`${design.title} V${design.version} 设计稿`} /><div><strong>版本 V{design.version}</strong><span>{design.visualDirection.rendererLabel}</span><small>{design.asset.width} × {design.asset.height} px</small><fieldset><legend>配色方向</legend>{(['slate', 'indigo', 'vermilion'] as const).map((item) => <label key={item}><input type="radio" value={item} checked={palette === item} onChange={() => setPalette(item)} /><span className={`studio-palette studio-palette--${item}`} />{item === 'slate' ? '冷灰蓝' : item === 'indigo' ? '靛青石' : '赭朱纸'}</label>)}</fieldset><p>{design.provenance.claim}</p></div></div></> : null}
-            {stage === 'production' ? <><header><span>05 / PRODUCTION</span><h2>生产前验证</h2><p>这一步不会被自动标成完成。以下事项需要社区、工程、工厂和合规人员提供真实结果。</p></header><div className="studio-production-gates">{['地域与工艺表述共同审核', '文化内容商品化授权与收益机制', '材料、结构、耐久与安全测试', '成本、工艺、公差和供应商确认', '销售地区适用法规与标签'].map((item, index) => <div key={item}><b>{String(index + 1).padStart(2, '0')}</b><span><strong>{item}</strong><small>尚无可核验完成记录</small></span><StatusPill status="not_ready" /></div>)}</div><p className="studio-boundary"><TriangleAlert size={17} />{design.production.boundary}</p></> : null}
+            {stage === 'visual' ? <><header><span>04 / VISUAL</span><h2>{currentModelVisual ? '模型设计效果图与视觉方向' : '历史结构稿与新视觉方向'}</h2><p>{currentModelVisual ? '当前图像是本版本真实模型产物。切换配色或补充要求后重新生成，会再次调用模型并保留旧版本。' : '当前是历史本地结构稿，不是模型产物。重新生成会调用模型建立新的设计效果图与生产沟通图版本。'}</p></header><div className="studio-editor-visual"><img src={studioAssetUrl(design.asset.imageUrl)} alt={`${design.title} V${design.version} ${currentModelVisual ? '模型设计效果图' : '历史本地结构稿'}`} /><div><strong>版本 V{design.version}</strong><span>{design.asset.generation?.model || '历史本地结构稿'}</span><small>{design.asset.width} × {design.asset.height} px · {design.asset.generation?.mode || 'legacy_local'}</small><fieldset><legend>配色方向</legend>{(['slate', 'indigo', 'vermilion'] as const).map((item) => <label key={item}><input type="radio" value={item} checked={palette === item} onChange={() => setPalette(item)} /><span className={`studio-palette studio-palette--${item}`} />{item === 'slate' ? '冷灰蓝' : item === 'indigo' ? '靛青石' : '赭朱纸'}</label>)}</fieldset><p>{design.provenance.claim}</p></div></div></> : null}
+            {stage === 'production' ? <><header><span>05 / PRODUCTION</span><h2>生产沟通图与生产前验证</h2><p>{design.production.asset ? '生产沟通图由生图模型从同版本设计稿继续生成；验证事项不会被模型自动标成完成。' : '当前历史版本没有模型生产沟通图；重新生成后才会建立双图，验证事项仍保持未完成。'}</p></header>{design.production.asset ? <div className="studio-editor-production"><img src={studioAssetUrl(design.production.asset.imageUrl)} alt={`${design.title} V${design.version} 模型生产沟通图`} /><div><strong>{design.production.asset.generation?.mode === 'image_to_image' ? '设计稿图生图' : '同方案文生图'}</strong><small>{design.production.asset.generation?.model} · {design.production.asset.width} × {design.production.asset.height} px</small><p>这张图用于讨论部件与装配方向，不提供可直接生产的尺寸、公差或认证结论。</p></div></div> : <p className="studio-inline-error">历史版本没有模型生产沟通图；保存并重新生成后才会建立双图产物。</p>}<div className="studio-production-gates">{['地域与工艺表述共同审核', '文化内容商品化授权与收益机制', '材料、结构、耐久与安全测试', '成本、工艺、公差和供应商确认', '销售地区适用法规与标签'].map((item, index) => <div key={item}><b>{String(index + 1).padStart(2, '0')}</b><span><strong>{item}</strong><small>尚无可核验完成记录</small></span><StatusPill status="not_ready" /></div>)}</div><p className="studio-boundary"><TriangleAlert size={17} />{design.production.boundary}</p></> : null}
             {error ? <p className="studio-inline-error" role="alert">{error}</p> : null}
           </section>
-          <aside className="studio-editor__result"><span className="studio-eyebrow">CURRENT RESULT</span><img src={studioAssetUrl(design.asset.imageUrl)} alt="当前设计稿缩略图" /><h2>{title}</h2><p>{cultureIds.map((id) => culture.records.find((item) => item.id === id)?.name).filter(Boolean).join(' × ')}</p><p>{formIds.join(' + ')}</p><dl><div><dt>当前版本</dt><dd>V{design.version}</dd></div><div><dt>组合评分</dt><dd>{design.scores.overall.toFixed(1)}</dd></div><div><dt>上次生成</dt><dd>{formatStudioTime(design.updatedAt)}</dd></div></dl><button className="studio-primary" type="button" onClick={save} disabled={saving || !cultureIds.length || !formIds.length}>{saving ? <LoaderCircle className="is-spinning" size={17} /> : <Save size={17} />}保存并重新生成</button></aside>
+          <aside className="studio-editor__result"><span className="studio-eyebrow">CURRENT RESULT</span><img src={studioAssetUrl(design.asset.imageUrl)} alt={currentModelVisual ? '当前模型设计效果图缩略图' : '当前历史结构稿缩略图'} /><h2>{title}</h2><p>{cultureIds.map((id) => culture.records.find((item) => item.id === id)?.name).filter(Boolean).join(' × ')}</p><p>{formIds.join(' + ')}</p><dl><div><dt>当前版本</dt><dd>V{design.version}</dd></div><div><dt>组合评分</dt><dd>{design.scores.overall.toFixed(1)}</dd></div><div><dt>生图模型</dt><dd>{design.asset.generation?.model || '历史本地稿'}</dd></div><div><dt>上次生成</dt><dd>{formatStudioTime(design.updatedAt)}</dd></div></dl><button className="studio-primary" type="button" onClick={save} disabled={saving || !cultureIds.length || !formIds.length}>{saving ? <LoaderCircle className="is-spinning" size={17} /> : <Save size={17} />}调用模型生成双图</button></aside>
         </div>
       )}
     </StudioFrame>
@@ -815,7 +857,7 @@ function OperationsPage() {
     <StudioFrame view="operations" actions={overview ? <StatusPill status={overview.automation.dailyDesign.scheduler.threadAlive && overview.automation.collection.scheduler.threadAlive ? 'healthy' : 'failed'}>两个调度线程{overview.automation.dailyDesign.scheduler.threadAlive && overview.automation.collection.scheduler.threadAlive ? '在线' : '异常'}</StatusPill> : undefined}>
       {!overview && !error ? <LoadingState /> : null}
       {error ? <ErrorState error={error} retry={() => void load()} /> : null}
-      {overview ? <><section className="studio-operation-summary"><div><Activity size={22} /><span><strong>自动化总览</strong><small>心跳来自实际进程，不是页面定时器</small></span></div><dl><div><dt>采集线程</dt><dd>{overview.automation.collection.scheduler.threadAlive ? '在线' : '离线'}</dd></div><div><dt>设计线程</dt><dd>{overview.automation.dailyDesign.scheduler.threadAlive ? '在线' : '离线'}</dd></div><div><dt>今日设计</dt><dd>{overview.today.designCount} / 3</dd></div><div><dt>市场实时前置</dt><dd>{overview.automation.collection.market.preflight.research_ready ? '就绪' : '受阻'}</dd></div></dl></section><section className="studio-operation-grid"><OperationLane title="文化来源巡检" status={overview.automation.collection.lanes.culture_watch.status} detail={overview.automation.collection.lanes.culture_watch.detail} nextRun={overview.automation.collection.lanes.culture_watch.nextRunAt} lastSuccess={overview.automation.collection.lanes.culture_watch.lastSuccessAt} interval={`每 ${overview.automation.collection.lanes.culture_watch.intervalMinutes} 分钟`} onRun={() => void run('culture_watch')} disabled={running === 'culture_watch' || overview.automation.collection.lanes.culture_watch.status === 'running'} /><OperationLane title="产品形态增量采集" status={overview.automation.collection.lanes.market_refresh.status} detail={overview.automation.collection.lanes.market_refresh.detail} nextRun={overview.automation.collection.lanes.market_refresh.nextRunAt} lastSuccess={overview.automation.collection.lanes.market_refresh.lastSuccessAt} interval={`每 ${overview.automation.collection.lanes.market_refresh.intervalMinutes} 分钟`} onRun={() => void run('market_refresh')} disabled={running === 'market_refresh' || overview.automation.collection.lanes.market_refresh.status === 'running'} /><OperationLane title="每日 Top 3 设计" status={overview.automation.dailyDesign.daily.status} detail={overview.automation.dailyDesign.daily.detail} nextRun={overview.automation.dailyDesign.daily.nextRunAt} lastSuccess={overview.automation.dailyDesign.daily.lastSuccessAt} interval={`每天 ${String(overview.automation.dailyDesign.schedule.hour).padStart(2, '0')}:${String(overview.automation.dailyDesign.schedule.minute).padStart(2, '0')} ${overview.automation.dailyDesign.schedule.timezone}`} onRun={() => void run('daily')} disabled={running === 'daily' || overview.automation.dailyDesign.daily.status === 'running'} /></section><section className="studio-operations-lower"><article><span className="studio-eyebrow">SCHEDULE</span><h2>每日生成时间</h2><div className="studio-schedule-form"><label>小时<input type="number" min="0" max="23" value={hour} onChange={(event) => setHour(Number(event.target.value))} /></label><span>:</span><label>分钟<input type="number" min="0" max="59" value={minute} onChange={(event) => setMinute(Number(event.target.value))} /></label><button className="studio-primary" type="button" onClick={() => void saveSchedule()} disabled={running === 'schedule'}><Save size={17} />保存计划</button></div><p>{overview.automation.dailyDesign.policy}</p></article><article><span className="studio-eyebrow">BLOCKERS</span><h2>市场实时采集前置</h2>{overview.automation.collection.market.preflight.research_ready ? <p className="studio-ready"><Check size={17} />全部前置已就绪</p> : <ul className="studio-blocker-list" tabIndex={0} aria-label="市场实时采集阻断条件，可滚动查看">{overview.automation.collection.market.preflight.blockers.map((item) => <li key={item}><TriangleAlert size={15} />{item}</li>)}</ul>}</article></section><section className="studio-event-log"><header><div><span className="studio-eyebrow">EVENTS</span><h2>每日设计事件</h2></div><button type="button" onClick={() => void load()}><RefreshCw size={16} />刷新</button></header>{events.length ? <ol>{events.map((event) => <li key={event.id}><time>{formatStudioTime(event.at)}</time><StatusPill status={event.status} /><span><strong>{event.event}</strong><small>{event.detail}</small></span></li>)}</ol> : <p>尚无事件记录。</p>}</section></> : null}
+      {overview ? <><section className="studio-operation-summary"><div><Activity size={22} /><span><strong>自动化总览</strong><small>心跳与模型状态都来自实际服务</small></span></div><dl><div><dt>采集线程</dt><dd>{overview.automation.collection.scheduler.threadAlive ? '在线' : '离线'}</dd></div><div><dt>设计线程</dt><dd>{overview.automation.dailyDesign.scheduler.threadAlive ? '在线' : '离线'}</dd></div><div><dt>生图模型</dt><dd>{overview.automation.imageGeneration.configured ? overview.automation.imageGeneration.model : '未配置'}</dd></div><div><dt>今日双图设计</dt><dd>{overview.today.designCount} / 3</dd></div><div><dt>市场实时前置</dt><dd>{overview.automation.collection.market.preflight.research_ready ? '就绪' : '受阻'}</dd></div></dl></section><section className="studio-operation-grid"><OperationLane title="文化来源巡检" status={overview.automation.collection.lanes.culture_watch.status} detail={overview.automation.collection.lanes.culture_watch.detail} nextRun={overview.automation.collection.lanes.culture_watch.nextRunAt} lastSuccess={overview.automation.collection.lanes.culture_watch.lastSuccessAt} interval={`每 ${overview.automation.collection.lanes.culture_watch.intervalMinutes} 分钟`} onRun={() => void run('culture_watch')} disabled={running === 'culture_watch' || overview.automation.collection.lanes.culture_watch.status === 'running'} /><OperationLane title="产品形态增量采集" status={overview.automation.collection.lanes.market_refresh.status} detail={overview.automation.collection.lanes.market_refresh.detail} nextRun={overview.automation.collection.lanes.market_refresh.nextRunAt} lastSuccess={overview.automation.collection.lanes.market_refresh.lastSuccessAt} interval={`每 ${overview.automation.collection.lanes.market_refresh.intervalMinutes} 分钟`} onRun={() => void run('market_refresh')} disabled={running === 'market_refresh' || overview.automation.collection.lanes.market_refresh.status === 'running'} /><OperationLane title="每日 Top 3 双图设计" status={overview.automation.dailyDesign.daily.status} detail={overview.automation.dailyDesign.daily.detail} nextRun={overview.automation.dailyDesign.daily.nextRunAt} lastSuccess={overview.automation.dailyDesign.daily.lastSuccessAt} interval={`每天 ${String(overview.automation.dailyDesign.schedule.hour).padStart(2, '0')}:${String(overview.automation.dailyDesign.schedule.minute).padStart(2, '0')} ${overview.automation.dailyDesign.schedule.timezone}`} onRun={() => void run('daily')} disabled={running === 'daily' || overview.automation.dailyDesign.daily.status === 'running' || !overview.automation.imageGeneration.configured} /></section><section className="studio-operations-lower"><article><span className="studio-eyebrow">SCHEDULE</span><h2>每日生成时间</h2><div className="studio-schedule-form"><label>小时<input type="number" min="0" max="23" value={hour} onChange={(event) => setHour(Number(event.target.value))} /></label><span>:</span><label>分钟<input type="number" min="0" max="59" value={minute} onChange={(event) => setMinute(Number(event.target.value))} /></label><button className="studio-primary" type="button" onClick={() => void saveSchedule()} disabled={running === 'schedule'}><Save size={17} />保存计划</button></div><p>{overview.automation.dailyDesign.policy}</p><p className={overview.automation.imageGeneration.configured ? 'studio-ready' : 'studio-inline-error'}>{overview.automation.imageGeneration.configured ? `生图服务已连接：${overview.automation.imageGeneration.provider} / ${overview.automation.imageGeneration.model}` : overview.automation.imageGeneration.detail}</p></article><article><span className="studio-eyebrow">BLOCKERS</span><h2>市场实时采集前置</h2>{overview.automation.collection.market.preflight.research_ready ? <p className="studio-ready"><Check size={17} />全部前置已就绪</p> : <ul className="studio-blocker-list" tabIndex={0} aria-label="市场实时采集阻断条件，可滚动查看">{overview.automation.collection.market.preflight.blockers.map((item) => <li key={item}><TriangleAlert size={15} />{item}</li>)}</ul>}</article></section><section className="studio-event-log"><header><div><span className="studio-eyebrow">EVENTS</span><h2>每日设计事件</h2></div><button type="button" onClick={() => void load()}><RefreshCw size={16} />刷新</button></header>{events.length ? <ol>{events.map((event) => <li key={event.id}><time>{formatStudioTime(event.at)}</time><StatusPill status={event.status} /><span><strong>{event.event}</strong><small>{event.detail}</small></span></li>)}</ol> : <p>尚无事件记录。</p>}</section></> : null}
     </StudioFrame>
   );
 }

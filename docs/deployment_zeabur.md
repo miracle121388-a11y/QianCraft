@@ -43,6 +43,8 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 
 0.10.0 当前部署 `6a96ec9f40c09e36c3ebb590` 已将双库驱动、结果优先的 Studio 设为默认入口，并保留 `/workflow` 旧高级工作台。公网 `/healthz=200`，匿名主页/API/noVNC 均为 401；认证后 21 个页面/入口、9 个节点详情 API、DesignPackage 和 5 张 PNG 均为 200。健康 API 实际确认采集与每日设计两个调度线程在线、心跳新鲜；Studio 为 22 条文化记录/32 个来源、10 种形态/378 条历史样本和当日 3 个设计，3 张 PNG 的 1440×960 尺寸、内容类型与 SHA-256 全部匹配。
 
+0.11.0 将 Studio 产物契约升级为“设计效果图 + 生产沟通图”两次真实模型生成：DashScope 模式下第二次调用使用第一张图的本地 base64 输入；任何一次调用、PNG 校验或持久文件检查失败都不写设计索引，也不生成占位图。现有 0.10.0 本地结构稿继续保留并在页面标为历史稿；0.11.0 服务启动后会把“没有完整双模型视觉”的当天状态视为待补跑。本段记录的是发布候选行为，最终部署号和远端双图验收必须在本轮发布成功后补录。
+
 ## 必需配置
 
 - 服务端口：使用平台注入的 `PORT`。
@@ -64,12 +66,13 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 - `MEDIACRAWLER_PYTHON=/opt/mediacrawler-venv/bin/python`：必须保留虚拟环境入口本身，不能解析为其指向的系统 Python。
 - `MEDIACRAWLER_PLATFORMS=xhs,bili,wb`：当前 Zeabur 启用集合；dy 暂停但适配代码与历史基线保留。
 - `MEDIACRAWLER_LIVE_ENABLED=true`、`MEDIACRAWLER_LOGIN_METHOD=cdp`、`MEDIACRAWLER_CDP_CONNECT_EXISTING=true`：生产镜像使用托管 Chromium；真实登录仍按平台逐轮验证。
+- `IMAGE_PROVIDER`、`IMAGE_API_KEY`、`IMAGE_BASE_URL`、`IMAGE_MODEL`：0.11.0 新 Studio 生成的必需 Secret；当前 Zeabur 使用 `dashscope-native` 与支持图生图的 Qwen Image 模型，值只在平台 Secret 中维护。
 
-图像服务通过 Zeabur Secret 配置 `IMAGE_PROVIDER`、`IMAGE_API_KEY`、`IMAGE_BASE_URL` 与 `IMAGE_MODEL`；当前实例已完成真实生成探针。其他环境未配置时，工作台仍保留已有 A/B/C 方案并明确显示 warning，不伪造新生成结果。
+图像服务凭证只通过 Zeabur Secret 注入。其他环境未配置时，两座知识库和历史结果仍可查看，但新 Studio 生成会明确失败且不落盘占位图；旧工作台仍保留已有 A/B/C 方案并显示 warning。
 
 ## 数据边界
 
-`/app/data/runtime/workbench` 保存旧高级画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs、旧版工具设计运行，`collection/` 下的采集配置/心跳/事件/候选，以及 `studio/` 下的每日排程、事件、批次、设计版本和 PNG；`/app/data/runtime/lightrag_storage` 保存文化索引；`/app/data/runtime/browser-profile` 只保存托管浏览器资料。文化图谱、市场/形态证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；研究任务刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted，每日调度器则会在当天无产出时补跑。
+`/app/data/runtime/workbench` 保存旧高级画布、任务书、概念版本、研究晋级产物、DesignPackage 和海报；`/app/data/runtime/tool_workspace` 保存严格研究 `job.json`、隔离 raw/derived/outputs、旧版工具设计运行，`collection/` 下的采集配置/心跳/事件/候选，以及 `studio/` 下的每日排程、事件、批次、设计版本和双模型 PNG；`/app/data/runtime/lightrag_storage` 保存文化索引；`/app/data/runtime/browser-profile` 只保存托管浏览器资料。文化图谱、市场/形态证据和官方设计包随镜像只读发布，运行态不会覆盖证据基线；研究任务刷新后可按任务号续接，容器重启前未完成的任务会明确标为 interrupted，每日调度器则会在当天没有元数据与双图文件均完整的产出时补跑。
 
 单容器、单 Tool API 副本可以按上述持久卷和平台重启策略持续调度；它不是分布式任务队列。扩到多个 API 副本前必须加入唯一领导者、分布式锁或外部队列，否则每个副本都会运行自己的排程。仓库已提供带路径/数量/体积/SHA-256 校验的手工快照与原子恢复工具，并在恢复时保留旧运行目录。生产仍需把快照复制到独立卷或站外存储，并为心跳、连续失败、候选积压与授权过期配置外部告警；同卷快照和页面“在线”都不能代替异地备份与平台级监控。
 
@@ -78,13 +81,17 @@ QianCraft 采用单服务容器部署：公网请求先进入 Nginx，网页与 
 ## 本地构建
 
 ```bash
-docker build -t qiancraft:0.10.0 .
+docker build -t qiancraft:0.11.0 .
 docker run --rm -p 8080:8080 \
   -e QIANCRAFT_WEB_USERNAME=qiancraft \
   -e QIANCRAFT_WEB_PASSWORD='<set-in-secret-manager>' \
   -e LLM_API_KEY='<set-in-secret-manager>' \
+  -e IMAGE_PROVIDER='dashscope-native' \
+  -e IMAGE_BASE_URL='https://dashscope.aliyuncs.com/api/v1' \
+  -e IMAGE_MODEL='qwen-image-3.0-pro' \
+  -e IMAGE_API_KEY='<set-in-secret-manager>' \
   -v qiancraft-runtime:/app/data/runtime \
-  qiancraft:0.10.0
+  qiancraft:0.11.0
 ```
 
 生产密钥只应通过 Zeabur 的变量管理界面注入，不写入 Dockerfile、仓库或部署日志。

@@ -112,6 +112,26 @@ export interface CombinationScores {
   scoreVersion: string;
 }
 
+export interface StudioGenerationRecord {
+  role: 'design_visual' | 'production_communication_visual' | string;
+  provider: string;
+  model: string;
+  mode: 'text_to_image' | 'image_to_image' | string;
+  prompt: string;
+  promptSha256: string;
+  inputAssetSha256: string;
+}
+
+export interface StudioGeneratedAsset {
+  imageUrl: string;
+  filename: string;
+  sha256: string;
+  width: number;
+  height: number;
+  generatedAt: string;
+  generation?: StudioGenerationRecord;
+}
+
 export interface StudioDesign {
   schemaVersion: string;
   designId: string;
@@ -169,12 +189,16 @@ export interface StudioDesign {
     marketSnapshotGeneratedAt: string;
     renderer: string;
     imageGenerationUsed: boolean;
+    imageProvider?: string;
+    imageModel?: string;
     claim: string;
   };
   production: {
     status: string;
+    visualStatus?: string;
     massProductionReady: boolean;
     boundary: string;
+    asset?: StudioGeneratedAsset;
   };
   revisionHistory: Array<{
     version: number;
@@ -187,15 +211,10 @@ export interface StudioDesign {
     scoreOverall: number;
     assetSha256: string;
     imageUrl: string;
+    productionAssetSha256?: string;
+    productionImageUrl?: string;
   }>;
-  asset: {
-    imageUrl: string;
-    filename: string;
-    sha256: string;
-    width: number;
-    height: number;
-    generatedAt: string;
-  };
+  asset: StudioGeneratedAsset;
 }
 
 export interface StudioAutomation {
@@ -288,6 +307,15 @@ export interface StudioOverview {
   automation: {
     dailyDesign: StudioAutomation;
     collection: CollectionSummary;
+    imageGeneration: {
+      provider: string;
+      model: string;
+      base_url_configured: boolean;
+      credential_configured: boolean;
+      configured: boolean;
+      supports_image_to_image: boolean;
+      detail: string;
+    };
   };
   recentDesigns: StudioDesign[];
   truthBoundary: string;
@@ -328,5 +356,7 @@ export const STUDIO_STATUS_LABELS: Record<string, string> = {
   verified: '已核验',
   verified_snapshot: '历史实证',
   generated_local: '本地生成',
+  generated_model: '模型生成',
+  concept_visual_generated: '沟通图已生成',
   not_ready: '待验证',
 };

@@ -8,10 +8,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.10.0-111111?style=flat-square" alt="Version 0.10.0">
+  <img src="https://img.shields.io/badge/version-0.11.0-111111?style=flat-square" alt="Version 0.11.0">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-98%20Python%20%7C%205%20Web%20%7C%2032%20desktop%20UI-2f7358?style=flat-square" alt="98 Python tests, 5 Web tests and 32 desktop UI tests">
-  <img src="https://img.shields.io/badge/local-0.10.0%20%7C%20online-0.10.0-2f7358?style=flat-square" alt="Local and protected online runtime versions are both 0.10.0">
+  <img src="https://img.shields.io/badge/tests-101%20Python%20%7C%205%20Web%20%7C%2033%20desktop%20UI-2f7358?style=flat-square" alt="101 Python tests, 5 Web tests and 33 desktop UI tests">
+  <img src="https://img.shields.io/badge/release-0.11.0%20%7C%20online-0.10.0-b1844c?style=flat-square" alt="Release candidate is 0.11.0; protected online runtime remains 0.10.0 until deployment">
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@
 > [!IMPORTANT]
 > QianCraft 当前止于概念设计、工厂询价和首样沟通。输出不是生产工程图、合规证书、社区/商业授权或“爆款保证”。
 
-受保护的在线工具：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，凭证由项目维护者单独提供；密钥只由服务器 Secret 注入。0.10.0 当前部署 `6a96ec9f40c09e36c3ebb590` 已验收双库 Studio、日设计调度器、旧 Workbench、LightRAG、GPT Researcher、隔离 MediaCrawler、图像 provider 与托管 Chromium/noVNC；当前严格采集只启用小红书、B站和微博，抖音暂停。
+受保护的在线工具：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，凭证由项目维护者单独提供；密钥只由服务器 Secret 注入。0.11.0 已完成本地实现与验收，正等待本轮 Zeabur 发布；线上暂为已验收的 0.10.0 部署 `6a96ec9f40c09e36c3ebb590`。当前严格采集只启用小红书、B站和微博，抖音暂停。
 
 ## 产品逻辑
 
@@ -41,11 +41,11 @@ QianCraft 不是把两边随意拼接，而是持续维护两座材料库，验�
                                                   ├─> 220 个组合候选
 平台市场样本 ──授权采集/归一化──> 产品形态库 ──┘
                                                            │
-                                              来源门 + 样本门 + 渲染器门
+                                         来源门 + 样本门 + 生图模型门
                                                            │
                                             每日 Top 3 / 手动自由组合
                                                            │
-                                         PNG 概念稿 + 评分 + 来源 + 版本
+                               模型设计效果图 + 模型生产沟通图 + 评分/来源/版本
                                                            │
                                   看中结果后才进入五阶段工作流编辑器
 ```
@@ -58,7 +58,7 @@ QianCraft 不是把两边随意拼接，而是持续维护两座材料库，验�
 | 产品形态库 | 10 种形态、378 条有时间边界的历史真实平台样本 |
 | 组合空间 | 22 × 10 = 220 个可检查候选，后端公开五项分数与权重 |
 | 每日产出 | 默认北京时间 07:00 选择最多 3 个通过门槛且互不重复的组合 |
-| 设计文件 | 每次实际写入 1440 × 960 PNG，并记录版本、SHA-256、批次与生成方式 |
+| 设计文件 | 每个版本调用生图模型两次，写入 1024 × 1024 设计效果图与生产沟通图，并记录提示词、输入/输出 SHA-256、模型、批次与版本 |
 | 自由组合 | 选择 1–3 条文化内容和 1–3 个形态，生成后进入同一设计详情 |
 | 结果编辑 | 替换/增加文化与形态，修改名称、受众、场景、文稿、要求和配色，生成 V2+ |
 | 自动化 | 采集与每日设计各有持久线程、心跳、排程、事件和启动补跑 |
@@ -83,7 +83,7 @@ QianCraft 不是把两边随意拼接，而是持续维护两座材料库，验�
 
 ## 快速启动
 
-前置条件：Git、Python 3.11+（项目基线为 3.13）、Node.js 22、Corepack，以及可用的中文系统字体；Linux 本机应安装 `fonts-noto-cjk`。系统缺少中文字体时生成任务会明确失败，不会输出方框字设计稿。生产 Docker 镜像已安装该字体。
+前置条件：Git、Python 3.11+（项目基线为 3.13）、Node.js 22、Corepack。生成新的 Studio 设计还必须配置真实图像 provider；未配置时页面和两座知识库仍可查看，但生成动作会明确阻断，不会输出占位图。旧 Workbench 海报排版仍需要中文系统字体，生产镜像已安装 `fonts-noto-cjk`。
 
 ### 一条命令启动网页与 API
 
@@ -139,6 +139,10 @@ QIANCRAFT_MARKET_REFRESH_MINUTES=240
 QIANCRAFT_DAILY_DESIGN_ENABLED=true
 QIANCRAFT_DAILY_DESIGN_HOUR=7
 QIANCRAFT_DAILY_DESIGN_MINUTE=0
+IMAGE_PROVIDER=dashscope-native
+IMAGE_BASE_URL=https://dashscope.aliyuncs.com/api/v1
+IMAGE_MODEL=qwen-image-3.0-pro
+# IMAGE_API_KEY 只通过本地忽略文件或部署 Secret 注入
 ```
 
 运行语义：
@@ -146,7 +150,7 @@ QIANCRAFT_DAILY_DESIGN_MINUTE=0
 - 文化巡检发现新网页后只创建 `pending_review` 候选，人工核验前不会改写 22 条正式记录。
 - 市场刷新只有在实时开关、MediaCrawler 运行时和配置中启用的平台授权全部就绪时才执行。当前 Zeabur 启用小红书、B站和微博，抖音因交互验证码暂停；任何启用平台失效都会诚实显示 `blocked`。
 - 378 条样本仍能作为有明确时间边界的历史证据维护产品形态库，但不能标成“今天实时抓取”。
-- 每日设计独立于图像模型 provider，使用 10 个显式本地形态渲染器生成可检查的结构概念板；缺少某个形态渲染器会直接淘汰组合。
+- 每日设计依赖真实图像 provider：先生成设计效果图，再以该图作为参考生成生产沟通图；两次调用必须全部成功才保存结果，任何失败都不会落盘占位图。
 - 同日普通调度幂等；人工立即重跑会产生新批次并保留旧批次审计记录。
 - `/api/health` 同时检查两个调度线程和心跳；异常返回 503，Docker 健康检查会交给平台重启策略恢复。
 
@@ -170,7 +174,7 @@ QIANCRAFT_DAILY_DESIGN_MINUTE=0
 | PUT | `/api/studio/automation/schedule` | 调整每日时间或暂停 |
 | POST | `/api/studio/automation/run` | 立即重跑当天 Top 3 |
 
-所有设计图由 `/assets/studio/{designId}/v{version}.png` 提供。
+设计效果图由 `/assets/studio/{designId}/v{version}-design.png` 提供，生产沟通图由 `/assets/studio/{designId}/v{version}-production.png` 提供；旧 `v{version}.png` 地址只为历史结构稿兼容保留。
 
 ## 组合评分
 
@@ -184,7 +188,7 @@ QIANCRAFT_DAILY_DESIGN_MINUTE=0
 | 转译空间 | 15% |
 | 边界安全 | 10% |
 
-评分只用于当前证据下的优先级，不是销售预测。自动 Top 3 还要求来源数 ≥ 2、存在可转译元素、形态样本 > 0、存在显式渲染器，并执行文化与形态去重。
+评分只用于当前证据下的优先级，不是销售预测。自动 Top 3 还要求来源数 ≥ 2、存在可转译元素、形态样本 > 0、存在明确形态提示词、图像 provider 就绪，并执行文化与形态去重。
 
 ## 验证
 
@@ -204,21 +208,21 @@ pnpm audit --audit-level=high
 pnpm build
 ```
 
-GitHub Actions 在 Ubuntu、macOS 和 Windows 运行 Python 门，并在 Windows Chromium 执行前端构建与 32 项 desktop UI 门。浏览器自动化与 axe 结果不等于完整 WCAG 或真实设备认证。
+GitHub Actions 在 Ubuntu、macOS 和 Windows 运行 Python 门，并在 Windows Chromium 执行前端构建与 desktop UI 门。浏览器自动化与 axe 结果不等于完整 WCAG 或真实设备认证。
 
 ## 部署
 
 单服务 Docker 镜像运行 Nginx、Vinext 和 Python Tool API：
 
 ```bash
-docker build -t qiancraft:0.10.0 .
+docker build -t qiancraft:0.11.0 .
 ```
 
 Zeabur 必需配置：
 
 - 持久卷：`/app/data/runtime`
 - `QIANCRAFT_WEB_USERNAME` / `QIANCRAFT_WEB_PASSWORD`
-- 可选 LLM 与图像 provider Secret
+- LLM Secret 可按高级研究需要配置；图像 provider Secret 是新增 Studio 设计的必需条件
 - 单 API 副本；多副本前必须增加分布式锁或外部队列
 
 完整说明见 [docs/deployment_zeabur.md](docs/deployment_zeabur.md)。
@@ -226,8 +230,9 @@ Zeabur 必需配置：
 ## 可信边界
 
 - 文化事实、来源、市场样本、评分和设计都可追溯；缺失条件不会用默认内容补成功。
-- 本地生成的 PNG 是结构概念板，不是 AI 商品摄影、工程制图或打样照片。
-- 未配置独立图像 provider 时，旧高级工作台的图像重生成仍显示 warning。
+- 新 Studio 的设计效果图和生产沟通图都来自已配置的生图模型；提示词、模型、模式与文件摘要可在详情页核验，历史本地结构稿会明确标为旧稿。
+- 生产沟通图只表达概念拆解和材料方向，不是尺寸准确的工程图、CAD、模具图、打样照片或生产放行文件。
+- 未配置独立图像 provider 时，新 Studio 拒绝生成；旧高级工作台的图像重生成继续显示 warning。
 - 云端市场实时采集已按小红书、B站、微博完成一次 `live_verified`；抖音暂停且不会被暗中访问。历史 378 条四平台证据与线上 372 条三平台当轮记录保持独立，不会互相改名或拼接。
 - 双库 Studio 当前读取仓库 378 条历史形态证据；每日自动设计成功不等于当天重新完成了平台实时采集。
 - `reference_only` 馆藏图像不进入生成稿。
