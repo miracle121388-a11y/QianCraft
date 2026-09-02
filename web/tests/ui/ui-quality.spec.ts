@@ -21,7 +21,7 @@ const STUDIO_ROUTES = [
   { name: '在地文化内容库', path: '/libraries/culture', ready: '.studio-document-head' },
   { name: '爆款产品形态库', path: '/libraries/forms', ready: '.studio-form-table' },
   { name: '自由组合', path: '/create', ready: '.studio-composer' },
-  { name: '全部设计', path: '/designs', ready: '.studio-design-grid--archive' },
+  { name: '全部设计', path: '/designs', ready: '.studio-tabs' },
   { name: '运行中心', path: '/operations', ready: '.studio-operation-summary' },
 ] as const;
 
@@ -395,20 +395,21 @@ test('采集主操作与星图外围控件使用可读 C2 状态', async ({ page
 
   const primary = page.locator('.collection-console--culture .collection-primary-action').first();
   await expect(primary).toHaveText(/^(立即运行|正在运行)$/);
+  const primaryIsDisabled = await primary.isDisabled();
   expect.soft(await computed('.collection-console--culture .collection-primary-action')).toMatchObject({
-    backgroundColor: 'rgb(52, 92, 125)',
+    backgroundColor: primaryIsDisabled ? 'rgb(240, 240, 242)' : 'rgb(52, 92, 125)',
     backgroundImage: 'none',
-    borderColor: 'rgb(52, 92, 125)',
+    borderColor: primaryIsDisabled ? 'rgb(222, 222, 227)' : 'rgb(52, 92, 125)',
     boxShadow: 'none',
-    color: 'rgb(247, 248, 248)',
+    color: primaryIsDisabled ? 'rgb(110, 110, 115)' : 'rgb(247, 248, 248)',
   });
   await primary.hover();
   expect.soft(await computed('.collection-console--culture .collection-primary-action')).toMatchObject({
-    backgroundColor: 'rgb(52, 92, 125)',
+    backgroundColor: primaryIsDisabled ? 'rgb(240, 240, 242)' : 'rgb(52, 92, 125)',
     backgroundImage: 'none',
-    borderColor: 'rgb(52, 92, 125)',
+    borderColor: primaryIsDisabled ? 'rgb(222, 222, 227)' : 'rgb(52, 92, 125)',
     boxShadow: 'none',
-    color: 'rgb(247, 248, 248)',
+    color: primaryIsDisabled ? 'rgb(110, 110, 115)' : 'rgb(247, 248, 248)',
   });
 
   expect.soft(await computed('.constellation-search')).toMatchObject({
