@@ -110,7 +110,7 @@ pnpm quality
 
 合并后的 0.10.0 Python 本地与 Ubuntu/macOS/Windows CI 均为 98/98，Web 单测为 5/5，macOS desktop-chromium 为 31 passed / 1 skipped，Windows desktop-chromium 为 32/32。合并前本地实时链路 91/91、团队 Studio 分支 83/83，以及 0.9.2 的 77/77、Windows 31/31 都只代表各自分支或旧版本，不能冒充本次结果。
 
-0.11.0 发布候选本地实际通过 Python 101/101、Web 单测 5/5、typecheck、零 warning ESLint、Vinext 五阶段 production build、Ruff、锁文件与两类依赖审计；macOS desktop-chromium 为 32 passed / 1 个 Windows 权威像素门按设计 skipped。第一次全量运行发现若把全局 `body` 设为滚动容器，会影响旧节点页的 axe 背景判定；最终实现用 `:has(.studio-shell)` 只对 Studio 开启文档滚动，完整复验中 Studio 长页滚动、旧 Workbench、九个节点详情、交互与可访问性门全部通过。Windows 33/33 仍须等待本轮 GitHub Actions，不能从本地跳过项推断为已通过。
+0.11.0 最终本地实际通过 Python 105/105、Web 单测 5/5、typecheck、零 warning ESLint、Vinext 五阶段 production build、Ruff、锁文件与两类依赖审计；macOS desktop-chromium 为 32 passed / 1 个 Windows 权威像素门按设计 skipped。第一次全量运行发现若把全局 `body` 设为滚动容器，会影响旧节点页的 axe 背景判定；最终实现用 `:has(.studio-shell)` 只对 Studio 开启文档滚动，完整复验中 Studio 长页滚动、旧 Workbench、九个节点详情、交互与可访问性门全部通过。GitHub Actions [运行 `33610662548`](https://github.com/miracle121388-a11y/QianCraft/actions/runs/33610662548) 的 Ubuntu、macOS、Windows Python 与 Windows desktop-chromium 33/33 均实际通过，四个 Job 全部成功。
 
 失败时报告写入 `web/.playwright-report/`，截图、axe 上下文和 trace 写入 `web/.playwright-results/`；两者不进 Git。
 
@@ -154,5 +154,5 @@ Task 5 只更新并目视复核两张 desktop 快照。两张 mobile snapshot �
 - axe 只能发现一部分无障碍问题；自动门通过不等于 WCAG 认证，仍需真实屏幕阅读器与残障用户测试。
 - 当前没有把 Lighthouse、真实用户 INP 或超大图谱压力测试设为阻断门；节点数量和数据规模显著增长时需要单独基线。
 - 视觉快照使用 `guizhou-miao-demo` 的本地真实 HTTP 数据，不能替代认证后线上复验。
-- 受保护线上 0.10.0 当前部署 `6a96ec9f40c09e36c3ebb590` 已切换默认 Studio 入口，并保留 `/workflow` 高级工作台与同源授权浏览器。认证后主页、一级页、动态设计页、9 个旧节点页及相应 API/PNG 已远端验收为 200；这不扩大本文档的 desktop-only 视觉承诺。
+- 受保护线上 0.11.0 当前部署 `6a97e30c2e33e18a8367811b` 已切换默认 Studio 入口，并保留 `/workflow` 高级工作台与同源授权浏览器。认证后的真实 Chromium 在 `/libraries/culture` 实测 `scrollHeight=3353`、`innerHeight=960`、`scrollTop 0→900`，控制台错误为 0；主页、一级页、动态设计页、旧节点页及相应 API/PNG 继续由同一服务提供。这不扩大本文档的 desktop-only 视觉承诺。
 - 本流程止于本地产品前端质量，不授权部署、商业图稿批准、工厂下单或制造/合规就绪声明。

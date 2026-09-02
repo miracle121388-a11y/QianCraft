@@ -10,8 +10,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-0.11.0-111111?style=flat-square" alt="Version 0.11.0">
   <img src="https://img.shields.io/badge/Python-%E2%89%A53.11%20%7C%20tested%203.13-315b7d?style=flat-square&logo=python&logoColor=white" alt="Python 3.11 or newer; tested on 3.13">
-  <img src="https://img.shields.io/badge/tests-101%20Python%20%7C%205%20Web%20%7C%2033%20desktop%20UI-2f7358?style=flat-square" alt="101 Python tests, 5 Web tests and 33 desktop UI tests">
-  <img src="https://img.shields.io/badge/release-0.11.0%20%7C%20online-0.10.0-b1844c?style=flat-square" alt="Release candidate is 0.11.0; protected online runtime remains 0.10.0 until deployment">
+  <img src="https://img.shields.io/badge/tests-105%20Python%20%7C%205%20Web%20%7C%2033%20desktop%20UI-2f7358?style=flat-square" alt="105 Python tests, 5 Web tests and 33 desktop UI tests">
+  <img src="https://img.shields.io/badge/release-0.11.0%20%7C%20online-0.11.0-2f7358?style=flat-square" alt="Release 0.11.0 is running on the protected online instance">
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@
 > [!IMPORTANT]
 > QianCraft 当前止于概念设计、工厂询价和首样沟通。输出不是生产工程图、合规证书、社区/商业授权或“爆款保证”。
 
-受保护的在线工具：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，凭证由项目维护者单独提供；密钥只由服务器 Secret 注入。0.11.0 已完成本地实现与验收，正等待本轮 Zeabur 发布；线上暂为已验收的 0.10.0 部署 `6a96ec9f40c09e36c3ebb590`。当前严格采集只启用小红书、B站和微博，抖音暂停。
+受保护的在线工具：[qiancraft-studio-2026.zeabur.app](https://qiancraft-studio-2026.zeabur.app)。入口启用 Basic Auth，凭证由项目维护者单独提供；密钥只由服务器 Secret 注入。0.11.0 已由部署 `6a97e30c2e33e18a8367811b` 发布到现有 Zeabur 服务，公网健康检查为 200、匿名业务入口为 401。当前严格采集只启用小红书、B站和微博，抖音暂停。
 
 ## 产品逻辑
 
@@ -58,14 +58,14 @@ QianCraft 不是把两边随意拼接，而是持续维护两座材料库，验�
 | 产品形态库 | 10 种形态、378 条有时间边界的历史真实平台样本 |
 | 组合空间 | 22 × 10 = 220 个可检查候选，后端公开五项分数与权重 |
 | 每日产出 | 默认北京时间 07:00 选择最多 3 个通过门槛且互不重复的组合 |
-| 设计文件 | 每个版本调用生图模型两次，写入 1024 × 1024 设计效果图与生产沟通图，并记录提示词、输入/输出 SHA-256、模型、批次与版本 |
+| 设计文件 | 每个版本必须获得两张真实模型输出：1024 × 1024 设计效果图与生产沟通图。生产图优先参考设计图；若参考请求明确欠费阻断或超时，则按同一锁定证据与文稿再调用一次真实文生图，并记录参考尝试、提示词、输入/输出 SHA-256、模型、批次与版本 |
 | 自由组合 | 选择 1–3 条文化内容和 1–3 个形态，生成后进入同一设计详情 |
 | 结果编辑 | 替换/增加文化与形态，修改名称、受众、场景、文稿、要求和配色，生成 V2+ |
 | 自动化 | 采集与每日设计各有持久线程、心跳、排程、事件和启动补跑 |
 | 高级工作台 | 原九节点研究/设计空间保留在 `/workflow` |
 | 当前实时研究 | Zeabur 启用小红书、B站、微博，抖音暂停；任务 `20260901T121642Z-e1a435ff` 同轮得到 113 / 110 / 149 条规范化 live 记录并晋级工作区 |
 
-当前自动 Top 3 来自真实库和公开规则。每天的具体结果、分数与设计 ID 由运行态产生，不硬编码在 README。
+2026-09-02 线上自动批次 `DAY-20260902-3D65E35D` 已真实生成 3 个结果：苗绣 × 模块冰箱贴（92.9，`QCD-1460ECFE2432`）、皮纸制作技艺 × 层叠徽章（89.2，`QCD-681CFC2F2A1C`）、玉屏箫笛制作技艺 × 叙事盲盒（86.8，`QCD-A14B39F5D8FA`）。每天后续的具体结果仍由运行态生成，不硬编码为固定业务数据。
 
 ## 页面
 
@@ -150,7 +150,7 @@ IMAGE_MODEL=qwen-image-3.0-pro
 - 文化巡检发现新网页后只创建 `pending_review` 候选，人工核验前不会改写 22 条正式记录。
 - 市场刷新只有在实时开关、MediaCrawler 运行时和配置中启用的平台授权全部就绪时才执行。当前 Zeabur 启用小红书、B站和微博，抖音因交互验证码暂停；任何启用平台失效都会诚实显示 `blocked`。
 - 378 条样本仍能作为有明确时间边界的历史证据维护产品形态库，但不能标成“今天实时抓取”。
-- 每日设计依赖真实图像 provider：先生成设计效果图，再以该图作为参考生成生产沟通图；两次调用必须全部成功才保存结果，任何失败都不会落盘占位图。
+- 每日设计依赖真实图像 provider：先生成设计效果图，生产沟通图优先把它作为参考。只有参考请求明确返回 `Arrearage` 或 `UpstreamTimeout` 时，才改用同一锁定文化证据、组合和生产文稿再次调用真实文生图；该参考失败会原样写入 `referenceAttempt`，不会被伪装成图生图成功。两张最终 PNG 都必须由模型成功生成并通过校验才保存，任何最终生成失败都不会落盘占位图。
 - 同日普通调度幂等；人工立即重跑会产生新批次并保留旧批次审计记录。
 - `/api/health` 同时检查两个调度线程和心跳；异常返回 503，Docker 健康检查会交给平台重启策略恢复。
 

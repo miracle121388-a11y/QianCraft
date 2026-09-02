@@ -33,7 +33,7 @@
 |---|---|
 | 产品名称 | QianCraft｜双库驱动的自动文创设计工具 |
 | 产品阶段 | 概念视觉与工厂首样简报；在量产发布前停止 |
-| 产品工作台 | 0.11.0 主入口由 `app/studio.py` + `app/tool_api.py` + `web/app/studio-*` 驱动：首页展示两库真实计数、每日最多 Top 3 与自动化；一级入口为文化库、形态库、自由组合、全部设计和运行中心；设计详情分别显示模型设计效果图、模型生产沟通图、两次提示词、provider/model/mode、输入/输出 SHA、来源、评分、批次与可下载历史版本，只有编辑结果时才出现五阶段。Studio 使用文档级纵向滚动；旧 9 节点/10 连线 Workbench 单独保留在固定视口 `/workflow`，继续使用已批准的 C2 桌面几何和平台控制面。默认本地站点 `http://localhost:3000/`，受保护线上入口为 `https://qiancraft-studio-2026.zeabur.app/`；本轮部署完成前线上仍为 0.10.0 |
+| 产品工作台 | 0.11.0 主入口由 `app/studio.py` + `app/tool_api.py` + `web/app/studio-*` 驱动：首页展示两库真实计数、每日最多 Top 3 与自动化；一级入口为文化库、形态库、自由组合、全部设计和运行中心；设计详情分别显示模型设计效果图、模型生产沟通图、提示词、provider/model/mode、参考尝试、输入/输出 SHA、来源、评分、批次与可下载历史版本，只有编辑结果时才出现五阶段。Studio 使用文档级纵向滚动；旧 9 节点/10 连线 Workbench 单独保留在固定视口 `/workflow`，继续使用已批准的 C2 桌面几何和平台控制面。默认本地站点 `http://localhost:3000/`，受保护线上 0.11.0 入口为 `https://qiancraft-studio-2026.zeabur.app/` |
 | GitHub 展示 | 项目 README 包含原创横版 SVG 首屏、真实状态徽章、在线实例、成果海报、A/B/C 三方向视觉、Workbench 快速开始、Mermaid 架构、可信边界、路线图与许可证说明 |
 | 小红书发布包 | `docs/social/xiaohongshu/2026-08-29/` 提供可直接复制的中文标题/正文/话题、8 张 1080×1440 轮播 PNG、可复现 HTML 排版源与素材/口径说明。当前传播核心为“让贵州非遗不只被看见，也被真正理解；让传统有出处、创新有根，并以被尊重的方式走进当代生活”。封面场景使用项目原创概念图作为参考重新生成，并明确标注概念视觉；全部页面区分历史快照、推断、概念样与量产/授权/合规边界，没有使用 `reference_only` 馆藏像素 |
 | 默认主题 | 贵州苗绣 |
@@ -44,8 +44,8 @@
 | 市场研究层 | 12 条结构化市场信号、12 条公开可追溯来源 |
 | 市场状态 | 仓库基线保留 378 条历史真实快照（xhs 115、dy 14、bili 101、wb 148）与 12 条不进榜公开核验记录。用户明确暂停需要交互验证码的抖音，当前 Zeabur 启用 xhs/bili/wb。六关键词严格任务 `20260901T121642Z-e1a435ff` 在同一隔离轮次得到 xhs 113、bili 110、wb 149 条规范化实时记录，文化、市场、策划均为 `live`，最终 `live_verified` 并回写线上工作区；清单不含 dy，未拼入旧探针或历史基线。仓库 378 条仍保持历史口径，线上当前工作区为另一次 372 条三平台实时运行 |
 | 产品形态榜 | `product_form_hotness.json` 已由 378 条历史真实平台快照恢复：Top 10 为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒；Top 5 为前五项。该榜只代表有限历史样本，不代表当前全平台实时趋势 |
-| Studio 组合与设计 | 正式双库形成 22 × 10 = 220 个候选；文化证据分公开为来源充分度 50% + 地域具体度 20% + 可转译字段完整度 30%，`combo-score-v1` 再按文化证据/形态热度/品类兼容/转译空间/边界安全 25/25/25/15/10 计算。少于 2 条可解析来源、存在缺失来源、无可转译元素、形态无可点击代表原记录、样本为 0 或无明确形态提示词的组合直接淘汰；每日最多选择 3 个文化与形态均不重复的结果。0.11.0 每个版本必须先由真实生图模型生成 1024×1024 设计效果图，再优先以上一张为图生图输入生成 1024×1024 生产沟通图；两次调用、PNG 校验和持久文件检查全部成功才保存。编辑生成 V2+ 时保留旧双图及其组合、文案、提示词、模型谱系、分数、时间与下载地址；历史 0.10.0 本地结构稿保留且明确标记，不能冒充模型产物 |
-| Studio 自动化 | `StudioScheduler` 与采集调度器在同一 Tool API 内独立运行；默认 `Asia/Shanghai` 07:00，排程/状态/事件/设计/双图 PNG 持久化到 `data/runtime/tool_workspace/studio/`。只有设计元数据与两张实际文件均完整才算当天产出；启动发现没有完整双模型视觉时补跑，任何一次模型失败都清理本轮文件且不写结果。普通同日轮次幂等，明确立即重跑才生成新批次并在完整新批次成功后标记旧批次 superseded；`/api/health` 只有两个调度线程与心跳都正常才返回 200 |
+| Studio 组合与设计 | 正式双库形成 22 × 10 = 220 个候选；文化证据分公开为来源充分度 50% + 地域具体度 20% + 可转译字段完整度 30%，`combo-score-v1` 再按文化证据/形态热度/品类兼容/转译空间/边界安全 25/25/25/15/10 计算。少于 2 条可解析来源、存在缺失来源、无可转译元素、形态无可点击代表原记录、样本为 0 或无明确形态提示词的组合直接淘汰；每日最多选择 3 个文化与形态均不重复的结果。0.11.0 每个版本先由真实生图模型生成 1024×1024 设计效果图，生产沟通图优先参考上一张；参考请求只有明确 `Arrearage`/`UpstreamTimeout` 时才按同一锁定证据和生产文稿调用真实文生图，并记录 `referenceAttempt` 与最终模式。两张最终模型输出、PNG 校验和持久文件检查全部成功才保存。线上批次 `DAY-20260902-3D65E35D` 已生成苗绣×模块冰箱贴 92.9、皮纸×层叠徽章 89.2、玉屏箫笛×叙事盲盒 86.8，共 6 张 1024×1024 Qwen PNG |
+| Studio 自动化 | `StudioScheduler` 与采集调度器在同一 Tool API 内独立运行；默认 `Asia/Shanghai` 07:00，排程/状态/事件/设计/双图 PNG 持久化到 `data/runtime/tool_workspace/studio/`。只有设计元数据与两张实际文件均完整才算当天产出；启动发现没有完整双模型视觉时补跑。最终模型调用失败、非允许的参考错误或文件校验失败都清理本轮文件且不写结果；普通同日轮次幂等，明确立即重跑才生成新批次并在完整新批次成功后标记旧批次 superseded。线上健康 API 已确认两个调度线程与心跳均正常 |
 | 对标案例 | 8 条 |
 | LightRAG 实机图 | Zeabur 持久目录上的 LightRAG 实机建立 612 个实体、697 条关系，探针读取 100 条关系边；引擎为本地 KG，未走回退，容器重发后可复用索引 |
 | 策划输出 | 当前正式输出来自实机运行 `20260828T060200Z-e44240e3`。该轮实际调用 GPT Researcher / DeepSeek，但清单中的 `generated_opportunities_accepted=0`：模型建议没有通过证据契约，当前 8 条 Opportunity Signals 全部来自可复现的本地证据规则基线，再经六维评分与 LightRAG 二次核验；Top 3 为 OPP-006、OPP-002、OPP-004。历史日志中“DeepSeek 实际生成当前 8 条”的说法不准确，本轮以追加勘误修正 |
@@ -54,14 +54,14 @@
 | 设计海报 | 1800 × 2400；原创生成式成品/爆炸主视觉 + 本地精确中文排版；未使用 `reference_only` 馆藏像素 |
 | 0.9.1 提交前复验 | 独立运行 `20260829T144536Z-2e6f3e5b`：`culture_knowledge=live`、`market_research=cache`、`strategist=cache`、`design_agent=live`、`poster_renderer=live`；消费提交随附的 378 条派生平台证据，生成 8 条机会、Top 3、DesignPackage、13 项产物与 1800×2400 海报，全部清单路径为仓库相对路径且文件存在。正式仓库产物随后从既有真实 DeepSeek `DesignerHandoff` 重跑设计/海报阶段，保留历史策划证据并更新 BOM 5 项标题、摘要与可迁移清单路径 |
 | Workbench Workspace | 默认 `guizhou-miao-demo` 以仓库基线初始化，后续写入 `data/runtime/workbench/`；Workspace Schema 1.1 保存 9 个节点、10 条连线、视口、当前 Concept、任务书、A/B/C、`DecisionProfile`、机器/人工并列的 `decision_output`、研究任务和设计运行引用。New / Save / Load / Rename / Save decisions 使用同一 JSON 校验与原子写入；研究晋级时保留仍有效的人工 ID，对消失的机会/品类只做带审计记录的补齐；源证据与运行态分离，页面操作不会覆盖仓库基线 |
-| 图像生成适配 | `ImageGenerationAdapter` 保留 OpenAI-compatible `/images/generations` 与 Qwen Image 3.0 同步多模态契约；`dashscope-native` 支持把本地参考图验证后编码为 base64 图生图输入，并记录参考图 SHA。Zeabur 已通过 Secret 配置 `qwen-image-3.0-pro`；0.11.0 Studio 把 provider 从旧 Workbench 的可选能力提升为新增设计的强制门，失败时不使用 Pillow、本地几何或静态占位图。批准的 `.impeccable/mocks/tonal-focus-review.png`（SHA-256 `131cd5be…ffeb`）只作为 C2 电脑端非字面比例、色块与聚焦参考；它不是产品数据资产或逐像素事实源 |
+| 图像生成适配 | `ImageGenerationAdapter` 保留 OpenAI-compatible `/images/generations` 与 Qwen Image 3.0 同步多模态契约；`dashscope-native` 支持把本地参考图验证后编码为 base64 图生图输入并记录参考图 SHA，将 `httpx.TimeoutException` 规范化为可审计 `UpstreamTimeout`。Zeabur 已通过 Secret 配置 `qwen-image-3.0-pro`；参考请求的 `Arrearage`/`UpstreamTimeout` 可改发同文稿真实文生图，其余错误失败关闭。0.11.0 Studio 把 provider 从旧 Workbench 的可选能力提升为新增设计的强制门，不使用 Pillow、本地几何、历史图片或静态占位图。批准的 `.impeccable/mocks/tonal-focus-review.png`（SHA-256 `131cd5be…ffeb`）只作为 C2 电脑端非字面比例、色块与聚焦参考；它不是产品数据资产或逐像素事实源 |
 | API | Studio overview、两库、组合、设计 CRUD/重生成、自动排程与事件接口保持兼容；0.11.0 新资产为 `/assets/studio/{designId}/v{version}-design.png` 与 `v{version}-production.png`，旧 `v{version}.png` 仅用于历史兼容。overview 公开不含 Secret 的图像 provider 状态，设计记录公开两次生成谱系；健康响应同时检查采集与每日设计调度器。现有严格研究、采集、Workbench 和资产接口保持兼容。Zeabur Secret 已配置 DeepSeek 与图像 provider；镜像内含 LightRAG、GPT Researcher、MediaCrawler 与受保护图形会话。预检返回启用/暂停平台清单，暂停项不阻断；`browser_connected=true` 仍不等于任何平台授权有效 |
-| 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 当前仍运行已验收的 0.10.0 部署 `6a96ec9f40c09e36c3ebb590`；0.11.0 正在本轮推送与发布，尚未把待部署代码写成线上完成。既有平台为 `RUNNING`、公网 `/healthz=200`、匿名主页/API/noVNC 均为 401；xhs/bili/wb 启用、dy 暂停。0.11.0 的部署号、双模型视觉、纵向滚动和持久卷保留必须以后续实际远端验收为准 |
+| 线上发布 | 受保护实例 `https://qiancraft-studio-2026.zeabur.app` 已运行 0.11.0 部署 `6a97e30c2e33e18a8367811b`，容器源摘要与提交 `b6e3257` 一致。平台为 `RUNNING`、公网 `/healthz=200`、匿名主页/API 为 401；健康 API 报告双调度器健康。认证后的真实 Chromium 已在文化库长页完成 `scrollTop 0→900` 且控制台 0 错误；当日 3 个设计、6 张模型 PNG 的 HTTP、尺寸和实际 SHA 均通过。xhs/bili/wb 启用、dy 暂停，三平台 `live_verified` 工作区与 LightRAG 索引仍在 |
 | MediaCrawler | Zeabur 使用独立 `/opt/mediacrawler-venv` 安装上游 requirements，再以 `deploy/mediacrawler-runtime-overrides.txt` 修复安全版本并移除未使用的 FastAPI/Starlette/Uvicorn；`MEDIACRAWLER_PYTHON` 解析保留虚拟环境符号链接，构建、启动、严格预检均实际导入 `httpx` 与 `CDPBrowserManager`。采集器复用托管 Chromium 回环 CDP，父/子进程均清理本轮新页面，超时会温和终止并脱敏错误。当前只运行 xhs/bili/wb；dy 适配代码与历史基线保留但明确暂停，不访问、不阻断、不计入晋级 |
-| 自动测试 | 0.11.0 本地 Python 101/101、Web 5/5；macOS desktop-chromium 32 passed / 1 个仅在 Windows 执行的权威像素门按设计 skipped。覆盖两次模型生成、图生图输入摘要、任一步失败零占位、旧稿补跑、元数据有而文件缺失时补跑、双图版本保留、Studio 文档滚动和旧页面隔离。GitHub Actions 尚须以本轮推送后的实际运行收口，不能沿用 0.10.0 的 CI 结果冒充 |
+| 自动测试 | 0.11.0 本地 Python 105/105、Web 5/5；macOS desktop-chromium 32 passed / 1 个仅在 Windows 执行的权威像素门按设计 skipped。覆盖双模型最终产物、图生图输入摘要、参考超时/欠费的真实文生图路径、最终失败零占位、旧稿补跑、文件缺失补跑、双图版本保留、Studio 文档滚动和旧页面隔离。GitHub Actions 运行 `33610662548` 的 Ubuntu/macOS/Windows Python 与 Windows desktop-chromium 33/33 均通过，四个 Job 全部 `success` |
 | 静态检查 | 0.11.0 Ruff、`uv lock --check`、Web typecheck、零 warning ESLint、Vinext 五阶段 production build、`sh -n deploy/start-zeabur.sh`、`git diff --check`、Python `pip-audit --local` 与完整 `pnpm audit --audit-level=high` 均通过；两个依赖审计均为 0 个已知漏洞 |
-| 运行态恢复 | `scripts/runtime_snapshot.py` 对 `data/runtime` 生成带 SHA-256 清单的 ZIP，发布前自校验；恢复前校验路径、大小、文件数和摘要，要求服务已停止及显式确认，并保留时间戳回滚目录。0.10.0 明确排除 `browser-profile/`，清单写入 `containsBrowserAuthorization=false`，验证器也拒绝含该目录的归档。本次发布前/后快照分别为 125 文件、19,435,099/19,435,692 未压缩字节，两者都在服务器与本地 Conda 校验通过并复制到仓库/持久卷外的权限受控目录。发布后 ZIP 为 4,570,472 字节，SHA-256 `2b4aa589…bc10`，`containsBrowserAuthorization=false`；该在线尽力快照不等于停机一致备份或已完成恢复演练。快照不导出登录态，恢复或迁移后必须重新授权 |
-| 凭证检查 | 本机 LLM 凭证只存在于被 Git 忽略的 `.env`，站点 Basic Auth、服务器 LLM 与图像凭证只存在于 Zeabur Secret；本轮没有读取、回显或写入仓库。当前隔离发布上下文为 650 文件、40,329,479 字节，符号链接、禁止路径、浏览器 profile、长 API Key/Authorization 值与私钥模式均为 0；四个关键运行文件与 `91534b0` SHA-256 一致。浏览器登录数据库只保留在权限 0700 的持久目录且不进入快照。全仓仍有 2 个既有、未改动的 extracted-upstream 示例字面量，按上游边界保留 |
+| 运行态恢复 | `scripts/runtime_snapshot.py` 对 `data/runtime` 生成带 SHA-256 清单的 ZIP，发布前自校验；恢复前校验路径、大小、文件数和摘要，要求服务已停止及显式确认，并保留时间戳回滚目录。0.11.0 发布前在线快照为 247 文件、43,323,358 未压缩字节、10,647,726 字节 ZIP，SHA-256 `bf08f0ba…23d8`；发布后为 272 文件、54,494,826 未压缩字节、18,572,605 字节 ZIP，SHA-256 `90eab1d4…8420`。两份都在服务器与本机校验并复制到仓库/持久卷之外，清单排除 `browser-profile/` 且 `containsBrowserAuthorization=false`。它们是在线尽力快照，不等于停机一致备份或恢复演练；快照不导出登录态，恢复或迁移后必须重新授权 |
+| 凭证检查 | 本机 LLM 凭证只存在于被 Git 忽略的 `.env`，站点 Basic Auth、服务器 LLM 与图像凭证只存在于 Zeabur Secret；本轮没有读取、回显或写入仓库。最终隔离发布上下文为 609 文件、39,606,937 字节，符号链接、禁止路径、浏览器 profile、长 API Key 与私钥模式均为 0；线上 `app/studio.py` 与图像适配器 SHA-256 分别为 `39e3d201…aacd`、`7d0b0f69…e5ae`，与本地发布源一致。浏览器登录数据库只保留在权限 0700 的持久目录且不进入快照。全仓仍有 2 个既有、未改动的 extracted-upstream 示例字面量，按上游边界保留 |
 
 当前正式产物：
 
@@ -104,7 +104,7 @@ Market Scheduler ──> 授权/归一化 ──> 10 种产品形态 ───�
                                                                                          └─> 保存新版本 V2+
 ```
 
-`StudioScheduler` 与采集调度器都由 Tool API 启动，状态写入持久卷。启动补跑、同日幂等、明确重跑新批次和无合格组合时的空结果都由后端控制；前端不硬编码两库数量、分数或设计。0.11.0 新设计必须完成两次真实图像模型调用；支持图生图时，生产沟通图以前一张设计效果图为输入。任一调用、PNG 校验或持久文件检查失败都不保存结果、不生成本地占位图。生产沟通图仍只用于概念拆解，不是尺寸准确的工程图、CAD、模具图或生产放行文件。
+`StudioScheduler` 与采集调度器都由 Tool API 启动，状态写入持久卷。启动补跑、同日幂等、明确重跑新批次和无合格组合时的空结果都由后端控制；前端不硬编码两库数量、分数或设计。0.11.0 新设计必须获得两张真实图像模型输出；生产沟通图优先以前一张设计效果图为输入。参考请求只有明确 `Arrearage` 或 `UpstreamTimeout` 时才按同一锁定证据和文稿改发真实文生图，并记录失败与实际模式；最终模型调用、PNG 校验或持久文件检查失败都不保存结果、不生成本地占位图。生产沟通图仍只用于概念拆解，不是尺寸准确的工程图、CAD、模具图或生产放行文件。
 
 以下是仍保留在 `/workflow` 的高级研究与 DesignPackage 流程：
 
@@ -226,7 +226,7 @@ Tool API 启动 / 容器持续运行
 | `app/designer/` | Design Agent、设计包 Markdown 与精确文字海报排版 | 只消费已落盘交接；不得使用 reference-only 像素或宣称量产就绪 |
 | `app/pipeline.py` | 端到端编排、原子输出和运行清单 | 新步骤必须说明顺序、失败策略与状态字段 |
 | `app/collection.py` | 文化来源巡检、市场严格任务预检、持久调度/心跳/退避、候选/指纹/事件、公共页面抓取与人工审核门 | 只有全部已探测文化来源成功才是 healthy，部分失败必须 degraded；候选不得自动写入正式图谱；市场缺开关、运行时或授权必须 blocked，不创建假任务。公共 URL 的输入、DNS 解析结果和每次重定向都必须拒绝本机、私网、链路本地与内部域名；TCP 连接钉住已校验公网地址且不使用环境代理，防止 SSRF 与 DNS rebinding |
-| `app/studio.py` | 两库读取、220 个组合评分/门槛、每日 Top 3、手动组合、版本化双 1024×1024 模型 PNG、持久设计索引与每日调度器 | 文化来源、市场代表记录、样本、提示词、provider/model/mode、图生图输入 SHA 与双输出 SHA 必须可核验；同日普通排程幂等，明确重跑且新批次完整成功后才 supersede；无合格组合、无 provider 或任一模型调用失败时明确阻断，不生成占位成功 |
+| `app/studio.py` | 两库读取、220 个组合评分/门槛、每日 Top 3、手动组合、版本化双 1024×1024 模型 PNG、持久设计索引与每日调度器 | 文化来源、市场代表记录、样本、提示词、provider/model/mode、参考尝试、图生图输入 SHA 与双输出 SHA 必须可核验；只有 `Arrearage`/`UpstreamTimeout` 允许参考请求改发同文稿真实文生图，其余错误与最终模型失败均阻断；同日普通排程幂等，明确重跑且新批次完整成功后才 supersede，不生成占位成功 |
 | `app/tool_api.py` | Studio 与旧工具 API、两个调度器健康、真实计数、采集状态/事件/候选/配置/动作、分页来源查询、节点专用详情、七阶段人工决策写入、严格预检、202 后台研究任务/轮询/中断恢复、设计运行与资产路由 | 本地或容器内只绑定回环地址并由受保护代理转发；不得向前端返回凭证；job 异常必须脱敏并持久化；历史、当前、live、cache、系统推荐和人工选择必须分开标注；客户端断开不得把 BrokenPipe 误写为第二次响应 |
 | `app/workbench.py` | 7 类节点注册、默认贵州苗绣链路、Workspace Schema 1.1 校验/兼容迁移/原子保存、DecisionProfile 校验/人工排序/下游 stale、研究晋级、Concept 动作、真实 Poster 渲染、文化/市场/馆藏/平台记录引用目录与详情组装 | 只有隔离运行中的文化/市场/策划与清单声明的非空平台集合全部 live，且平台状态键精确一致，才可晋级；人工选择只在新结果中 ID 消失时带审计补齐。节点类型、状态、连线、引用、Concept 与资产路径均须服务端校验；馆藏 `reference_only` 不得改写为可用像素 |
 | `data/culture/` | 文化图谱、视觉参考和 LightRAG 存储 | 事实先写结构化图谱；视觉图像权利与来源分开记录 |
@@ -486,7 +486,7 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 涉及 Workbench 时，已核对 7 类节点契约、9 个默认实例的详情页、引用解析/缺失审计、Workspace Schema 1.1 与旧数据兼容、DecisionProfile 版本/ID 白名单/权重归一化、系统分和人工分并列、节点阶段深链、下游 stale 传播、严格研究 202/轮询/刷新续接/全 live 晋级门、Brief 实际 DesignPackage、Concept 旧资产标识、Poster 实际渲染和真实 API 错误态。
 - [ ] 涉及持续采集时，已核对持久配置/状态/事件/候选/指纹、真实心跳、下次运行、退避、API 重启 interrupted、文化全部成功与部分失败的 healthy/degraded 区分、候选人工晋级门、市场实时开关/运行时/启用平台授权阻断、暂停平台排除，以及只有平台集合精确匹配且全部 live 的 `live_verified` 才覆盖正式证据；不得把排期、预检、历史快照或部分成功写成实时产出。
 - [ ] 涉及云端平台浏览器时，CDP/VNC/noVNC 必须只监听回环、入口继承站点鉴权、进程使用非 root 用户、Profile 权限为 0700、快照排除授权资料；UI/API 必须区分浏览器连接、平台登录、实际搜索与 `live_verified`，用户密码/扫码/验证码/Cookie 不由项目或自动化代填、导出或回显。
-- [ ] 涉及 Studio 时，已核对两库数量来自实际文件、文化引用可解析、形态代表原记录可点击、评分公式/分项/样本窗公开、无证据/无明确形态提示词/无图像 provider 时明确拒绝、每日 Top 3 去重、同日幂等/明确重跑 superseded、自由组合 1–3 × 1–3、编辑 V2+ 保留旧双图/谱系、设计效果图与生产沟通图均来自真实模型、图生图输入 SHA 与设计图 SHA 一致、两次提示词/provider/model/mode/输出 SHA 可审计、任一失败不写索引或占位图，以及 `massProductionReady=false` 的生产边界。
+- [ ] 涉及 Studio 时，已核对两库数量来自实际文件、文化引用可解析、形态代表原记录可点击、评分公式/分项/样本窗公开、无证据/无明确形态提示词/无图像 provider 时明确拒绝、每日 Top 3 去重、同日幂等/明确重跑 superseded、自由组合 1–3 × 1–3、编辑 V2+ 保留旧双图/谱系、设计效果图与生产沟通图均来自真实模型、图生图输入 SHA 与设计图 SHA 一致或独立文生图时为空、参考尝试/错误码/最终模式/提示词/provider/model/输出 SHA 可审计、只有 `Arrearage`/`UpstreamTimeout` 可改发同文稿真实文生图、最终失败不写索引或占位图，以及 `massProductionReady=false` 的生产边界。
 - [ ] 涉及前端排版或交互时，已按用户授权范围运行目标 Playwright project，并核对 Tonal Focus Review 固定色值、60/72/210/330 电脑端几何、Studio 文档级纵向滚动、`/workflow` 固定视口隔离、没有大面积纯白/渐变/玻璃/光晕/装饰色、黑色只作为真实关系画布例外、系统中文字体回退、画布可读比例、横向溢出、拖拽等价路径、知识星图、断线语义、可访问名称与焦点闭环。若范围包含 mobile/tablet，才另行补 44px、手势、抽屉、safe area、目标视口与真实设备门；未授权/未运行的范围不得写成通过。
 - [ ] 涉及视觉基线时，已逐张人工查看获批目标项目的快照后再决定是否更新；desktop-only 任务只更新/验收 desktop，不运行会覆盖 mobile 的总更新命令。axe 与像素回归只作为门槛证据，不写成完整 WCAG 认证。
 - [ ] 涉及上线时，已核对匿名鉴权、健康检查、认证后页面/API、持久卷目录、运行日志和部署域名；不能只依据平台状态声明完成。
@@ -494,6 +494,37 @@ conda run --no-capture-output -n qiancraft python scripts/runtime_snapshot.py re
 - [ ] 最终回复指出本文件的位置和本次新增日志。
 
 ## 9. 更新日志
+
+### 2026-09-02｜0.11.0｜GitHub、Zeabur 与真实双模型产出完整发布
+
+变更：
+
+- 将滚动隔离、双模型 Studio、参考错误安全说明、Windows 测试稳定化和参考超时恢复依次收口到 `main`；最终运行源码提交为 `b6e3257`。图像适配器把上游 HTTP 超时规范化为脱敏的 `UpstreamTimeout`，Studio 只有在参考请求明确 `Arrearage` 或 `UpstreamTimeout` 时，才按同一锁定文化证据、组合和生产文稿改发一次真实文生图；其他错误与任何最终图生成失败都保持失败关闭。
+- 把最终源码发布到现有 Zeabur 服务，而不是创建重复服务。部署 `6a97e30c2e33e18a8367811b` 为 `RUNNING`，容器内 `app/studio.py` 与 `app/adapters/image_generation_adapter.py` 的 SHA-256 分别为 `39e3d201bb3f336a1e7d0a5fe73a9795b5a1f6d272088693c6ed271c5d2baacd`、`7d0b0f690ae228ff2b4b4513079606f1154a11cafcd8243a155d6301e4dbe5ae`，与发布源一致。
+- 线上启动补跑真实完成批次 `DAY-20260902-3D65E35D`：`QCD-1460ECFE2432` 苗绣×模块冰箱贴 92.9、`QCD-681CFC2F2A1C` 皮纸制作技艺×层叠徽章 89.2、`QCD-A14B39F5D8FA` 玉屏箫笛制作技艺×叙事盲盒 86.8。三项文化和三项形态均互不重复，3 个设计记录、6 张 PNG 与批次清单持久化成功。
+- 三张设计效果图和三张生产沟通图均由 `dashscope-native` / `qwen-image-3.0-pro` 真实生成，实际文件均为 1024×1024 PNG，HTTP 内容类型、记录摘要与下载文件 SHA-256 全部匹配。三个生产图参考请求都在 180 秒后返回 `UpstreamTimeout`；系统如实保存 `referenceAttempt={attempted:true,status:blocked,code:UpstreamTimeout}`，随后按同一生产文稿进行新的真实 `text_to_image`。因此这些生产图不是由设计图像素派生的图生图结果，但也不是 Pillow、本地几何、旧资产、静态占位或假 URL。
+- 采集和每日设计两个调度器均为 `healthy`，当日设计数为 3、PNG 数为 6、staging 文件为 0、连续失败为 0。LightRAG、GPT Researcher 与 MediaCrawler 运行时重新导入通过，浏览器 Profile 权限为 0700；严格任务 `20260901T121642Z-e1a435ff` 仍为 `live_verified`，xhs/bili/wb 为 live，dy 继续暂停。
+
+原因：
+
+- 用户要求修复网站不能上下滑动，并要求所有最终设计图、生产图都来自真实生图模型，同时完成 GitHub 与 Zeabur 发布。首个 0.11.0 远端验证轮次 `6a97dc032e33e18a83677f8a` 在设计图完成后遇到参考图请求超时；旧逻辑正确清理 staging、没有写结果，但会让每日 Top 3 永久缺失。最终实现保留失败关闭，同时为两个可识别的参考通道阻断提供另一条真实模型生成路径，并把差异完整暴露给用户。
+
+验证：
+
+- 本地 Python 105/105、Web 5/5、Ruff、`uv lock --check`、typecheck、零 warning ESLint、Vinext 五阶段 production build、启动脚本语法、`git diff --check` 与两类依赖审计通过。GitHub Actions [运行 `33610662548`](https://github.com/miracle121388-a11y/QianCraft/actions/runs/33610662548) 的 Ubuntu、macOS、Windows Python 及 Windows desktop-chromium 33/33 全部成功，四个 Job 均为 `success`。
+- 公网 `/healthz` 为 200，匿名主页/API 为 401；认证后的真实 Chromium 在 `/libraries/culture` 得到 `scrollHeight=3353`、`innerHeight=960`，实际 `scrollTop 0→900`，`body/html overflow=auto` 且控制台错误为 0。旧 `/workflow` 的固定视口合同没有被 Studio 滚动修改污染。
+- 最终隔离发布上下文为 609 文件、39,606,937 字节；符号链接、禁止路径、浏览器资料、私钥与长 API Key 模式为 0。发布前在线快照为 247 文件、43,323,358 未压缩字节、10,647,726 字节 ZIP，SHA-256 `bf08f0ba50d2a934096bf00036e27a3bce9000eecdf818507bdb9d63514a23d8`；发布后为 272 文件、54,494,826 未压缩字节、18,572,605 字节 ZIP，SHA-256 `90eab1d499d70a5183eed1cb2f5b60ad416d21f17f30dd3491e67d749e858420`。两份均在服务器与本机独立目录校验通过，并排除 `browser-profile/`。
+
+边界：
+
+- `referenceAttempt` 的失败不能在 UI 或文档中写成图生图成功；本批生产图是同证据、同产品文稿驱动的独立真实文生图，视觉一致性弱于成功的参考图路径。生产沟通图仍只表达概念拆解、材料和装配方向，不是 CAD、尺寸准确工程图、模具图、工厂打样照片或量产放行文件。
+- 发布前后快照是在服务持续运行时生成的尽力快照，不等于停机一致备份或恢复演练；浏览器授权资料按设计不进入快照，恢复或迁移后必须由用户本人重新授权。当前单容器调度不是分布式队列，多副本前仍需唯一领导者、分布式锁或外部任务系统。
+
+涉及文件：
+
+- 运行代码：`app/studio.py`、`app/adapters/image_generation_adapter.py`、`web/app/globals.css`、`web/tests/ui/ui-quality.spec.ts`
+- 测试与发布：`tests/test_studio.py`、`tests/test_workbench.py`、`tests/test_deployment.py`、`tests/test_tool_api.py`、Zeabur 部署 `6a97e30c2e33e18a8367811b`
+- 文档：`README.md`、`PRODUCT.md`、`docs/architecture.md`、`docs/continuous_collection.md`、`docs/deployment_zeabur.md`、`docs/frontend_quality_workflow.md`、`docs/real_machine_test.md`、`WORKFLOW.md`
 
 ### 2026-09-02｜0.11.0｜双模型视觉契约、Studio 纵向滚动与发布候选
 

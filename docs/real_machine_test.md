@@ -2,7 +2,7 @@
 
 验收日期：2026-09-02（Asia/Shanghai）
 
-0.11.0 发布候选把 Studio 的本地 Pillow 结构渲染器替换为强制双模型视觉：先生成设计效果图，再优先以该图作为参考生成生产沟通图；每个版本登记两次提示词、provider/model/mode、图生图输入与两张输出 SHA-256。测试适配器只存在于测试文件，生产代码没有本地占位分支。缺 provider、第二次调用失败、旧本地稿、模型元数据存在但实际文件缺失四种情况均已回归：前两种不写结果，后两种触发真实补跑。Studio 长页恢复文档滚动，旧 `/workflow` 和九个节点详情保持原固定/内部滚动合同。本地实际通过 Python 101/101、Web 5/5、macOS desktop-chromium 32 passed / 1 Windows 像素门按设计 skipped、Ruff、锁、类型、ESLint、Vinext 五阶段构建、启动脚本语法和两类依赖审计；真实 Qwen 双图只能在已配置 Secret 的 Zeabur 发布后验收，本段不提前写成远端通过。
+0.11.0 已把 Studio 的本地 Pillow 结构渲染器替换为强制真实模型视觉并发布上线：先生成设计效果图，生产沟通图优先以该图为参考；若参考请求明确欠费阻断或超时，则按同一锁定证据与生产文稿调用真实文生图，并把参考失败与实际模式写入审计。测试适配器只存在于测试文件，生产代码没有本地占位分支。缺 provider、最终生成失败、旧本地稿、模型元数据存在但实际文件缺失均已回归；只有两张最终模型图和文件校验都成功才持久化。Studio 长页恢复文档滚动，旧 `/workflow` 和九个节点详情保持原固定/内部滚动合同。本地实际通过 Python 105/105、Web 5/5、macOS desktop-chromium 32 passed / 1 Windows 像素门按设计 skipped；GitHub Actions 运行 `33610662548` 的四个 Job 全部成功，Windows desktop-chromium 为 33/33。
 
 0.9.1 完整复验使用当前 Windows 工作区重新导入 LightRAG 1.5.7、GPT Researcher 0.14.7 与 MediaCrawler 隔离运行时；MediaCrawler 可导入 `bili,dy,ks,tieba,wb,xhs,zhihu`。当前机器与 Zeabur 服务器均已安全配置 LLM 凭证，DeepSeek `/models` 返回 200、3 个模型且目标 `deepseek-v4-flash` 存在；独立 Images API 与四平台授权会话仍未配置，因此没有把图片重生成或平台抓取写成当轮 live。正式 `20260828T060200Z-e44240e3` 保留此前真实 DeepSeek 业务运行证据。独立 `auto` 验收运行 `20260829T144536Z-2e6f3e5b` 实际得到 `culture=live / market=cache / strategist=cache / design=live / poster=live`，消费提交随附的 378 条派生平台证据并生成 13 项隔离产物；清单路径全部为仓库相对路径且文件存在。
 
@@ -52,6 +52,8 @@ Zeabur 0.10.0 运行态实测不是“文件存在”口径：LightRAG 在持久
 
 合并提交 `d677bdd` 推送后，GitHub Actions 运行 `33520872498` 实际完成 Ubuntu/macOS/Windows Python 98/98 和 Windows desktop-chromium 32/32；4 个 Job 全部 success，annotation 均为 0。该结果只收口代码与 CI，没有触发 Zeabur 部署。
 
+0.11.0 最终部署 `6a97e30c2e33e18a8367811b` 已在现有受保护服务运行，源码摘要与提交 `b6e3257` 一致；公网健康 200、匿名主页/API 401，健康 API 报告采集和每日设计调度器均健康。认证后的真实 Chromium 在 `/libraries/culture` 实测 `scrollHeight=3353`、`innerHeight=960`、`scrollTop 0→900`，控制台错误为 0。自动批次 `DAY-20260902-3D65E35D` 实际生成苗绣 × 模块冰箱贴（92.9）、皮纸制作技艺 × 层叠徽章（89.2）、玉屏箫笛制作技艺 × 叙事盲盒（86.8），共 6 张 1024×1024 PNG；图片 HTTP 类型、实际 SHA 与记录全部一致。三个生产图参考请求均在 180 秒后返回 `UpstreamTimeout`，系统如实记录并由同一 `qwen-image-3.0-pro` 按相同锁定证据独立文生图，没有复用设计图、旧资产或本地占位图。
+
 ## 环境
 
 - macOS / zsh（本轮）与 Windows / PowerShell（既有权威像素基线）
@@ -71,7 +73,7 @@ Zeabur 0.10.0 运行态实测不是“文件存在”口径：LightRAG 在持久
 | GPT Researcher | 通过 | 0.14.7 在 Zeabur 实际调用 `deepseek-v4-flash`，返回指定 JSON，外部上下文 writer 成功且未走项目直连降级 |
 | MediaCrawler | 当前三平台严格实采通过；抖音暂停 | 云端解释器固定为 `/opt/mediacrawler-venv/bin/python`，源码、`httpx`、CDP 管理器、托管 Chromium 均实测。最终启用 xhs/bili/wb，严格任务规范化记录为 113/110/149；dy 不启动、不参与晋级，适配代码与历史证据保留 |
 | Workbench 严格后台研究 | 通过 | 云端任务 `20260901T121642Z-e1a435ff` 实际完成 culture/market/strategist live，且配置中启用的 xhs/bili/wb 全部 live，最终 `live_verified` 并原子晋级工作区；清单不含 dy，也未拼接旧探针或缓存 |
-| Studio 双库与每日设计 | 0.11.0 本地契约通过；远端待本轮发布 | API 实取文化 22/来源 32、形态 10/历史样本 378，并公开文化证据三分项、组合五分项、代表原记录、样本窗与边界。测试适配器下的每日 Top 3、手动组合和 V2 编辑均为两张 1024×1024 模型契约 PNG，生产图输入 SHA 与设计图一致；无 provider、第二次调用失败或持久文件缺失时不复用假成功。0.10.0 Zeabur 仍保留 3 张历史 1440×960 本地结构稿，0.11.0 发布后必须由服务器真实 provider 补跑并另行验收 |
+| Studio 双库与每日设计 | 0.11.0 本地与远端通过 | API 实取文化 22/来源 32、形态 10/历史样本 378，并公开文化证据三分项、组合五分项、代表原记录、样本窗与边界。线上批次 `DAY-20260902-3D65E35D` 实际生成 Top 3 与 6 张 1024×1024 Qwen PNG；三个设计图为 `text_to_image`，生产图的图生图尝试均明确记录 `UpstreamTimeout`，最终生产图为同一证据和文稿驱动的独立 `text_to_image`。无 provider、最终模型失败或持久文件缺失时不复用假成功 |
 | 四平台统一与热度 | 通过 | 四个快照共 378 条真实平台记录；统一榜单样本数为 378，Top 10 依次为冰箱贴、徽章、盲盒、包挂、伴手礼、潮玩、香氛、挂件、首饰、毛绒，Top 5 为前五项；本轮重算分数范围 36.6–57.3，均在 0–100 内 |
 | Visual Reference Pack | 通过 | 12 条官方/权威馆藏参考、5 个 Pattern Primitive、3 组无伪造 HEX 的颜色关系；全部未明权利图片标为 `reference_only` |
 | Opportunity Score | 通过 | 当前正式文件为 8 条证据规则基线，`generated_opportunities_accepted=0`；全部具备六项正向分、文化风险和可解释综合分，20/20/20/15/15/10 加权后扣 20% 风险。历史模型候选数量不等于当前正式接受数 |
@@ -89,14 +91,14 @@ Zeabur 0.10.0 运行态实测不是“文件存在”口径：LightRAG 在持久
 | 持续采集调度与候选门 | 通过 | 线上调度线程、心跳与总开关保持在线；文化候选仍经人工门。市场通道已在三平台严格成功后恢复启用，下一轮按 4 小时排期；浏览器连接仍不等于授权，只有本轮配置中启用的平台全部 live 才晋级 |
 | 知识星图与采集控制面 | 当前桌面通过 | C2 desktop-chromium 覆盖星图搜索、选点、按钮/滚轮缩放、拖动/键盘、断线旧状态、历史/实时信息顺序、forced-colors 与焦点门；此前手机触摸结果只保留为历史基线，本轮没有执行 mobile project |
 | 七阶段人工交互 | 通过 | 浏览器实际完成文化、平台、权重、机会、任务书、视觉、方案与海报调整；保存后节点显示 HUMAN v3、人工分与系统分并列、下游 stale，展示页可深链返回对应决策阶段 |
-| 中文排版、令牌与响应式 | 当前桌面通过 | Studio 与旧 C2 使用暖矿物、雾蓝、灰绿、暖陶与浅石固定功能色块；旧工作台保留 60/72/210/330 电脑端几何、稳定九节点和深色文化星图例外。macOS 1440×960 当前为 31 passed / 1 个 Windows 像素门 skipped；mobile/tablet 沿用既有实现，但不属于本轮验收承诺 |
+| 中文排版、令牌与响应式 | 当前桌面通过 | Studio 与旧 C2 使用暖矿物、雾蓝、灰绿、暖陶与浅石固定功能色块；旧工作台保留 60/72/210/330 电脑端几何、稳定九节点和深色文化星图例外。macOS 1440×960 当前为 32 passed / 1 个 Windows 像素门 skipped，Windows 为 33/33；mobile/tablet 沿用既有实现，但不属于本轮验收承诺 |
 | Workbench production server | 通过 | Vinext 五阶段构建后以 `127.0.0.1:3000` 启动 production server；页面、真实 API、A/B/C 资产与 Flow Map 均重新验收，React Flow 合法最小 attribution 保留 |
-| Zeabur 线上实例 | 通过 | 0.10.0 当前部署 `6a96ec9f40c09e36c3ebb590`；公网 `/healthz` 200、匿名主页/API/noVNC 401，认证后 21 个页面/入口、9 个详情 API、DesignPackage 与 5 张 PNG 全为 200。容器内源码指纹、三运行时、CDP/noVNC、ext4 持久卷、0700 profile、图像 provider、三平台 readiness 与两个调度器均已实测；浏览器进程和 API/Web/Nginx worker 以 `www-data` 运行，登录资料不进入运行态 ZIP |
+| Zeabur 线上实例 | 通过 | 0.11.0 当前部署 `6a97e30c2e33e18a8367811b`；公网 `/healthz` 200、匿名主页/API 401，认证后 Studio 长页真实滚动成功，6 张新模型 PNG 均为 200。容器源码指纹、LightRAG/GPT Researcher/MediaCrawler、回环 CDP/noVNC、ext4 持久卷、0700 profile、图像 provider、三平台状态与两个调度器均已实测；严格任务 `20260901T121642Z-e1a435ff` 仍为 `live_verified` |
 | 概念视觉 A/B/C | 通过 | A 使用项目原创主视觉；B/C 由内置图像生成能力按任务书制作并完成目视复核，版本化 PNG、提示摘要与 SHA-256 均落盘；未请求复制具名神圣纹样或馆藏参考像素 |
 | 图像生成边界 | 通过 | Zeabur 独立图像 provider 已安全配置并实际生成 1024×1024 PNG；其他环境缺配置时仍保持 warning，不把旧 A/B/C 资产冒充新结果 |
 | 离线回退 | 通过 | 生成 8 条证据规则机会；设计段继续运行，无主视觉时本地几何海报诚实标为 `cache` |
-| 自动测试 | 本地与跨平台通过 | Python `pytest` 本地及 Ubuntu/macOS/Windows CI 均为 98/98，Workbench TypeScript 5/5；macOS desktop-chromium 31 passed / 1 个 Windows 像素门按设计 skipped，Windows desktop-chromium 32/32 |
-| 静态检查与构建 | 本地与 CI 通过 | Conda 内 Ruff、`uv lock --check`、TypeScript no-emit、零 warning ESLint、Vinext 五阶段 production build、完整 `pnpm audit`、Python `pip-audit --local`、`sh -n deploy/start-zeabur.sh` 与 `git diff --check` 均通过；两类依赖审计为 0 个已知漏洞，部署源提交 `91534b0` 的 GitHub Actions 运行 `33521833733` 同样通过适用门 |
+| 自动测试 | 本地与跨平台通过 | 0.11.0 Python `pytest` 本地与 CI 均为 105/105，Web 单测 5/5；macOS desktop-chromium 32 passed / 1 个 Windows 像素门按设计 skipped，Windows desktop-chromium 33/33 |
+| 静态检查与构建 | 本地与 CI 通过 | Ruff、`uv lock --check`、TypeScript no-emit、零 warning ESLint、Vinext 五阶段 production build、完整 `pnpm audit`、Python `pip-audit --local`、`sh -n deploy/start-zeabur.sh` 与 `git diff --check` 均通过；两类依赖审计为 0 个已知漏洞，部署源提交 `b6e3257` 的 GitHub Actions 运行 `33610662548` 四个 Job 全部成功 |
 | 最终契约与凭证 | 通过 | 策略、视觉、交接、设计、渲染、热度和运行清单均可重新载入；13 个输出路径存在、四路市场状态完整、输入及海报摘要一致；自有交付层 API Key 模式扫描 0 命中 |
 
 ## 可复现命令
