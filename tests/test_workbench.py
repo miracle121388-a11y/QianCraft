@@ -10,7 +10,10 @@ import pytest
 
 from app import workbench
 from app.adapters import image_generation_adapter
-from app.adapters.image_generation_adapter import ImageGenerationAdapter
+from app.adapters.image_generation_adapter import (
+    ImageGenerationAdapter,
+    ImageGenerationProviderError,
+)
 from app.config import load_settings
 
 
@@ -329,6 +332,34 @@ def test_image_adapter_exposes_safe_provider_billing_failure(
         ImageGenerationAdapter(settings).generate("真实产品设计", tmp_path / "result.png")
 
     assert "Arrearage" in str(caught.value)
+    assert "test-key-that-must-not-leak" not in str(caught.value)
+
+
+def test_image_adapter_normalizes_provider_timeouts(tmp_path, monkeypatch) -> None:
+    settings = replace(
+        load_settings(),
+        image_provider="dashscope-native",
+        image_api_key="test-key-that-must-not-leak",
+        image_base_url="https://dashscope.example/api/v1",
+        image_model="qwen-image-3.0-pro",
+    )
+
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        raise httpx.ReadTimeout("provider did not answer", request=request)
+
+    original_client = httpx.Client
+
+    def client_factory(*args, **kwargs):
+        return original_client(*args, transport=httpx.MockTransport(handle_request), **kwargs)
+
+    monkeypatch.setattr(image_generation_adapter.httpx, "Client", client_factory)
+
+    with pytest.raises(ImageGenerationProviderError) as caught:
+        ImageGenerationAdapter(settings).generate("真实产品设计", tmp_path / "result.png")
+
+    assert caught.value.code == "UpstreamTimeout"
+    assert caught.value.status_code == 504
+    assert "等待时间内未返回" in str(caught.value)
     assert "test-key-that-must-not-leak" not in str(caught.value)
 
 

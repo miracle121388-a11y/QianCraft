@@ -1076,7 +1076,10 @@ class StudioEngine:
                     reference_image_path=reference_path,
                 )
             except ImageGenerationProviderError as exc:
-                if reference_path is None or exc.code != "Arrearage":
+                if reference_path is None or exc.code not in {
+                    "Arrearage",
+                    "UpstreamTimeout",
+                }:
                     raise
                 production_result = self.image_adapter.generate(
                     production_prompt,

@@ -23,10 +23,12 @@ class FakeImageAdapter:
         configured: bool = True,
         fail_on_call: int = 0,
         arrearage_on_reference: bool = False,
+        timeout_on_reference: bool = False,
     ) -> None:
         self.configured = configured
         self.fail_on_call = fail_on_call
         self.arrearage_on_reference = arrearage_on_reference
+        self.timeout_on_reference = timeout_on_reference
         self.calls: list[dict[str, object]] = []
 
     def status(self) -> dict[str, object]:
@@ -64,6 +66,12 @@ class FakeImageAdapter:
                 400,
                 "Arrearage",
                 "图像服务账户余额不足或账务状态异常，请在服务商控制台恢复账户状态。",
+            )
+        if self.timeout_on_reference and reference_image_path is not None:
+            raise ImageGenerationProviderError(
+                504,
+                "UpstreamTimeout",
+                "图像生成服务在配置的等待时间内未返回结果。",
             )
         digest = hashlib.sha256(prompt.encode("utf-8")).digest()
         image = Image.new("RGB", (1024, 1024), tuple(digest[:3]))
@@ -344,6 +352,36 @@ def test_billing_blocked_image_to_image_uses_a_second_real_model_call(
         "detail": (
             "图像生成服务拒绝请求（HTTP 400，Arrearage）："
             "图像服务账户余额不足或账务状态异常，请在服务商控制台恢复账户状态。"
+        ),
+    }
+    assert (store.assets_dir / design["designId"] / "v1-design.png").is_file()
+    assert (store.assets_dir / design["designId"] / "v1-production.png").is_file()
+
+
+def test_timed_out_image_to_image_uses_a_second_real_model_call(
+    tmp_path: Path,
+) -> None:
+    store = StudioStore(tmp_path / "runtime")
+    adapter = FakeImageAdapter(timeout_on_reference=True)
+    engine = StudioEngine(store, CULTURE, FORMS, adapter)
+
+    design = engine.generate_manual(
+        {"cultureIds": ["GZ-MIAO-HUAXI"], "productFormIds": ["冰箱贴"]}
+    )
+
+    production = design["production"]["asset"]
+    assert len(adapter.calls) == 3
+    assert adapter.calls[1]["reference"] is not None
+    assert adapter.calls[2]["reference"] is None
+    assert production["generation"]["mode"] == "text_to_image"
+    assert production["generation"]["inputAssetSha256"] == ""
+    assert production["generation"]["referenceAttempt"] == {
+        "attempted": True,
+        "status": "blocked",
+        "code": "UpstreamTimeout",
+        "detail": (
+            "图像生成服务拒绝请求（HTTP 504，UpstreamTimeout）："
+            "图像生成服务在配置的等待时间内未返回结果。"
         ),
     }
     assert (store.assets_dir / design["designId"] / "v1-design.png").is_file()

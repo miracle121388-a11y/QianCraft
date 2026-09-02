@@ -146,39 +146,50 @@ class ImageGenerationAdapter:
                 "n": 1,
                 "response_format": "b64_json",
             }
-        with httpx.Client(
-            timeout=self.settings.image_timeout_seconds,
-            follow_redirects=True,
-        ) as client:
-            response = client.post(endpoint, headers=headers, json=payload)
-            if not response.is_success:
-                raise _provider_failure(response)
-            body = response.json()
-            if dashscope_native:
-                try:
-                    asset_url = body["output"]["choices"][0]["message"]["content"][0][
-                        "image"
-                    ]
-                except (KeyError, IndexError, TypeError) as exc:
-                    raise RuntimeError("千问图像服务没有返回可读取的图片地址。") from exc
-                asset_response = client.get(str(asset_url))
-                if not asset_response.is_success:
-                    raise _provider_failure(asset_response)
-                image_bytes = asset_response.content
-            else:
-                items = body.get("data", []) if isinstance(body, dict) else []
-                if not items or not isinstance(items[0], dict):
-                    raise RuntimeError("图像服务没有返回可读取的 data[0]。")
-                item = items[0]
-                if item.get("b64_json"):
-                    image_bytes = base64.b64decode(str(item["b64_json"]), validate=True)
-                elif item.get("url"):
-                    asset_response = client.get(str(item["url"]))
+        try:
+            with httpx.Client(
+                timeout=self.settings.image_timeout_seconds,
+                follow_redirects=True,
+            ) as client:
+                response = client.post(endpoint, headers=headers, json=payload)
+                if not response.is_success:
+                    raise _provider_failure(response)
+                body = response.json()
+                if dashscope_native:
+                    try:
+                        asset_url = body["output"]["choices"][0]["message"]["content"][
+                            0
+                        ]["image"]
+                    except (KeyError, IndexError, TypeError) as exc:
+                        raise RuntimeError(
+                            "千问图像服务没有返回可读取的图片地址。"
+                        ) from exc
+                    asset_response = client.get(str(asset_url))
                     if not asset_response.is_success:
                         raise _provider_failure(asset_response)
                     image_bytes = asset_response.content
                 else:
-                    raise RuntimeError("图像服务返回中缺少 b64_json 或 url。")
+                    items = body.get("data", []) if isinstance(body, dict) else []
+                    if not items or not isinstance(items[0], dict):
+                        raise RuntimeError("图像服务没有返回可读取的 data[0]。")
+                    item = items[0]
+                    if item.get("b64_json"):
+                        image_bytes = base64.b64decode(
+                            str(item["b64_json"]), validate=True
+                        )
+                    elif item.get("url"):
+                        asset_response = client.get(str(item["url"]))
+                        if not asset_response.is_success:
+                            raise _provider_failure(asset_response)
+                        image_bytes = asset_response.content
+                    else:
+                        raise RuntimeError("图像服务返回中缺少 b64_json 或 url。")
+        except httpx.TimeoutException as exc:
+            raise ImageGenerationProviderError(
+                504,
+                "UpstreamTimeout",
+                "图像生成服务在配置的等待时间内未返回结果。",
+            ) from exc
 
         if len(image_bytes) > 25 * 1024 * 1024:
             raise RuntimeError("图像服务返回文件超过 25MB 安全上限。")
