@@ -5,6 +5,7 @@ import hashlib
 import io
 import mimetypes
 import os
+import re
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,30 @@ import httpx
 from PIL import Image
 
 from app.config import Settings, load_settings
+
+
+def _provider_failure(response: httpx.Response) -> RuntimeError:
+    """Return a bounded, credential-free provider error for operations audit."""
+
+    code = ""
+    message = ""
+    try:
+        payload = response.json()
+    except ValueError:
+        payload = {}
+    if isinstance(payload, dict):
+        raw_code = str(payload.get("code", "")).strip()
+        if re.fullmatch(r"[A-Za-z0-9_.-]{1,80}", raw_code):
+            code = raw_code
+        message = " ".join(str(payload.get("message", "")).split())[:500]
+    if code == "Arrearage":
+        message = "图像服务账户余额不足或账务状态异常，请在服务商控制台恢复账户状态。"
+    elif not message:
+        message = "上游没有返回可公开的错误说明。"
+    label = f"，{code}" if code else ""
+    return RuntimeError(
+        f"图像生成服务拒绝请求（HTTP {response.status_code}{label}）：{message}"
+    )
 
 
 class ImageGenerationAdapter:
@@ -119,7 +144,8 @@ class ImageGenerationAdapter:
             follow_redirects=True,
         ) as client:
             response = client.post(endpoint, headers=headers, json=payload)
-            response.raise_for_status()
+            if not response.is_success:
+                raise _provider_failure(response)
             body = response.json()
             if dashscope_native:
                 try:
@@ -129,7 +155,8 @@ class ImageGenerationAdapter:
                 except (KeyError, IndexError, TypeError) as exc:
                     raise RuntimeError("千问图像服务没有返回可读取的图片地址。") from exc
                 asset_response = client.get(str(asset_url))
-                asset_response.raise_for_status()
+                if not asset_response.is_success:
+                    raise _provider_failure(asset_response)
                 image_bytes = asset_response.content
             else:
                 items = body.get("data", []) if isinstance(body, dict) else []
@@ -140,7 +167,8 @@ class ImageGenerationAdapter:
                     image_bytes = base64.b64decode(str(item["b64_json"]), validate=True)
                 elif item.get("url"):
                     asset_response = client.get(str(item["url"]))
-                    asset_response.raise_for_status()
+                    if not asset_response.is_success:
+                        raise _provider_failure(asset_response)
                     image_bytes = asset_response.content
                 else:
                     raise RuntimeError("图像服务返回中缺少 b64_json 或 url。")

@@ -297,6 +297,41 @@ def test_dashscope_native_adapter_uses_sync_multimodal_contract(
     assert edited["reference_sha256"] == result["sha256"]
 
 
+def test_image_adapter_exposes_safe_provider_billing_failure(
+    tmp_path,
+    monkeypatch,
+) -> None:
+    settings = replace(
+        load_settings(),
+        image_provider="dashscope-native",
+        image_api_key="test-key-that-must-not-leak",
+        image_base_url="https://dashscope.example/api/v1",
+        image_model="qwen-image-3.0-pro",
+    )
+
+    def handle_request(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            400,
+            json={
+                "code": "Arrearage",
+                "message": "Access denied because the account is overdue.",
+            },
+        )
+
+    original_client = httpx.Client
+
+    def client_factory(*args, **kwargs):
+        return original_client(*args, transport=httpx.MockTransport(handle_request), **kwargs)
+
+    monkeypatch.setattr(image_generation_adapter.httpx, "Client", client_factory)
+
+    with pytest.raises(RuntimeError, match="账户余额不足") as caught:
+        ImageGenerationAdapter(settings).generate("真实产品设计", tmp_path / "result.png")
+
+    assert "Arrearage" in str(caught.value)
+    assert "test-key-that-must-not-leak" not in str(caught.value)
+
+
 def test_concept_can_be_duplicated_as_an_independent_branch(
     isolated_workspaces,
 ) -> None:

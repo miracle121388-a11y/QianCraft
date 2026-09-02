@@ -297,10 +297,11 @@ def test_missing_or_failed_image_model_never_persists_a_placeholder(tmp_path: Pa
         FORMS,
         FakeImageAdapter(fail_on_call=2),
     )
-    with pytest.raises(RuntimeError, match="没有使用本地占位图"):
+    with pytest.raises(RuntimeError, match="没有使用本地占位图") as caught:
         failed_engine.generate_manual(
             {"cultureIds": ["GZ-MIAO-HUAXI"], "productFormIds": ["冰箱贴"]}
         )
+    assert "上游原因：模拟模型调用失败" in str(caught.value)
     assert failed_store.load_designs() == []
     assert list(failed_store.assets_dir.rglob("*.png")) == []
 

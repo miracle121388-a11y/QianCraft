@@ -1090,9 +1090,21 @@ class StudioEngine:
             for path in (design_stage, production_stage, design_path, production_path):
                 if path.is_file():
                     path.unlink()
+            cause = _safe_text(str(exc), 500)
+            cause = re.sub(
+                r"(?i)(authorization\s*:\s*bearer\s+)\S+",
+                r"\1<redacted>",
+                cause,
+            )
+            cause = re.sub(
+                r"(?:sk|ghp|zat)_[A-Za-z0-9_-]{12,}|sk-[A-Za-z0-9_-]{12,}",
+                "<redacted>",
+                cause,
+            )
             raise RuntimeError(
                 "图像模型未能同时生成设计效果图和生产沟通图；"
                 "本次结果未保存，也没有使用本地占位图。"
+                f"上游原因：{cause}"
             ) from exc
         return {
             "provider": provider,
