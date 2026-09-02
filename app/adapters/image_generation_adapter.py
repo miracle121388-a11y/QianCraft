@@ -16,7 +16,17 @@ from PIL import Image
 from app.config import Settings, load_settings
 
 
-def _provider_failure(response: httpx.Response) -> RuntimeError:
+class ImageGenerationProviderError(RuntimeError):
+    """Bounded upstream failure with a machine-readable provider code."""
+
+    def __init__(self, status_code: int, code: str, message: str) -> None:
+        self.status_code = status_code
+        self.code = code
+        label = f"，{code}" if code else ""
+        super().__init__(f"图像生成服务拒绝请求（HTTP {status_code}{label}）：{message}")
+
+
+def _provider_failure(response: httpx.Response) -> ImageGenerationProviderError:
     """Return a bounded, credential-free provider error for operations audit."""
 
     code = ""
@@ -34,10 +44,7 @@ def _provider_failure(response: httpx.Response) -> RuntimeError:
         message = "图像服务账户余额不足或账务状态异常，请在服务商控制台恢复账户状态。"
     elif not message:
         message = "上游没有返回可公开的错误说明。"
-    label = f"，{code}" if code else ""
-    return RuntimeError(
-        f"图像生成服务拒绝请求（HTTP {response.status_code}{label}）：{message}"
-    )
+    return ImageGenerationProviderError(response.status_code, code, message)
 
 
 class ImageGenerationAdapter:

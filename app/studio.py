@@ -13,7 +13,10 @@ from uuid import uuid4
 
 from PIL import Image
 
-from app.adapters.image_generation_adapter import ImageGenerationAdapter
+from app.adapters.image_generation_adapter import (
+    ImageGenerationAdapter,
+    ImageGenerationProviderError,
+)
 
 SCHEMA_VERSION = "1.1"
 SHANGHAI = timezone(timedelta(hours=8), name="Asia/Shanghai")
@@ -1062,14 +1065,30 @@ class StudioEngine:
                 design_stage,
                 size="1024x1024",
             )
-            production_result = self.image_adapter.generate(
-                production_prompt,
-                production_stage,
-                size="1024x1024",
-                reference_image_path=(
-                    design_stage if provider.get("supports_image_to_image") else None
-                ),
+            reference_path = (
+                design_stage if provider.get("supports_image_to_image") else None
             )
+            try:
+                production_result = self.image_adapter.generate(
+                    production_prompt,
+                    production_stage,
+                    size="1024x1024",
+                    reference_image_path=reference_path,
+                )
+            except ImageGenerationProviderError as exc:
+                if reference_path is None or exc.code != "Arrearage":
+                    raise
+                production_result = self.image_adapter.generate(
+                    production_prompt,
+                    production_stage,
+                    size="1024x1024",
+                )
+                production_result["reference_attempt"] = {
+                    "attempted": True,
+                    "status": "blocked",
+                    "code": exc.code,
+                    "detail": str(exc),
+                }
             design_stage.replace(design_path)
             production_stage.replace(production_path)
             design_asset = self._model_asset(
@@ -1131,6 +1150,26 @@ class StudioEngine:
         if declared_sha and declared_sha != sha256:
             raise RuntimeError("图像模型返回摘要与落盘文件不一致。")
         generated_at = str(result.get("generated_at") or _iso())
+        generation = {
+            "role": role,
+            "provider": str(result.get("provider", "")),
+            "model": str(result.get("model", "")),
+            "mode": str(result.get("mode", "text_to_image")),
+            "prompt": prompt,
+            "promptSha256": str(
+                result.get("prompt_sha256")
+                or hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+            ),
+            "inputAssetSha256": str(result.get("reference_sha256", "")),
+        }
+        reference_attempt = result.get("reference_attempt")
+        if isinstance(reference_attempt, dict):
+            generation["referenceAttempt"] = {
+                "attempted": bool(reference_attempt.get("attempted")),
+                "status": str(reference_attempt.get("status", "")),
+                "code": str(reference_attempt.get("code", "")),
+                "detail": _safe_text(reference_attempt.get("detail", ""), 500),
+            }
         return {
             "imageUrl": image_url,
             "filename": path.name,
@@ -1138,18 +1177,7 @@ class StudioEngine:
             "width": width,
             "height": height,
             "generatedAt": generated_at,
-            "generation": {
-                "role": role,
-                "provider": str(result.get("provider", "")),
-                "model": str(result.get("model", "")),
-                "mode": str(result.get("mode", "text_to_image")),
-                "prompt": prompt,
-                "promptSha256": str(
-                    result.get("prompt_sha256")
-                    or hashlib.sha256(prompt.encode("utf-8")).hexdigest()
-                ),
-                "inputAssetSha256": str(result.get("reference_sha256", "")),
-            },
+            "generation": generation,
         }
 
     @staticmethod

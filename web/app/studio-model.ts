@@ -120,6 +120,12 @@ export interface StudioGenerationRecord {
   prompt: string;
   promptSha256: string;
   inputAssetSha256: string;
+  referenceAttempt?: {
+    attempted: boolean;
+    status: string;
+    code: string;
+    detail: string;
+  };
 }
 
 export interface StudioGeneratedAsset {

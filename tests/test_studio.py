@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from app.adapters.image_generation_adapter import ImageGenerationProviderError
 from app.studio import StudioEngine, StudioScheduler, StudioStore, _local_date
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,9 +17,16 @@ FORMS = ROOT / "data" / "market" / "derived" / "product_form_hotness.json"
 
 
 class FakeImageAdapter:
-    def __init__(self, *, configured: bool = True, fail_on_call: int = 0) -> None:
+    def __init__(
+        self,
+        *,
+        configured: bool = True,
+        fail_on_call: int = 0,
+        arrearage_on_reference: bool = False,
+    ) -> None:
         self.configured = configured
         self.fail_on_call = fail_on_call
+        self.arrearage_on_reference = arrearage_on_reference
         self.calls: list[dict[str, object]] = []
 
     def status(self) -> dict[str, object]:
@@ -51,6 +59,12 @@ class FakeImageAdapter:
         )
         if self.fail_on_call and len(self.calls) == self.fail_on_call:
             raise RuntimeError("模拟模型调用失败")
+        if self.arrearage_on_reference and reference_image_path is not None:
+            raise ImageGenerationProviderError(
+                400,
+                "Arrearage",
+                "图像服务账户余额不足或账务状态异常，请在服务商控制台恢复账户状态。",
+            )
         digest = hashlib.sha256(prompt.encode("utf-8")).digest()
         image = Image.new("RGB", (1024, 1024), tuple(digest[:3]))
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -304,6 +318,36 @@ def test_missing_or_failed_image_model_never_persists_a_placeholder(tmp_path: Pa
     assert "上游原因：模拟模型调用失败" in str(caught.value)
     assert failed_store.load_designs() == []
     assert list(failed_store.assets_dir.rglob("*.png")) == []
+
+
+def test_billing_blocked_image_to_image_uses_a_second_real_model_call(
+    tmp_path: Path,
+) -> None:
+    store = StudioStore(tmp_path / "runtime")
+    adapter = FakeImageAdapter(arrearage_on_reference=True)
+    engine = StudioEngine(store, CULTURE, FORMS, adapter)
+
+    design = engine.generate_manual(
+        {"cultureIds": ["GZ-MIAO-HUAXI"], "productFormIds": ["冰箱贴"]}
+    )
+
+    production = design["production"]["asset"]
+    assert len(adapter.calls) == 3
+    assert adapter.calls[1]["reference"] is not None
+    assert adapter.calls[2]["reference"] is None
+    assert production["generation"]["mode"] == "text_to_image"
+    assert production["generation"]["inputAssetSha256"] == ""
+    assert production["generation"]["referenceAttempt"] == {
+        "attempted": True,
+        "status": "blocked",
+        "code": "Arrearage",
+        "detail": (
+            "图像生成服务拒绝请求（HTTP 400，Arrearage）："
+            "图像服务账户余额不足或账务状态异常，请在服务商控制台恢复账户状态。"
+        ),
+    }
+    assert (store.assets_dir / design["designId"] / "v1-design.png").is_file()
+    assert (store.assets_dir / design["designId"] / "v1-production.png").is_file()
 
 
 def test_scheduler_catches_up_today_and_keeps_a_fresh_heartbeat(studio) -> None:
